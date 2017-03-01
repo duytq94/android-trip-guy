@@ -3,7 +3,6 @@ package com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend;
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +37,15 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.srlReload = srlReload;
+
         this.listUserProfiles = listUserProfiles;
+        for (int i = 0; i < listUserProfiles.size(); i++) {
+            if (listUserProfiles.get(i).getUid().equals(firebaseUser.getUid())) {
+                this.listUserProfiles.remove(i);
+                break;
+            }
+        }
+
         this.listUserFriends = listUserFriends;
         this.referenceFriend = referenceFriend;
         this.firebaseUser = firebaseUser;
@@ -67,14 +74,14 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                 switch (listUserFriends.get(j).getState()) {
                     case "requested":
                         holder.btnMakeFriend.setText("Đã gửi");
-                        holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorGray));
+                        holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
                         break;
                     case "beRequested":
                         holder.btnMakeFriend.setText("Đồng ý");
-                        holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorGray));
+                        holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
                         break;
                     case "friend":
-                        holder.btnMakeFriend.setText(Html.fromHtml("&#10004; Bạn bè"));
+                        holder.btnMakeFriend.setText("Bạn bè");
                         holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorMain));
                         break;
                 }
@@ -100,7 +107,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                         break;
 
                     case "Đồng ý":
-                        holder.btnMakeFriend.setText(Html.fromHtml("&#10004; Bạn bè"));
+                        holder.btnMakeFriend.setText("Bạn bè");
                         holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorMain));
                         // Add data to the current user login
                         UserFriend userFriendBeRequested = new UserFriend(userProfile.getUid(), "friend");
@@ -133,7 +140,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
 
                     case "Kết bạn":
                         holder.btnMakeFriend.setText("Đã gửi");
-                        holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorGray));
+                        holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
                         // Add data to the current user login
                         UserFriend userFriendBeRequested4 = new UserFriend(userProfile.getUid(), "requested");
                         referenceFriend.child("UserFriend")

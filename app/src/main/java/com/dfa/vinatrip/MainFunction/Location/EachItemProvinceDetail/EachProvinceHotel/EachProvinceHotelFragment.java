@@ -59,14 +59,14 @@ public class EachProvinceHotelFragment extends Fragment {
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         if (CheckNetwork.isNetworkConnected(getActivity())) {
-            loadProvinceHotelPhotoFromFirebase();
+            loadProvinceHotelPhoto();
         }
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if (CheckNetwork.isNetworkConnected(getActivity())) {
                     listUrlPhotos.clear();
-                    loadProvinceHotelPhotoFromFirebase();
+                    loadProvinceHotelPhoto();
                 } else {
                     srlReload.setRefreshing(false);
                 }
@@ -166,7 +166,7 @@ public class EachProvinceHotelFragment extends Fragment {
                 });
     }
 
-    public void loadProvinceHotelPhotoFromFirebase() {
+    public void loadProvinceHotelPhoto() {
         srlReload.setRefreshing(true);
 
         DatabaseReference databaseReference = firebaseDatabase.getReference();

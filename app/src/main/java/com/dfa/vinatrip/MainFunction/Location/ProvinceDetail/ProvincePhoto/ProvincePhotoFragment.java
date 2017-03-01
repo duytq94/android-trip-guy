@@ -48,7 +48,7 @@ public class ProvincePhotoFragment extends Fragment {
         rvPhotos.setAdapter(provincePhotoAdapter);
 
         if (CheckNetwork.isNetworkConnected(getActivity())) {
-            loadProvincePhotoFromFirebase();
+            loadProvincePhoto();
         }
 
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -56,7 +56,7 @@ public class ProvincePhotoFragment extends Fragment {
             public void onRefresh() {
                 if (CheckNetwork.isNetworkConnected(getActivity())) {
                     provincePhotoList.clear();
-                    loadProvincePhotoFromFirebase();
+                    loadProvincePhoto();
                 } else {
                     srlReload.setRefreshing(false);
                 }
@@ -75,7 +75,7 @@ public class ProvincePhotoFragment extends Fragment {
         srlReload = (SwipeRefreshLayout) view.findViewById(R.id.fragment_province_photo_srl_reload);
     }
 
-    public void loadProvincePhotoFromFirebase() {
+    public void loadProvincePhoto() {
         srlReload.setRefreshing(true);
         DatabaseReference databaseReference = firebaseDatabase.getReference();
 

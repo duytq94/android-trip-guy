@@ -53,7 +53,7 @@ public class ProvinceFoodFragment extends Fragment {
         rvFoods.setAdapter(provinceFoodAdapter);
 
         if (CheckNetwork.isNetworkConnected(getActivity())) {
-            loadProvinceFoodFromFirebase();
+            loadProvinceFood();
         }
 
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -61,7 +61,7 @@ public class ProvinceFoodFragment extends Fragment {
             public void onRefresh() {
                 if (CheckNetwork.isNetworkConnected(getActivity())) {
                     provinceFoodList.clear();
-                    loadProvinceFoodFromFirebase();
+                    loadProvinceFood();
                 } else {
                     srlReload.setRefreshing(false);
                 }
@@ -99,7 +99,7 @@ public class ProvinceFoodFragment extends Fragment {
         srlReload = (SwipeRefreshLayout) view.findViewById(R.id.fragment_province_food_srl_reload);
     }
 
-    public void loadProvinceFoodFromFirebase() {
+    public void loadProvinceFood() {
         srlReload.setRefreshing(true);
 
         DatabaseReference databaseReference = firebaseDatabase.getReference();

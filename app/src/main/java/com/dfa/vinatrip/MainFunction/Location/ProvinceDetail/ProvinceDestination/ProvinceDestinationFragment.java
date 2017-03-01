@@ -55,7 +55,7 @@ public class ProvinceDestinationFragment extends Fragment {
         rvDestinations.setAdapter(provinceDestinationAdapter);
 
         if (CheckNetwork.isNetworkConnected(getActivity())) {
-            loadProvinceDestinationFromFirebase();
+            loadProvinceDestination();
         }
 
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -63,7 +63,7 @@ public class ProvinceDestinationFragment extends Fragment {
             public void onRefresh() {
                 if (CheckNetwork.isNetworkConnected(getActivity())) {
                     provinceDestinationList.clear();
-                    loadProvinceDestinationFromFirebase();
+                    loadProvinceDestination();
                 } else {
                     srlReload.setRefreshing(false);
                 }
@@ -101,7 +101,7 @@ public class ProvinceDestinationFragment extends Fragment {
         srlReload = (SwipeRefreshLayout) view.findViewById(R.id.fragment_province_destination_srl_reload);
     }
 
-    public void loadProvinceDestinationFromFirebase() {
+    public void loadProvinceDestination() {
         srlReload.setRefreshing(true);
 
         DatabaseReference databaseReference = firebaseDatabase.getReference();

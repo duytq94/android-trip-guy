@@ -43,6 +43,7 @@ public class MakeFriendFragment extends Fragment {
 
         findViewByIds(view);
 
+        // Get ListUserProfile from UserProfileDetailFragment
         Bundle bdListUserProfiles;
         bdListUserProfiles = getArguments().getBundle("bdListUserProfiles");
         listUserProfiles = (List<UserProfile>) bdListUserProfiles.getSerializable("ListUserProfiles");
@@ -50,6 +51,7 @@ public class MakeFriendFragment extends Fragment {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         listUserFriends = new ArrayList<>();
         if (CheckNetwork.isNetworkConnected(getActivity())) loadUserFriend();
+
         srlReload.setColorSchemeResources(R.color.colorMain);
 
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -89,7 +91,11 @@ public class MakeFriendFragment extends Fragment {
                         state = dataSnapshot.child("state").getValue().toString();
 
                         UserFriend userFriend = new UserFriend(friendId, state);
-                        listUserFriends.add(userFriend);
+
+                        // Don't load current user
+                        if (!userFriend.getFriendId().equals(firebaseUser.getUid())) {
+                            listUserFriends.add(userFriend);
+                        }
                     }
 
                     @Override
@@ -113,7 +119,7 @@ public class MakeFriendFragment extends Fragment {
                     }
                 });
 
-        //
+        // This method to be called after all the onChildAdded() calls have happened
         referenceFriend.child("UserFriend").child(firebaseUser.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

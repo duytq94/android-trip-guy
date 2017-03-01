@@ -100,7 +100,7 @@ public class LocationFragment extends Fragment {
             public void onRefresh() {
                 if (CheckNetwork.isNetworkConnected(getActivity())) {
                     provinceList.clear();
-                    loadProvinceFromFirebase();
+                    loadProvince();
                 } else {
                     srlReload.setRefreshing(false);
                 }
@@ -132,7 +132,7 @@ public class LocationFragment extends Fragment {
 
         if (CheckNetwork.isNetworkConnected(getActivity())) {
             provinceList.clear();
-            loadProvinceFromFirebase();
+            loadProvince();
         }
 
         return view;
@@ -183,7 +183,7 @@ public class LocationFragment extends Fragment {
         llDots = (LinearLayout) view.findViewById(R.id.fragment_location_ll_dots);
     }
 
-    public void loadProvinceFromFirebase() {
+    public void loadProvince() {
         srlReload.setRefreshing(true);
         DatabaseReference databaseReference = firebaseDatabase.getReference();
 

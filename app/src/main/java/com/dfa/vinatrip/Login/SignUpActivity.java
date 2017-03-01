@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.MainFunction.MainActivity;
+import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -89,6 +90,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     FirebaseUser firebaseUser =
                                             FirebaseAuth.getInstance().getCurrentUser();
                                     if (firebaseUser != null) {
+                                        // Add empty profile for user
                                         UserProfile userProfile
                                                 = new UserProfile("", "", "", "", "", "", "",
                                                 firebaseUser.getEmail());
@@ -97,6 +99,13 @@ public class SignUpActivity extends AppCompatActivity {
                                         databaseReference.child("UserProfile")
                                                 .child(firebaseUser.getUid())
                                                 .setValue(userProfile);
+
+                                        // Add empty list friend for user
+                                        UserFriend userFriend = new UserFriend("", "");
+                                        databaseReference.child("UserFriend")
+                                                .child(firebaseUser.getUid())
+                                                .child(firebaseUser.getUid())
+                                                .setValue(userFriend);
                                     }
                                     startActivity(new Intent(SignUpActivity.this, MainActivity.class));
                                     finish();

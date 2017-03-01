@@ -108,7 +108,6 @@ public class MeFragment extends Fragment {
     }
 
     public void setContentViews() {
-        listUserProfiles = new ArrayList<>();
 
         String versionName = BuildConfig.VERSION_NAME;
         int versionCode = BuildConfig.VERSION_CODE;
@@ -121,8 +120,13 @@ public class MeFragment extends Fragment {
         firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
             srlReload.setRefreshing(true);
+            listUserProfiles = new ArrayList<>();
 
-            loadUserProfileFromFirebase();
+            // Wait until list user profile load done
+            tvMakeFriend.setEnabled(false);
+            llUpdateProfile.setEnabled(false);
+
+            loadUserProfile();
         } else {
             srlReload.setRefreshing(false);
         }
@@ -184,20 +188,25 @@ public class MeFragment extends Fragment {
         tvMakeFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity.class);
+                if (firebaseUser != null) {
+                    Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity.class);
 
-                // Send UserProfile to UserProfileDetailActivity
-                intentUpdate.putExtra("UserProfile", userProfile);
+                    // Send UserProfile to UserProfileDetailActivity
+                    intentUpdate.putExtra("UserProfile", userProfile);
 
-                // Send ListUserProfiles to UserProfileDetailActivity
-                intentUpdate.putExtra("ListUserProfiles", (Serializable) listUserProfiles);
+                    // Send ListUserProfiles to UserProfileDetailActivity
+                    intentUpdate.putExtra("ListUserProfiles", (Serializable) listUserProfiles);
 
-                // Send notify to inform that tvMakeFriend be clicked
-                String fromView = "tvMakeFriend";
-                intentUpdate.putExtra("FromView", fromView);
+                    // Send notify to inform that tvMakeFriend be clicked
+                    String fromView = "tvMakeFriend";
+                    intentUpdate.putExtra("FromView", fromView);
 
-                // Make UserProfileDetailActivity notify when it finish
-                startActivityForResult(intentUpdate, NOTIFY_UPDATE_REQUEST);
+                    // Make UserProfileDetailActivity notify when it finish
+                    startActivityForResult(intentUpdate, NOTIFY_UPDATE_REQUEST);
+                } else {
+                    Toast.makeText(getActivity(), "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
     }
@@ -236,7 +245,7 @@ public class MeFragment extends Fragment {
         }
     }
 
-    public void loadUserProfileFromFirebase() {
+    public void loadUserProfile() {
         DatabaseReference databaseReference = firebaseDatabase.getReference();
 
         // If no Internet, this method will not run
@@ -302,12 +311,14 @@ public class MeFragment extends Fragment {
 
         });
 
-        //
+        // This method to be called after all the onChildAdded() calls have happened
         databaseReference.child("UserProfile")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         srlReload.setRefreshing(false);
+                        tvMakeFriend.setEnabled(true);
+                        llUpdateProfile.setEnabled(true);
                     }
 
                     @Override

@@ -59,14 +59,14 @@ public class EachProvinceFoodFragment extends Fragment {
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         if (CheckNetwork.isNetworkConnected(getActivity())) {
-            loadProvinceFoodPhotoFromFirebase();
+            loadProvinceFoodPhoto();
         }
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if (CheckNetwork.isNetworkConnected(getActivity())) {
                     listUrlPhotos.clear();
-                    loadProvinceFoodPhotoFromFirebase();
+                    loadProvinceFoodPhoto();
                 } else {
                     srlReload.setRefreshing(false);
                 }
@@ -151,7 +151,7 @@ public class EachProvinceFoodFragment extends Fragment {
                 });
     }
 
-    public void loadProvinceFoodPhotoFromFirebase() {
+    public void loadProvinceFoodPhoto() {
         srlReload.setRefreshing(true);
 
         DatabaseReference databaseReference = firebaseDatabase.getReference();

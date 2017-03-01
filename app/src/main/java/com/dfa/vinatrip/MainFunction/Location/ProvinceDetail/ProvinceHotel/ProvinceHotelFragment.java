@@ -53,7 +53,7 @@ public class ProvinceHotelFragment extends Fragment {
         rvHotels.setAdapter(provinceHotelAdapter);
 
         if (CheckNetwork.isNetworkConnected(getActivity())) {
-            loadProvinceHotelFromFirebase();
+            loadProvinceHotel();
         }
 
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -61,7 +61,7 @@ public class ProvinceHotelFragment extends Fragment {
             public void onRefresh() {
                 if (CheckNetwork.isNetworkConnected(getActivity())) {
                     provinceHotelList.clear();
-                    loadProvinceHotelFromFirebase();
+                    loadProvinceHotel();
                 } else {
                     srlReload.setRefreshing(false);
                 }
@@ -99,7 +99,7 @@ public class ProvinceHotelFragment extends Fragment {
         srlReload = (SwipeRefreshLayout) view.findViewById(R.id.fragment_province_hotel_srl_reload);
     }
 
-    public void loadProvinceHotelFromFirebase() {
+    public void loadProvinceHotel() {
         srlReload.setRefreshing(true);
 
         DatabaseReference databaseReference = firebaseDatabase.getReference();
