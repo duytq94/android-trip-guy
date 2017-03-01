@@ -1,0 +1,111 @@
+package com.dfa.vinatrip.MainFunction.Location.ProvinceDetail;
+
+import android.app.SearchManager;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+import com.dfa.vinatrip.MainFunction.Location.Province;
+import com.dfa.vinatrip.R;
+
+// Control when user click item about hotel, description...
+public class ProvinceDetailActivity extends AppCompatActivity {
+
+    private Province province;
+    private Toolbar toolbar;
+    private android.support.v7.app.ActionBar actionBar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_province_detail);
+
+        changeColorStatusBar();
+
+        // Get Province from LocationFragment
+        province = (Province) getIntent().getSerializableExtra("Province");
+        ProvinceDetailFragment provinceDetailFragment = new ProvinceDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Province", province);
+        provinceDetailFragment.setArguments(bundle);
+
+        setupActionBar();
+
+        startFragment(provinceDetailFragment);
+    }
+
+    public void setupActionBar() {
+        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(province.getName());
+            actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#228B22")));
+
+            // Set button back
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    public void startFragment(Fragment fragment) {
+        String backStateName = fragment.getClass().getName();
+        String fragmentTag = backStateName;
+
+        FragmentManager manager = getSupportFragmentManager();
+        boolean fragmentPopped = manager.popBackStackImmediate(backStateName, 0);
+
+        if (!fragmentPopped && manager.findFragmentByTag(fragmentTag) == null) {
+            //fragment not in back stack, create it.
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.replace(R.id.activity_province_detail_fl_container, fragment, fragmentTag);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            ft.commit();
+        }
+    }
+
+    public void changeColorStatusBar() {
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the options menu from XML
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.top_menu, menu);
+
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        searchView.setQueryHint("Tìm kiếm...");
+
+        return true;
+    }
+}

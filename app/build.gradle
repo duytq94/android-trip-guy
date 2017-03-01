@@ -1,0 +1,83 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        release {
+            keyAlias 'vinatrip'
+            keyPassword 'com.dfa.vinatrip'
+            storeFile file('keystore/release.keystore.jks')
+            storePassword 'com.dfa.vinatrip'
+        }
+        debug {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('keystore/debug.keystore')
+            storePassword 'android'
+        }
+    }
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
+    defaultConfig {
+        applicationId "com.dfa.vinatrip"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            // minimize resource
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.debug
+        }
+    }
+    productFlavors {
+        paid {
+            applicationId = "com.dfa.vinatrip"
+            versionName = "1.0-paid"
+        }
+
+        free {
+            applicationId = "com.dfa.vinatrip"
+            versionName = "1.0-free"
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:design:25.1.1'
+    testCompile 'junit:junit:4.12'
+    // RecycleView
+    compile 'com.android.support:recyclerview-v7:23.0.0'
+    // Google Firebase
+    compile 'com.google.firebase:firebase-database:10.0.1'
+    compile 'com.google.firebase:firebase-auth:10.0.1'
+    compile 'com.google.firebase:firebase-storage:10.0.1'
+    // Action (app) bar
+    compile 'com.android.support:support-core-utils:25.1.1'
+    // Load photo from url
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    // Load Google Maps
+    compile 'com.google.android.gms:play-services:10.0.1'
+    // CardView
+    compile 'com.android.support:cardview-v7:21.0.+'
+    // Rounded ImageView
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    // Blur ImageView
+    compile 'jp.wasabeef:blurry:2.1.0'
+    // Expandable TextView
+    compile 'com.ms-square:expandableTextView:0.1.4'
+}
+// this line has to put out of dependencies so app can run Google Map
+apply plugin: 'com.google.gms.google-services'

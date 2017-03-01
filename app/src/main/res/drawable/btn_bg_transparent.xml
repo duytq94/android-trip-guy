@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Make button transparent with border -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <!--apply button background transparent-->
+            <solid android:color="#80808080" />
+
+            <!--make button border solid color, nontransparent-->
+            <stroke android:width="2dp" android:color="#ffffff" />
+            <corners android:radius="2dp" />
+        </shape>
+    </item>
+</selector>

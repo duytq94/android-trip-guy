@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "486682565154",
+    "firebase_url": "https://tripguy-10864.firebaseio.com",
+    "project_id": "tripguy-10864",
+    "storage_bucket": "tripguy-10864.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:486682565154:android:5ecdd4f3948a0776",
+        "android_client_info": {
+          "package_name": "com.dfa.vinatrip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "486682565154-90blvict3d20d0nih4fummnr5lei597v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAijSlNqjxTmtyHuLWey-23T-VKQIxGCA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

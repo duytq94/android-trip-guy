@@ -1,0 +1,85 @@
+<resources>
+    <string name="app_name">TripGuy</string>
+    <string name="title_activity_welcome">Home Screen</string>
+
+    <!-- String for buttons -->
+    <string name="next">Kế tiếp</string>
+    <string name="back">Về trước</string>
+    <string name="btn_launch_now">Sử dụng ngay</string>
+
+    <!-- String for welcome screen -->
+    <string name="welcome_screen_title1">Thông tin địa điểm</string>
+    <string name="welcome_screen_desc1">Cung cấp thông tin điểm đến, khách sạn, ăn uống và nhiều thông tin khác!</string>
+    <string name="welcome_screen_title2">Lên lịch trình</string>
+    <string name="welcome_screen_desc2">Giúp bạn tạo lịch trình chu đáo để có chuyến đi trọn vẹn!</string>
+    <string name="welcome_screen_title3">Chia sẻ trải nghiệm</string>
+    <string name="welcome_screen_desc3">Cùng cộng đồng người dùng VinaTrip chia sẻ các trải nghiệm với nhau để tạo nên chuyến du lịch tuyệt vời nhất!</string>
+    <string name="welcome_screen_title4">Lưu lại cảm xúc</string>
+    <string name="welcome_screen_desc4">Những nơi bạn đi qua sẽ được lưu lại cùng với những cảm xúc khó quên!</string>
+
+    <!-- String for bottom menu -->
+    <string name="menu_location">Địa điểm</string>
+    <string name="menu_plan">Kế hoạch</string>
+    <string name="menu_share">Chia sẻ</string>
+    <string name="menu_memory">Kỷ niệm</string>
+    <string name="menu_me">Tôi</string>
+
+    <!-- String for activity sign in, sign up -->
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="sign_up">Đăng ký</string>
+    <string name="btn_forgot_password">Quên mật khẩu?</string>
+    <string name="btn_link_to_login">Đã có tài khoản. Đăng nhập!</string>
+    <string name="btn_login">Đăng nhập</string>
+    <string name="btn_link_to_register">Chưa có tài khoản? Đăng ký ngay!</string>
+    <string name="title_forgot_password">Quên mật khẩu?</string>
+    <string name="body_forgot_password">Bạn hãy nhập địa chỉ email, chúng tôi sẽ gửi lại bạn mật khẩu mới</string>
+    <string name="btn_reset_password">Reset mật khẩu</string>
+    <string name="btn_back">&#8810; Trở về</string>
+
+    <!-- String for personal settings -->
+    <string name="nickname">Nickname</string>
+    <string name="city">Nơi ở</string>
+    <string name="email">Email</string>
+    <string name="birthday">Sinh nhật</string>
+    <string name="sex">Giới tính</string>
+    <string name="introduce_your_self">Giới thiệu bản thân</string>
+    <string name="personal_info">Thông tin cá nhân</string>
+    <string name="app_info">Thông tin ứng dụng</string>
+    <string name="feedback">Phản hồi</string>
+    <string name="sign_out">Đăng xuất</string>
+    <string name="sign_in_up">Đăng nhập/Đăng ký</string>
+    <string name="my_friends">Bạn của tôi</string>
+    <string name="make_friends">Thêm bạn &#8811;</string>
+    <string name="settings">Cài đặt</string>
+    <string name="btn_save">Lưu</string>
+    <string name="update_profile">Chỉnh sửa trang cá nhân</string>
+    <string name="done">Xong</string>
+    <string name="cancel">Hủy</string>
+
+    <!-- String for layout item_province -->
+    <string name="name_not_available">Name is not available</string>
+    <string name="title_not_available">Title is not available</string>
+
+    <string name="search_hint">Tìm kiếm…</string>
+
+    <string name="contact">Thông tin liên lạc</string>
+
+    <string name="location">Vị trí</string>
+
+    <string name="scheduleAndFee">Lịch trình &amp; chí phí tham khảo</string>
+
+    <string name="rating">Đánh giá &#8811;</string>
+    <string name="update_rating">Chỉnh sửa đánh giá &#8811;</string>
+
+    <string name="description">Mô tả</string>
+
+    <string name="photo">Hình ảnh</string>
+
+    <string name="title">Tiêu đề</string>
+
+    <string name="btn_submit">Gửi</string>
+
+    <string name="comment_not_available">Hiện chưa có bình luận nào</string>
+
+</resources>

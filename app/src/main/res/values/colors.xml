@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="colorButtonUseNow">#BA55D3</color>
+
+    <!-- Color of icon bottom bar -->
+    <color name="colorIconUnchecked">#767676</color>
+
+    <!-- Color main -->
+    <color name="colorMain">#228B22</color>
+
+    <!-- Color of dots at welcome screen -->
+    <color name="colorDotActive">#A0522D</color>
+    <color name="colorDotInactive">#F4A460</color>
+
+    <color name="colorStatusBar">#156915</color>
+
+    <color name="transparent">#00000000</color>
+
+    <!-- Color of rating star in hotel -->
+    <color name="colorRatingStar">#FFD700</color>
+
+    <color name="colorBackground">#F5F5F5</color>
+
+    <color name="colorBlackTransparent">#60000000</color>
+
+    <color name="colorGray">#808080</color>
+</resources>

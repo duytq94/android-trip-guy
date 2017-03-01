@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- màu khi check và uncheck icon bottom và text của nó -->
+    <item android:color="@color/colorMain" android:state_checked="true" />
+    <item android:color="@color/colorIconUnchecked" android:state_checked="false" />
+</selector>
