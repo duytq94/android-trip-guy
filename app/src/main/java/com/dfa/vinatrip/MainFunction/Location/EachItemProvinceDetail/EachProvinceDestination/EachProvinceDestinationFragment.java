@@ -72,7 +72,7 @@ public class EachProvinceDestinationFragment extends Fragment {
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         if (CheckNetwork.isNetworkConnected(getActivity())) {
-            loadProvinceDestinationPhotoFromFirebase();
+            loadProvinceDestinationPhoto();
             loadProvinceDestinationRating();
         }
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -81,7 +81,7 @@ public class EachProvinceDestinationFragment extends Fragment {
                 if (CheckNetwork.isNetworkConnected(getActivity())) {
                     listUrlPhotos.clear();
                     listUserRatings.clear();
-                    loadProvinceDestinationPhotoFromFirebase();
+                    loadProvinceDestinationPhoto();
                     loadProvinceDestinationRating();
                 } else {
                     srlReload.setRefreshing(false);
@@ -229,7 +229,7 @@ public class EachProvinceDestinationFragment extends Fragment {
                 });
     }
 
-    public void loadProvinceDestinationPhotoFromFirebase() {
+    public void loadProvinceDestinationPhoto() {
         srlReload.setRefreshing(true);
         DatabaseReference referencePhoto = firebaseDatabase.getReference();
         // if no Internet, this method will not run

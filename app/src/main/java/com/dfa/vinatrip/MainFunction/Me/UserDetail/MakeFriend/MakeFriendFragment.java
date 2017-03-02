@@ -34,6 +34,7 @@ public class MakeFriendFragment extends Fragment {
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private List<UserFriend> listUserFriends;
     private List<UserProfile> listUserProfiles;
+    private UserProfile currentUser;
 
     @Nullable
     @Override
@@ -49,6 +50,15 @@ public class MakeFriendFragment extends Fragment {
         listUserProfiles = (List<UserProfile>) bdListUserProfiles.getSerializable("ListUserProfiles");
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        // Get profile of the current user
+        for (int i = 0; i < listUserProfiles.size(); i++) {
+            if (listUserProfiles.get(i).getUid().equals(firebaseUser.getUid())) {
+                currentUser = listUserProfiles.get(i);
+                break;
+            }
+        }
+
         listUserFriends = new ArrayList<>();
         if (CheckNetwork.isNetworkConnected(getActivity())) loadUserFriend();
 
@@ -85,14 +95,18 @@ public class MakeFriendFragment extends Fragment {
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        String friendId, state;
+                        String friendId, nickname, avatar, email, state;
 
                         friendId = dataSnapshot.child("friendId").getValue().toString();
+                        nickname = dataSnapshot.child("nickname").getValue().toString();
+                        avatar = dataSnapshot.child("avatar").getValue().toString();
+                        email = dataSnapshot.child("state").getValue().toString();
                         state = dataSnapshot.child("state").getValue().toString();
 
-                        UserFriend userFriend = new UserFriend(friendId, state);
+                        UserFriend userFriend =
+                                new UserFriend(friendId, nickname, avatar, email, state);
 
-                        // Don't load current user
+                        // Don't add the current user to list
                         if (!userFriend.getFriendId().equals(firebaseUser.getUid())) {
                             listUserFriends.add(userFriend);
                         }
@@ -125,7 +139,7 @@ public class MakeFriendFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         userProfileAdapter = new UserProfileAdapter(getActivity(), listUserProfiles,
-                                listUserFriends, referenceFriend, firebaseUser, srlReload);
+                                listUserFriends, referenceFriend, currentUser, srlReload);
                         rvListFriends.setAdapter(userProfileAdapter);
                     }
 

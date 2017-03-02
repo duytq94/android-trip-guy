@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -26,13 +25,13 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
     private List<UserProfile> listUserProfiles;
     private List<UserFriend> listUserFriends;
     private DatabaseReference referenceFriend;
-    private FirebaseUser firebaseUser;
+    private UserProfile currentUser;
 
     public UserProfileAdapter(Context context,
                               List<UserProfile> listUserProfiles,
                               List<UserFriend> listUserFriends,
                               DatabaseReference referenceFriend,
-                              FirebaseUser firebaseUser,
+                              UserProfile currentUser,
                               SwipeRefreshLayout srlReload) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
@@ -40,15 +39,15 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
 
         this.listUserProfiles = listUserProfiles;
         for (int i = 0; i < listUserProfiles.size(); i++) {
-            if (listUserProfiles.get(i).getUid().equals(firebaseUser.getUid())) {
+            if (listUserProfiles.get(i).getUid().equals(currentUser.getUid())) {
                 this.listUserProfiles.remove(i);
                 break;
             }
         }
 
         this.listUserFriends = listUserFriends;
+        this.currentUser = currentUser;
         this.referenceFriend = referenceFriend;
-        this.firebaseUser = firebaseUser;
     }
 
     @Override
@@ -96,31 +95,35 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                         holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorGray));
                         // Delete data to the current user login
                         referenceFriend.child("UserFriend")
-                                .child(firebaseUser.getUid())
+                                .child(currentUser.getUid())
                                 .child(userProfile.getUid())
                                 .removeValue();
                         // Delete data to the user be requested
                         referenceFriend.child("UserFriend")
                                 .child(userProfile.getUid())
-                                .child(firebaseUser.getUid())
+                                .child(currentUser.getUid())
                                 .removeValue();
                         break;
 
                     case "Đồng ý":
                         holder.btnMakeFriend.setText("Bạn bè");
                         holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorMain));
-                        // Add data to the current user login
-                        UserFriend userFriendBeRequested = new UserFriend(userProfile.getUid(), "friend");
+                        // Add profile user request to the current user
+                        UserFriend userFriendBeRequested2 = new UserFriend(userProfile.getUid(),
+                                userProfile.getNickname(), userProfile.getAvatar(),
+                                userProfile.getEmail(), "friend");
                         referenceFriend.child("UserFriend")
-                                .child(firebaseUser.getUid())
+                                .child(currentUser.getUid())
                                 .child(userProfile.getUid())
-                                .setValue(userFriendBeRequested);
-                        // Add data to the user be requested
-                        UserFriend userFriendCurrent = new UserFriend(firebaseUser.getUid(), "friend");
+                                .setValue(userFriendBeRequested2);
+                        // Add profile current user to the user request
+                        UserFriend userFriendCurrent2 = new UserFriend(currentUser.getUid(),
+                                currentUser.getNickname(), currentUser.getAvatar(),
+                                currentUser.getEmail(), "friend");
                         referenceFriend.child("UserFriend")
                                 .child(userProfile.getUid())
-                                .child(firebaseUser.getUid())
-                                .setValue(userFriendCurrent);
+                                .child(currentUser.getUid())
+                                .setValue(userFriendCurrent2);
                         break;
 
                     case "Bạn bè":
@@ -128,30 +131,34 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                         holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorGray));
                         // Delete data to the current user login
                         referenceFriend.child("UserFriend")
-                                .child(firebaseUser.getUid())
+                                .child(currentUser.getUid())
                                 .child(userProfile.getUid())
                                 .removeValue();
                         // Delete data to the user be requested
                         referenceFriend.child("UserFriend")
                                 .child(userProfile.getUid())
-                                .child(firebaseUser.getUid())
+                                .child(currentUser.getUid())
                                 .removeValue();
                         break;
 
                     case "Kết bạn":
                         holder.btnMakeFriend.setText("Đã gửi");
                         holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
-                        // Add data to the current user login
-                        UserFriend userFriendBeRequested4 = new UserFriend(userProfile.getUid(), "requested");
+                        // Add profile user request to the current user
+                        UserFriend userFriendBeRequested4 = new UserFriend(userProfile.getUid(),
+                                userProfile.getNickname(), userProfile.getAvatar(),
+                                userProfile.getEmail(), "requested");
                         referenceFriend.child("UserFriend")
-                                .child(firebaseUser.getUid())
+                                .child(currentUser.getUid())
                                 .child(userProfile.getUid())
                                 .setValue(userFriendBeRequested4);
-                        // Add data to the user be requested
-                        UserFriend userFriendCurrent4 = new UserFriend(firebaseUser.getUid(), "beRequested");
+                        // Add profile current user to the user request
+                        UserFriend userFriendCurrent4 = new UserFriend(currentUser.getUid(),
+                                currentUser.getNickname(), currentUser.getAvatar(),
+                                currentUser.getEmail(), "beRequested");
                         referenceFriend.child("UserFriend")
                                 .child(userProfile.getUid())
-                                .child(firebaseUser.getUid())
+                                .child(currentUser.getUid())
                                 .setValue(userFriendCurrent4);
                         break;
                 }

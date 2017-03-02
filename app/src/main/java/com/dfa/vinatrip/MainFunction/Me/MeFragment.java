@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import com.dfa.vinatrip.BuildConfig;
 import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.Login.SignInActivity;
+import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.UserProfileDetailActivity;
 import com.dfa.vinatrip.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,12 +48,15 @@ public class MeFragment extends Fragment {
     private ImageView ivAvatar, ivBlurAvatar;
     private TextView tvNickname, tvCity, tvBirthday, tvMakeFriend,
             tvIntroduceYourSelf, tvAppInfo, tvEmail, tvSex;
+    private RecyclerView rvListFriends;
     private LinearLayout llInfo, llMyFriends, llSettings;
     private LinearLayout llSignIn, llSignOut, llUpdateProfile;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private UserProfile userProfile;
     private List<UserProfile> listUserProfiles;
+    private List<UserFriend> listUserFriends;
+    private FriendAdapter friendAdapter;
     private SwipeRefreshLayout srlReload;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
@@ -121,12 +127,18 @@ public class MeFragment extends Fragment {
         if (firebaseUser != null) {
             srlReload.setRefreshing(true);
             listUserProfiles = new ArrayList<>();
+            listUserFriends = new ArrayList<>();
 
             // Wait until list user profile load done
             tvMakeFriend.setEnabled(false);
             llUpdateProfile.setEnabled(false);
 
             loadUserProfile();
+            loadUserFriend();
+
+            StaggeredGridLayoutManager staggeredGridLayoutManager =
+                    new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+            rvListFriends.setLayoutManager(staggeredGridLayoutManager);
         } else {
             srlReload.setRefreshing(false);
         }
@@ -229,6 +241,7 @@ public class MeFragment extends Fragment {
         llSettings = (LinearLayout) view.findViewById(R.id.fragment_me_ll_settings);
         llUpdateProfile = (LinearLayout) view.findViewById(R.id.fragment_me_ll_update_profile);
         srlReload = (SwipeRefreshLayout) view.findViewById(R.id.fragment_me_srlReload);
+        rvListFriends = (RecyclerView) view.findViewById(R.id.fragment_me_rv_list_friends);
     }
 
     @Override
@@ -317,8 +330,72 @@ public class MeFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         srlReload.setRefreshing(false);
-                        tvMakeFriend.setEnabled(true);
                         llUpdateProfile.setEnabled(true);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public void loadUserFriend() {
+        final DatabaseReference referenceFriend = firebaseDatabase.getReference();
+
+        // If no Internet, this method will not run
+        referenceFriend.child("UserFriend").child(firebaseUser.getUid())
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        String friendId, nickname, avatar, email, state;
+
+                        friendId = dataSnapshot.child("friendId").getValue().toString();
+                        nickname = dataSnapshot.child("nickname").getValue().toString();
+                        avatar = dataSnapshot.child("avatar").getValue().toString();
+                        email = dataSnapshot.child("email").getValue().toString();
+                        state = dataSnapshot.child("state").getValue().toString();
+
+                        UserFriend userFriend =
+                                new UserFriend(friendId, nickname, avatar, email, state);
+
+                        // Don't add the current user to list
+                        // Haven't agree yet don't add to
+                        if (!userFriend.getFriendId().equals(firebaseUser.getUid()) &&
+                                (userFriend.getState().equals("friend"))) {
+                            listUserFriends.add(userFriend);
+                        }
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        // This method to be called after all the onChildAdded() calls have happened
+        referenceFriend.child("UserFriend").child(firebaseUser.getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        tvMakeFriend.setEnabled(true);
+                        friendAdapter = new FriendAdapter(getActivity(), listUserFriends, srlReload);
+                        rvListFriends.setAdapter(friendAdapter);
                     }
 
                     @Override

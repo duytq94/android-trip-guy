@@ -101,7 +101,8 @@ public class SignUpActivity extends AppCompatActivity {
                                                 .setValue(userProfile);
 
                                         // Add empty list friend for user
-                                        UserFriend userFriend = new UserFriend("", "");
+                                        UserFriend userFriend =
+                                                new UserFriend(firebaseUser.getUid(), "", "", "", "");
                                         databaseReference.child("UserFriend")
                                                 .child(firebaseUser.getUid())
                                                 .child(firebaseUser.getUid())

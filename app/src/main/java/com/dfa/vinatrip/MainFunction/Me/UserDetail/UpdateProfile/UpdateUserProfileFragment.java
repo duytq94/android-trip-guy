@@ -289,7 +289,9 @@ public class UpdateUserProfileFragment extends Fragment {
             uri = data.getData();
 
             // Show avatar be chosen for user first, not upload yet
-            ivAvatar.setImageURI(uri);
+            Picasso.with(getActivity())
+                    .load(uri)
+                    .into(target);
         }
     }
 
