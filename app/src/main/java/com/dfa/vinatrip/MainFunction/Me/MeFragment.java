@@ -47,13 +47,13 @@ public class MeFragment extends Fragment {
 
     private ImageView ivAvatar, ivBlurAvatar;
     private TextView tvNickname, tvCity, tvBirthday, tvMakeFriend,
-            tvIntroduceYourSelf, tvAppInfo, tvEmail, tvSex;
+            tvIntroduceYourSelf, tvAppInfo, tvEmail, tvSex, tvFriendNotAvailable;
     private RecyclerView rvListFriends;
     private LinearLayout llInfo, llMyFriends, llSettings;
     private LinearLayout llSignIn, llSignOut, llUpdateProfile;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
-    private UserProfile userProfile;
+    private UserProfile currentUser;
     private List<UserProfile> listUserProfiles;
     private List<UserFriend> listUserFriends;
     private FriendAdapter friendAdapter;
@@ -180,7 +180,7 @@ public class MeFragment extends Fragment {
                     Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity.class);
 
                     // Send UserProfile to UserProfileDetailActivity
-                    intentUpdate.putExtra("UserProfile", userProfile);
+                    intentUpdate.putExtra("UserProfile", currentUser);
 
                     // Send ListUserProfiles to UserProfileDetailActivity
                     intentUpdate.putExtra("ListUserProfiles", (Serializable) listUserProfiles);
@@ -204,7 +204,7 @@ public class MeFragment extends Fragment {
                     Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity.class);
 
                     // Send UserProfile to UserProfileDetailActivity
-                    intentUpdate.putExtra("UserProfile", userProfile);
+                    intentUpdate.putExtra("UserProfile", currentUser);
 
                     // Send ListUserProfiles to UserProfileDetailActivity
                     intentUpdate.putExtra("ListUserProfiles", (Serializable) listUserProfiles);
@@ -231,6 +231,7 @@ public class MeFragment extends Fragment {
         tvEmail = (TextView) view.findViewById(R.id.fragment_me_tv_email);
         tvIntroduceYourSelf = (TextView) view.findViewById(R.id.fragment_me_tv_introduce_your_self);
         tvSex = (TextView) view.findViewById(R.id.fragment_me_tv_sex);
+        tvFriendNotAvailable = (TextView) view.findViewById(R.id.fragment_me_tv_friend_not_available);
         tvMakeFriend = (TextView) view.findViewById(R.id.fragment_me_tv_make_friend);
         ivAvatar = (ImageView) view.findViewById(R.id.fragment_me_iv_avatar);
         ivBlurAvatar = (ImageView) view.findViewById(R.id.fragment_me_iv_blur_avatar);
@@ -245,8 +246,8 @@ public class MeFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int userProfileCode, Intent data) {
-        super.onActivityResult(requestCode, userProfileCode, data);
+    public void onActivityResult(int requestCode, int currentUserCode, Intent data) {
+        super.onActivityResult(requestCode, currentUserCode, data);
         // Reload data
         if (requestCode == NOTIFY_UPDATE_REQUEST) {
             if (CheckNetwork.isNetworkConnected(getActivity())) {
@@ -298,7 +299,7 @@ public class MeFragment extends Fragment {
                     tvEmail.setText(result.getEmail());
                     tvSex.setText(result.getSex());
 
-                    userProfile = result;
+                    currentUser = result;
                 }
             }
 
@@ -360,9 +361,7 @@ public class MeFragment extends Fragment {
                                 new UserFriend(friendId, nickname, avatar, email, state);
 
                         // Don't add the current user to list
-                        // Haven't agree yet don't add to
-                        if (!userFriend.getFriendId().equals(firebaseUser.getUid()) &&
-                                (userFriend.getState().equals("friend"))) {
+                        if (!userFriend.getFriendId().equals(firebaseUser.getUid())) {
                             listUserFriends.add(userFriend);
                         }
                     }
@@ -394,7 +393,8 @@ public class MeFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         tvMakeFriend.setEnabled(true);
-                        friendAdapter = new FriendAdapter(getActivity(), listUserFriends, srlReload);
+                        friendAdapter = new FriendAdapter(getActivity(), listUserFriends,
+                                tvFriendNotAvailable, srlReload);
                         rvListFriends.setAdapter(friendAdapter);
                     }
 

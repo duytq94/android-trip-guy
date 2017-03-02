@@ -21,14 +21,24 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ProfileVie
     private Context context;
     private SwipeRefreshLayout srlReload;
     private List<UserFriend> listUserFriends;
+    TextView tvFriendNotAvailable;
 
-    public FriendAdapter(Context context,
-                         List<UserFriend> listUserFriends,
-                         SwipeRefreshLayout srlReload) {
+    public FriendAdapter(Context context, List<UserFriend> listUserFriends,
+                         TextView tvFriendNotAvailable, SwipeRefreshLayout srlReload) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.srlReload = srlReload;
         this.listUserFriends = listUserFriends;
+        this.tvFriendNotAvailable = tvFriendNotAvailable;
+
+        // Remove the user haven't agree make friend yet
+        for (int i = 0; i < listUserFriends.size(); i++) {
+            if (!listUserFriends.get(i).getState().equals("friend")) {
+                listUserFriends.remove(i);
+            }
+        }
+        if (listUserFriends.size() == 0) this.tvFriendNotAvailable.setVisibility(View.VISIBLE);
+        else this.tvFriendNotAvailable.setVisibility(View.GONE);
     }
 
     @Override

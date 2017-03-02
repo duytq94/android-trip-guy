@@ -27,12 +27,9 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
     private DatabaseReference referenceFriend;
     private UserProfile currentUser;
 
-    public UserProfileAdapter(Context context,
-                              List<UserProfile> listUserProfiles,
-                              List<UserFriend> listUserFriends,
-                              DatabaseReference referenceFriend,
-                              UserProfile currentUser,
-                              SwipeRefreshLayout srlReload) {
+    public UserProfileAdapter(Context context, List<UserProfile> listUserProfiles,
+                              List<UserFriend> listUserFriends, DatabaseReference referenceFriend,
+                              UserProfile currentUser, SwipeRefreshLayout srlReload) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.srlReload = srlReload;

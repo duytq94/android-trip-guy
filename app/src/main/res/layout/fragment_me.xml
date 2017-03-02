@@ -191,6 +191,13 @@
                             android:textColor="@color/colorMain" />
                     </RelativeLayout>
 
+                    <TextView
+                        android:id="@+id/fragment_me_tv_friend_not_available"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/friend_not_available" />
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/fragment_me_rv_list_friends"
                         android:layout_width="match_parent"
