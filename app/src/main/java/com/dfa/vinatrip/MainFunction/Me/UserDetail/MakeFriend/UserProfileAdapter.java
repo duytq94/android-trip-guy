@@ -26,6 +26,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
     private List<UserFriend> listUserFriends;
     private DatabaseReference referenceFriend;
     private UserProfile currentUser;
+    private int count = 0;
 
     public UserProfileAdapter(Context context, List<UserProfile> listUserProfiles,
                               List<UserFriend> listUserFriends, DatabaseReference referenceFriend,

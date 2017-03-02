@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.MainFunction;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.Color;
@@ -16,7 +17,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
