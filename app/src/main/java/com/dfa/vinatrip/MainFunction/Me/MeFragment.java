@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.dfa.vinatrip.BuildConfig;
 import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.Login.SignInActivity;
+import com.dfa.vinatrip.Login.SignInActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.UserProfileDetailActivity;
 import com.dfa.vinatrip.R;
@@ -149,7 +150,7 @@ public class MeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (firebaseUser == null) {
-                    startActivity(new Intent(getActivity(), SignInActivity.class));
+                    startActivity(new Intent(getActivity(), SignInActivity_.class));
                 } else {
                     Toast.makeText(getActivity(), "Bạn đã đăng nhập!", Toast.LENGTH_SHORT).show();
                 }

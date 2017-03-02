@@ -20,18 +20,23 @@ import android.view.MenuItem;
 import com.dfa.vinatrip.MainFunction.Location.Province;
 import com.dfa.vinatrip.R;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
 // Control when user click item about hotel, description...
+@EActivity(R.layout.activity_province_detail)
 public class ProvinceDetailActivity extends AppCompatActivity {
 
     private Province province;
-    private Toolbar toolbar;
+
+    @ViewById(R.id.my_toolbar)
+    Toolbar toolbar;
+
     private android.support.v7.app.ActionBar actionBar;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_province_detail);
-
+    @AfterViews
+    void onCreate() {
         changeColorStatusBar();
 
         // Get Province from LocationFragment
@@ -47,7 +52,6 @@ public class ProvinceDetailActivity extends AppCompatActivity {
     }
 
     public void setupActionBar() {
-        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         if (actionBar != null) {

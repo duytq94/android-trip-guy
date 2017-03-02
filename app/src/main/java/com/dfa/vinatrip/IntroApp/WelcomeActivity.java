@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -16,18 +15,21 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.MainFunction.MainActivity;
-import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.Login.SignUpActivity;
+import com.dfa.vinatrip.MainFunction.MainActivity_;
+import com.dfa.vinatrip.R;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
+@EActivity(R.layout.activity_welcome)
 public class WelcomeActivity extends AppCompatActivity {
 
-    private ViewPager vpSlideIntro;
     private ViewPagerAdapter viewPagerAdapter;
-    private LinearLayout llDots;
     private TextView[] tvDots;
     private int[] layouts;
-    private Button btnBack, btnNext, btnLaunchNow, btnSignUp;
     private CheckFirstTimeLaunch prefManager;
 
     // Catch event when page change, dots color will change
@@ -58,19 +60,53 @@ public class WelcomeActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @ViewById(R.id.activity_welcome_vp_slide_intro)
+    ViewPager vpSlideIntro;
 
+    @ViewById(R.id.activity_welcome_ll_dots)
+    LinearLayout llDots;
+
+    @ViewById(R.id.activity_welcome_btn_next)
+    Button btnNext;
+
+    @ViewById(R.id.activity_welcome_btn_back)
+    Button btnBack;
+
+    @Click
+    void activity_welcome_btn_back() {
+        int current = vpSlideIntro.getCurrentItem() - 1;
+        if (current >= 0) {
+            vpSlideIntro.setCurrentItem(current);
+        }
+    }
+
+    @Click
+    void activity_welcome_btn_next() {
+        int current = vpSlideIntro.getCurrentItem() + 1;
+        if (current < layouts.length) {
+            vpSlideIntro.setCurrentItem(current);
+        }
+    }
+
+    @Click
+    void activity_welcome_btn_launch_now() {
+        launchHomeScreen();
+    }
+
+    @Click
+    void activity_welcome_btn_sign_up() {
+        prefManager.setFirstTimeLaunch(false);
+        startActivity(new Intent(WelcomeActivity.this, SignUpActivity.class));
+    }
+
+    @AfterViews
+    void onCreate() {
         // Checking for first time launch - before calling setContentView()
         prefManager = new CheckFirstTimeLaunch(this);
         if (!prefManager.isFirstTimeLaunch()) {
             launchHomeScreen();
             finish();
         }
-
-        setContentView(R.layout.activity_welcome);
-        findViewByIds();
 
         // layouts of all welcome sliders
         layouts = new int[]{
@@ -91,55 +127,6 @@ public class WelcomeActivity extends AppCompatActivity {
         viewPagerAdapter = new ViewPagerAdapter();
         vpSlideIntro.setAdapter(viewPagerAdapter);
         vpSlideIntro.addOnPageChangeListener(viewPagerPageChangeListener);
-
-        onClickListener();
-
-    }
-
-    public void onClickListener() {
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int current = vpSlideIntro.getCurrentItem() - 1;
-                if (current >= 0) {
-                    vpSlideIntro.setCurrentItem(current);
-                }
-            }
-        });
-
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int current = vpSlideIntro.getCurrentItem() + 1;
-                if (current < layouts.length) {
-                    vpSlideIntro.setCurrentItem(current);
-                }
-            }
-        });
-
-        btnLaunchNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchHomeScreen();
-            }
-        });
-
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                prefManager.setFirstTimeLaunch(false);
-                startActivity(new Intent(WelcomeActivity.this, SignUpActivity.class));
-            }
-        });
-    }
-
-    public void findViewByIds() {
-        vpSlideIntro = (ViewPager) findViewById(R.id.activity_welcome_vp_slide_intro);
-        llDots = (LinearLayout) findViewById(R.id.activity_welcome_ll_dots);
-        btnBack = (Button) findViewById(R.id.activity_welcome_btn_back);
-        btnNext = (Button) findViewById(R.id.activity_welcome_btn_next);
-        btnLaunchNow = (Button) findViewById(R.id.activity_welcome_btn_launch_now);
-        btnSignUp = (Button) findViewById(R.id.activity_welcome_btn_sign_up);
     }
 
     public void addBottomDots(int currentPage) {
@@ -161,7 +148,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     public void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+        startActivity(new Intent(WelcomeActivity.this, MainActivity_.class));
         finish();
     }
 

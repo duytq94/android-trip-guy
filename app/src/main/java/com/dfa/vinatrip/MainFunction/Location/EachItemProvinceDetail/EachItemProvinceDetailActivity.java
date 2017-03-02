@@ -16,19 +16,27 @@ import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceFood.Provin
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceHotel.ProvinceHotel;
 import com.dfa.vinatrip.R;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
+@EActivity(R.layout.activity_each_item_province_detail)
 public class EachItemProvinceDetailActivity extends AppCompatActivity {
-    private Toolbar toolbar;
+
+
+    @ViewById(R.id.my_toolbar)
+    Toolbar toolbar;
+
     private ActionBar actionBar;
+
+
     private EachProvinceHotelFragment eachProvinceHotelFragment;
     private EachProvinceFoodFragment eachProvinceFoodFragment;
     private EachProvinceDestinationFragment eachProvinceDestinationFragment;
     private String titleActionBar;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_each_item_province_detail);
-
+    @AfterViews()
+    void onCreate() {
         selectFragment();
         changeColorStatusBar();
         setupActionBar();
@@ -101,7 +109,6 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
     }
 
     public void setupActionBar() {
-        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         if (actionBar != null) {

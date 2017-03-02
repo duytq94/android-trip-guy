@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.Login.SignInActivity;
+import com.dfa.vinatrip.Login.SignInActivity_;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDestination.ProvinceDestination;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
@@ -242,7 +243,7 @@ public class RatingActivity extends AppCompatActivity {
                 }
             });
         } else {
-            startActivity(new Intent(RatingActivity.this, SignInActivity.class));
+            startActivity(new Intent(RatingActivity.this, SignInActivity_.class));
             finish();
         }
     }

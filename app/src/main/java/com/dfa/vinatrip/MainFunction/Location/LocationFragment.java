@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDetailActivity;
+import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDetailActivity_;
 import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
 import com.google.firebase.database.ChildEventListener;
@@ -117,7 +118,7 @@ public class LocationFragment extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent intentToProvinceDetail =
-                                new Intent(getActivity(), ProvinceDetailActivity.class);
+                                new Intent(getActivity(), ProvinceDetailActivity_.class);
 
                         // Send Province to ProvinceDetailActivity
                         intentToProvinceDetail.putExtra("Province", provinceList.get(position));

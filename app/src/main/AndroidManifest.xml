@@ -17,15 +17,15 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCyIPbgc4_qtZCXdaq945UK-sx_SQwYXd8" />
 
-        <activity android:name=".IntroApp.WelcomeActivity">
+        <activity android:name=".IntroApp.WelcomeActivity_">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainFunction.MainActivity" />
-        <activity android:name=".MainFunction.Location.ProvinceDetail.ProvinceDetailActivity" />
+        <activity android:name=".MainFunction.MainActivity_" />
+        <activity android:name=".MainFunction.Location.ProvinceDetail.ProvinceDetailActivity_" />
         <activity android:name=".SearchableActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -35,11 +35,11 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".MainFunction.Location.EachItemProvinceDetail.EachItemProvinceDetailActivity" />
+        <activity android:name=".MainFunction.Location.EachItemProvinceDetail.EachItemProvinceDetailActivity_" />
         <activity android:name=".MapActivity" />
-        <activity android:name=".Login.SignUpActivity" />
-        <activity android:name=".Login.SignInActivity" />
-        <activity android:name=".Login.ResetPasswordActivity" />
+        <activity android:name=".Login.SignUpActivity_" />
+        <activity android:name=".Login.SignInActivity_" />
+        <activity android:name=".Login.ResetPasswordActivity_" />
         <activity android:name=".MainFunction.Me.UserDetail.UserProfileDetailActivity" />
         <activity android:name=".MainFunction.Location.EachItemProvinceDetail.Rating.RatingActivity" />
         <activity android:name=".MainFunction.Location.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity"></activity>

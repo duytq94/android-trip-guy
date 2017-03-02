@@ -1,5 +1,41 @@
 apply plugin: 'com.android.application'
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        // replace with the current version of the Android plugin
+        classpath 'com.android.tools.build:gradle:1.5.0'
+        // replace with the current version of the android-apt plugin
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+
+dependencies {
+    apt "org.androidannotations:androidannotations:4.0.0"
+    compile "org.androidannotations:androidannotations-api:4.0.0"
+}
+
+apt {
+    arguments {
+        // you should set your package name here if you are using different application IDs
+        // resourcePackageName "your.package.name"
+
+        // You can set optional annotation processing options here, like these commented options:
+        // logLevel 'INFO'
+        // logFile '/var/log/aa.log'
+    }
+}
+
 android {
     signingConfigs {
         release {

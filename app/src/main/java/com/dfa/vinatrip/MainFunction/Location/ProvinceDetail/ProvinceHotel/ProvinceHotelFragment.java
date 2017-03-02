@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.EachItemProvinceDetailActivity;
+import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.EachItemProvinceDetailActivity_;
 import com.dfa.vinatrip.MainFunction.Location.Province;
 import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
@@ -78,7 +79,7 @@ public class ProvinceHotelFragment extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent intentToEachHotel =
-                                new Intent(getActivity(), EachItemProvinceDetailActivity.class);
+                                new Intent(getActivity(), EachItemProvinceDetailActivity_.class);
 
                         // Send the Hotel be chosen to EachItemProvinceDetailActivity
                         intentToEachHotel.putExtra("DetailHotel", provinceHotelList.get(position));

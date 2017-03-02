@@ -1,11 +1,9 @@
 package com.dfa.vinatrip.MainFunction;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -17,15 +15,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.CheckNetwork;
-import com.dfa.vinatrip.IntroApp.CheckFirstTimeLaunch;
 import com.dfa.vinatrip.MainFunction.Location.LocationFragment;
 import com.dfa.vinatrip.MainFunction.Me.MeFragment;
 import com.dfa.vinatrip.MainFunction.Memory.MemoryFragment;
@@ -33,6 +27,11 @@ import com.dfa.vinatrip.MainFunction.Plan.PlanFragment;
 import com.dfa.vinatrip.MainFunction.Share.ShareFragment;
 import com.dfa.vinatrip.R;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
+@EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
 
     private LocationFragment locationFragment;
@@ -40,22 +39,20 @@ public class MainActivity extends AppCompatActivity {
     private ShareFragment shareFragment;
     private MemoryFragment memoryFragment;
     private MeFragment meFragment;
-    private BottomNavigationView bnvMenu;
     private boolean doubleBackPress = false;
     private int selectedItemId;
-    private Toolbar toolbar;
     private android.support.v7.app.ActionBar actionBar;
-    private CheckFirstTimeLaunch prefManager;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    @ViewById(R.id.activity_main_bnv_menu)
+    BottomNavigationView bnvMenu;
 
+    @ViewById(R.id.my_toolbar)
+    Toolbar toolbar;
+
+    @AfterViews
+    void onCreate() {
         setupActionBar();
         changeColorStatusBar();
-
-        bnvMenu = (BottomNavigationView) findViewById(R.id.activity_main_bnv_menu);
 
         // When more than 3 icons, ShiftMode happen, use this to back to normal
         StopShiftModeBottomNavView.disableShiftMode(bnvMenu);
@@ -73,19 +70,11 @@ public class MainActivity extends AppCompatActivity {
         addNewFragments();
 
         // load fragment_location first
-        MenuItem selectedItem;
-        if (savedInstanceState != null) {
-            selectedItem = bnvMenu.getMenu().findItem(savedInstanceState.getInt("arg_selected_item", 0));
-        } else {
-            selectedItem = bnvMenu.getMenu().getItem(0);
-        }
-        selectFragment(selectedItem);
+        selectFragment(bnvMenu.getMenu().getItem(0));
 
         if (!CheckNetwork.isNetworkConnected(MainActivity.this)) {
-            Snackbar snackbar = Snackbar
-                    .make(findViewById(R.id.activity_main),
-                            "Không có kết nối Internet",
-                            Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.activity_main),
+                    "Không có kết nối Internet", Snackbar.LENGTH_LONG);
             View viewSnackbar = snackbar.getView();
             TextView tvSnackbar =
                     (TextView) viewSnackbar.findViewById(android.support.design.R.id.snackbar_text);
@@ -101,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setupActionBar() {
-        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         if (actionBar != null) {
