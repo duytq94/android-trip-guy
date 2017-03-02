@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.Login.SignUpActivity;
+import com.dfa.vinatrip.Login.SignUpActivity_;
 import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.R;
 
@@ -96,7 +97,7 @@ public class WelcomeActivity extends AppCompatActivity {
     @Click
     void activity_welcome_btn_sign_up() {
         prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(WelcomeActivity.this, SignUpActivity.class));
+        startActivity(new Intent(WelcomeActivity.this, SignUpActivity_.class));
     }
 
     @AfterViews

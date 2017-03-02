@@ -25,22 +25,27 @@ import android.widget.EditText;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@EActivity(R.layout.activity_user_profile_detail)
 public class UserProfileDetailActivity extends AppCompatActivity {
 
     private UserProfile userProfile;
     private List<UserProfile> listUserProfiles;
     private String fromView;
-    private Toolbar toolbar;
     private android.support.v7.app.ActionBar actionBar;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile_detail);
+    @ViewById(R.id.my_toolbar)
+    Toolbar toolbar;
+
+    @AfterViews
+    void onCreate() {
 
         changeColorStatusBar();
 
@@ -99,7 +104,6 @@ public class UserProfileDetailActivity extends AppCompatActivity {
     }
 
     public void setupActionBar() {
-        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         if (actionBar != null) {

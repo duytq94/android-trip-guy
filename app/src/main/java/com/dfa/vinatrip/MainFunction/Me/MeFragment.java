@@ -24,6 +24,7 @@ import com.dfa.vinatrip.Login.SignInActivity;
 import com.dfa.vinatrip.Login.SignInActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.UserProfileDetailActivity;
+import com.dfa.vinatrip.MainFunction.Me.UserDetail.UserProfileDetailActivity_;
 import com.dfa.vinatrip.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -178,7 +179,7 @@ public class MeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (firebaseUser != null) {
-                    Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity.class);
+                    Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
 
                     // Send UserProfile to UserProfileDetailActivity
                     intentUpdate.putExtra("UserProfile", currentUser);
@@ -202,7 +203,7 @@ public class MeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (firebaseUser != null) {
-                    Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity.class);
+                    Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
 
                     // Send UserProfile to UserProfileDetailActivity
                     intentUpdate.putExtra("UserProfile", currentUser);

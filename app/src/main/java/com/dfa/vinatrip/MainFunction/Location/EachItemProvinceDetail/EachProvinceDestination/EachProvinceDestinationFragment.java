@@ -17,7 +17,9 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity;
+import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity_;
 import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.Rating.RatingActivity;
+import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.Rating.RatingActivity_;
 import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.Rating.RatingAdapter;
 import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.Rating.UserRating;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDestination.ProvinceDestination;
@@ -119,7 +121,7 @@ public class EachProvinceDestinationFragment extends Fragment {
         tvRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentRate = new Intent(getActivity(), RatingActivity.class);
+                Intent intentRate = new Intent(getActivity(), RatingActivity_.class);
 
                 // Send DetailDestination to RatingActivity
                 intentRate.putExtra("DetailDestination", detailDestination);
@@ -137,7 +139,7 @@ public class EachProvinceDestinationFragment extends Fragment {
                             @Override
                             public void onItemClick(View view, int position) {
                                 Intent intentShowFull =
-                                        new Intent(getActivity(), ShowFullPhotoActivity.class);
+                                        new Intent(getActivity(), ShowFullPhotoActivity_.class);
 
                                 // Send ListUrlPhotos to ShowFullPhotoActivity
                                 intentShowFull.putStringArrayListExtra("ListUrlPhotos",

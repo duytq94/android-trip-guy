@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.dfa.vinatrip.MainFunction.MainActivity;
+import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -61,7 +61,7 @@ public class SignInActivity extends AppCompatActivity {
                                     "Email hoặc mật khẩu không đúng!"
                                     , Toast.LENGTH_SHORT).show();
                         } else {
-                            startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                            startActivity(new Intent(SignInActivity.this, MainActivity_.class));
                         }
                     }
                 });

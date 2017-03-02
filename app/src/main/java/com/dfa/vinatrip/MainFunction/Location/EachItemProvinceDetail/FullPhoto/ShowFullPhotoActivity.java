@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -21,23 +20,30 @@ import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDestination
 import com.dfa.vinatrip.R;
 import com.squareup.picasso.Picasso;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.List;
 
+@EActivity(R.layout.activity_show_full_photo)
 public class ShowFullPhotoActivity extends AppCompatActivity {
 
-    private ViewPager vpShowFull;
+    @ViewById(R.id.activity_full_photo_vp_show_full)
+    ViewPager vpShowFull;
+
+    @ViewById(R.id.my_toolbar)
+    Toolbar toolbar;
+
     private CustomPagerAdapter customPagerAdapter;
     private List<String> listUrlPhotos;
     private int position;
-    private Toolbar toolbar;
+
     private android.support.v7.app.ActionBar actionBar;
     private ProvinceDestination detailDestination;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_full_photo);
-
+    @AfterViews
+    void onCreate() {
         // Get data from
         listUrlPhotos = getIntent().getStringArrayListExtra("ListUrlPhotos");
         position = getIntent().getIntExtra("Position", 0);
@@ -47,7 +53,6 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
         changeColorStatusBar();
         setupActionBar();
 
-        vpShowFull = (ViewPager) findViewById(R.id.activity_full_photo_vp_show_full);
         customPagerAdapter = new CustomPagerAdapter(ShowFullPhotoActivity.this);
         vpShowFull.setAdapter(customPagerAdapter);
 
@@ -97,7 +102,6 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
     }
 
     public void setupActionBar() {
-        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         if (actionBar != null) {

@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.CheckNetwork;
-import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDetailActivity;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDetailActivity_;
 import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;

@@ -20,7 +20,6 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.Login.SignInActivity;
 import com.dfa.vinatrip.Login.SignInActivity_;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDestination.ProvinceDestination;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
@@ -34,23 +33,72 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+@EActivity(R.layout.activity_rating)
 public class RatingActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
+    @ViewById(R.id.my_toolbar)
+    Toolbar toolbar;
+
+    @ViewById(R.id.activity_rating_btn_submit)
+    Button btnSubmit;
+
+    @ViewById(R.id.activity_rating_rl_main)
+    RelativeLayout rlMain;
+
+    @ViewById(R.id.activity_rating_rating_bar)
+    RatingBar ratingBar;
+
+    @ViewById(R.id.activity_rating_tv_rating)
+    TextView tvRate;
+
+    @ViewById(R.id.activity_rating_et_content)
+    EditText etContent;
+
+    @Click
+    void activity_rating_btn_submit() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String date = simpleDateFormat.format(calendar.getTime());
+
+        for (int i = 0; i < listUserProfiles.size(); i++) {
+            if (listUserProfiles.get(i).getUid().equals(firebaseUser.getUid())) {
+                UserProfile userProfile = listUserProfiles.get(i);
+                UserRating userRating = new UserRating(userProfile.getUid(),
+                        userProfile.getNickname(),
+                        userProfile.getAvatar(),
+                        userProfile.getEmail(),
+                        etContent.getText().toString(),
+                        (int) ratingBar.getRating() + "",
+                        date);
+
+                databaseReference.child("ProvinceDestinationRating")
+                        .child(detailDestination.getProvince())
+                        .child(detailDestination.getName())
+                        .child(firebaseUser.getUid())
+                        .setValue(userRating);
+                finish();
+            }
+        }
+    }
+
+    @Click
+    void activity_rating_btn_cancel() {
+        finish();
+    }
+
     private ActionBar actionBar;
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
-    private RelativeLayout rlMain;
-    private RatingBar ratingBar;
-    private TextView tvRate;
-    private Button btnSubmit, btnCancel;
     private ProvinceDestination detailDestination;
-    private EditText etContent;
     private List<UserProfile> listUserProfiles;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private List<UserRating> listUserRatings;
@@ -58,58 +106,17 @@ public class RatingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rating);
 
-        findViewByIds();
         setupActionBar();
         changeColorStatusBar();
         loadUserProfileFromFirebase();
         setContentViews();
-        onClickListener();
     }
 
     public void changeColorStatusBar() {
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
         }
-    }
-
-    public void onClickListener() {
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                String date = simpleDateFormat.format(calendar.getTime());
-
-                for (int i = 0; i < listUserProfiles.size(); i++) {
-                    if (listUserProfiles.get(i).getUid().equals(firebaseUser.getUid())) {
-                        UserProfile userProfile = listUserProfiles.get(i);
-                        UserRating userRating = new UserRating(userProfile.getUid(),
-                                userProfile.getNickname(),
-                                userProfile.getAvatar(),
-                                userProfile.getEmail(),
-                                etContent.getText().toString(),
-                                (int) ratingBar.getRating() + "",
-                                date);
-
-                        databaseReference.child("ProvinceDestinationRating")
-                                .child(detailDestination.getProvince())
-                                .child(detailDestination.getName())
-                                .child(firebaseUser.getUid())
-                                .setValue(userRating);
-                        finish();
-                    }
-                }
-            }
-        });
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     public void loadUserProfileFromFirebase() {
@@ -189,7 +196,6 @@ public class RatingActivity extends AppCompatActivity {
     }
 
     public void setupActionBar() {
-        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -199,15 +205,6 @@ public class RatingActivity extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-    }
-
-    public void findViewByIds() {
-        rlMain = (RelativeLayout) findViewById(R.id.activity_rating_rl_main);
-        ratingBar = (RatingBar) findViewById(R.id.activity_rating_rating_bar);
-        tvRate = (TextView) findViewById(R.id.activity_rating_tv_rating);
-        btnSubmit = (Button) findViewById(R.id.activity_rating_btn_submit);
-        btnCancel = (Button) findViewById(R.id.activity_rating_btn_cancel);
-        etContent = (EditText) findViewById(R.id.activity_rating_et_content);
     }
 
     public void setContentViews() {
