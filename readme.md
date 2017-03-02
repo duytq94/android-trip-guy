@@ -1,8 +1,8 @@
-**VinaTrip - Viet Nam travel for everyone, guide, setup plan, share your trip and more**
+**TripGuy - Viet Nam travel for everyone, guide, setup plan, share your trip and more**
 
 Full name: Tran Quang Duy
 
-Project name: VinaTrip
+Project name: TripGuy
 ----------------------------
 
 **Overview:**
