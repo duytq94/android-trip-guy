@@ -25,6 +25,7 @@ import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.Rating.User
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDestination.ProvinceDestination;
 import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;
 import com.dfa.vinatrip.MapActivity;
+import com.dfa.vinatrip.MapActivity_;
 import com.dfa.vinatrip.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -110,7 +111,7 @@ public class EachProvinceDestinationFragment extends Fragment {
         llAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentMap = new Intent(getActivity(), MapActivity.class);
+                Intent intentMap = new Intent(getActivity(), MapActivity_.class);
 
                 // Send DetailDestination to MapActivity
                 intentMap.putExtra("DetailDestination", detailDestination);

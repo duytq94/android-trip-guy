@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -16,7 +14,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.dfa.vinatrip.MainFunction.MainActivity;
+import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
@@ -26,83 +24,30 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Password;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.List;
+
 @EActivity(R.layout.activity_sign_up)
-public class SignUpActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity implements Validator.ValidationListener {
+
+    private Validator validator;
 
     @Click
     void activity_sign_up_btn_sign_up() {
-        String email = etEmail.getText().toString();
-        String password = etPassword.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(SignUpActivity.this, "Bạn hãy nhập email!",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(SignUpActivity.this, "Bạn hãy nhập mật khẩu!",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-        progressBar.setVisibility(View.VISIBLE);
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressBar.setVisibility(View.GONE);
-                        if (!task.isSuccessful()) {
-                            try {
-                                throw task.getException();
-                            } catch (FirebaseAuthWeakPasswordException e) {
-                                Toast.makeText(SignUpActivity.this,
-                                        "Mật khẩu yếu, bạn hãy đặt mật khẩu từ 6 ký tự trở lên!",
-                                        Toast.LENGTH_SHORT).show();
-                            } catch (FirebaseAuthInvalidCredentialsException e) {
-                                Toast.makeText(SignUpActivity.this,
-                                        "Email không hợp lệ!",
-                                        Toast.LENGTH_SHORT).show();
-                            } catch (FirebaseAuthUserCollisionException e) {
-                                Toast.makeText(SignUpActivity.this,
-                                        "Email đã được đăng ký!",
-                                        Toast.LENGTH_SHORT).show();
-                            } catch (Exception e) {
-                            }
-                        } else {
-                            // Create first database for user with empty data
-                            FirebaseUser firebaseUser =
-                                    FirebaseAuth.getInstance().getCurrentUser();
-                            if (firebaseUser != null) {
-                                // Add empty profile for user
-                                UserProfile userProfile
-                                        = new UserProfile("", "", "", "", "", "", "",
-                                        firebaseUser.getEmail());
-                                DatabaseReference databaseReference =
-                                        FirebaseDatabase.getInstance().getReference();
-                                databaseReference.child("UserProfile")
-                                        .child(firebaseUser.getUid())
-                                        .setValue(userProfile);
-
-                                // Add empty list friend for user
-                                UserFriend userFriend =
-                                        new UserFriend(firebaseUser.getUid(), "", "", "", "");
-                                databaseReference.child("UserFriend")
-                                        .child(firebaseUser.getUid())
-                                        .child(firebaseUser.getUid())
-                                        .setValue(userFriend);
-                            }
-                            startActivity(new Intent(SignUpActivity.this, MainActivity.class));
-                            finish();
-                        }
-                    }
-                });
+        validator.validate();
     }
 
     @Click
@@ -115,9 +60,12 @@ public class SignUpActivity extends AppCompatActivity {
         startActivity(new Intent(SignUpActivity.this, ResetPasswordActivity_.class));
     }
 
+    @NotEmpty
+    @Email
     @ViewById(R.id.activity_sign_up_et_email)
     EditText etEmail;
 
+    @Password
     @ViewById(R.id.activity_sign_up_et_password)
     EditText etPassword;
 
@@ -126,10 +74,10 @@ public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+    @AfterViews
+    void onCreate() {
+        validator = new Validator(this);
+        validator.setValidationListener(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
         changeColorStatusBar();
@@ -170,6 +118,87 @@ public class SignUpActivity extends AppCompatActivity {
         if (activity != null && activity.getWindow() != null && activity.getWindow().getDecorView() != null) {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
+        }
+    }
+
+    @Override
+    public void onValidationSucceeded() {
+        String email = etEmail.getText().toString();
+        String password = etPassword.getText().toString();
+
+        progressBar.setVisibility(View.VISIBLE);
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressBar.setVisibility(View.GONE);
+                        if (!task.isSuccessful()) {
+                            try {
+                                throw task.getException();
+                            } catch (FirebaseAuthInvalidCredentialsException e) {
+                                Toast.makeText(SignUpActivity.this,
+                                        "Email không hợp lệ!",
+                                        Toast.LENGTH_SHORT).show();
+                            } catch (FirebaseAuthUserCollisionException e) {
+                                Toast.makeText(SignUpActivity.this,
+                                        "Email đã được đăng ký!",
+                                        Toast.LENGTH_SHORT).show();
+                            } catch (Exception e) {
+                            }
+                        } else {
+                            // Create first database for user with empty data
+                            FirebaseUser firebaseUser =
+                                    FirebaseAuth.getInstance().getCurrentUser();
+                            if (firebaseUser != null) {
+                                // Add empty profile for user
+                                UserProfile userProfile
+                                        = new UserProfile("", "", "", "", "", "", "",
+                                        firebaseUser.getEmail());
+                                DatabaseReference databaseReference =
+                                        FirebaseDatabase.getInstance().getReference();
+                                databaseReference.child("UserProfile")
+                                        .child(firebaseUser.getUid())
+                                        .setValue(userProfile);
+
+                                // Add empty list friend for user
+                                UserFriend userFriend =
+                                        new UserFriend(firebaseUser.getUid(), "", "", "", "");
+                                databaseReference.child("UserFriend")
+                                        .child(firebaseUser.getUid())
+                                        .child(firebaseUser.getUid())
+                                        .setValue(userFriend);
+                            }
+                            startActivity(new Intent(SignUpActivity.this, MainActivity_.class));
+                            finish();
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(this);
+
+            // Display error messages
+            switch (message) {
+                case "Invalid email\nThis field is required":
+                    message = "Email trống\nBạn phải nhập email";
+                    break;
+                case "Invalid email":
+                    message = "Email không hợp lệ";
+                    break;
+                case "Invalid password":
+                    message = "Mật khẩu phải từ 6 ký tự trở lên";
+                    break;
+            }
+
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

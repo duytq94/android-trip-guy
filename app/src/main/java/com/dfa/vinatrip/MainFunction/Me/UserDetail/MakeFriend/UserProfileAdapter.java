@@ -63,6 +63,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
         holder.tvSex.setText(userProfile.getSex());
 
         holder.btnMakeFriend.setText("Kết bạn");
+        holder.btnMakeFriend.setTag("Kết bạn");
         holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorGray));
 
         // If one userProfile is in listUserFriends of current user login
@@ -70,15 +71,16 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
             if (userProfile.getUid().equals(listUserFriends.get(j).getFriendId())) {
                 switch (listUserFriends.get(j).getState()) {
                     case "requested":
-                        holder.btnMakeFriend.setText("Đã gửi");
-                        holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
+                        holder.btnMakeFriend.setText(R.string.sent);
+                        holder.btnMakeFriend.setTag("Đã gửi");
                         break;
                     case "beRequested":
-                        holder.btnMakeFriend.setText("Đồng ý");
-                        holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
+                        holder.btnMakeFriend.setText(R.string.agree);
+                        holder.btnMakeFriend.setTag("Đồng ý");
                         break;
                     case "friend":
-                        holder.btnMakeFriend.setText("Bạn bè");
+                        holder.btnMakeFriend.setText(R.string.friend);
+                        holder.btnMakeFriend.setTag("Bạn bè");
                         holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorMain));
                         break;
                 }
@@ -87,9 +89,10 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
         holder.btnMakeFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (holder.btnMakeFriend.getText().toString()) {
+                switch (holder.btnMakeFriend.getTag().toString()) {
                     case "Đã gửi":
                         holder.btnMakeFriend.setText("Kết bạn");
+                        holder.btnMakeFriend.setTag("Kết bạn");
                         holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorGray));
                         // Delete data to the current user login
                         referenceFriend.child("UserFriend")
@@ -104,7 +107,8 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                         break;
 
                     case "Đồng ý":
-                        holder.btnMakeFriend.setText("Bạn bè");
+                        holder.btnMakeFriend.setText(R.string.friend);
+                        holder.btnMakeFriend.setTag("Bạn bè");
                         holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorMain));
                         // Add profile user request to the current user
                         UserFriend userFriendBeRequested2 = new UserFriend(userProfile.getUid(),
@@ -126,6 +130,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
 
                     case "Bạn bè":
                         holder.btnMakeFriend.setText("Kết bạn");
+                        holder.btnMakeFriend.setTag("Kết bạn");
                         holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorGray));
                         // Delete data to the current user login
                         referenceFriend.child("UserFriend")
@@ -140,8 +145,8 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                         break;
 
                     case "Kết bạn":
-                        holder.btnMakeFriend.setText("Đã gửi");
-                        holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
+                        holder.btnMakeFriend.setText(R.string.sent);
+                        holder.btnMakeFriend.setTag("Đã gửi");
                         // Add profile user request to the current user
                         UserFriend userFriendBeRequested4 = new UserFriend(userProfile.getUid(),
                                 userProfile.getNickname(), userProfile.getAvatar(),

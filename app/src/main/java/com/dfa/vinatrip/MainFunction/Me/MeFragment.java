@@ -4,15 +4,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,10 +16,8 @@ import android.widget.Toast;
 
 import com.dfa.vinatrip.BuildConfig;
 import com.dfa.vinatrip.CheckNetwork;
-import com.dfa.vinatrip.Login.SignInActivity;
 import com.dfa.vinatrip.Login.SignInActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.UserProfileDetailActivity;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.UserProfileDetailActivity_;
 import com.dfa.vinatrip.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,40 +31,91 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import jp.wasabeef.blurry.Blurry;
 
+@EFragment(R.layout.fragment_me)
 public class MeFragment extends Fragment {
 
     static final int NOTIFY_UPDATE_REQUEST = 1;
 
-    private ImageView ivAvatar, ivBlurAvatar;
-    private TextView tvNickname, tvCity, tvBirthday, tvMakeFriend,
-            tvIntroduceYourSelf, tvAppInfo, tvEmail, tvSex, tvFriendNotAvailable;
-    private RecyclerView rvListFriends;
-    private LinearLayout llInfo, llMyFriends, llSettings;
-    private LinearLayout llSignIn, llSignOut, llUpdateProfile;
+    @ViewById(R.id.fragment_me_tv_nickname)
+    TextView tvNickname;
+
+    @ViewById(R.id.fragment_me_tv_city)
+    TextView tvCity;
+
+    @ViewById(R.id.fragment_me_tv_app_info)
+    TextView tvAppInfo;
+
+    @ViewById(R.id.fragment_me_tv_birthday)
+    TextView tvBirthday;
+
+    @ViewById(R.id.fragment_me_tv_introduce_your_self)
+    TextView tvIntroduceYourSelf;
+
+    @ViewById(R.id.fragment_me_tv_sex)
+    TextView tvSex;
+
+    @ViewById(R.id.fragment_me_tv_friend_not_available)
+    TextView tvFriendNotAvailable;
+
+    @ViewById(R.id.fragment_me_tv_make_friend)
+    TextView tvMakeFriend;
+
+    @ViewById(R.id.fragment_me_tv_email)
+    TextView tvEmail;
+
+    @ViewById(R.id.fragment_me_iv_avatar)
+    ImageView ivAvatar;
+
+    @ViewById(R.id.fragment_me_iv_blur_avatar)
+    ImageView ivBlurAvatar;
+
+    @ViewById(R.id.fragment_me_ll_sign_in)
+    LinearLayout llSignIn;
+
+    @ViewById(R.id.fragment_me_ll_sign_out)
+    LinearLayout llSignOut;
+
+    @ViewById(R.id.fragment_me_ll_info)
+    LinearLayout llInfo;
+
+    @ViewById(R.id.fragment_me_ll_my_friends)
+    LinearLayout llMyFriends;
+
+    @ViewById(R.id.fragment_me_ll_settings)
+    LinearLayout llSettings;
+
+    @ViewById(R.id.fragment_me_ll_update_profile)
+    LinearLayout llUpdateProfile;
+
+    @ViewById(R.id.fragment_me_srlReload)
+    SwipeRefreshLayout srlReload;
+
+    @ViewById(R.id.fragment_me_rv_list_friends)
+    RecyclerView rvListFriends;
+
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private UserProfile currentUser;
     private List<UserProfile> listUserProfiles;
     private List<UserFriend> listUserFriends;
     private FriendAdapter friendAdapter;
-    private SwipeRefreshLayout srlReload;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Must create View first
-        View view = inflater.inflate(R.layout.fragment_me, container, false);
-
-        findViewByIds(view);
+    @AfterViews
+    void onCreateView() {
         showAppInfo();
+
+        srlReload.setColorSchemeResources(R.color.colorMain);
 
         if (CheckNetwork.isNetworkConnected(getActivity())) {
             onClickListener();
@@ -90,8 +135,6 @@ public class MeFragment extends Fragment {
                 } else srlReload.setRefreshing(false);
             }
         });
-
-        return view;
     }
 
     public void hideViews(Boolean aBoolean) {
@@ -225,28 +268,6 @@ public class MeFragment extends Fragment {
         });
     }
 
-    public void findViewByIds(View view) {
-        tvNickname = (TextView) view.findViewById(R.id.fragment_me_tv_nickname);
-        tvCity = (TextView) view.findViewById(R.id.fragment_me_tv_city);
-        tvAppInfo = (TextView) view.findViewById(R.id.fragment_me_tv_app_info);
-        tvBirthday = (TextView) view.findViewById(R.id.fragment_me_tv_birthday);
-        tvEmail = (TextView) view.findViewById(R.id.fragment_me_tv_email);
-        tvIntroduceYourSelf = (TextView) view.findViewById(R.id.fragment_me_tv_introduce_your_self);
-        tvSex = (TextView) view.findViewById(R.id.fragment_me_tv_sex);
-        tvFriendNotAvailable = (TextView) view.findViewById(R.id.fragment_me_tv_friend_not_available);
-        tvMakeFriend = (TextView) view.findViewById(R.id.fragment_me_tv_make_friend);
-        ivAvatar = (ImageView) view.findViewById(R.id.fragment_me_iv_avatar);
-        ivBlurAvatar = (ImageView) view.findViewById(R.id.fragment_me_iv_blur_avatar);
-        llSignIn = (LinearLayout) view.findViewById(R.id.fragment_me_ll_sign_in);
-        llSignOut = (LinearLayout) view.findViewById(R.id.fragment_me_ll_sign_out);
-        llInfo = (LinearLayout) view.findViewById(R.id.fragment_me_ll_info);
-        llMyFriends = (LinearLayout) view.findViewById(R.id.fragment_me_ll_my_friends);
-        llSettings = (LinearLayout) view.findViewById(R.id.fragment_me_ll_settings);
-        llUpdateProfile = (LinearLayout) view.findViewById(R.id.fragment_me_ll_update_profile);
-        srlReload = (SwipeRefreshLayout) view.findViewById(R.id.fragment_me_srlReload);
-        rvListFriends = (RecyclerView) view.findViewById(R.id.fragment_me_rv_list_friends);
-    }
-
     @Override
     public void onActivityResult(int requestCode, int currentUserCode, Intent data) {
         super.onActivityResult(requestCode, currentUserCode, data);
@@ -362,8 +383,9 @@ public class MeFragment extends Fragment {
                         UserFriend userFriend =
                                 new UserFriend(friendId, nickname, avatar, email, state);
 
-                        // Don't add the current user to list
-                        if (!userFriend.getFriendId().equals(firebaseUser.getUid())) {
+                        // Don't add the current user and the friend not agree yet to list
+                        if (!userFriend.getFriendId().equals(firebaseUser.getUid()) &&
+                                userFriend.getState().equals("friend")) {
                             listUserFriends.add(userFriend);
                         }
                     }

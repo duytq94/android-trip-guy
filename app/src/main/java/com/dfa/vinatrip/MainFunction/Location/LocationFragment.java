@@ -3,9 +3,7 @@ package com.dfa.vinatrip.MainFunction.Location;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -29,11 +27,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@EFragment(R.layout.fragment_location)
 public class LocationFragment extends Fragment {
 
     // 4 photo in slide show
@@ -45,13 +48,24 @@ public class LocationFragment extends Fragment {
     };
     private CustomPagerAdapter customPagerAdapter;
     private int i = 0;
-    private RecyclerView rvProvinces;
+
+    @ViewById(R.id.fragment_location_rv_provinces)
+    RecyclerView rvProvinces;
+
     private ProvinceAdapter provinceAdapter;
     private List<Province> provinceList;
-    private SwipeRefreshLayout srlReload;
-    private ViewPager vpSlideShow;
+
+    @ViewById(R.id.fragment_location_srlReload)
+    SwipeRefreshLayout srlReload;
+
+    @ViewById(R.id.fragment_location_vp_slide_show)
+    ViewPager vpSlideShow;
+
     private TextView[] tvDots;
-    private LinearLayout llDots;
+
+    @ViewById(R.id.fragment_location_ll_dots)
+    LinearLayout llDots;
+
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     // Catch event when page change, dots color will change
     private ViewPager.OnPageChangeListener onPageChangeListener
@@ -72,15 +86,8 @@ public class LocationFragment extends Fragment {
         }
     };
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        // Must create View first
-        View view = inflater.inflate(R.layout.fragment_location, container, false);
-        findViewByIds(view);
-
+    @AfterViews
+    void onCreateView() {
         customPagerAdapter = new CustomPagerAdapter(getActivity());
         vpSlideShow.setAdapter(customPagerAdapter);
         vpSlideShow.addOnPageChangeListener(onPageChangeListener);
@@ -134,8 +141,6 @@ public class LocationFragment extends Fragment {
             provinceList.clear();
             loadProvince();
         }
-
-        return view;
     }
 
     public void autoScrollSlideShow() {
@@ -174,13 +179,6 @@ public class LocationFragment extends Fragment {
             tvDots[i].setTextColor(Color.GRAY);
         }
         tvDots[position].setTextColor(Color.WHITE);
-    }
-
-    public void findViewByIds(View view) {
-        rvProvinces = (RecyclerView) view.findViewById(R.id.fragment_location_rv_provinces);
-        srlReload = (SwipeRefreshLayout) view.findViewById(R.id.fragment_location_srlReload);
-        vpSlideShow = (ViewPager) view.findViewById(R.id.fragment_location_vp_slide_show);
-        llDots = (LinearLayout) view.findViewById(R.id.fragment_location_ll_dots);
     }
 
     public void loadProvince() {

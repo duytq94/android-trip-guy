@@ -7,7 +7,6 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,14 +20,23 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Password;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.List;
+
 @EActivity(R.layout.activity_sign_in)
-public class SignInActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity implements Validator.ValidationListener {
+
+    private Validator validator;
 
     @Click
     void activity_sign_in_btn_sign_up() {
@@ -37,18 +45,41 @@ public class SignInActivity extends AppCompatActivity {
 
     @Click
     void activity_sign_in_btn_sign_in() {
+        validator.validate();
+    }
+
+    @Click
+    void activity_sign_in_btn_reset_password() {
+        startActivity(new Intent(SignInActivity.this, ResetPasswordActivity_.class));
+    }
+
+    @NotEmpty
+    @Email
+    @ViewById(R.id.activity_sign_in_et_email)
+    EditText etEmail;
+
+    @Password
+    @ViewById(R.id.activity_sign_in_et_password)
+    EditText etPassword;
+
+    @ViewById(R.id.activity_sign_in_progressBar)
+    ProgressBar progressBar;
+
+    private FirebaseAuth firebaseAuth;
+
+    @AfterViews
+    void onCreate() {
+        validator = new Validator(this);
+        validator.setValidationListener(this);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        changeColorStatusBar();
+    }
+
+    @Override
+    public void onValidationSucceeded() {
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
-
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(SignInActivity.this, "Nhập email!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(SignInActivity.this, "Nhập mật khẩu!", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         progressBar.setVisibility(View.VISIBLE);
         firebaseAuth.signInWithEmailAndPassword(email, password)
@@ -67,26 +98,31 @@ public class SignInActivity extends AppCompatActivity {
                 });
     }
 
-    @Click
-    void activity_sign_in_btn_reset_password() {
-        startActivity(new Intent(SignInActivity.this, ResetPasswordActivity_.class));
-    }
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(this);
 
-    @ViewById(R.id.activity_sign_in_et_email)
-    EditText etEmail;
+            // Display error messages
+            switch (message) {
+                case "Invalid email\nThis field is required":
+                    message = "Email trống\nBạn phải nhập email";
+                    break;
+                case "Invalid email":
+                    message = "Email không hợp lệ";
+                    break;
+                case "Invalid password":
+                    message = "Mật khẩu phải từ 6 ký tự trở lên";
+                    break;
+            }
 
-    @ViewById(R.id.activity_sign_in_et_password)
-    EditText etPassword;
-
-    @ViewById(R.id.activity_sign_in_progressBar)
-    ProgressBar progressBar;
-
-    private FirebaseAuth firebaseAuth;
-
-    @AfterViews
-    void onCreate() {
-        firebaseAuth = FirebaseAuth.getInstance();
-        changeColorStatusBar();
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     public void changeColorStatusBar() {

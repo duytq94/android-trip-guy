@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceHotel.ProvinceHotel;
 import com.dfa.vinatrip.MapActivity;
+import com.dfa.vinatrip.MapActivity_;
 import com.dfa.vinatrip.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -111,7 +112,7 @@ public class EachProvinceHotelFragment extends Fragment {
         llAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentMap = new Intent(getActivity(), MapActivity.class);
+                Intent intentMap = new Intent(getActivity(), MapActivity_.class);
 
                 // Send ProvinceHotel to MapActivity
                 intentMap.putExtra("DetailHotel", detailHotel);

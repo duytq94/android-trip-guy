@@ -1,7 +1,6 @@
 package com.dfa.vinatrip;
 
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,10 +18,21 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.FragmentById;
+import org.androidannotations.annotations.ViewById;
+
+@EActivity(R.layout.activity_map)
 public class MapActivity extends AppCompatActivity {
 
+    @ViewById(R.id.my_toolbar)
+    Toolbar toolbar;
+
+    @FragmentById(R.id.activity_map_fragment_map)
+    MapFragment mapFragment;
+
     private GoogleMap googleMap;
-    private Toolbar toolbar;
     private android.support.v7.app.ActionBar actionBar;
     private ProvinceHotel detailHotel;
     private ProvinceFood detailFood;
@@ -30,13 +40,8 @@ public class MapActivity extends AppCompatActivity {
     private String titleActionBar;
     private LatLng latLng;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
-
-        MapFragment mapFragment =
-                (MapFragment) getFragmentManager().findFragmentById(R.id.activity_map_fragment_map);
+    @AfterViews
+    void onCreate() {
         mapFragment.onCreate(null);
         mapFragment.onResume();
         mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -111,7 +116,6 @@ public class MapActivity extends AppCompatActivity {
             titleActionBar = detailDestination.getName();
         }
 
-        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         if (actionBar != null) {

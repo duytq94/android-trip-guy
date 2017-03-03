@@ -36,7 +36,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".MainFunction.Location.EachItemProvinceDetail.EachItemProvinceDetailActivity_" />
-        <activity android:name=".MapActivity" />
+        <activity android:name=".MapActivity_" />
         <activity android:name=".Login.SignUpActivity_" />
         <activity android:name=".Login.SignInActivity_" />
         <activity android:name=".Login.ResetPasswordActivity_" />

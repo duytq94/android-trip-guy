@@ -21,7 +21,9 @@ import android.widget.Toast;
 
 import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Location.LocationFragment;
+import com.dfa.vinatrip.MainFunction.Location.LocationFragment_;
 import com.dfa.vinatrip.MainFunction.Me.MeFragment;
+import com.dfa.vinatrip.MainFunction.Me.MeFragment_;
 import com.dfa.vinatrip.MainFunction.Memory.MemoryFragment;
 import com.dfa.vinatrip.MainFunction.Plan.PlanFragment;
 import com.dfa.vinatrip.MainFunction.Share.ShareFragment;
@@ -140,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addNewFragments() {
-        locationFragment = new LocationFragment();
+        locationFragment = new LocationFragment_();
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.activity_main_fl_container, locationFragment, "locationFragment")
@@ -164,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.activity_main_fl_container, memoryFragment, "memoryFragment")
                 .commit();
 
-        meFragment = new MeFragment();
+        meFragment = new MeFragment_();
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.activity_main_fl_container, meFragment, "meFragment")

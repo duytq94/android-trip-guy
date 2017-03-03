@@ -84,4 +84,8 @@
 
     <string name="friend_not_available">Hiện chưa có bạn bè nào</string>
 
+    <string name="friend">&#10004; Bạn bè</string>
+    <string name="sent">&#10148; Đã gửi</string>
+    <string name="agree">&#9873; Đồng ý</string>
+
 </resources>
