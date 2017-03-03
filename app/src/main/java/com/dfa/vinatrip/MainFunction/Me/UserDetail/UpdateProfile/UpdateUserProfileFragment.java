@@ -2,22 +2,15 @@ package com.dfa.vinatrip.MainFunction.Me.UserDetail.UpdateProfile;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -44,6 +37,11 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -52,51 +50,104 @@ import java.util.Locale;
 
 import jp.wasabeef.blurry.Blurry;
 
+@EFragment(R.layout.fragment_update_user_profile)
 public class UpdateUserProfileFragment extends Fragment {
 
-    private ImageView ivAvatar, ivBlurAvatar, ivChangeAvatar;
-    private EditText etNickname, etCity, etIntroduceYourSelf;
+    @ViewById(R.id.fragment_update_user_profile_et_nickname)
+    EditText etNickname;
+
+    @ViewById(R.id.fragment_update_user_profile_et_city)
+    EditText etCity;
+
+    @ViewById(R.id.fragment_update_user_profile_et_introduce_your_self)
+    EditText etIntroduceYourSelf;
+
+    @ViewById(R.id.fragment_update_user_profile_iv_avatar)
+    ImageView ivAvatar;
+
+    @ViewById(R.id.fragment_update_user_profile_iv_blur_avatar)
+    ImageView ivBlurAvatar;
+
+    @ViewById(R.id.fragment_update_user_profile_progressBar)
+    ProgressBar progressBar;
+
+    @ViewById(R.id.fragment_update_user_profile_spn_sex)
+    Spinner spnSex;
+
+    @ViewById(R.id.fragment_update_user_profile_tv_birthday)
+    TextView tvBirthday;
+
+    @Click
+    void fragment_update_user_profile_btn_done() {
+        // Check if user update info but don't update avatar
+        if (uri == null) {
+            UserProfile newUserProfile = new UserProfile(etNickname.getText().toString(),
+                    userProfile.getAvatar(),
+                    etIntroduceYourSelf.getText().toString(),
+                    etCity.getText().toString(),
+                    tvBirthday.getText().toString(),
+                    firebaseUser.getUid(),
+                    spnSex.getSelectedItem().toString(),
+                    userProfile.getEmail());
+            databaseReference.child("UserProfile").child(firebaseUser.getUid())
+                    .setValue(newUserProfile);
+
+            Toast.makeText(getActivity(), "Cập nhật thành công!", Toast.LENGTH_SHORT)
+                    .show();
+        } else {
+            uploadUserAvatar();
+        }
+    }
+
+    @Click
+    void fragment_update_user_profile_btn_cancel() {
+        getActivity().finish();
+    }
+
+    @Click
+    void fragment_update_user_profile_iv_change_avatar() {
+        Intent intentToLibrary = new Intent();
+        intentToLibrary.setType("image/*");
+        intentToLibrary.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intentToLibrary, PICK_IMAGE);
+    }
+
+    @Click
+    void fragment_update_user_profile_ll_birthday() {
+        // When date be set
+        DatePickerDialog.OnDateSetListener listener
+                = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                tvBirthday.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+                calendar.set(year, month, dayOfMonth);
+            }
+        };
+
+        // Set current position time when start dialog
+        String strDate[] = tvBirthday.getText().toString().split("/");
+        int day = Integer.parseInt(strDate[0]);
+        int month = Integer.parseInt(strDate[1]) - 1;
+        int year = Integer.parseInt(strDate[2]);
+        DatePickerDialog dialog = new DatePickerDialog(getActivity(),
+                listener, year, month, day);
+        dialog.setTitle("Chọn ngày sinh");
+        dialog.show();
+    }
+
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
-    private Spinner spnSex;
-    private Button btnDone, btnCancel;
-    private ProgressBar progressBar;
-    private LinearLayout llBirthday;
-    private TextView tvBirthday;
     private UserProfile userProfile;
     private Calendar calendar;
     private Uri uri;
     private int PICK_IMAGE = 1;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_update_user_profile, container, false);
-
-        findViewByIds(view);
+    @AfterViews
+    void onCreateView() {
         setContentViews();
-        onClickListener();
-
-        return view;
-    }
-
-    public void findViewByIds(View view) {
-        etNickname = (EditText) view.findViewById(R.id.fragment_update_user_profile_et_nickname);
-        etCity = (EditText) view.findViewById(R.id.fragment_update_user_profile_et_city);
-        etIntroduceYourSelf = (EditText) view.findViewById(R.id.fragment_update_user_profile_et_introduce_your_self);
-        ivAvatar = (ImageView) view.findViewById(R.id.fragment_update_user_profile_iv_avatar);
-        ivBlurAvatar = (ImageView) view.findViewById(R.id.fragment_update_user_profile_iv_blur_avatar);
-        ivChangeAvatar = (ImageView) view.findViewById(R.id.fragment_update_user_profile_iv_change_avatar);
-        btnDone = (Button) view.findViewById(R.id.fragment_update_user_profile_btn_done);
-        btnCancel = (Button) view.findViewById(R.id.fragment_update_user_profile_btn_cancel);
-        progressBar = (ProgressBar) view.findViewById(R.id.fragment_update_user_profile_progressBar);
-        spnSex = (Spinner) view.findViewById(R.id.fragment_update_user_profile_spn_sex);
-        llBirthday = (LinearLayout) view.findViewById(R.id.fragment_update_user_profile_ll_birthday);
-        tvBirthday = (TextView) view.findViewById(R.id.fragment_update_user_profile_tv_birthday);
     }
 
     public void setContentViews() {
@@ -145,86 +196,6 @@ public class UpdateUserProfileFragment extends Fragment {
         }
     }
 
-    public void onClickListener() {
-        btnDone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Check if user update info but don't update avatar
-                if (uri == null) {
-                    UserProfile newUserProfile = new UserProfile(etNickname.getText().toString(),
-                            userProfile.getAvatar(),
-                            etIntroduceYourSelf.getText().toString(),
-                            etCity.getText().toString(),
-                            tvBirthday.getText().toString(),
-                            firebaseUser.getUid(),
-                            spnSex.getSelectedItem().toString(),
-                            userProfile.getEmail());
-                    databaseReference.child("UserProfile").child(firebaseUser.getUid())
-                            .setValue(newUserProfile);
-
-                    Toast.makeText(getActivity(), "Cập nhật thành công!", Toast.LENGTH_SHORT)
-                            .show();
-                } else {
-                    uploadUserAvatarToFirebase();
-                }
-            }
-        });
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        });
-
-        ivChangeAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentToLibrary = new Intent();
-                intentToLibrary.setType("image/*");
-                intentToLibrary.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intentToLibrary, PICK_IMAGE);
-            }
-        });
-
-        llBirthday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // When date be set
-                DatePickerDialog.OnDateSetListener listener
-                        = new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        tvBirthday.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-                        calendar.set(year, month, dayOfMonth);
-                    }
-                };
-
-                // Set current position time when start dialog
-                String strDate[] = tvBirthday.getText().toString().split("/");
-                int day = Integer.parseInt(strDate[0]);
-                int month = Integer.parseInt(strDate[1]) - 1;
-                int year = Integer.parseInt(strDate[2]);
-                DatePickerDialog dialog = new DatePickerDialog(getActivity(),
-                        listener, year, month, day);
-                dialog.setTitle("Chọn ngày sinh");
-                dialog.show();
-            }
-        });
-
-        spnSex.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-
     public void setCurrentDayForView() {
         // Set current day for tvBirthday
         SimpleDateFormat simpleDateFormat;
@@ -233,7 +204,7 @@ public class UpdateUserProfileFragment extends Fragment {
         tvBirthday.setText(strDate);
     }
 
-    public void uploadUserAvatarToFirebase() {
+    public void uploadUserAvatar() {
         progressBar.setVisibility(View.VISIBLE);
         Bitmap bmPhoto;
         try {

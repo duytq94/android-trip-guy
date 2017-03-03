@@ -1,14 +1,10 @@
 package com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
@@ -22,13 +18,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@EFragment(R.layout.fragment_make_friend)
 public class MakeFriendFragment extends Fragment {
 
-    private RecyclerView rvListFriends;
-    private SwipeRefreshLayout srlReload;
+    @ViewById(R.id.fragment_make_friend_rv_list_friends)
+    RecyclerView rvListFriends;
+
+    @ViewById(R.id.fragment_make_friend_srl_reload)
+    SwipeRefreshLayout srlReload;
+
     private UserProfileAdapter userProfileAdapter;
     private FirebaseUser firebaseUser;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -36,14 +41,8 @@ public class MakeFriendFragment extends Fragment {
     private List<UserProfile> listUserProfiles;
     private UserProfile currentUser;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_make_friend, container, false);
-
-        findViewByIds(view);
-
+    @AfterViews
+    void onCreateView() {
         // Get ListUserProfile from UserProfileDetailFragment
         Bundle bdListUserProfiles;
         bdListUserProfiles = getArguments().getBundle("bdListUserProfiles");
@@ -78,13 +77,6 @@ public class MakeFriendFragment extends Fragment {
         StaggeredGridLayoutManager staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         rvListFriends.setLayoutManager(staggeredGridLayoutManager);
-
-        return view;
-    }
-
-    public void findViewByIds(View view) {
-        rvListFriends = (RecyclerView) view.findViewById(R.id.fragment_make_friend_rv_list_friends);
-        srlReload = (SwipeRefreshLayout) view.findViewById(R.id.fragment_make_friend_srl_reload);
     }
 
     public void loadUserFriend() {

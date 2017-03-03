@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.MakeFriendFragment;
+import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.MakeFriendFragment_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.UpdateProfile.UpdateUserProfileFragment;
+import com.dfa.vinatrip.MainFunction.Me.UserDetail.UpdateProfile.UpdateUserProfileFragment_;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.ViewPagerSwipeFragmentAdapter;
 import com.dfa.vinatrip.R;
@@ -76,7 +78,7 @@ public class UserProfileDetailFragment extends Fragment {
         // Send UserProfile to UpdateUserProfileFragment
         Bundle bdUserProfile = new Bundle();
         bdUserProfile.putSerializable("UserProfile", userProfile);
-        updateUserProfileFragment = new UpdateUserProfileFragment();
+        updateUserProfileFragment = new UpdateUserProfileFragment_();
         updateUserProfileFragment.setArguments(bdUserProfile);
 
         // Send UserProfile and ListUserProfiles to MakeFriendFragment
@@ -85,7 +87,7 @@ public class UserProfileDetailFragment extends Fragment {
         Bundle bd = new Bundle();
         bd.putBundle("bdUserProfile", bdUserProfile);
         bd.putBundle("bdListUserProfiles", bdListUserProfiles);
-        makeFriendFragment = new MakeFriendFragment();
+        makeFriendFragment = new MakeFriendFragment_();
         makeFriendFragment.setArguments(bd);
 
         adapter.addFragment(updateUserProfileFragment, "CHỈNH SỬA");
