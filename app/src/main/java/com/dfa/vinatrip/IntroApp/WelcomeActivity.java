@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.Login.SignUpActivity;
 import com.dfa.vinatrip.Login.SignUpActivity_;
 import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.R;

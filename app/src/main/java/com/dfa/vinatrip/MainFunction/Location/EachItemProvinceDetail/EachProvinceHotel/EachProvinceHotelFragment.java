@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceHotel.ProvinceHotel;
-import com.dfa.vinatrip.MapActivity;
 import com.dfa.vinatrip.MapActivity_;
 import com.dfa.vinatrip.R;
 import com.google.firebase.database.ChildEventListener;

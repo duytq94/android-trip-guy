@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dfa.vinatrip.CheckNetwork;
-import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.EachItemProvinceDetailActivity;
 import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.EachItemProvinceDetailActivity_;
 import com.dfa.vinatrip.MainFunction.Location.Province;
 import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;

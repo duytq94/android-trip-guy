@@ -116,6 +116,8 @@ dependencies {
     compile 'com.ms-square:expandableTextView:0.1.4'
     // Check field edit text
     compile 'com.mobsandgeeks:android-saripaar:2.0.2'
+    // Progress download
+    compile 'com.github.tibolte:elasticdownload:1.0.+'
 }
 // this line has to put out of dependencies so app can run Google Map
 apply plugin: 'com.google.gms.google-services'

@@ -11,13 +11,10 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
@@ -52,6 +50,9 @@ import jp.wasabeef.blurry.Blurry;
 
 @EFragment(R.layout.fragment_update_user_profile)
 public class UpdateUserProfileFragment extends Fragment {
+
+    @ViewById(R.id.fragment_update_user_profile_tv_percent)
+    TextView tvPercent;
 
     @ViewById(R.id.fragment_update_user_profile_et_nickname)
     EditText etNickname;
@@ -206,10 +207,13 @@ public class UpdateUserProfileFragment extends Fragment {
 
     public void uploadUserAvatar() {
         progressBar.setVisibility(View.VISIBLE);
+        tvPercent.setVisibility(View.VISIBLE);
+
         Bitmap bmPhoto;
         try {
             bmPhoto = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bmPhoto = scaleDown(bmPhoto, 300, true);
             bmPhoto.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] byteArrayPhoto = baos.toByteArray();
 
@@ -221,9 +225,21 @@ public class UpdateUserProfileFragment extends Fragment {
 
             UploadTask uploadTask = storageReference.putBytes(byteArrayPhoto);
             uploadTask
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            long progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                            tvPercent.setText(progress + "%");
+                        }
+                    })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
+                            progressBar.setVisibility(View.GONE);
+                            tvPercent.setVisibility(View.GONE);
+                            Toast.makeText(getActivity(),
+                                    "Cập nhật thất bại\nHÃy thử lại",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -247,6 +263,7 @@ public class UpdateUserProfileFragment extends Fragment {
                             databaseReference.child("UserProfile").child(firebaseUser.getUid())
                                     .setValue(newUserProfile);
                             progressBar.setVisibility(View.GONE);
+                            tvPercent.setVisibility(View.GONE);
                             Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT)
                                     .show();
                         }
@@ -254,6 +271,16 @@ public class UpdateUserProfileFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
+        float ratio = Math.min(
+                maxImageSize / realImage.getWidth(),
+                maxImageSize / realImage.getHeight());
+        int width = Math.round(ratio * realImage.getWidth());
+        int height = Math.round(ratio * realImage.getHeight());
+
+        return Bitmap.createScaledBitmap(realImage, width, height, filter);
     }
 
     @Override
@@ -273,7 +300,8 @@ public class UpdateUserProfileFragment extends Fragment {
     private Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            Blurry.with(getActivity()).color(Color.argb(70, 80, 80, 80)).radius(20)
+            bitmap = scaleDown(bitmap, 300, true);
+            Blurry.with(getActivity()).color(Color.argb(70, 80, 80, 80)).radius(10)
                     .from(bitmap).into(ivBlurAvatar);
             ivAvatar.setImageBitmap(bitmap);
         }

@@ -3,8 +3,6 @@ package com.dfa.vinatrip.IntroApp;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.io.Serializable;
-
 public class CheckFirstTimeLaunch {
     private static final String PREF_NAME = "WelcomeScreen";
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";

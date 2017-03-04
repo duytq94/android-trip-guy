@@ -201,7 +201,8 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/fragment_me_rv_list_friends"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>

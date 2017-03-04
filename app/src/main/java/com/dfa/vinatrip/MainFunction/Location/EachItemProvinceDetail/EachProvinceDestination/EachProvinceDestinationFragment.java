@@ -16,15 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.CheckNetwork;
-import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity;
 import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity_;
-import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.Rating.RatingActivity;
 import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.Rating.RatingActivity_;
 import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.Rating.RatingAdapter;
 import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.Rating.UserRating;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDestination.ProvinceDestination;
 import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;
-import com.dfa.vinatrip.MapActivity;
 import com.dfa.vinatrip.MapActivity_;
 import com.dfa.vinatrip.R;
 import com.google.firebase.auth.FirebaseAuth;
