@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         doubleBackPress = false;
                     }
-                    // không nhấn nhanh thì phải nhấn 2 lần lại
+                    // After 2 seconds, user have to press back twice again
                 }, 2000);
             }
         }
