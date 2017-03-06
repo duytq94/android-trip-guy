@@ -38,6 +38,20 @@ import java.util.TimerTask;
 
 @EFragment(R.layout.fragment_location)
 public class LocationFragment extends Fragment {
+    @ViewById(R.id.fragment_location_rv_provinces)
+    RecyclerView rvProvinces;
+
+    @ViewById(R.id.fragment_location_srlReload)
+    SwipeRefreshLayout srlReload;
+
+    @ViewById(R.id.fragment_location_vp_slide_show)
+    ViewPager vpSlideShow;
+
+    @ViewById(R.id.fragment_location_ll_dots)
+    LinearLayout llDots;
+
+    private ProvinceAdapter provinceAdapter;
+    private List<Province> provinceList;
 
     // 4 photo in slide show
     private int[] mResources = {
@@ -48,24 +62,7 @@ public class LocationFragment extends Fragment {
     };
     private CustomPagerAdapter customPagerAdapter;
     private int i = 0;
-
-    @ViewById(R.id.fragment_location_rv_provinces)
-    RecyclerView rvProvinces;
-
-    private ProvinceAdapter provinceAdapter;
-    private List<Province> provinceList;
-
-    @ViewById(R.id.fragment_location_srlReload)
-    SwipeRefreshLayout srlReload;
-
-    @ViewById(R.id.fragment_location_vp_slide_show)
-    ViewPager vpSlideShow;
-
     private TextView[] tvDots;
-
-    @ViewById(R.id.fragment_location_ll_dots)
-    LinearLayout llDots;
-
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     // Catch event when page change, dots color will change
     private ViewPager.OnPageChangeListener onPageChangeListener
@@ -196,8 +193,7 @@ public class LocationFragment extends Fragment {
                                 name = dataSnapshot.child("name").getValue().toString();
                                 title = dataSnapshot.child("title").getValue().toString();
                                 avatar = dataSnapshot.child("avatar").getValue().toString();
-                                description = dataSnapshot.child("description").getValue()
-                                        .toString();
+                                description = dataSnapshot.child("description").getValue().toString();
 
                                 Province province = new Province(name, title, avatar, description);
                                 provinceList.add(province);

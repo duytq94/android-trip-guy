@@ -45,18 +45,18 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 
     private Validator validator;
 
-    @Click
-    void activity_sign_up_btn_sign_up() {
+    @Click(R.id.activity_sign_up_btn_sign_up)
+    void btnSignUpClicked() {
         validator.validate();
     }
 
-    @Click
-    void activity_sign_up_btn_sign_in() {
+    @Click(R.id.activity_sign_up_btn_sign_in)
+    void btnSignInClicked() {
         startActivity(new Intent(SignUpActivity.this, SignInActivity_.class));
     }
 
-    @Click
-    void activity_sign_up_btn_reset_password() {
+    @Click(R.id.activity_sign_up_btn_reset_password)
+    void btnResetPasswordClicked() {
         startActivity(new Intent(SignUpActivity.this, ResetPasswordActivity_.class));
     }
 
@@ -193,12 +193,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
                     message = "Mật khẩu phải từ 6 ký tự trở lên";
                     break;
             }
-
-            if (view instanceof EditText) {
-                ((EditText) view).setError(message);
-            } else {
-                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-            }
+            ((EditText) view).setError(message);
         }
     }
 }

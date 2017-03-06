@@ -48,8 +48,8 @@ public class MapActivity extends AppCompatActivity {
             @Override
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
-                // This method run after, so detailHotel, detailFood... can be assigned
 
+                // This method run after, so detailHotel, detailFood... can be assigned
                 if (detailHotel != null) {
                     // For dropping a marker at a point on the Map
                     latLng = new LatLng(detailHotel.getLatitude(), detailHotel.getLongitude());
