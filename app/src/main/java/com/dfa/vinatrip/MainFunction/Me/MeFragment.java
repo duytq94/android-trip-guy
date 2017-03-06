@@ -158,7 +158,6 @@ public class MeFragment extends Fragment {
     }
 
     public void setContentViews() {
-
         String versionName = BuildConfig.VERSION_NAME;
         int versionCode = BuildConfig.VERSION_CODE;
 

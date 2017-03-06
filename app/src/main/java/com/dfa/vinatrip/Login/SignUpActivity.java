@@ -161,12 +161,12 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
                                         .setValue(userProfile);
 
                                 // Add empty list friend for user
-                                UserFriend userFriend =
-                                        new UserFriend(firebaseUser.getUid(), "", "", "", "");
-                                databaseReference.child("UserFriend")
-                                        .child(firebaseUser.getUid())
-                                        .child(firebaseUser.getUid())
-                                        .setValue(userFriend);
+//                                UserFriend userFriend =
+//                                        new UserFriend(firebaseUser.getUid(), "", "", "", "");
+//                                databaseReference.child("UserFriend")
+//                                        .child(firebaseUser.getUid())
+//                                        .child(firebaseUser.getUid())
+//                                        .setValue(userFriend);
                             }
                             startActivity(new Intent(SignUpActivity.this, MainActivity_.class));
                             finish();

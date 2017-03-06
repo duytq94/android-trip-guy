@@ -37,6 +37,7 @@ public class MakeFriendFragment extends Fragment {
     private UserProfileAdapter userProfileAdapter;
     private FirebaseUser firebaseUser;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference referenceFriend = firebaseDatabase.getReference();
     private List<UserFriend> listUserFriends;
     private List<UserProfile> listUserProfiles;
     private UserProfile currentUser;
@@ -59,6 +60,9 @@ public class MakeFriendFragment extends Fragment {
         }
 
         listUserFriends = new ArrayList<>();
+        userProfileAdapter = new UserProfileAdapter(getActivity(), listUserProfiles,
+                listUserFriends, referenceFriend, currentUser, srlReload);
+
         if (CheckNetwork.isNetworkConnected(getActivity())) loadUserFriend();
 
         srlReload.setColorSchemeResources(R.color.colorMain);
@@ -80,8 +84,6 @@ public class MakeFriendFragment extends Fragment {
     }
 
     public void loadUserFriend() {
-        final DatabaseReference referenceFriend = firebaseDatabase.getReference();
-
         // If no Internet, this method will not run
         referenceFriend.child("UserFriend").child(firebaseUser.getUid())
                 .addChildEventListener(new ChildEventListener() {
@@ -92,7 +94,7 @@ public class MakeFriendFragment extends Fragment {
                         friendId = dataSnapshot.child("friendId").getValue().toString();
                         nickname = dataSnapshot.child("nickname").getValue().toString();
                         avatar = dataSnapshot.child("avatar").getValue().toString();
-                        email = dataSnapshot.child("state").getValue().toString();
+                        email = dataSnapshot.child("email").getValue().toString();
                         state = dataSnapshot.child("state").getValue().toString();
 
                         UserFriend userFriend =
@@ -102,16 +104,52 @@ public class MakeFriendFragment extends Fragment {
                         if (!userFriend.getFriendId().equals(firebaseUser.getUid())) {
                             listUserFriends.add(userFriend);
                         }
+                        userProfileAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        String friendId, nickname, avatar, email, state;
 
+                        friendId = dataSnapshot.child("friendId").getValue().toString();
+                        nickname = dataSnapshot.child("nickname").getValue().toString();
+                        avatar = dataSnapshot.child("avatar").getValue().toString();
+                        email = dataSnapshot.child("email").getValue().toString();
+                        state = dataSnapshot.child("state").getValue().toString();
+
+                        UserFriend userFriend =
+                                new UserFriend(friendId, nickname, avatar, email, state);
+
+                        // Don't add the current user to list
+                        if (!userFriend.getFriendId().equals(firebaseUser.getUid())) {
+                            listUserFriends.add(userFriend);
+                        }
+                        userProfileAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        String friendId, nickname, avatar, email, state;
 
+                        friendId = dataSnapshot.child("friendId").getValue().toString();
+                        nickname = dataSnapshot.child("nickname").getValue().toString();
+                        avatar = dataSnapshot.child("avatar").getValue().toString();
+                        email = dataSnapshot.child("email").getValue().toString();
+                        state = dataSnapshot.child("state").getValue().toString();
+
+                        UserFriend userFriend =
+                                new UserFriend(friendId, nickname, avatar, email, state);
+
+                        // Don't add the current user to list
+                        if (!userFriend.getFriendId().equals(firebaseUser.getUid())) {
+                            for (int i = 0; i < listUserFriends.size(); i++) {
+                                if (listUserFriends.get(i).getFriendId().equals(userFriend.getFriendId())) {
+                                    listUserFriends.remove(i);
+                                    break;
+                                }
+                            }
+                        }
+                        userProfileAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -130,8 +168,6 @@ public class MakeFriendFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        userProfileAdapter = new UserProfileAdapter(getActivity(), listUserProfiles,
-                                listUserFriends, referenceFriend, currentUser, srlReload);
                         rvListFriends.setAdapter(userProfileAdapter);
                     }
 
