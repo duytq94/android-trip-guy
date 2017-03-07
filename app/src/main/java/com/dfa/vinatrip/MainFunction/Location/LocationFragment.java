@@ -115,7 +115,7 @@ public class LocationFragment extends Fragment {
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvProvinces.setLayoutManager(staggeredGridLayoutManager);
 
-        // Catch event when click item on RecyclerView
+        // Catch event when click on item RecyclerView
         rvProvinces.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), rvProvinces,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
