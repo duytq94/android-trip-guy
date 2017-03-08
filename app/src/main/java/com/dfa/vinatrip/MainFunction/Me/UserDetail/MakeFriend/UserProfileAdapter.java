@@ -3,6 +3,7 @@ package com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend;
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
     @Override
     public void onBindViewHolder(final ProfileViewHolder holder, int position) {
         final UserProfile userProfile = listUserProfiles.get(position);
+        Log.d("counter", "aaa");
 
         holder.tvNickname.setText(userProfile.getNickname());
         holder.tvEmail.setText(userProfile.getEmail());
@@ -67,6 +69,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
 
         // If one userProfile is in listUserFriends of current user login
         for (int j = 0; j < listUserFriends.size(); j++) {
+            Log.d("counter", String.valueOf(listUserFriends.size()));
             if (userProfile.getUid().equals(listUserFriends.get(j).getFriendId())) {
                 switch (listUserFriends.get(j).getState()) {
                     case "requested":

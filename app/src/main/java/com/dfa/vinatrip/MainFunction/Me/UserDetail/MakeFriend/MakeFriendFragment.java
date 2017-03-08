@@ -122,7 +122,13 @@ public class MakeFriendFragment extends Fragment {
 
                         // Don't add the current user to list
                         if (!userFriend.getFriendId().equals(firebaseUser.getUid())) {
-                            listUserFriends.add(userFriend);
+                            for (int i = 0; i < listUserFriends.size(); i++) {
+                                if (listUserFriends.get(i).getFriendId().equals(userFriend.getFriendId())) {
+                                    listUserFriends.remove(i);
+                                    listUserFriends.add(userFriend);
+                                    break;
+                                }
+                            }
                         }
                         userProfileAdapter.notifyDataSetChanged();
                     }

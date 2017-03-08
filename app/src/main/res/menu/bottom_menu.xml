@@ -20,7 +20,7 @@
     <item
         android:id="@+id/iconMemory"
         android:icon="@drawable/ic_memory"
-        android:title="@string/menu_memory" />
+        android:title="@string/menu_my_friend" />
 
     <item
         android:id="@+id/iconMe"
