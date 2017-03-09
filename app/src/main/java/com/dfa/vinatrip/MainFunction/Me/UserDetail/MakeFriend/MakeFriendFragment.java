@@ -89,16 +89,7 @@ public class MakeFriendFragment extends Fragment {
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        String friendId, nickname, avatar, email, state;
-
-                        friendId = dataSnapshot.child("friendId").getValue().toString();
-                        nickname = dataSnapshot.child("nickname").getValue().toString();
-                        avatar = dataSnapshot.child("avatar").getValue().toString();
-                        email = dataSnapshot.child("email").getValue().toString();
-                        state = dataSnapshot.child("state").getValue().toString();
-
-                        UserFriend userFriend =
-                                new UserFriend(friendId, nickname, avatar, email, state);
+                        UserFriend userFriend = dataSnapshot.getValue(UserFriend.class);
 
                         // Don't add the current user to list
                         if (!userFriend.getFriendId().equals(firebaseUser.getUid())) {
@@ -109,16 +100,7 @@ public class MakeFriendFragment extends Fragment {
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        String friendId, nickname, avatar, email, state;
-
-                        friendId = dataSnapshot.child("friendId").getValue().toString();
-                        nickname = dataSnapshot.child("nickname").getValue().toString();
-                        avatar = dataSnapshot.child("avatar").getValue().toString();
-                        email = dataSnapshot.child("email").getValue().toString();
-                        state = dataSnapshot.child("state").getValue().toString();
-
-                        UserFriend userFriend =
-                                new UserFriend(friendId, nickname, avatar, email, state);
+                        UserFriend userFriend = dataSnapshot.getValue(UserFriend.class);
 
                         // Don't add the current user to list
                         if (!userFriend.getFriendId().equals(firebaseUser.getUid())) {
@@ -135,16 +117,7 @@ public class MakeFriendFragment extends Fragment {
 
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
-                        String friendId, nickname, avatar, email, state;
-
-                        friendId = dataSnapshot.child("friendId").getValue().toString();
-                        nickname = dataSnapshot.child("nickname").getValue().toString();
-                        avatar = dataSnapshot.child("avatar").getValue().toString();
-                        email = dataSnapshot.child("email").getValue().toString();
-                        state = dataSnapshot.child("state").getValue().toString();
-
-                        UserFriend userFriend =
-                                new UserFriend(friendId, nickname, avatar, email, state);
+                        UserFriend userFriend = dataSnapshot.getValue(UserFriend.class);
 
                         // Don't add the current user to list
                         if (!userFriend.getFriendId().equals(firebaseUser.getUid())) {

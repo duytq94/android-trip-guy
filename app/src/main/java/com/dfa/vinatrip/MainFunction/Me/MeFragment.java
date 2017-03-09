@@ -287,23 +287,11 @@ public class MeFragment extends Fragment {
         databaseReference.child("UserProfile").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String avatar, city, introduceYourSelf, nickname, birthday, uid, sex, email;
-
-                city = dataSnapshot.child("city").getValue().toString();
-                introduceYourSelf = dataSnapshot.child("introduceYourSelf").getValue().toString();
-                avatar = dataSnapshot.child("avatar").getValue().toString();
-                nickname = dataSnapshot.child("nickname").getValue().toString();
-                birthday = dataSnapshot.child("birthday").getValue().toString();
-                sex = dataSnapshot.child("sex").getValue().toString();
-                email = dataSnapshot.child("email").getValue().toString();
-                uid = dataSnapshot.getKey();
-
-                UserProfile result = new UserProfile(nickname, avatar, introduceYourSelf,
-                        city, birthday, uid, sex, email);
+                UserProfile result = dataSnapshot.getValue(UserProfile.class);
 
                 listUserProfiles.add(result);
 
-                if (result.uid.equals(firebaseUser.getUid())) {
+                if (result.getUid().equals(firebaseUser.getUid())) {
                     if (!result.getNickname().equals("")) {
                         tvNickname.setText(result.getNickname());
                     }
@@ -370,18 +358,9 @@ public class MeFragment extends Fragment {
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        String friendId, nickname, avatar, email, state;
+                        UserFriend userFriend = dataSnapshot.getValue(UserFriend.class);
 
-                        friendId = dataSnapshot.child("friendId").getValue().toString();
-                        nickname = dataSnapshot.child("nickname").getValue().toString();
-                        avatar = dataSnapshot.child("avatar").getValue().toString();
-                        email = dataSnapshot.child("email").getValue().toString();
-                        state = dataSnapshot.child("state").getValue().toString();
-
-                        UserFriend userFriend =
-                                new UserFriend(friendId, nickname, avatar, email, state);
-
-                        // Don't add the current user and the friend not agree yet to list
+                        // Don't add the friend not agree yet to list
                         if (!userFriend.getFriendId().equals(firebaseUser.getUid()) &&
                                 userFriend.getState().equals("friend")) {
                             listUserFriends.add(userFriend);

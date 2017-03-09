@@ -5,12 +5,7 @@ import java.io.Serializable;
 public class UserProfile implements Serializable {
     String nickname, avatar, introduceYourSelf, city, birthday, uid, sex, email;
 
-    public String getSex() {
-        return sex;
-    }
-
-    public String getEmail() {
-        return email;
+    public UserProfile() {
     }
 
     public UserProfile(String nickname, String avatar, String introduceYourSelf, String city,
@@ -24,6 +19,14 @@ public class UserProfile implements Serializable {
         this.sex = sex;
         this.email = email;
 
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getNickname() {

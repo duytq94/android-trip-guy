@@ -3,6 +3,9 @@ package com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend;
 public class UserFriend {
     String friendId, nickname, avatar, email, state;
 
+    public UserFriend() {
+    }
+
     public UserFriend(String friendId, String nickname, String avatar, String email, String state) {
         this.friendId = friendId;
         this.nickname = nickname;
