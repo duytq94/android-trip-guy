@@ -61,7 +61,6 @@ public class MakeFriendFragment extends Fragment {
 
             @Override
             public void onRemoveItem(String uid) {
-                dataService.removeFromUserFriendList(uid);
             }
         });
 
@@ -125,6 +124,7 @@ public class MakeFriendFragment extends Fragment {
                         if (!userFriend.getFriendId().equals(currentUser.getUid())) {
                             for (int i = 0; i < listUserFriends.size(); i++) {
                                 if (listUserFriends.get(i).getFriendId().equals(userFriend.getFriendId())) {
+                                    dataService.removeFromUserFriendList(listUserFriends.get(i).getFriendId());
                                     listUserFriends.remove(i);
                                     break;
                                 }

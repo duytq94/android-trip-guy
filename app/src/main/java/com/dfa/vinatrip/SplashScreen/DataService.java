@@ -2,6 +2,7 @@ package com.dfa.vinatrip.SplashScreen;
 
 import com.dfa.vinatrip.MainFunction.Location.Province;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
+import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserProfileAdapter;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 
 import org.androidannotations.annotations.EBean;
@@ -65,5 +66,17 @@ public class DataService {
 
     public List<Province> getProvinceList() {
         return provinceList;
+    }
+
+    private UserProfileAdapter.OnChangeUserFriendList onChangeUserFriendList;
+
+    public void setOnChangeUserFriendList(UserProfileAdapter.OnChangeUserFriendList onChangeUserFriendList) {
+        this.onChangeUserFriendList = onChangeUserFriendList;
+    }
+
+    public interface OnChangeUserFriendList {
+        void onAddItem();
+
+        void onRemoveItem();
     }
 }
