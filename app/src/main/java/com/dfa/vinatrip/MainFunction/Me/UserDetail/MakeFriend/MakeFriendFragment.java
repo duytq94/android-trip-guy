@@ -53,17 +53,6 @@ public class MakeFriendFragment extends Fragment {
         userProfileAdapter = new UserProfileAdapter(getActivity(), listUserProfiles,
                 listUserFriends, referenceFriend, currentUser, srlReload);
 
-        userProfileAdapter.setOnChangeUserFriendList(new UserProfileAdapter.OnChangeUserFriendList() {
-            @Override
-            public void onAddItem(UserFriend userFriend) {
-                dataService.addToUserFriendList(userFriend);
-            }
-
-            @Override
-            public void onRemoveItem(String uid) {
-            }
-        });
-
         if (CheckNetwork.isNetworkConnected(getActivity())) loadUserFriend();
 
         srlReload.setColorSchemeResources(R.color.colorMain);
@@ -91,11 +80,7 @@ public class MakeFriendFragment extends Fragment {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         UserFriend userFriend = dataSnapshot.getValue(UserFriend.class);
-
-                        // Don't add the current user to list
-                        if (!userFriend.getFriendId().equals(currentUser.getUid())) {
-                            listUserFriends.add(userFriend);
-                        }
+                        listUserFriends.add(userFriend);
                         userProfileAdapter.notifyDataSetChanged();
                     }
 
@@ -109,6 +94,9 @@ public class MakeFriendFragment extends Fragment {
                                 if (listUserFriends.get(i).getFriendId().equals(userFriend.getFriendId())) {
                                     listUserFriends.remove(i);
                                     listUserFriends.add(userFriend);
+                                    if (userFriend.getState().equals("friend")) {
+                                        dataService.addToUserFriendList(userFriend);
+                                    }
                                     break;
                                 }
                             }

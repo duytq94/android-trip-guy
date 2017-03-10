@@ -121,7 +121,6 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                                 .child(currentUser.getUid())
                                 .child(userProfile.getUid())
                                 .setValue(userFriendBeRequested2);
-                        onChangeUserFriendList.onAddItem(userFriendBeRequested2);
 
                         // Add profile current user to the user request
                         UserFriend userFriendCurrent2 = new UserFriend(currentUser.getUid(),
@@ -142,7 +141,6 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                                 .child(currentUser.getUid())
                                 .child(userProfile.getUid())
                                 .removeValue();
-                        onChangeUserFriendList.onRemoveItem(userProfile.getUid());
 
                         // Delete data to the user be requested
                         referenceFriend.child("UserFriend")
@@ -217,15 +215,5 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
         }
     }
 
-    private OnChangeUserFriendList onChangeUserFriendList;
 
-    public void setOnChangeUserFriendList(OnChangeUserFriendList onChangeUserFriendList) {
-        this.onChangeUserFriendList = onChangeUserFriendList;
-    }
-
-    public interface OnChangeUserFriendList {
-        void onAddItem(UserFriend userFriend);
-
-        void onRemoveItem(String uid);
-    }
 }

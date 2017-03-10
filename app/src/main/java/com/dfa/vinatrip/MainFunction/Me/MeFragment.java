@@ -186,6 +186,27 @@ public class MeFragment extends Fragment {
             tvEmail.setText(currentUser.getEmail());
             tvSex.setText(currentUser.getSex());
 
+            dataService.setOnChangeUserFriendList(new DataService.OnChangeUserFriendList() {
+                @Override
+                public void onAddItem() {
+                    listUserFriends.clear();
+                    listUserFriends.addAll(dataService.getUserFriendList());
+                    tvMakeFriend.setEnabled(true);
+                    friendAdapter = new FriendAdapter(getActivity(), listUserFriends,
+                            tvFriendNotAvailable, srlReload);
+                    rvListFriends.setAdapter(friendAdapter);
+                }
+
+                @Override
+                public void onRemoveItem() {
+                    listUserFriends.clear();
+                    listUserFriends.addAll(dataService.getUserFriendList());
+                    tvMakeFriend.setEnabled(true);
+                    friendAdapter = new FriendAdapter(getActivity(), listUserFriends,
+                            tvFriendNotAvailable, srlReload);
+                    rvListFriends.setAdapter(friendAdapter);
+                }
+            });
 
             listUserFriends.addAll(dataService.getUserFriendList());
             tvMakeFriend.setEnabled(true);

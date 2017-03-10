@@ -2,7 +2,6 @@ package com.dfa.vinatrip.SplashScreen;
 
 import com.dfa.vinatrip.MainFunction.Location.Province;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserProfileAdapter;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 
 import org.androidannotations.annotations.EBean;
@@ -32,13 +31,20 @@ public class DataService {
     }
 
     public void addToUserFriendList(UserFriend newUserFriend) {
+        for (UserFriend userFriend : userFriendList) {
+            if (userFriend.getFriendId().equals(newUserFriend.getFriendId())) {
+                return;
+            }
+        }
         userFriendList.add(newUserFriend);
+        onChangeUserFriendList.onAddItem();
     }
 
     public void removeFromUserFriendList(String uid) {
         for (int i = 0; i < userFriendList.size(); i++) {
             if (userFriendList.get(i).getFriendId().equals(uid)) {
                 userFriendList.remove(i);
+                onChangeUserFriendList.onRemoveItem();
                 break;
             }
         }
@@ -68,9 +74,9 @@ public class DataService {
         return provinceList;
     }
 
-    private UserProfileAdapter.OnChangeUserFriendList onChangeUserFriendList;
+    private OnChangeUserFriendList onChangeUserFriendList;
 
-    public void setOnChangeUserFriendList(UserProfileAdapter.OnChangeUserFriendList onChangeUserFriendList) {
+    public void setOnChangeUserFriendList(OnChangeUserFriendList onChangeUserFriendList) {
         this.onChangeUserFriendList = onChangeUserFriendList;
     }
 
