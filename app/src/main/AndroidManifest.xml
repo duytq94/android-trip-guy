@@ -45,7 +45,9 @@
         <activity android:name=".MainFunction.Me.UserDetail.UserProfileDetailActivity_" />
         <activity android:name=".MainFunction.Location.EachItemProvinceDetail.Rating.RatingActivity_" />
         <activity android:name=".MainFunction.Location.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity_" />
-        <activity android:name=".SplashScreen.SplashScreenActivity_"></activity>
+        <activity android:name=".SplashScreen.SplashScreenActivity_">
+
+        </activity>
     </application>
 
 </manifest>

@@ -21,6 +21,7 @@ import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDetailActivity_;
 import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.SplashScreen.DataService;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -38,6 +40,9 @@ import java.util.TimerTask;
 
 @EFragment(R.layout.fragment_location)
 public class LocationFragment extends Fragment {
+    @Bean
+    DataService dataService;
+
     @ViewById(R.id.fragment_location_rv_provinces)
     RecyclerView rvProvinces;
 
@@ -134,10 +139,9 @@ public class LocationFragment extends Fragment {
                     }
                 }));
 
-        if (CheckNetwork.isNetworkConnected(getActivity())) {
-            provinceList.clear();
-            loadProvince();
-        }
+        provinceList.clear();
+        provinceList.addAll(dataService.getProvinceList());
+        provinceAdapter.notifyDataSetChanged();
     }
 
     public void autoScrollSlideShow() {
@@ -183,43 +187,35 @@ public class LocationFragment extends Fragment {
         DatabaseReference databaseReference = firebaseDatabase.getReference();
 
         // If no Internet, this method will not run
-        databaseReference
-                .child("Province")
-                .addChildEventListener(
-                        new ChildEventListener() {
-                            @Override
-                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                String name, title, avatar, description;
-                                name = dataSnapshot.child("name").getValue().toString();
-                                title = dataSnapshot.child("title").getValue().toString();
-                                avatar = dataSnapshot.child("avatar").getValue().toString();
-                                description = dataSnapshot.child("description").getValue().toString();
+        databaseReference.child("Province").addChildEventListener(
+                new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Province province = dataSnapshot.getValue(Province.class);
+                        provinceList.add(province);
+                        provinceAdapter.notifyDataSetChanged();
+                    }
 
-                                Province province = new Province(name, title, avatar, description);
-                                provinceList.add(province);
-                                provinceAdapter.notifyDataSetChanged();
-                            }
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                            @Override
-                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    }
 
-                            }
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                            @Override
-                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    }
 
-                            }
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                            @Override
-                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    }
 
-                            }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
+                    }
+                });
     }
 
     public class CustomPagerAdapter extends PagerAdapter {

@@ -16,8 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.Login.SignUpActivity_;
-import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.SplashScreen.SplashScreenActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -148,7 +148,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     public void launchHomeScreen() {
         prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(WelcomeActivity.this, MainActivity_.class));
+        startActivity(new Intent(WelcomeActivity.this, SplashScreenActivity_.class));
         finish();
     }
 
@@ -163,14 +163,14 @@ public class WelcomeActivity extends AppCompatActivity {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View view = layoutInflater.inflate(layouts[position], container, false);
-            // container là nơi chứa các welcome_screen
+            // Container contain welcome_screens
             container.addView(view);
 
             return view;
         }
 
         @Override
-        // count views available
+        // Count views available
         public int getCount() {
             return layouts.length;
         }

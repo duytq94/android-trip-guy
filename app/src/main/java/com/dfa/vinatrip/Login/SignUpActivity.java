@@ -14,10 +14,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.SplashScreen.SplashScreenActivity_;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -168,7 +168,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 //                                        .child(firebaseUser.getUid())
 //                                        .setValue(userFriend);
                             }
-                            startActivity(new Intent(SignUpActivity.this, MainActivity_.class));
+                            startActivity(new Intent(SignUpActivity.this, SplashScreenActivity_.class));
                             finish();
                         }
                     }

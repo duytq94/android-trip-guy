@@ -14,8 +14,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.SplashScreen.SplashScreenActivity_;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -92,7 +92,7 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
                                     "Email hoặc mật khẩu không đúng!"
                                     , Toast.LENGTH_SHORT).show();
                         } else {
-                            startActivity(new Intent(SignInActivity.this, MainActivity_.class));
+                            startActivity(new Intent(SignInActivity.this, SplashScreenActivity_.class));
                         }
                     }
                 });

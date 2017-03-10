@@ -8,6 +8,9 @@ public class Province implements Serializable {
     private String avatar;
     private String description;
 
+    public Province() {
+    }
+
     public Province(String name, String title, String avatar, String description) {
         this.name = name;
         this.title = title;

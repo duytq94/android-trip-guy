@@ -20,18 +20,13 @@ import com.dfa.vinatrip.Login.SignInActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.UserProfileDetailActivity_;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.SplashScreen.DataService;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -45,6 +40,9 @@ import jp.wasabeef.blurry.Blurry;
 public class MeFragment extends Fragment {
 
     static final int NOTIFY_UPDATE_REQUEST = 1;
+
+    @Bean
+    DataService dataService;
 
     @ViewById(R.id.fragment_me_tv_nickname)
     TextView tvNickname;
@@ -104,12 +102,10 @@ public class MeFragment extends Fragment {
     RecyclerView rvListFriends;
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseUser firebaseUser;
     private UserProfile currentUser;
     private List<UserProfile> listUserProfiles;
     private List<UserFriend> listUserFriends;
     private FriendAdapter friendAdapter;
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
     @AfterViews
     void onCreateView() {
@@ -165,19 +161,38 @@ public class MeFragment extends Fragment {
         tvAppInfo.append("Version name: " + versionName + "\n");
         tvAppInfo.append("Version code: " + versionCode + "\n");
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser != null) {
-            srlReload.setRefreshing(true);
+        currentUser = dataService.getCurrentUser();
+        if (currentUser != null) {
             listUserProfiles = new ArrayList<>();
             listUserFriends = new ArrayList<>();
 
             // Wait until list user profile load done
             tvMakeFriend.setEnabled(false);
-            llUpdateProfile.setEnabled(false);
 
-            loadUserProfile();
-            loadUserFriend();
+
+            listUserProfiles.addAll(dataService.getUserProfileList());
+            if (!currentUser.getNickname().equals("")) {
+                tvNickname.setText(currentUser.getNickname());
+            }
+            if (!currentUser.getCity().equals("")) {
+                tvCity.setText(currentUser.getCity());
+            }
+            if (!currentUser.getAvatar().isEmpty()) {
+                Picasso.with(getActivity())
+                        .load(currentUser.getAvatar())
+                        .into(target);
+            }
+            tvIntroduceYourSelf.setText(currentUser.getIntroduceYourSelf());
+            tvBirthday.setText(currentUser.getBirthday());
+            tvEmail.setText(currentUser.getEmail());
+            tvSex.setText(currentUser.getSex());
+
+
+            listUserFriends.addAll(dataService.getUserFriendList());
+            tvMakeFriend.setEnabled(true);
+            friendAdapter = new FriendAdapter(getActivity(), listUserFriends,
+                    tvFriendNotAvailable, srlReload);
+            rvListFriends.setAdapter(friendAdapter);
 
             StaggeredGridLayoutManager staggeredGridLayoutManager =
                     new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
@@ -191,7 +206,7 @@ public class MeFragment extends Fragment {
         llSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (firebaseUser == null) {
+                if (currentUser == null) {
                     startActivity(new Intent(getActivity(), SignInActivity_.class));
                 } else {
                     Toast.makeText(getActivity(), "Bạn đã đăng nhập!", Toast.LENGTH_SHORT).show();
@@ -202,7 +217,7 @@ public class MeFragment extends Fragment {
         llSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (firebaseUser != null) {
+                if (currentUser != null) {
                     firebaseAuth.signOut();
 
                     // Restart app
@@ -219,7 +234,7 @@ public class MeFragment extends Fragment {
         llUpdateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (firebaseUser != null) {
+                if (currentUser != null) {
                     Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
 
                     // Send UserProfile to UserProfileDetailActivity
@@ -243,7 +258,7 @@ public class MeFragment extends Fragment {
         tvMakeFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (firebaseUser != null) {
+                if (currentUser != null) {
                     Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
 
                     // Send UserProfile to UserProfileDetailActivity
@@ -278,132 +293,6 @@ public class MeFragment extends Fragment {
                 hideViews(true);
             }
         }
-    }
-
-    public void loadUserProfile() {
-        DatabaseReference databaseReference = firebaseDatabase.getReference();
-
-        // If no Internet, this method will not run
-        databaseReference.child("UserProfile").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                UserProfile result = dataSnapshot.getValue(UserProfile.class);
-
-                listUserProfiles.add(result);
-
-                if (result.getUid().equals(firebaseUser.getUid())) {
-                    if (!result.getNickname().equals("")) {
-                        tvNickname.setText(result.getNickname());
-                    }
-                    if (!result.getCity().equals("")) {
-                        tvCity.setText(result.getCity());
-                    }
-                    if (!result.getAvatar().isEmpty()) {
-                        Picasso.with(getActivity())
-                                .load(result.getAvatar())
-                                .into(target);
-                    }
-                    tvIntroduceYourSelf.setText(result.getIntroduceYourSelf());
-                    tvBirthday.setText(result.getBirthday());
-                    tvEmail.setText(result.getEmail());
-                    tvSex.setText(result.getSex());
-
-                    currentUser = result;
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-        });
-
-        // This method to be called after all the onChildAdded() calls have happened
-        databaseReference.child("UserProfile")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        srlReload.setRefreshing(false);
-                        llUpdateProfile.setEnabled(true);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-    }
-
-    public void loadUserFriend() {
-        final DatabaseReference referenceFriend = firebaseDatabase.getReference();
-
-        // If no Internet, this method will not run
-        referenceFriend.child("UserFriend").child(firebaseUser.getUid())
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        UserFriend userFriend = dataSnapshot.getValue(UserFriend.class);
-
-                        // Don't add the friend not agree yet to list
-                        if (!userFriend.getFriendId().equals(firebaseUser.getUid()) &&
-                                userFriend.getState().equals("friend")) {
-                            listUserFriends.add(userFriend);
-                        }
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-        // This method to be called after all the onChildAdded() calls have happened
-        referenceFriend.child("UserFriend").child(firebaseUser.getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        tvMakeFriend.setEnabled(true);
-                        friendAdapter = new FriendAdapter(getActivity(), listUserFriends,
-                                tvFriendNotAvailable, srlReload);
-                        rvListFriends.setAdapter(friendAdapter);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
     }
 
     // Note that to use bitmap, have to create variable target out of .into()

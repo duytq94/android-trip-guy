@@ -19,11 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserLocation;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.SplashScreen.DataService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,14 +33,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -48,6 +42,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentById;
 
@@ -59,31 +54,32 @@ import de.hdodenhof.circleimageview.CircleImageView;
 @EFragment(R.layout.fragment_my_friend)
 public class MyFriendFragment extends Fragment {
 
+    @Bean
+    DataService dataService;
+
     @FragmentById(value = R.id.fragment_my_friend_map_my_friend, childFragment = true)
     SupportMapFragment smfMyFriend;
 
     private GoogleMap googleMap;
-    private FirebaseUser firebaseUser;
     private LocationManager locationManager;
     private LocationListener locationListener;
     private Location location;
-    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference databaseReference;
     private UserProfile currentUser;
-    private List<UserFriend> listUserFriends;
-    private List<UserLocation> listUserLocations;
+    private List<UserFriend> userFriendList;
+    private List<UserLocation> userLocationList;
     private ImageLoader imageLoader;
     private Marker markerCurrentUser;
 
     @AfterViews
     void onCreateView() {
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        locationListener();
-        if (CheckNetwork.isNetworkConnected(getActivity())) {
-            firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-            if (firebaseUser != null) {
-                askPermission();
-                initViews();
-            }
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        currentUser = dataService.getCurrentUser();
+        if (currentUser != null) {
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            locationListener();
+            askPermission();
+            initViews();
         }
     }
 
@@ -106,7 +102,6 @@ public class MyFriendFragment extends Fragment {
 
     public void initViews() {
         if (checkPermission()) {
-            firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             smfMyFriend.onCreate(null);
             smfMyFriend.onResume();
             smfMyFriend.getMapAsync(new OnMapReadyCallback() {
@@ -118,11 +113,21 @@ public class MyFriendFragment extends Fragment {
 
                     googleMap = mMap;
 
-                    listUserFriends = new ArrayList<>();
-                    listUserLocations = new ArrayList<>();
+                    userFriendList = new ArrayList<>();
+                    userFriendList.addAll(dataService.getUserFriendList());
 
-                    loadUserProfile();
-                    loadUserFriend();
+                    userLocationList = new ArrayList<>();
+                    userLocationList.addAll(dataService.getUserLocationList());
+
+                    getCurrentUserLocation();
+
+                    for (UserFriend userFriend : userFriendList) {
+                        for (UserLocation userLocation : userLocationList) {
+                            if (userFriend.getFriendId().equals(userLocation.getUid())) {
+                                getUserFriendLocation(userLocation);
+                            }
+                        }
+                    }
                 }
             });
         }
@@ -227,157 +232,6 @@ public class MyFriendFragment extends Fragment {
         databaseReference.child("UserLocation").child(currentUser.getUid()).setValue(userLocation);
     }
 
-    public void loadUserProfile() {
-        // If no Internet, this method will not run
-        databaseReference.child("UserProfile").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                UserProfile result = dataSnapshot.getValue(UserProfile.class);
-                if (result.getUid().equals(firebaseUser.getUid())) {
-                    currentUser = result;
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-        });
-
-        // This method to be called after all the onChildAdded() calls have happened
-        databaseReference.child("UserProfile")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        getCurrentUserLocation();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-    }
-
-    public void loadUserFriend() {
-        // If no Internet, this method will not run
-        databaseReference.child("UserFriend").child(firebaseUser.getUid())
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        UserFriend userFriend = dataSnapshot.getValue(UserFriend.class);
-
-                        // Don't add the friend not agree yet to list
-                        if (!userFriend.getFriendId().equals(firebaseUser.getUid()) &&
-                                userFriend.getState().equals("friend")) {
-                            listUserFriends.add(userFriend);
-                        }
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-        // This method to be called after all the onChildAdded() calls have happened
-        databaseReference.child("UserFriend").child(firebaseUser.getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        loadUserLocation();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-    }
-
-    public void loadUserLocation() {
-        // If no Internet, this method will not run
-        databaseReference.child("UserLocation")
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        UserLocation userLocation = dataSnapshot.getValue(UserLocation.class);
-                        listUserLocations.add(userLocation);
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-        // This method to be called after all the onChildAdded() calls have happened
-        databaseReference.child("UserLocation")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (UserFriend userFriend : listUserFriends) {
-                            for (UserLocation userLocation : listUserLocations) {
-                                if (userFriend.getFriendId().equals(userLocation.getUid())) {
-                                    getUserFriendLocation(userLocation);
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-    }
-
     public Bitmap createBitmapFromView(View view) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -396,14 +250,18 @@ public class MyFriendFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 5, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 1000, 5, locationListener);
+        if (locationManager != null && checkPermission()) {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 5, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 1000, 5, locationListener);
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        locationManager.removeUpdates(locationListener);
+        if (locationManager != null && checkPermission()) {
+            locationManager.removeUpdates(locationListener);
+        }
     }
 }
