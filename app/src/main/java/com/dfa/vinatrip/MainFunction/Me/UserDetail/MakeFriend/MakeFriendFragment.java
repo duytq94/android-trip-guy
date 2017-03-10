@@ -36,8 +36,7 @@ public class MakeFriendFragment extends Fragment {
 
     private UserProfileAdapter userProfileAdapter;
     private FirebaseUser firebaseUser;
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference referenceFriend = firebaseDatabase.getReference();
+    private DatabaseReference referenceFriend = FirebaseDatabase.getInstance().getReference();
     private List<UserFriend> listUserFriends;
     private List<UserProfile> listUserProfiles;
     private UserProfile currentUser;
