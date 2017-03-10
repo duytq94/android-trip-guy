@@ -101,7 +101,6 @@ public class MeFragment extends Fragment {
     @ViewById(R.id.fragment_me_rv_list_friends)
     RecyclerView rvListFriends;
 
-    private FirebaseAuth firebaseAuth;
     private UserProfile currentUser;
     private List<UserProfile> listUserProfiles;
     private List<UserFriend> listUserFriends;
@@ -218,7 +217,8 @@ public class MeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (currentUser != null) {
-                    firebaseAuth.signOut();
+                    FirebaseAuth.getInstance().signOut();
+                    dataService.removeCurrentUser();
 
                     // Restart app
                     Intent restart = getActivity().getPackageManager()

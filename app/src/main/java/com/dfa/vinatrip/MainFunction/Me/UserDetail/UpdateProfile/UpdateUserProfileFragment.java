@@ -22,10 +22,9 @@ import android.widget.Toast;
 
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.SplashScreen.DataService;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -36,6 +35,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
@@ -50,6 +50,9 @@ import jp.wasabeef.blurry.Blurry;
 
 @EFragment(R.layout.fragment_update_user_profile)
 public class UpdateUserProfileFragment extends Fragment {
+
+    @Bean
+    DataService dataService;
 
     @ViewById(R.id.fragment_update_user_profile_tv_percent)
     TextView tvPercent;
@@ -78,23 +81,30 @@ public class UpdateUserProfileFragment extends Fragment {
     @ViewById(R.id.fragment_update_user_profile_tv_birthday)
     TextView tvBirthday;
 
+    private DatabaseReference databaseReference;
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
+    private UserProfile currentUser;
+    private Calendar calendar;
+    private Uri uri;
+    private int PICK_IMAGE = 1;
+
     @Click
     void fragment_update_user_profile_btn_done() {
         // Check if user update info but don't update avatar
         if (uri == null) {
             UserProfile newUserProfile = new UserProfile(etNickname.getText().toString(),
-                    userProfile.getAvatar(),
+                    currentUser.getAvatar(),
                     etIntroduceYourSelf.getText().toString(),
                     etCity.getText().toString(),
                     tvBirthday.getText().toString(),
-                    firebaseUser.getUid(),
+                    currentUser.getUid(),
                     spnSex.getSelectedItem().toString(),
-                    userProfile.getEmail());
-            databaseReference.child("UserProfile").child(firebaseUser.getUid())
-                    .setValue(newUserProfile);
+                    currentUser.getEmail());
 
-            Toast.makeText(getActivity(), "Cập nhật thành công!", Toast.LENGTH_SHORT)
-                    .show();
+            databaseReference.child("UserProfile").child(currentUser.getUid()).setValue(newUserProfile);
+            dataService.setCurrentUser(newUserProfile);
+            Toast.makeText(getActivity(), "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
         } else {
             uploadUserAvatar();
         }
@@ -136,16 +146,6 @@ public class UpdateUserProfileFragment extends Fragment {
         dialog.show();
     }
 
-    private FirebaseAuth firebaseAuth;
-    private FirebaseUser firebaseUser;
-    private DatabaseReference databaseReference;
-    private FirebaseStorage firebaseStorage;
-    private StorageReference storageReference;
-    private UserProfile userProfile;
-    private Calendar calendar;
-    private Uri uri;
-    private int PICK_IMAGE = 1;
-
     @AfterViews
     void onCreateView() {
         setContentViews();
@@ -158,30 +158,27 @@ public class UpdateUserProfileFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnSex.setAdapter(adapter);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
+        currentUser = dataService.getCurrentUser();
         firebaseStorage = FirebaseStorage.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         calendar = Calendar.getInstance();
 
-        // Get UserProfile from UserProfileDetailActivity to show it to views
-        userProfile = (UserProfile) getArguments().getSerializable("UserProfile");
-        if (userProfile != null) {
-            if (!userProfile.getAvatar().equals("")) {
+        if (currentUser != null) {
+            if (!currentUser.getAvatar().equals("")) {
                 Picasso.with(getActivity())
-                        .load(userProfile.getAvatar())
+                        .load(currentUser.getAvatar())
                         .into(target);
             }
-            etNickname.setText(userProfile.getNickname());
-            etCity.setText(userProfile.getCity());
-            if (!userProfile.getBirthday().equals("")) {
-                tvBirthday.setText(userProfile.getBirthday());
+            etNickname.setText(currentUser.getNickname());
+            etCity.setText(currentUser.getCity());
+            if (!currentUser.getBirthday().equals("")) {
+                tvBirthday.setText(currentUser.getBirthday());
             } else {
                 setCurrentDayForView();
             }
-            etIntroduceYourSelf.setText(userProfile.getIntroduceYourSelf());
-            switch (userProfile.getSex()) {
+            etIntroduceYourSelf.setText(currentUser.getIntroduceYourSelf());
+            switch (currentUser.getSex()) {
                 case "Nam":
                     spnSex.setSelection(0);
                     break;
@@ -221,7 +218,7 @@ public class UpdateUserProfileFragment extends Fragment {
             storageReference = firebaseStorage
                     .getReferenceFromUrl("gs://tripguy-10864.appspot.com")
                     .child("AvatarProfileUser")
-                    .child(firebaseUser.getUid() + ".jpg");
+                    .child(currentUser.getUid() + ".jpg");
 
             UploadTask uploadTask = storageReference.putBytes(byteArrayPhoto);
             uploadTask
@@ -247,7 +244,7 @@ public class UpdateUserProfileFragment extends Fragment {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Uri downloadUrl = taskSnapshot.getDownloadUrl();
                             String linkAvatar;
-                            if (downloadUrl == null) linkAvatar = userProfile.getAvatar();
+                            if (downloadUrl == null) linkAvatar = currentUser.getAvatar();
                             else {
                                 linkAvatar = downloadUrl.toString();
                             }
@@ -257,11 +254,12 @@ public class UpdateUserProfileFragment extends Fragment {
                                             etIntroduceYourSelf.getText().toString(),
                                             etCity.getText().toString(),
                                             tvBirthday.getText().toString(),
-                                            firebaseUser.getUid(),
+                                            currentUser.getUid(),
                                             spnSex.getSelectedItem().toString(),
-                                            userProfile.getEmail());
-                            databaseReference.child("UserProfile").child(firebaseUser.getUid())
+                                            currentUser.getEmail());
+                            databaseReference.child("UserProfile").child(currentUser.getUid())
                                     .setValue(newUserProfile);
+                            dataService.setCurrentUser(newUserProfile);
                             progressBar.setVisibility(View.GONE);
                             tvPercent.setVisibility(View.GONE);
                             Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT)

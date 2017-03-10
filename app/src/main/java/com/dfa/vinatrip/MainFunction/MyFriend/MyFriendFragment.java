@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserLocation;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.SplashScreen.DataService;
@@ -33,8 +32,12 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -70,6 +73,7 @@ public class MyFriendFragment extends Fragment {
     private List<UserLocation> userLocationList;
     private ImageLoader imageLoader;
     private Marker markerCurrentUser;
+    private List<UserFriendMarker> userFriendMarkerList;
 
     @AfterViews
     void onCreateView() {
@@ -113,24 +117,75 @@ public class MyFriendFragment extends Fragment {
 
                     googleMap = mMap;
 
+                    userFriendMarkerList = new ArrayList<>();
+
                     userFriendList = new ArrayList<>();
                     userFriendList.addAll(dataService.getUserFriendList());
 
                     userLocationList = new ArrayList<>();
-                    userLocationList.addAll(dataService.getUserLocationList());
+                    loadUserLocation();
 
                     getCurrentUserLocation();
+                }
+            });
+        }
+    }
 
-                    for (UserFriend userFriend : userFriendList) {
-                        for (UserLocation userLocation : userLocationList) {
-                            if (userFriend.getFriendId().equals(userLocation.getUid())) {
+    public void loadUserLocation() {
+        // If no Internet, this method will not run
+        databaseReference.child("UserLocation")
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        UserLocation userLocation = dataSnapshot.getValue(UserLocation.class);
+                        userLocationList.add(userLocation);
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        UserLocation userLocation = dataSnapshot.getValue(UserLocation.class);
+                        for (UserFriend userFriend : userFriendList) {
+                            if (userLocation.getUid().equals(userFriend.getFriendId())) {
                                 getUserFriendLocation(userLocation);
                             }
                         }
                     }
-                }
-            });
-        }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        // This method to be called after all the onChildAdded() calls have happened
+        databaseReference.child("UserLocation")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (UserFriend userFriend : userFriendList) {
+                            for (UserLocation userLocation : userLocationList) {
+                                if (userFriend.getFriendId().equals(userLocation.getUid())) {
+                                    getUserFriendLocation(userLocation);
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     public void locationListener() {
@@ -161,8 +216,8 @@ public class MyFriendFragment extends Fragment {
     public void getCurrentUserLocation() {
         List<String> listProviders = locationManager.getAllProviders();
         for (String provider : listProviders) {
-            location = locationManager.getLastKnownLocation(provider);
-            if (location != null) {
+            if (locationManager.getLastKnownLocation(provider) != null) {
+                location = locationManager.getLastKnownLocation(provider);
                 uploadCurrentUserLocation(location);
                 if (markerCurrentUser != null) {
                     markerCurrentUser.remove();
@@ -175,6 +230,11 @@ public class MyFriendFragment extends Fragment {
     }
 
     public void getUserFriendLocation(final UserLocation userLocation) {
+        for (int i = 0; i < userFriendMarkerList.size(); i++) {
+            if (userLocation.getUid().equals(userFriendMarkerList.get(i).getFriendId())) {
+                userFriendMarkerList.get(i).getMarker().remove();
+            }
+        }
         imageLoader.loadImage(userLocation.getAvatar(), new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
@@ -184,11 +244,15 @@ public class MyFriendFragment extends Fragment {
                 Bitmap bmAvatar = createBitmapFromView(viewMaker);
 
                 LatLng latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
-                googleMap.addMarker(new MarkerOptions()
+
+                Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(latLng)
-                        .title(userLocation.getUid())
-                        .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)))
-                        .showInfoWindow();
+                        .title(userLocation.getNickname())
+                        .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
+                marker.showInfoWindow();
+
+                UserFriendMarker userFriendMarker = new UserFriendMarker(marker, userLocation.getUid());
+                userFriendMarkerList.add(userFriendMarker);
             }
         });
     }
@@ -206,7 +270,6 @@ public class MyFriendFragment extends Fragment {
                     .position(latLng)
                     .title(currentUser.getNickname())
                     .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
-
             markerCurrentUser.showInfoWindow();
 
             // For zooming automatically to the location of the markerCurrentUser
@@ -228,7 +291,7 @@ public class MyFriendFragment extends Fragment {
 
     public void uploadCurrentUserLocation(Location location) {
         UserLocation userLocation = new UserLocation(currentUser.getUid(), currentUser.getAvatar(),
-                location.getLatitude(), location.getLongitude());
+                currentUser.getNickname(), location.getLatitude(), location.getLongitude());
         databaseReference.child("UserLocation").child(currentUser.getUid()).setValue(userLocation);
     }
 

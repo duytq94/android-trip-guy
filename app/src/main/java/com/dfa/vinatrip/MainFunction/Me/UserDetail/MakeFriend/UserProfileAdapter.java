@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.ProfileViewHolder> {
+
     private LayoutInflater layoutInflater;
     private Context context;
     private SwipeRefreshLayout srlReload;
@@ -96,12 +97,12 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                         holder.btnMakeFriend.setText("Kết bạn");
                         holder.btnMakeFriend.setTag("Kết bạn");
                         holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorGray));
-                        // Delete data to the current user login
+                        // Delete data from the current user login
                         referenceFriend.child("UserFriend")
                                 .child(currentUser.getUid())
                                 .child(userProfile.getUid())
                                 .removeValue();
-                        // Delete data to the user be requested
+                        // Delete data from the user be requested
                         referenceFriend.child("UserFriend")
                                 .child(userProfile.getUid())
                                 .child(currentUser.getUid())
@@ -112,7 +113,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                         holder.btnMakeFriend.setText(R.string.friend);
                         holder.btnMakeFriend.setTag("Bạn bè");
                         holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorMain));
-                        // Add profile user request to the current user
+                        // Add profile user request to the current user login
                         UserFriend userFriendBeRequested2 = new UserFriend(userProfile.getUid(),
                                 userProfile.getNickname(), userProfile.getAvatar(),
                                 userProfile.getEmail(), "friend");
@@ -120,6 +121,8 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                                 .child(currentUser.getUid())
                                 .child(userProfile.getUid())
                                 .setValue(userFriendBeRequested2);
+                        onChangeUserFriendList.onAddItem(userFriendBeRequested2);
+
                         // Add profile current user to the user request
                         UserFriend userFriendCurrent2 = new UserFriend(currentUser.getUid(),
                                 currentUser.getNickname(), currentUser.getAvatar(),
@@ -139,6 +142,8 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                                 .child(currentUser.getUid())
                                 .child(userProfile.getUid())
                                 .removeValue();
+                        onChangeUserFriendList.onRemoveItem(userProfile.getUid());
+
                         // Delete data to the user be requested
                         referenceFriend.child("UserFriend")
                                 .child(userProfile.getUid())
@@ -157,6 +162,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                                 .child(currentUser.getUid())
                                 .child(userProfile.getUid())
                                 .setValue(userFriendBeRequested4);
+
                         // Add profile current user to the user request
                         UserFriend userFriendCurrent4 = new UserFriend(currentUser.getUid(),
                                 currentUser.getNickname(), currentUser.getAvatar(),
@@ -209,5 +215,17 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
             ivAvatar = (ImageView) itemView.findViewById(R.id.item_user_profile_iv_avatar);
             btnMakeFriend = (Button) itemView.findViewById(R.id.item_user_profile_btn_make_friend);
         }
+    }
+
+    private OnChangeUserFriendList onChangeUserFriendList;
+
+    public void setOnChangeUserFriendList(OnChangeUserFriendList onChangeUserFriendList) {
+        this.onChangeUserFriendList = onChangeUserFriendList;
+    }
+
+    public interface OnChangeUserFriendList {
+        void onAddItem(UserFriend userFriend);
+
+        void onRemoveItem(String uid);
     }
 }

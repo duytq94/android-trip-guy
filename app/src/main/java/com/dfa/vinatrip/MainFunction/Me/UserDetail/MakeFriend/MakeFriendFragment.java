@@ -1,6 +1,5 @@
 package com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -9,8 +8,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.dfa.vinatrip.SplashScreen.DataService;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -28,6 +27,9 @@ import java.util.List;
 @EFragment(R.layout.fragment_make_friend)
 public class MakeFriendFragment extends Fragment {
 
+    @Bean
+    DataService dataService;
+
     @ViewById(R.id.fragment_make_friend_rv_list_friends)
     RecyclerView rvListFriends;
 
@@ -35,7 +37,6 @@ public class MakeFriendFragment extends Fragment {
     SwipeRefreshLayout srlReload;
 
     private UserProfileAdapter userProfileAdapter;
-    private FirebaseUser firebaseUser;
     private DatabaseReference referenceFriend = FirebaseDatabase.getInstance().getReference();
     private List<UserFriend> listUserFriends;
     private List<UserProfile> listUserProfiles;
@@ -43,24 +44,26 @@ public class MakeFriendFragment extends Fragment {
 
     @AfterViews
     void onCreateView() {
-        // Get ListUserProfile from UserProfileDetailFragment
-        Bundle bdListUserProfiles;
-        bdListUserProfiles = getArguments().getBundle("bdListUserProfiles");
-        listUserProfiles = (List<UserProfile>) bdListUserProfiles.getSerializable("ListUserProfiles");
+        listUserProfiles = new ArrayList<>();
+        listUserProfiles.addAll(dataService.getUserProfileList());
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        // Get profile of the current user
-        for (int i = 0; i < listUserProfiles.size(); i++) {
-            if (listUserProfiles.get(i).getUid().equals(firebaseUser.getUid())) {
-                currentUser = listUserProfiles.get(i);
-                break;
-            }
-        }
+        currentUser = dataService.getCurrentUser();
 
         listUserFriends = new ArrayList<>();
         userProfileAdapter = new UserProfileAdapter(getActivity(), listUserProfiles,
                 listUserFriends, referenceFriend, currentUser, srlReload);
+
+        userProfileAdapter.setOnChangeUserFriendList(new UserProfileAdapter.OnChangeUserFriendList() {
+            @Override
+            public void onAddItem(UserFriend userFriend) {
+                dataService.addToUserFriendList(userFriend);
+            }
+
+            @Override
+            public void onRemoveItem(String uid) {
+                dataService.removeFromUserFriendList(uid);
+            }
+        });
 
         if (CheckNetwork.isNetworkConnected(getActivity())) loadUserFriend();
 
@@ -84,14 +87,14 @@ public class MakeFriendFragment extends Fragment {
 
     public void loadUserFriend() {
         // If no Internet, this method will not run
-        referenceFriend.child("UserFriend").child(firebaseUser.getUid())
+        referenceFriend.child("UserFriend").child(currentUser.getUid())
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         UserFriend userFriend = dataSnapshot.getValue(UserFriend.class);
 
                         // Don't add the current user to list
-                        if (!userFriend.getFriendId().equals(firebaseUser.getUid())) {
+                        if (!userFriend.getFriendId().equals(currentUser.getUid())) {
                             listUserFriends.add(userFriend);
                         }
                         userProfileAdapter.notifyDataSetChanged();
@@ -102,7 +105,7 @@ public class MakeFriendFragment extends Fragment {
                         UserFriend userFriend = dataSnapshot.getValue(UserFriend.class);
 
                         // Don't add the current user to list
-                        if (!userFriend.getFriendId().equals(firebaseUser.getUid())) {
+                        if (!userFriend.getFriendId().equals(currentUser.getUid())) {
                             for (int i = 0; i < listUserFriends.size(); i++) {
                                 if (listUserFriends.get(i).getFriendId().equals(userFriend.getFriendId())) {
                                     listUserFriends.remove(i);
@@ -119,7 +122,7 @@ public class MakeFriendFragment extends Fragment {
                         UserFriend userFriend = dataSnapshot.getValue(UserFriend.class);
 
                         // Don't add the current user to list
-                        if (!userFriend.getFriendId().equals(firebaseUser.getUid())) {
+                        if (!userFriend.getFriendId().equals(currentUser.getUid())) {
                             for (int i = 0; i < listUserFriends.size(); i++) {
                                 if (listUserFriends.get(i).getFriendId().equals(userFriend.getFriendId())) {
                                     listUserFriends.remove(i);
@@ -142,7 +145,7 @@ public class MakeFriendFragment extends Fragment {
                 });
 
         // This method to be called after all the onChildAdded() calls have happened
-        referenceFriend.child("UserFriend").child(firebaseUser.getUid())
+        referenceFriend.child("UserFriend").child(currentUser.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

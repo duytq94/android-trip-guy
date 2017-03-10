@@ -1,15 +1,16 @@
-package com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend;
+package com.dfa.vinatrip.MainFunction.MyFriend;
 
 public class UserLocation {
-    String uid, avatar;
+    String uid, avatar, nickname;
     Double latitude, longitude;
 
     public UserLocation() {
     }
 
-    public UserLocation(String uid, String avatar, Double latitude, Double longitude) {
+    public UserLocation(String uid, String avatar, String nickname, Double latitude, Double longitude) {
         this.uid = uid;
         this.avatar = avatar;
+        this.nickname = nickname;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -20,6 +21,10 @@ public class UserLocation {
 
     public String getAvatar() {
         return avatar;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     public Double getLatitude() {

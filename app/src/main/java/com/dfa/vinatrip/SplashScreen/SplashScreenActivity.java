@@ -7,7 +7,6 @@ import android.widget.Toast;
 import com.dfa.vinatrip.MainFunction.Location.Province;
 import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserLocation;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +34,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     List<Province> provinceList;
     List<UserProfile> userProfileList;
     List<UserFriend> userFriendList;
-    List<UserLocation> userLocationList;
 
     private DatabaseReference databaseReference;
     private FirebaseUser firebaseUser;
@@ -242,55 +240,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         dataService.setUserFriendList(userFriendList);
-                        loadUserLocation();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-    }
-
-    public void loadUserLocation() {
-        userLocationList = new ArrayList<>();
-
-        // If no Internet, this method will not run
-        databaseReference.child("UserLocation")
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        UserLocation userLocation = dataSnapshot.getValue(UserLocation.class);
-                        userLocationList.add(userLocation);
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-        // This method to be called after all the onChildAdded() calls have happened
-        databaseReference.child("UserLocation")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        dataService.setUserLocationList(userLocationList);
                         getCurrentUserProfile();
                     }
 
