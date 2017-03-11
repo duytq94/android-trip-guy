@@ -55,7 +55,7 @@ public class UserProfileDetailActivity extends AppCompatActivity {
         // Get FromView from MeFragment to know which view user clicked
         fromView = getIntent().getStringExtra("FromView");
 
-        UserProfileDetailFragment userProfileDetailFragment = new UserProfileDetailFragment();
+        UserProfileDetailFragment userProfileDetailFragment = new UserProfileDetailFragment_();
 
         Bundle bdUserProfile = new Bundle();
         bdUserProfile.putSerializable("UserProfile", userProfile);

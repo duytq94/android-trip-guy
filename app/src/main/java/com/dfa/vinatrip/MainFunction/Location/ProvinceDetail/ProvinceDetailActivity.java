@@ -1,7 +1,5 @@
 package com.dfa.vinatrip.MainFunction.Location.ProvinceDetail;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -11,10 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.dfa.vinatrip.MainFunction.Location.Province;
@@ -41,7 +36,7 @@ public class ProvinceDetailActivity extends AppCompatActivity {
 
         // Get Province from LocationFragment
         province = (Province) getIntent().getSerializableExtra("Province");
-        ProvinceDetailFragment provinceDetailFragment = new ProvinceDetailFragment();
+        ProvinceDetailFragment provinceDetailFragment = new ProvinceDetailFragment_();
         Bundle bundle = new Bundle();
         bundle.putSerializable("Province", province);
         provinceDetailFragment.setArguments(bundle);

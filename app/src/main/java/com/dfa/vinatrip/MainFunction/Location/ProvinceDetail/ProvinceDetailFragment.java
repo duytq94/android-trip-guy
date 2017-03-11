@@ -1,13 +1,9 @@
 package com.dfa.vinatrip.MainFunction.Location.ProvinceDetail;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.dfa.vinatrip.MainFunction.Location.Province;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDescription.ProvinceDescriptionFragment;
@@ -23,33 +19,33 @@ import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvincePhoto.Provi
 import com.dfa.vinatrip.MainFunction.ViewPagerSwipeFragmentAdapter;
 import com.dfa.vinatrip.R;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
+@EFragment(R.layout.fragment_province_detail)
 public class ProvinceDetailFragment extends Fragment {
+
+    @ViewById(R.id.fragment_province_detail_vp_province_detail)
+    ViewPager vpProvinceDetail;
+
+    @ViewById(R.id.fragment_province_detail_tl_menu)
+    TabLayout tlMenu;
 
     private ProvinceDescriptionFragment provinceDescriptionFragment;
     private ProvinceHotelFragment provinceHotelFragment;
     private ProvinceFoodFragment provinceFoodFragment;
     private ProvinceDestinationFragment provinceDestinationFragment;
     private ProvincePhotoFragment provincePhotoFragment;
-    private TabLayout tlMenu;
-    private ViewPager vpProvinceDetail;
     private Province province;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_province_detail, container, false);
-        vpProvinceDetail =
-                (ViewPager) view.findViewById(R.id.fragment_province_detail_vp_province_detail);
-
+    @AfterViews
+    void onCreateView() {
         // Get Province from ProvinceDetailActivity
         province = (Province) getArguments().getSerializable("Province");
 
         setupViewPager(vpProvinceDetail, province);
-
-        tlMenu = (TabLayout) view.findViewById(R.id.fragment_province_detail_tl_menu);
         tlMenu.setupWithViewPager(vpProvinceDetail);
-        return view;
     }
 
     public void setupViewPager(ViewPager vpProvinceDetail, Province province) {

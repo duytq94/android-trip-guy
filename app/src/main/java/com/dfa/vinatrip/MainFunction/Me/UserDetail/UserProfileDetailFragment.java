@@ -1,13 +1,9 @@
 package com.dfa.vinatrip.MainFunction.Me.UserDetail;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.MakeFriendFragment;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.MakeFriendFragment_;
@@ -17,28 +13,31 @@ import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.ViewPagerSwipeFragmentAdapter;
 import com.dfa.vinatrip.R;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import java.io.Serializable;
 import java.util.List;
 
+@EFragment(R.layout.fragment_user_profile_detail)
 public class UserProfileDetailFragment extends Fragment {
 
-    private ViewPager vpMeDetail;
+    @ViewById(R.id.fragment_user_profile_detail_vp_user_profile_detail)
+    ViewPager vpMeDetail;
+
+    @ViewById(R.id.fragment_user_profile_detail_tl_menu)
+    TabLayout tlMenu;
+
     private UserProfile userProfile;
     private List<UserProfile> listUserProfiles;
     private String fromView;
-    private TabLayout tlMenu;
+
     private UpdateUserProfileFragment updateUserProfileFragment;
     private MakeFriendFragment makeFriendFragment;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user_profile_detail, container, false);
-
-        vpMeDetail =
-                (ViewPager) view.findViewById(R.id.fragment_user_profile_detail_vp_user_profile_detail);
-
+    @AfterViews
+    void onCreateView() {
         // Get UserProfile from UserProfileDetailActivity
         Bundle bdUserProfile;
         bdUserProfile = getArguments().getBundle("bdUserProfile");
@@ -56,7 +55,6 @@ public class UserProfileDetailFragment extends Fragment {
 
         setupViewPager(vpMeDetail, userProfile);
 
-        tlMenu = (TabLayout) view.findViewById(R.id.fragment_user_profile_detail_tl_menu);
         tlMenu.setupWithViewPager(vpMeDetail);
 
         switch (fromView) {
@@ -67,8 +65,6 @@ public class UserProfileDetailFragment extends Fragment {
                 vpMeDetail.setCurrentItem(1);
                 break;
         }
-
-        return view;
     }
 
     public void setupViewPager(ViewPager vpMeDetail, UserProfile userProfile) {
