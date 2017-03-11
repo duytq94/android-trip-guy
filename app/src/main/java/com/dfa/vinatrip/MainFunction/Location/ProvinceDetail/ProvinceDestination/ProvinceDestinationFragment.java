@@ -1,15 +1,11 @@
 package com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDestination;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.EachItemProvinceDetailActivity_;
@@ -22,28 +18,30 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@EFragment(R.layout.fragment_province_destination)
 public class ProvinceDestinationFragment extends Fragment {
 
+    @ViewById(R.id.fragment_province_destination_rv_destinations)
+    RecyclerView rvDestinations;
+
+    @ViewById(R.id.fragment_province_destination_srl_reload)
+    SwipeRefreshLayout srlReload;
+
     private List<ProvinceDestination> provinceDestinationList;
-    private RecyclerView rvDestinations;
     private ProvinceDestinationAdapter provinceDestinationAdapter;
-    private SwipeRefreshLayout srlReload;
-    private ProvinceDestination provinceDestinationResult;
     private Province province;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_province_destination, container, false);
-
-        findViewByIds(view);
-
+    @AfterViews
+    void onCreateView() {
         // Get Province from ProvinceDetailFragment
         province = (Province) getArguments().getSerializable("Province");
 
@@ -92,13 +90,6 @@ public class ProvinceDestinationFragment extends Fragment {
 
             }
         }));
-
-        return view;
-    }
-
-    public void findViewByIds(View view) {
-        rvDestinations = (RecyclerView) view.findViewById(R.id.fragment_province_destination_rv_destinations);
-        srlReload = (SwipeRefreshLayout) view.findViewById(R.id.fragment_province_destination_srl_reload);
     }
 
     public void loadProvinceDestination() {

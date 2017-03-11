@@ -119,6 +119,8 @@ dependencies {
     compile 'com.mobsandgeeks:android-saripaar:2.0.2'
     // Progress download
     compile 'com.github.tibolte:elasticdownload:1.0.+'
+
+    compile 'com.github.manuelpeinado.fadingactionbar:fadingactionbar-abc:3.1.2'
 }
 // this line has to put out of dependencies so app can run Google Map
 apply plugin: 'com.google.gms.google-services'

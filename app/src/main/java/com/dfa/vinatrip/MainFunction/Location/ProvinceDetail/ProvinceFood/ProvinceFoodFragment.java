@@ -1,15 +1,11 @@
 package com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceFood;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.EachItemProvinceDetailActivity_;
@@ -22,27 +18,29 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@EFragment(R.layout.fragment_province_food)
 public class ProvinceFoodFragment extends Fragment {
 
+    @ViewById(R.id.fragment_province_food_rv_foods)
+    RecyclerView rvFoods;
+
+    @ViewById(R.id.fragment_province_food_srl_reload)
+    SwipeRefreshLayout srlReload;
+
     private List<ProvinceFood> provinceFoodList;
-    private RecyclerView rvFoods;
     private ProvinceFoodAdapter provinceFoodAdapter;
-    private SwipeRefreshLayout srlReload;
-    private ProvinceFood provinceFoodResult;
     private Province province;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_province_food, container, false);
-
-        findViewByIds(view);
-
+    @AfterViews
+    void onCreateView() {
         // Get Province from ProvinceDetailFragment
         province = (Province) getArguments().getSerializable("Province");
 
@@ -90,13 +88,6 @@ public class ProvinceFoodFragment extends Fragment {
 
                     }
                 }));
-
-        return view;
-    }
-
-    public void findViewByIds(View view) {
-        rvFoods = (RecyclerView) view.findViewById(R.id.fragment_province_food_rv_foods);
-        srlReload = (SwipeRefreshLayout) view.findViewById(R.id.fragment_province_food_srl_reload);
     }
 
     public void loadProvinceFood() {

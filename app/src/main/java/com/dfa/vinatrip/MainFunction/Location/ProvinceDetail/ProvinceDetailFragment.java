@@ -11,10 +11,15 @@ import android.view.ViewGroup;
 
 import com.dfa.vinatrip.MainFunction.Location.Province;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDescription.ProvinceDescriptionFragment;
+import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDescription.ProvinceDescriptionFragment_;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDestination.ProvinceDestinationFragment;
+import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDestination.ProvinceDestinationFragment_;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceFood.ProvinceFoodFragment;
+import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceFood.ProvinceFoodFragment_;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceHotel.ProvinceHotelFragment;
+import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceHotel.ProvinceHotelFragment_;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvincePhoto.ProvincePhotoFragment;
+import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvincePhoto.ProvincePhotoFragment_;
 import com.dfa.vinatrip.MainFunction.ViewPagerSwipeFragmentAdapter;
 import com.dfa.vinatrip.R;
 
@@ -55,19 +60,19 @@ public class ProvinceDetailFragment extends Fragment {
         Bundle bundleProvince = new Bundle();
         bundleProvince.putSerializable("Province", province);
 
-        provinceDescriptionFragment = new ProvinceDescriptionFragment();
+        provinceDescriptionFragment = new ProvinceDescriptionFragment_();
         provinceDescriptionFragment.setArguments(bundleProvince);
 
-        provinceHotelFragment = new ProvinceHotelFragment();
+        provinceHotelFragment = new ProvinceHotelFragment_();
         provinceHotelFragment.setArguments(bundleProvince);
 
-        provinceFoodFragment = new ProvinceFoodFragment();
+        provinceFoodFragment = new ProvinceFoodFragment_();
         provinceFoodFragment.setArguments(bundleProvince);
 
-        provinceDestinationFragment = new ProvinceDestinationFragment();
+        provinceDestinationFragment = new ProvinceDestinationFragment_();
         provinceDestinationFragment.setArguments(bundleProvince);
 
-        provincePhotoFragment = new ProvincePhotoFragment();
+        provincePhotoFragment = new ProvincePhotoFragment_();
         provincePhotoFragment.setArguments(bundleProvince);
 
         adapter.addFragment(provinceDescriptionFragment, "GIỚI THIỆU");
