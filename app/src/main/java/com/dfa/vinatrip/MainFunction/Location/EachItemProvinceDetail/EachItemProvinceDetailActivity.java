@@ -23,12 +23,10 @@ import org.androidannotations.annotations.ViewById;
 @EActivity(R.layout.activity_each_item_province_detail)
 public class EachItemProvinceDetailActivity extends AppCompatActivity {
 
-
     @ViewById(R.id.my_toolbar)
     Toolbar toolbar;
 
     private ActionBar actionBar;
-
 
     private EachProvinceHotelFragment eachProvinceHotelFragment;
     private EachProvinceFoodFragment eachProvinceFoodFragment;
@@ -115,7 +113,6 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
             actionBar.setTitle(titleActionBar);
 
             // Set button back
-            actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }

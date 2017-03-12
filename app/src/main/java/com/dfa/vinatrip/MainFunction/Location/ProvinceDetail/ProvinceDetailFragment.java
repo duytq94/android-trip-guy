@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.dfa.vinatrip.MainFunction.Location.Province;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDescription.ProvinceDescriptionFragment;
@@ -44,8 +47,35 @@ public class ProvinceDetailFragment extends Fragment {
         // Get Province from ProvinceDetailActivity
         province = (Province) getArguments().getSerializable("Province");
 
+        View view =
+                LayoutInflater.from(getActivity()).inflate(R.layout.activity_province_detail, null);
+        final ImageView ivHeader = (ImageView) view.findViewById(R.id.activity_province_detail_iv_header);
+
         setupViewPager(vpProvinceDetail, province);
         tlMenu.setupWithViewPager(vpProvinceDetail);
+        vpProvinceDetail.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 1:
+                        ivHeader.setImageResource(R.drawable.bg_memory);
+                        break;
+                    case 2:
+                        ivHeader.setImageResource(R.drawable.bg_location);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     public void setupViewPager(ViewPager vpProvinceDetail, Province province) {

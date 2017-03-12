@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_province_detail"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainFunction.Location.ProvinceDetail.ProvinceDetailActivity">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/appbar_layout" />
 
     <FrameLayout
-        android:background="@color/colorBackground"
         android:id="@+id/activity_province_detail_fl_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-   />
+        android:layout_gravity="fill_vertical"
+        android:background="@color/colorBackground"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

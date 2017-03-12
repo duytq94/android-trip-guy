@@ -1,9 +1,8 @@
 package com.dfa.vinatrip.MainFunction.Location.ProvinceDetail;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -23,12 +22,14 @@ import org.androidannotations.annotations.ViewById;
 @EActivity(R.layout.activity_province_detail)
 public class ProvinceDetailActivity extends AppCompatActivity {
 
-    private Province province;
+    @ViewById(R.id.activity_province_detail_collapse_toolbar)
+    CollapsingToolbarLayout collapseToolbar;
 
-    @ViewById(R.id.my_toolbar)
+    @ViewById(R.id.activity_province_detail_toolbar)
     Toolbar toolbar;
 
     private android.support.v7.app.ActionBar actionBar;
+    private Province province;
 
     @AfterViews
     void onCreate() {
@@ -41,23 +42,22 @@ public class ProvinceDetailActivity extends AppCompatActivity {
         bundle.putSerializable("Province", province);
         provinceDetailFragment.setArguments(bundle);
 
-        setupActionBar();
+        setupAppBar();
 
         startFragment(provinceDetailFragment);
     }
 
-    public void setupActionBar() {
+    public void setupAppBar() {
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(province.getName());
-            actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#228B22")));
 
             // Set button back
-            actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
+
 
     public void startFragment(Fragment fragment) {
         String backStateName = fragment.getClass().getName();
