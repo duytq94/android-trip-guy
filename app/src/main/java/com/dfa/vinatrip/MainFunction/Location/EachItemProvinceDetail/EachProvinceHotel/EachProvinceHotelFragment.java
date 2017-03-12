@@ -4,19 +4,13 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.CheckNetwork;
@@ -31,29 +25,77 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@EFragment(R.layout.fragment_each_province_hotel)
 public class EachProvinceHotelFragment extends Fragment {
 
-    private TextView tvAddress, tvDescription, tvMail, tvPhone, tvWebsite;
+    @ViewById(R.id.fragment_each_province_hotel_tv_address)
+    TextView tvAddress;
+
+    @ViewById(R.id.fragment_each_province_hotel_tv_description)
+    TextView tvDescription;
+
+    @ViewById(R.id.fragment_each_province_hotel_tv_mail)
+    TextView tvMail;
+
+    @ViewById(R.id.fragment_each_province_hotel_tv_phone)
+    TextView tvPhone;
+
+    @ViewById(R.id.fragment_each_province_hotel_tv_website)
+    TextView tvWebsite;
+
+    @ViewById(R.id.fragment_each_province_hotel_srlReload)
+    SwipeRefreshLayout srlReload;
+
+    @ViewById(R.id.fragment_each_province_hotel_rv_photos)
+    RecyclerView rvProvinceHotelPhotos;
+
+    @ViewById(R.id.fragment_each_province_hotel_iv_map)
+    ImageView ivMap;
+
+    @Click(R.id.fragment_each_province_hotel_ll_phone)
+    void onLlPhoneClick() {
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.CALL_PHONE}, 1);
+        } else {
+            Intent intentCall = new Intent(Intent.ACTION_CALL,
+                    Uri.parse("tel:" + detailHotel.getPhone()));
+            startActivity(intentCall);
+        }
+    }
+
+    @Click(R.id.fragment_each_province_hotel_ll_website)
+    void onLlWebsiteClick() {
+        Intent intentGoWebsite = new Intent(Intent.ACTION_VIEW);
+        intentGoWebsite.setData(Uri.parse(detailHotel.getWebsite()));
+        startActivity(intentGoWebsite);
+    }
+
+    @Click(R.id.fragment_each_province_hotel_ll_address)
+    void onLlAddressClick() {
+        Intent intentMap = new Intent(getActivity(), MapActivity_.class);
+
+        // Send ProvinceHotel to MapActivity
+        intentMap.putExtra("DetailHotel", detailHotel);
+        getActivity().startActivity(intentMap);
+    }
+
     private ProvinceHotel detailHotel;
-    private LinearLayout llAddress, llPhone, llWebsite;
-    private RecyclerView rvProvinceHotelPhotos;
-    private SwipeRefreshLayout srlReload;
     private List<String> listUrlPhotos;
     private ProvinceHotelPhotoAdapter provinceHotelPhotoAdapter;
-    private ImageView ivMap;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_each_province_hotel, container, false);
-
-        findViewByIds(view);
-
+    @AfterViews
+    void onCreateView() {
         // Get the Hotel be chosen from EachItemProvinceDetailActivity
         detailHotel = (ProvinceHotel) getArguments().getSerializable("DetailHotel");
 
@@ -76,62 +118,9 @@ public class EachProvinceHotelFragment extends Fragment {
         // set content for views
         setContentViews();
 
-        setViewsOnClick();
         StaggeredGridLayoutManager staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
         rvProvinceHotelPhotos.setLayoutManager(staggeredGridLayoutManager);
-        return view;
-    }
-
-    public void setViewsOnClick() {
-        llPhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.CALL_PHONE}, 1);
-                } else {
-                    Intent intentCall = new Intent(Intent.ACTION_CALL,
-                            Uri.parse("tel:" + detailHotel.getPhone()));
-                    startActivity(intentCall);
-                }
-            }
-        });
-
-        llWebsite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentGoWebsite = new Intent(Intent.ACTION_VIEW);
-                intentGoWebsite.setData(Uri.parse(detailHotel.getWebsite()));
-                startActivity(intentGoWebsite);
-            }
-        });
-
-        llAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentMap = new Intent(getActivity(), MapActivity_.class);
-
-                // Send ProvinceHotel to MapActivity
-                intentMap.putExtra("DetailHotel", detailHotel);
-                getActivity().startActivity(intentMap);
-            }
-        });
-    }
-
-    public void findViewByIds(View view) {
-        tvAddress = (TextView) view.findViewById(R.id.fragment_each_province_hotel_tv_address);
-        tvDescription = (TextView) view.findViewById(R.id.fragment_each_province_hotel_tv_description);
-        tvMail = (TextView) view.findViewById(R.id.fragment_each_province_hotel_tv_mail);
-        tvPhone = (TextView) view.findViewById(R.id.fragment_each_province_hotel_tv_phone);
-        tvWebsite = (TextView) view.findViewById(R.id.fragment_each_province_hotel_tv_website);
-        llAddress = (LinearLayout) view.findViewById(R.id.fragment_each_province_hotel_ll_address);
-        llPhone = (LinearLayout) view.findViewById(R.id.fragment_each_province_hotel_ll_phone);
-        llWebsite = (LinearLayout) view.findViewById(R.id.fragment_each_province_hotel_ll_website);
-        srlReload = (SwipeRefreshLayout) view.findViewById(R.id.fragment_each_province_hotel_srlReload);
-        rvProvinceHotelPhotos = (RecyclerView) view.findViewById(R.id.fragment_each_province_hotel_rv_photos);
-        ivMap = (ImageView) view.findViewById(R.id.fragment_each_province_hotel_iv_map);
     }
 
     public void setContentViews() {

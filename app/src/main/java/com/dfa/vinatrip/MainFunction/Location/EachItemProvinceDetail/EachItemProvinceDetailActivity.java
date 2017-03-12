@@ -9,8 +9,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.EachProvinceDestination.EachProvinceDestinationFragment;
+import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.EachProvinceDestination.EachProvinceDestinationFragment_;
 import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.EachProvinceFood.EachProvinceFoodFragment;
+import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.EachProvinceFood.EachProvinceFoodFragment_;
 import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.EachProvinceHotel.EachProvinceHotelFragment;
+import com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.EachProvinceHotel.EachProvinceHotelFragment_;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDestination.ProvinceDestination;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceFood.ProvinceFood;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceHotel.ProvinceHotel;
@@ -47,7 +50,7 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
             titleActionBar = detailHotel.getName();
             Bundle bundleHotel = new Bundle();
             bundleHotel.putSerializable("DetailHotel", detailHotel);
-            eachProvinceHotelFragment = new EachProvinceHotelFragment();
+            eachProvinceHotelFragment = new EachProvinceHotelFragment_();
             // Send the Hotel be chosen to EachProvinceHotelFragment
             eachProvinceHotelFragment.setArguments(bundleHotel);
             getSupportFragmentManager()
@@ -65,7 +68,7 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
 
             Bundle bundleDestination = new Bundle();
             bundleDestination.putSerializable("DetailDestination", detailDestination);
-            eachProvinceDestinationFragment = new EachProvinceDestinationFragment();
+            eachProvinceDestinationFragment = new EachProvinceDestinationFragment_();
             // Send the Hotel be chosen to EachProvinceHotelFragment
             eachProvinceDestinationFragment.setArguments(bundleDestination);
             getSupportFragmentManager()
@@ -81,7 +84,7 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
             titleActionBar = detailFood.getName();
             Bundle bundleFood = new Bundle();
             bundleFood.putSerializable("DetailFood", detailFood);
-            eachProvinceFoodFragment = new EachProvinceFoodFragment();
+            eachProvinceFoodFragment = new EachProvinceFoodFragment_();
             // Send the Food be chosen to EachProvinceHotelFragment
             eachProvinceFoodFragment.setArguments(bundleFood);
             getSupportFragmentManager()

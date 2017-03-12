@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.dfa.vinatrip.MainFunction.Location.Province;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDescription.ProvinceDescriptionFragment;
@@ -47,8 +48,7 @@ public class ProvinceDetailFragment extends Fragment {
         // Get Province from ProvinceDetailActivity
         province = (Province) getArguments().getSerializable("Province");
 
-        View view =
-                LayoutInflater.from(getActivity()).inflate(R.layout.activity_province_detail, null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.activity_province_detail, null);
         final ImageView ivHeader = (ImageView) view.findViewById(R.id.activity_province_detail_iv_header);
 
         setupViewPager(vpProvinceDetail, province);
@@ -62,11 +62,12 @@ public class ProvinceDetailFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
-                    case 1:
-                        ivHeader.setImageResource(R.drawable.bg_memory);
+                    case 0:
+                        ivHeader.setImageResource(R.drawable.ic_avatar);
+                        Toast.makeText(getActivity(), "aaa", Toast.LENGTH_SHORT).show();
                         break;
-                    case 2:
-                        ivHeader.setImageResource(R.drawable.bg_location);
+                    case 1:
+                        ivHeader.setImageResource(R.drawable.ic_hotel);
                         break;
                 }
             }

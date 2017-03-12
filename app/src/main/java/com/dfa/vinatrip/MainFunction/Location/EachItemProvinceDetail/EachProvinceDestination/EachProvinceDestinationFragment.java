@@ -1,16 +1,12 @@
 package com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.EachProvinceDestination;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,36 +32,77 @@ import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@EFragment(R.layout.fragment_each_province_destination)
 public class EachProvinceDestinationFragment extends Fragment {
 
-    private TextView tvAddress, tvRate, tvCommentNotAvailable;
+    @ViewById(R.id.fragment_each_province_destination_tv_address)
+    TextView tvAddress;
+
+    @ViewById(R.id.fragment_each_province_destination_tv_comment_not_available)
+    TextView tvCommentNotAvailable;
+
+    @ViewById(R.id.fragment_each_province_destination_tv_rate)
+    TextView tvRate;
+
+    @ViewById(R.id.fragment_each_province_destination_srlReload)
+    SwipeRefreshLayout srlReload;
+
+    @ViewById(R.id.fragment_each_province_destination_rv_photos)
+    RecyclerView rvProvinceDestinationPhotos;
+
+    @ViewById(R.id.fragment_each_province_destination_rv_user_ratings)
+    RecyclerView rvUserRatings;
+
+    @ViewById(R.id.fragment_each_province_destination_iv_map)
+    ImageView ivMap;
+
+    @ViewById(R.id.fragment_each_province_destination_exptv_schedule_and_fee)
+    ExpandableTextView expTvScheduleAndFee;
+
+    @ViewById(R.id.fragment_each_province_destination_exptv_description)
+    ExpandableTextView expTvDescription;
+
+    @Click(R.id.fragment_each_province_destination_ll_address)
+    void onLlAddressClick() {
+        Intent intentMap = new Intent(getActivity(), MapActivity_.class);
+
+        // Send DetailDestination to MapActivity
+        intentMap.putExtra("DetailDestination", detailDestination);
+        startActivity(intentMap);
+    }
+
+    @Click(R.id.fragment_each_province_destination_tv_rate)
+    void onTvRateClick(){
+        Intent intentRate = new Intent(getActivity(), RatingActivity_.class);
+
+        // Send DetailDestination to RatingActivity
+        intentRate.putExtra("DetailDestination", detailDestination);
+        // Send ListUserRatings to know user has comment yet?
+        intentRate.putExtra("ListUserRatings", (Serializable) listUserRatings);
+        // Make RateActivity notify when it finish
+        startActivityForResult(intentRate, NOTIFY_UPDATE_REQUEST);
+    }
+
     private ProvinceDestination detailDestination;
-    private LinearLayout llAddress;
-    private RecyclerView rvProvinceDestinationPhotos, rvUserRatings;
-    private SwipeRefreshLayout srlReload;
     private List<String> listUrlPhotos;
     private List<UserRating> listUserRatings;
     private ProvinceDestinationPhotoAdapter provinceDestinationPhotoAdapter;
     private RatingAdapter ratingAdapter;
-    private ImageView ivMap;
     private FirebaseUser firebaseUser;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private ExpandableTextView expTvScheduleAndFee, expTvDescription;
     static final int NOTIFY_UPDATE_REQUEST = 2;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_each_province_destination, container, false);
-
-        findViewByIds(view);
-
+    @AfterViews
+    void onCreateView() {
         // Get the DetailDestination be chosen from EachItemProvinceDetailActivity
         detailDestination =
                 (ProvinceDestination) getArguments().getSerializable("DetailDestination");
@@ -100,36 +137,9 @@ public class EachProvinceDestinationFragment extends Fragment {
         StaggeredGridLayoutManager manager1 =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         rvUserRatings.setLayoutManager(manager1);
-
-        return view;
     }
 
     public void setOnClickListener() {
-        llAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentMap = new Intent(getActivity(), MapActivity_.class);
-
-                // Send DetailDestination to MapActivity
-                intentMap.putExtra("DetailDestination", detailDestination);
-                startActivity(intentMap);
-            }
-        });
-
-        tvRate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentRate = new Intent(getActivity(), RatingActivity_.class);
-
-                // Send DetailDestination to RatingActivity
-                intentRate.putExtra("DetailDestination", detailDestination);
-                // Send ListUserRatings to know user has comment yet?
-                intentRate.putExtra("ListUserRatings", (Serializable) listUserRatings);
-                // Make RateActivity notify when it finish
-                startActivityForResult(intentRate, NOTIFY_UPDATE_REQUEST);
-            }
-        });
-
         // Catch event when click item on RecyclerView
         rvProvinceDestinationPhotos.addOnItemTouchListener
                 (new RecyclerItemClickListener(getActivity(), rvProvinceDestinationPhotos,
@@ -167,27 +177,6 @@ public class EachProvinceDestinationFragment extends Fragment {
                 loadProvinceDestinationRating();
             }
         }
-    }
-
-    public void findViewByIds(View view) {
-        tvAddress = (TextView)
-                view.findViewById(R.id.fragment_each_province_destination_tv_address);
-        tvCommentNotAvailable = (TextView)
-                view.findViewById(R.id.fragment_each_province_destination_tv_comment_not_available);
-        tvRate = (TextView) view.findViewById(R.id.fragment_each_province_destination_tv_rate);
-        llAddress = (LinearLayout)
-                view.findViewById(R.id.fragment_each_province_destination_ll_address);
-        srlReload = (SwipeRefreshLayout)
-                view.findViewById(R.id.fragment_each_province_destination_srlReload);
-        rvProvinceDestinationPhotos = (RecyclerView)
-                view.findViewById(R.id.fragment_each_province_destination_rv_photos);
-        rvUserRatings = (RecyclerView)
-                view.findViewById(R.id.fragment_each_province_destination_rv_user_ratings);
-        ivMap = (ImageView) view.findViewById(R.id.fragment_each_province_destination_iv_map);
-        expTvScheduleAndFee = (ExpandableTextView)
-                view.findViewById(R.id.fragment_each_province_destination_exptv_schedule_and_fee);
-        expTvDescription = (ExpandableTextView)
-                view.findViewById(R.id.fragment_each_province_destination_exptv_description);
     }
 
     public void setContentViews() {

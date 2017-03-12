@@ -4,19 +4,13 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.CheckNetwork;
@@ -31,29 +25,64 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@EFragment(R.layout.fragment_each_province_food)
 public class EachProvinceFoodFragment extends Fragment {
 
-    private TextView tvAddress, tvDescription, tvPhone;
+    @ViewById(R.id.fragment_each_province_food_tv_address)
+    TextView tvAddress;
+
+    @ViewById(R.id.fragment_each_province_food_tv_description)
+    TextView tvDescription;
+
+    @ViewById(R.id.fragment_each_province_food_tv_phone)
+    TextView tvPhone;
+
+    @ViewById(R.id.fragment_each_province_food_srlReload)
+    SwipeRefreshLayout srlReload;
+
+    @ViewById(R.id.fragment_each_province_food_rv_photos)
+    RecyclerView rvProvinceFoodPhotos;
+
+    @ViewById(R.id.fragment_each_province_food_iv_map)
+    ImageView ivMap;
+
+    @Click(R.id.fragment_each_province_food_ll_phone)
+    void onLlPhoneClick() {
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.CALL_PHONE}, 1);
+        } else {
+            Intent intentCall =
+                    new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + detailFood.getPhone()));
+            startActivity(intentCall);
+        }
+    }
+
+    @Click(R.id.fragment_each_province_food_ll_address)
+    void onLlAddressClick() {
+        Intent intentMap = new Intent(getActivity(), MapActivity_.class);
+
+        // Send ProvinceFood to MapActivity
+        intentMap.putExtra("DetailFood", detailFood);
+        getActivity().startActivity(intentMap);
+    }
+
     private ProvinceFood detailFood;
-    private LinearLayout llAddress, llPhone;
-    private RecyclerView rvProvinceFoodPhotos;
-    private SwipeRefreshLayout srlReload;
     private List<String> listUrlPhotos;
     private ProvinceFoodPhotoAdapter provinceFoodPhotoAdapter;
-    private ImageView ivMap;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_each_province_food, container, false);
-
-        findViewByIds(view);
-
+    @AfterViews
+    void onCreateView() {
         // Get the Food be chosen from EachItemProvinceDetailActivity
         detailFood = (ProvinceFood) getArguments().getSerializable("DetailFood");
 
@@ -76,50 +105,9 @@ public class EachProvinceFoodFragment extends Fragment {
         // set content for views
         setContentViews();
 
-        setViewsOnClick();
         StaggeredGridLayoutManager staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
         rvProvinceFoodPhotos.setLayoutManager(staggeredGridLayoutManager);
-        return view;
-    }
-
-    public void setViewsOnClick() {
-        llPhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.CALL_PHONE}, 1);
-                } else {
-                    Intent intentCall =
-                            new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + detailFood.getPhone()));
-                    startActivity(intentCall);
-                }
-            }
-        });
-
-        llAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentMap = new Intent(getActivity(), MapActivity_.class);
-
-                // Send ProvinceFood to MapActivity
-                intentMap.putExtra("DetailFood", detailFood);
-                getActivity().startActivity(intentMap);
-            }
-        });
-    }
-
-    public void findViewByIds(View view) {
-        tvAddress = (TextView) view.findViewById(R.id.fragment_each_province_food_tv_address);
-        tvDescription = (TextView) view.findViewById(R.id.fragment_each_province_food_tv_description);
-        tvPhone = (TextView) view.findViewById(R.id.fragment_each_province_food_tv_phone);
-        llAddress = (LinearLayout) view.findViewById(R.id.fragment_each_province_food_ll_address);
-        llPhone = (LinearLayout) view.findViewById(R.id.fragment_each_province_food_ll_phone);
-        srlReload = (SwipeRefreshLayout) view.findViewById(R.id.fragment_each_province_food_srlReload);
-        rvProvinceFoodPhotos = (RecyclerView) view.findViewById(R.id.fragment_each_province_food_rv_photos);
-        ivMap = (ImageView) view.findViewById(R.id.fragment_each_province_food_iv_map);
     }
 
     public void setContentViews() {

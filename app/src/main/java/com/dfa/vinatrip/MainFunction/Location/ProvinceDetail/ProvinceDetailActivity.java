@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.dfa.vinatrip.MainFunction.Location.Province;
 import com.dfa.vinatrip.R;
@@ -43,7 +44,6 @@ public class ProvinceDetailActivity extends AppCompatActivity {
         provinceDetailFragment.setArguments(bundle);
 
         setupAppBar();
-
         startFragment(provinceDetailFragment);
     }
 
