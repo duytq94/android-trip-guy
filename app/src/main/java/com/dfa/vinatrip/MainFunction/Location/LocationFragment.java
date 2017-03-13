@@ -13,8 +13,11 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.CheckNetwork;
@@ -33,6 +36,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -144,6 +148,16 @@ public class LocationFragment extends Fragment {
     }
 
     public void autoScrollSlideShow() {
+        try {
+            Field mScroller;
+            mScroller = ViewPager.class.getDeclaredField("mScroller");
+            mScroller.setAccessible(true);
+            FixedSpeedScroller scroller = new FixedSpeedScroller(vpSlideShow.getContext(), new AccelerateInterpolator());
+            mScroller.set(vpSlideShow, scroller);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         final Handler handler = new Handler();
         final Runnable update = new Runnable() {
             public void run() {
@@ -158,7 +172,7 @@ public class LocationFragment extends Fragment {
             public void run() {
                 handler.post(update);
             }
-        }, 3000, 2000); //time wait to start scroll, time period
+        }, 3000, 3000); //time wait to start scroll, time period
     }
 
     public void addBottomDots() {
@@ -215,6 +229,36 @@ public class LocationFragment extends Fragment {
 
                     }
                 });
+    }
+
+    public class FixedSpeedScroller extends Scroller {
+
+        private int mDuration = 2000;
+
+        public FixedSpeedScroller(Context context) {
+            super(context);
+        }
+
+        public FixedSpeedScroller(Context context, Interpolator interpolator) {
+            super(context, interpolator);
+        }
+
+        public FixedSpeedScroller(Context context, Interpolator interpolator, boolean flywheel) {
+            super(context, interpolator, flywheel);
+        }
+
+
+        @Override
+        public void startScroll(int startX, int startY, int dx, int dy, int duration) {
+            // Ignore received duration, use fixed one instead
+            super.startScroll(startX, startY, dx, dy, mDuration);
+        }
+
+        @Override
+        public void startScroll(int startX, int startY, int dx, int dy) {
+            // Ignore received duration, use fixed one instead
+            super.startScroll(startX, startY, dx, dy, mDuration);
+        }
     }
 
     public class CustomPagerAdapter extends PagerAdapter {

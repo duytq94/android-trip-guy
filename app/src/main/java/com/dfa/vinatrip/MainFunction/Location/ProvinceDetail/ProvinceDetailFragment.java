@@ -1,13 +1,11 @@
 package com.dfa.vinatrip.MainFunction.Location.ProvinceDetail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.dfa.vinatrip.MainFunction.Location.Province;
 import com.dfa.vinatrip.MainFunction.Location.ProvinceDetail.ProvinceDescription.ProvinceDescriptionFragment;
@@ -48,11 +46,10 @@ public class ProvinceDetailFragment extends Fragment {
         // Get Province from ProvinceDetailActivity
         province = (Province) getArguments().getSerializable("Province");
 
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.activity_province_detail, null);
-        final ImageView ivHeader = (ImageView) view.findViewById(R.id.activity_province_detail_iv_header);
-
         setupViewPager(vpProvinceDetail, province);
         tlMenu.setupWithViewPager(vpProvinceDetail);
+
+        // Notify ProvinceDetailActivity know to change image header
         vpProvinceDetail.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -63,12 +60,31 @@ public class ProvinceDetailFragment extends Fragment {
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        ivHeader.setImageResource(R.drawable.ic_avatar);
-                        Toast.makeText(getActivity(), "aaa", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent("com.dfa.vinatrip.action.IMAGE_HEADER");
+                        intent.putExtra("POSITION", 0);
+                        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
                         break;
                     case 1:
-                        ivHeader.setImageResource(R.drawable.ic_hotel);
+                        intent = new Intent("com.dfa.vinatrip.action.IMAGE_HEADER");
+                        intent.putExtra("POSITION", 1);
+                        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
                         break;
+                    case 2:
+                        intent = new Intent("com.dfa.vinatrip.action.IMAGE_HEADER");
+                        intent.putExtra("POSITION", 2);
+                        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+                        break;
+                    case 3:
+                        intent = new Intent("com.dfa.vinatrip.action.IMAGE_HEADER");
+                        intent.putExtra("POSITION", 3);
+                        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+                        break;
+                    case 4:
+                        intent = new Intent("com.dfa.vinatrip.action.IMAGE_HEADER");
+                        intent.putExtra("POSITION", 4);
+                        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+                        break;
+
                 }
             }
 

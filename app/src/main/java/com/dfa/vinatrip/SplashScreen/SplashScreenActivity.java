@@ -50,7 +50,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     public void loadProvince() {
-
         provinceList = new ArrayList<>();
 
         // If no Internet, this method will not run
