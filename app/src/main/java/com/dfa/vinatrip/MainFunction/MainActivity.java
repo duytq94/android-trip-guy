@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.MainFunction;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.Color;
@@ -15,7 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +31,7 @@ import com.dfa.vinatrip.MainFunction.Me.MeFragment_;
 import com.dfa.vinatrip.MainFunction.MyFriend.MyFriendFragment;
 import com.dfa.vinatrip.MainFunction.MyFriend.MyFriendFragment_;
 import com.dfa.vinatrip.MainFunction.Plan.PlanFragment;
+import com.dfa.vinatrip.MainFunction.Plan.PlanFragment_;
 import com.dfa.vinatrip.MainFunction.Share.ShareFragment;
 import com.dfa.vinatrip.R;
 
@@ -149,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.activity_main_fl_container, locationFragment, "locationFragment")
                 .commit();
 
-        planFragment = new PlanFragment();
+        planFragment = new PlanFragment_();
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.activity_main_fl_container, planFragment, "planFragment")
@@ -220,6 +225,32 @@ public class MainActivity extends AppCompatActivity {
         searchView.setQueryHint("Tìm kiếm...");
 
         return true;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        View v = getCurrentFocus();
+
+        if (v != null &&
+                (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_MOVE) &&
+                v instanceof EditText &&
+                !v.getClass().getName().startsWith("android.webkit.")) {
+            int scrcoords[] = new int[2];
+            v.getLocationOnScreen(scrcoords);
+            float x = ev.getRawX() + v.getLeft() - scrcoords[0];
+            float y = ev.getRawY() + v.getTop() - scrcoords[1];
+
+            if (x < v.getLeft() || x > v.getRight() || y < v.getTop() || y > v.getBottom())
+                hideKeyboard(this);
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        if (activity != null && activity.getWindow() != null && activity.getWindow().getDecorView() != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
+        }
     }
 }
 

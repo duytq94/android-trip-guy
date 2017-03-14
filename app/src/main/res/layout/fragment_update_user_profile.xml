@@ -47,9 +47,11 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:paddingBottom="@dimen/text_view_padding"
                 android:paddingTop="@dimen/text_view_padding"
                 android:text="@string/personal_info"
                 android:textColor="@color/colorMain"
@@ -121,15 +123,41 @@
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_medium" />
 
-                <TextView
-                    android:id="@+id/fragment_update_user_profile_tv_birthday"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
                     android:layout_weight="3"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_medium" />
+                    android:orientation="vertical">
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/fragment_update_user_profile_tv_birthday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="8dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_medium" />
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="15dp"
+                            android:src="@drawable/ic_more" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@android:color/black" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -150,6 +178,7 @@
 
                 <Spinner
                     android:id="@+id/fragment_update_user_profile_spn_sex"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3" />
