@@ -12,9 +12,9 @@
         android:orientation="vertical">
 
         <FrameLayout
-            android:layout_margin="@dimen/activity_vertical_margin"
             android:layout_width="match_parent"
-            android:layout_height="150dp">
+            android:layout_height="150dp"
+            android:layout_margin="@dimen/activity_vertical_margin">
 
             <ImageView
                 android:id="@+id/fragment_update_user_profile_iv_blur_avatar"
@@ -165,7 +165,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/activity_vertical_margin"
-                    android:background="@color/colorMain"
+                    android:background="@drawable/custom_button"
                     android:text="@string/done"
                     android:textColor="@android:color/white" />
 

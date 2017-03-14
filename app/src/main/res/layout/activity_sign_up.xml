@@ -50,14 +50,12 @@
 
     <Button
         android:id="@+id/activity_sign_up_btn_sign_up"
-        style="?android:textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@color/colorMain"
+        android:background="@drawable/custom_button"
         android:text="@string/sign_up"
-        android:textColor="@android:color/white"
-        android:textStyle="bold" />
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/activity_sign_up_btn_reset_password"

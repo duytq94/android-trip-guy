@@ -147,7 +147,7 @@ public class MeFragment extends Fragment {
         String versionName = BuildConfig.VERSION_NAME;
         int versionCode = BuildConfig.VERSION_CODE;
 
-        tvAppInfo.setText("TripGuy - giúp bạn có chuyến đi trọng vẹn nhất!\n");
+        tvAppInfo.setText("TripGuy - giúp bạn có chuyến đi trọn vẹn nhất!\n");
         tvAppInfo.append("Version name: " + versionName + "\n");
         tvAppInfo.append("Version code: " + versionCode + "\n");
     }

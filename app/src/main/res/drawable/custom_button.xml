@@ -2,9 +2,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <corners android:radius="3dip" />
-            <stroke android:width="1dip" android:color="#0a6038" />
-            <gradient android:angle="-90" android:endColor="#0a6038" android:startColor="#0a6038" />
+            <corners android:radius="5dip" />
+            <stroke android:width="1dip" android:color="@color/colorStatusBar" />
+            <gradient android:angle="-90" android:endColor="@color/colorStatusBar" android:startColor="@color/colorStatusBar" />
         </shape>
     </item>
     <item android:state_focused="true">

@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_vertical_margin"
             android:layout_marginTop="20dip"
-            android:background="@color/colorMain"
+            android:background="@drawable/custom_button"
             android:text="@string/btn_submit"
             android:textColor="@android:color/white" />
 
