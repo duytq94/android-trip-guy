@@ -1,16 +1,23 @@
 package com.dfa.vinatrip.MainFunction.Location;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -47,6 +54,9 @@ public class LocationFragment extends Fragment {
     @Bean
     DataService dataService;
 
+    @ViewById(R.id.my_toolbar)
+    Toolbar toolbar;
+
     @ViewById(R.id.fragment_location_rv_provinces)
     RecyclerView rvProvinces;
 
@@ -73,9 +83,11 @@ public class LocationFragment extends Fragment {
     private int i = 0;
     private TextView[] tvDots;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private android.support.v7.app.ActionBar actionBar;
 
     @AfterViews
     void onCreateView() {
+        setupActionBar();
         customPagerAdapter = new CustomPagerAdapter(getActivity());
         vpSlideShow.setAdapter(customPagerAdapter);
 
@@ -292,5 +304,39 @@ public class LocationFragment extends Fragment {
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((LinearLayout) object);
         }
+    }
+
+    public void setupActionBar() {
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setIcon(R.drawable.ic_symbol);
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        // Inflate the options menu from XML
+        inflater.inflate(R.menu.top_menu, menu);
+
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+
+        // Expand searchView, if not, it just show icon
+        searchView.setIconifiedByDefault(false);
+
+        searchView.setQueryHint("Tìm kiếm...");
     }
 }

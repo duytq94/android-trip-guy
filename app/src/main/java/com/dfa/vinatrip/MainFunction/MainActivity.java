@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.MainFunction;
 
 import android.app.Activity;
-import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
@@ -11,10 +10,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -49,17 +44,12 @@ public class MainActivity extends AppCompatActivity {
     private MeFragment meFragment;
     private boolean doubleBackPress = false;
     private int selectedItemId;
-    private android.support.v7.app.ActionBar actionBar;
 
     @ViewById(R.id.activity_main_bnv_menu)
     BottomNavigationView bnvMenu;
 
-    @ViewById(R.id.my_toolbar)
-    Toolbar toolbar;
-
     @AfterViews
     void onCreate() {
-        setupActionBar();
         changeColorStatusBar();
 
         // When more than 3 icons, ShiftMode happen, use this to back to normal
@@ -97,14 +87,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setupActionBar() {
-        setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setIcon(R.drawable.ic_symbol);
-        }
-    }
 
     public void selectFragment(MenuItem item) {
         switch (item.getItemId()) {
@@ -204,27 +186,6 @@ public class MainActivity extends AppCompatActivity {
                 }, 2000);
             }
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the options menu from XML
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.top_menu, menu);
-
-        // Get the SearchView and set the searchable configuration
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-
-        // Assumes current activity is the searchable activity
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
-        // Expand searchView, if not, it just show icon
-        searchView.setIconifiedByDefault(false);
-
-        searchView.setQueryHint("Tìm kiếm...");
-
-        return true;
     }
 
     @Override

@@ -10,8 +10,6 @@
     android:orientation="vertical"
     tools:context="com.dfa.vinatrip.MainFunction.MainActivity">
 
-    <include layout="@layout/toolbar" />
-
     <FrameLayout
         android:id="@+id/activity_main_fl_container"
         android:layout_width="match_parent"
