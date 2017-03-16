@@ -17,6 +17,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
@@ -48,6 +49,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentById;
+import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +64,9 @@ public class MyFriendFragment extends Fragment {
 
     @FragmentById(value = R.id.fragment_my_friend_map_my_friend, childFragment = true)
     SupportMapFragment smfMyFriend;
+
+    @ViewById(R.id.fragment_my_friend_iv_info_turn_location)
+    ImageView ivTurnLocation;
 
     private GoogleMap googleMap;
     private LocationManager locationManager;
