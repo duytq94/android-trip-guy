@@ -1,7 +1,11 @@
 package com.dfa.vinatrip.MainFunction.MyFriend;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,12 +17,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
@@ -47,6 +51,7 @@ import com.squareup.picasso.Target;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.ViewById;
@@ -65,8 +70,42 @@ public class MyFriendFragment extends Fragment {
     @FragmentById(value = R.id.fragment_my_friend_map_my_friend, childFragment = true)
     SupportMapFragment smfMyFriend;
 
-    @ViewById(R.id.fragment_my_friend_iv_info_turn_location)
+    @ViewById(R.id.fragment_my_friend_iv_turn_location)
     ImageView ivTurnLocation;
+
+    @Click(R.id.fragment_my_friend_iv_info)
+    void onIvInfoClick() {
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setTitle("Xem vị trí bạn bè");
+        alertDialog.setMessage(getString(R.string.message_my_friend));
+        alertDialog.setIcon(R.drawable.ic_symbol);
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "XONG", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        alertDialog.show();
+    }
+
+    @Click(R.id.fragment_my_friend_iv_turn_location)
+    void onIvTurnLocationClick() {
+        if (ivTurnLocation.getTag().equals("gps_on")) {
+            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+            alertDialog.setTitle("Xem vị trí bạn bè");
+            alertDialog.setMessage(getString(R.string.message_my_friend));
+            alertDialog.setIcon(R.drawable.ic_symbol);
+            alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "XONG", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            });
+            alertDialog.show();
+        } else {
+
+        }
+    }
 
     private GoogleMap googleMap;
     private LocationManager locationManager;
@@ -79,6 +118,10 @@ public class MyFriendFragment extends Fragment {
     private ImageLoader imageLoader;
     private Marker markerCurrentUser;
     private List<UserFriendMarker> userFriendMarkerList;
+    private Boolean statusGPS;
+    private BroadcastReceiver broadcastReceiver;
+    private IntentFilter filter;
+
 
     @AfterViews
     void onCreateView() {
@@ -86,6 +129,8 @@ public class MyFriendFragment extends Fragment {
         currentUser = dataService.getCurrentUser();
         if (currentUser != null) {
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            changeIconLocation();
+            initBroadcastReceiver();
             locationListener();
             askPermission();
             initViews();
@@ -197,7 +242,6 @@ public class MyFriendFragment extends Fragment {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Toast.makeText(getActivity(), "location changed", Toast.LENGTH_SHORT).show();
                 getCurrentUserLocation();
             }
 
@@ -315,6 +359,27 @@ public class MyFriendFragment extends Fragment {
         return bitmap;
     }
 
+    public void initBroadcastReceiver() {
+        filter = new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION);
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                changeIconLocation();
+            }
+        };
+    }
+
+    public void changeIconLocation() {
+        statusGPS = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (statusGPS) {
+            ivTurnLocation.setImageResource(R.drawable.ic_location);
+            ivTurnLocation.setTag("gps_on");
+        } else {
+            ivTurnLocation.setImageResource(R.drawable.ic_location_off);
+            ivTurnLocation.setTag("gps_off");
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -322,6 +387,8 @@ public class MyFriendFragment extends Fragment {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 5, locationListener);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, locationListener);
             locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 1000, 5, locationListener);
+            if (broadcastReceiver == null) initBroadcastReceiver();
+            getActivity().registerReceiver(broadcastReceiver, filter);
         }
     }
 
@@ -330,6 +397,7 @@ public class MyFriendFragment extends Fragment {
         super.onStop();
         if (locationManager != null && checkPermission()) {
             locationManager.removeUpdates(locationListener);
+            getActivity().unregisterReceiver(broadcastReceiver);
         }
     }
 }
