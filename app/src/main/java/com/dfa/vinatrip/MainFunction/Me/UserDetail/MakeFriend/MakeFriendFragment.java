@@ -38,20 +38,20 @@ public class MakeFriendFragment extends Fragment {
 
     private UserProfileAdapter userProfileAdapter;
     private DatabaseReference referenceFriend = FirebaseDatabase.getInstance().getReference();
-    private List<UserFriend> listUserFriends;
-    private List<UserProfile> listUserProfiles;
+    private List<UserFriend> userFriendList;
+    private List<UserProfile> userProfileList;
     private UserProfile currentUser;
 
     @AfterViews
     void onCreateView() {
-        listUserProfiles = new ArrayList<>();
-        listUserProfiles.addAll(dataService.getUserProfileList());
+        userProfileList = new ArrayList<>();
+        userProfileList.addAll(dataService.getUserProfileList());
 
         currentUser = dataService.getCurrentUser();
 
-        listUserFriends = new ArrayList<>();
-        userProfileAdapter = new UserProfileAdapter(getActivity(), listUserProfiles,
-                listUserFriends, referenceFriend, currentUser, srlReload);
+        userFriendList = new ArrayList<>();
+        userProfileAdapter = new UserProfileAdapter(getActivity(), userProfileList,
+                userFriendList, referenceFriend, currentUser, srlReload);
 
         if (CheckNetwork.isNetworkConnected(getActivity())) loadUserFriend();
 
@@ -80,7 +80,7 @@ public class MakeFriendFragment extends Fragment {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         UserFriend userFriend = dataSnapshot.getValue(UserFriend.class);
-                        listUserFriends.add(userFriend);
+                        userFriendList.add(userFriend);
                         userProfileAdapter.notifyDataSetChanged();
                     }
 
@@ -90,10 +90,10 @@ public class MakeFriendFragment extends Fragment {
 
                         // Don't add the current user to list
                         if (!userFriend.getFriendId().equals(currentUser.getUid())) {
-                            for (int i = 0; i < listUserFriends.size(); i++) {
-                                if (listUserFriends.get(i).getFriendId().equals(userFriend.getFriendId())) {
-                                    listUserFriends.remove(i);
-                                    listUserFriends.add(userFriend);
+                            for (int i = 0; i < userFriendList.size(); i++) {
+                                if (userFriendList.get(i).getFriendId().equals(userFriend.getFriendId())) {
+                                    userFriendList.remove(i);
+                                    userFriendList.add(userFriend);
                                     if (userFriend.getState().equals("friend")) {
                                         dataService.addToUserFriendList(userFriend);
                                     }
@@ -110,10 +110,10 @@ public class MakeFriendFragment extends Fragment {
 
                         // Don't add the current user to list
                         if (!userFriend.getFriendId().equals(currentUser.getUid())) {
-                            for (int i = 0; i < listUserFriends.size(); i++) {
-                                if (listUserFriends.get(i).getFriendId().equals(userFriend.getFriendId())) {
-                                    dataService.removeFromUserFriendList(listUserFriends.get(i).getFriendId());
-                                    listUserFriends.remove(i);
+                            for (int i = 0; i < userFriendList.size(); i++) {
+                                if (userFriendList.get(i).getFriendId().equals(userFriend.getFriendId())) {
+                                    dataService.removeFromUserFriendList(userFriendList.get(i).getFriendId());
+                                    userFriendList.remove(i);
                                     break;
                                 }
                             }

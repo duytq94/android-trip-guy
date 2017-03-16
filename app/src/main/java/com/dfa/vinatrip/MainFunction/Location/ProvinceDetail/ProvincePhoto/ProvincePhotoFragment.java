@@ -30,7 +30,7 @@ public class ProvincePhotoFragment extends Fragment {
     @ViewById(R.id.fragment_province_photo_srl_reload)
     SwipeRefreshLayout srlReload;
 
-    private List<ProvincePhoto> provincePhotoList;
+    private List<String> provincePhotoList;
     private ProvincePhotoAdapter provincePhotoAdapter;
     private Province province;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -78,9 +78,8 @@ public class ProvincePhotoFragment extends Fragment {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         String url;
-                        url = dataSnapshot.child("url").getValue().toString();
-                        ProvincePhoto provincePhoto = new ProvincePhoto(url);
-                        provincePhotoList.add(provincePhoto);
+                        url = dataSnapshot.getValue().toString();
+                        provincePhotoList.add(url);
                         provincePhotoAdapter.notifyDataSetChanged();
                     }
 

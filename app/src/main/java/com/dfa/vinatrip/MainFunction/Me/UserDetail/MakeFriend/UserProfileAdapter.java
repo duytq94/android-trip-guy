@@ -24,27 +24,27 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
     private LayoutInflater layoutInflater;
     private Context context;
     private SwipeRefreshLayout srlReload;
-    private List<UserProfile> listUserProfiles;
-    private List<UserFriend> listUserFriends;
+    private List<UserProfile> userProfileList;
+    private List<UserFriend> userFriendList;
     private DatabaseReference referenceFriend;
     private UserProfile currentUser;
 
-    public UserProfileAdapter(Context context, List<UserProfile> listUserProfiles,
-                              List<UserFriend> listUserFriends, DatabaseReference referenceFriend,
+    public UserProfileAdapter(Context context, List<UserProfile> userProfileList,
+                              List<UserFriend> userFriendList, DatabaseReference referenceFriend,
                               UserProfile currentUser, SwipeRefreshLayout srlReload) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.srlReload = srlReload;
 
-        this.listUserProfiles = listUserProfiles;
-        for (int i = 0; i < listUserProfiles.size(); i++) {
-            if (listUserProfiles.get(i).getUid().equals(currentUser.getUid())) {
-                this.listUserProfiles.remove(i);
+        this.userProfileList = userProfileList;
+        for (int i = 0; i < userProfileList.size(); i++) {
+            if (userProfileList.get(i).getUid().equals(currentUser.getUid())) {
+                this.userProfileList.remove(i);
                 break;
             }
         }
 
-        this.listUserFriends = listUserFriends;
+        this.userFriendList = userFriendList;
         this.currentUser = currentUser;
         this.referenceFriend = referenceFriend;
     }
@@ -57,8 +57,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
 
     @Override
     public void onBindViewHolder(final ProfileViewHolder holder, int position) {
-        final UserProfile userProfile = listUserProfiles.get(position);
-        Log.d("counter", "aaa");
+        final UserProfile userProfile = userProfileList.get(position);
 
         holder.tvNickname.setText(userProfile.getNickname());
         holder.tvEmail.setText(userProfile.getEmail());
@@ -68,11 +67,10 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
         holder.btnMakeFriend.setTag("Kết bạn");
         holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorGray));
 
-        // If one userProfile is in listUserFriends of current user login
-        for (int j = 0; j < listUserFriends.size(); j++) {
-            Log.d("counter", String.valueOf(listUserFriends.size()));
-            if (userProfile.getUid().equals(listUserFriends.get(j).getFriendId())) {
-                switch (listUserFriends.get(j).getState()) {
+        // If one userProfile is in userFriendList of current user login
+        for (int j = 0; j < userFriendList.size(); j++) {
+            if (userProfile.getUid().equals(userFriendList.get(j).getFriendId())) {
+                switch (userFriendList.get(j).getState()) {
                     case "requested":
                         holder.btnMakeFriend.setText(R.string.sent);
                         holder.btnMakeFriend.setTag("Đã gửi");
@@ -197,7 +195,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
 
     @Override
     public int getItemCount() {
-        return listUserProfiles.size();
+        return userProfileList.size();
     }
 
     public static class ProfileViewHolder extends RecyclerView.ViewHolder {
@@ -214,6 +212,5 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
             btnMakeFriend = (Button) itemView.findViewById(R.id.item_user_profile_btn_make_friend);
         }
     }
-
 
 }

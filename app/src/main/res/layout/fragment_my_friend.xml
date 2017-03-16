@@ -33,7 +33,9 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_toLeftOf="@+id/fragment_my_friend_iv_turn_location"
-            android:padding="14dp"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
             android:src="@drawable/ic_info" />
 
         <ImageView
@@ -41,7 +43,7 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_alignParentRight="true"
-            android:padding="14dp"
+            android:padding="16dp"
             android:src="@drawable/ic_location" />
     </RelativeLayout>
 

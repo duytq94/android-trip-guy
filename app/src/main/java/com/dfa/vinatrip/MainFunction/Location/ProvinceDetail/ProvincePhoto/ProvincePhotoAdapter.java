@@ -14,15 +14,14 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ProvincePhotoAdapter extends
-        RecyclerView.Adapter<ProvincePhotoAdapter.PhotoViewHolder> {
+public class ProvincePhotoAdapter extends RecyclerView.Adapter<ProvincePhotoAdapter.PhotoViewHolder> {
     private LayoutInflater layoutInflater;
     private Context context;
     private SwipeRefreshLayout srlReload;
-    private List<ProvincePhoto> provincePhotoList;
+    private List<String> provincePhotoList;
 
     public ProvincePhotoAdapter(Context context,
-                                List<ProvincePhoto> provincePhotoList,
+                                List<String> provincePhotoList,
                                 SwipeRefreshLayout srlReload) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
@@ -41,7 +40,7 @@ public class ProvincePhotoAdapter extends
         //bind data to viewholder
         // all provincePhoto will the same scale
         holder.ivAvatar.setScaleType(ImageView.ScaleType.FIT_XY);
-        Picasso.with(context).load(provincePhotoList.get(position).getUrl())
+        Picasso.with(context).load(provincePhotoList.get(position))
                 .placeholder(R.drawable.ic_loading)
                 .error(R.drawable.photo_not_available)
                 .into(holder.ivAvatar,

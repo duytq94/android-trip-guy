@@ -20,18 +20,18 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ProfileVie
     private LayoutInflater layoutInflater;
     private Context context;
     private SwipeRefreshLayout srlReload;
-    private List<UserFriend> listUserFriends;
+    private List<UserFriend> userFriendList;
     private TextView tvFriendNotAvailable;
 
-    public FriendAdapter(Context context, List<UserFriend> listUserFriends,
+    public FriendAdapter(Context context, List<UserFriend> userFriendList,
                          TextView tvFriendNotAvailable, SwipeRefreshLayout srlReload) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.srlReload = srlReload;
         this.tvFriendNotAvailable = tvFriendNotAvailable;
-        this.listUserFriends = listUserFriends;
+        this.userFriendList = userFriendList;
 
-        if (this.listUserFriends.size() == 0) this.tvFriendNotAvailable.setVisibility(View.VISIBLE);
+        if (this.userFriendList.size() == 0) this.tvFriendNotAvailable.setVisibility(View.VISIBLE);
         else this.tvFriendNotAvailable.setVisibility(View.GONE);
     }
 
@@ -43,7 +43,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ProfileVie
 
     @Override
     public void onBindViewHolder(ProfileViewHolder holder, int position) {
-        final UserFriend userFriend = listUserFriends.get(position);
+        final UserFriend userFriend = userFriendList.get(position);
 
         holder.tvNickname.setText(userFriend.getNickname());
         holder.tvEmail.setText(userFriend.getEmail());
@@ -69,7 +69,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ProfileVie
 
     @Override
     public int getItemCount() {
-        return listUserFriends.size();
+        return userFriendList.size();
     }
 
     public static class ProfileViewHolder extends RecyclerView.ViewHolder {

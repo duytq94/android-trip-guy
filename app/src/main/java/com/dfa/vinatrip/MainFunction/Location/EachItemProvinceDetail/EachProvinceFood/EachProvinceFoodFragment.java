@@ -153,7 +153,7 @@ public class EachProvinceFoodFragment extends Fragment {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         String url;
-                        url = dataSnapshot.child("url").getValue().toString();
+                        url = dataSnapshot.getValue().toString();
 
                         listUrlPhotos.add(url);
                         provinceFoodPhotoAdapter.notifyDataSetChanged();
