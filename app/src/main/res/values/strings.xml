@@ -90,6 +90,7 @@
 
     <string name="trip_plan">Kế hoạch chuyến đi</string>
 
-    <string name="message_my_friend">Xem vị trí của bạn bè của bạn trên bản đồ, đặc biệt trong những chuyến du lịch, bạn sẽ không bao giờ mất liên lạc với họ nữa.
+    <string name="message_my_friend">Xem vị trí của bạn bè của bạn trên bản đồ, đặc biệt trong những chuyến du lịch,
+        bạn sẽ không bao giờ mất liên lạc với họ nữa!
     \nLưu ý: bạn có thể tắt định vị khi không dùng đến tính năng này.</string>
 </resources>

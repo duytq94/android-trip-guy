@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.MainFunction.MyFriend;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -92,8 +93,8 @@ public class MyFriendFragment extends Fragment {
     void onIvTurnLocationClick() {
         if (ivTurnLocation.getTag().equals("gps_on")) {
             AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-            alertDialog.setTitle("Xem vị trí bạn bè");
-            alertDialog.setMessage(getString(R.string.message_my_friend));
+            alertDialog.setTitle("GPS đang mở!");
+            alertDialog.setMessage("Bạn bè sẽ nhìn thấy vị trí của bạn trên bản đồ.");
             alertDialog.setIcon(R.drawable.ic_symbol);
             alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "XONG", new DialogInterface.OnClickListener() {
                 @Override
@@ -103,7 +104,24 @@ public class MyFriendFragment extends Fragment {
             });
             alertDialog.show();
         } else {
+            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+            alertDialog.setTitle("GPS đang tắt");
+            alertDialog.setMessage("Bạn bè sẽ không nhìn thấy bạn, bạn có muốn mở?");
+            alertDialog.setIcon(R.drawable.ic_symbol);
+            alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "MỞ", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intentTurnGPS = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivityForResult(intentTurnGPS, REQUEST_TURN_GPS);
+                }
+            });
+            alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "HỦY", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
 
+                }
+            });
+            alertDialog.show();
         }
     }
 
@@ -121,7 +139,7 @@ public class MyFriendFragment extends Fragment {
     private Boolean statusGPS;
     private BroadcastReceiver broadcastReceiver;
     private IntentFilter filter;
-
+    public static final int REQUEST_TURN_GPS = 1;
 
     @AfterViews
     void onCreateView() {
@@ -398,6 +416,14 @@ public class MyFriendFragment extends Fragment {
         if (locationManager != null && checkPermission()) {
             locationManager.removeUpdates(locationListener);
             getActivity().unregisterReceiver(broadcastReceiver);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_TURN_GPS) {
+            changeIconLocation();
         }
     }
 }
