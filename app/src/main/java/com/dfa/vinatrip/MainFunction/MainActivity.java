@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     public void selectFragment(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.iconLocation:

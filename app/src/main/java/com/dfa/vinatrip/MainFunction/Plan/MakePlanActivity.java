@@ -3,6 +3,8 @@ package com.dfa.vinatrip.MainFunction.Plan;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -120,6 +122,7 @@ public class MakePlanActivity extends AppCompatActivity {
 
     @AfterViews
     void onCreate() {
+        changeColorStatusBar();
         calendar = Calendar.getInstance();
         setCurrentDayForView();
         tripPlan = new TripPlan();
@@ -143,6 +146,13 @@ public class MakePlanActivity extends AppCompatActivity {
         tvDateGo.setText(strDate);
         tvDateBack.setText(strDate);
     }
+
+    public void changeColorStatusBar() {
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
+        }
+    }
+
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {

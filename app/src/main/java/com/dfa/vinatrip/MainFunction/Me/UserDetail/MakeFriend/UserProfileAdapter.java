@@ -3,7 +3,6 @@ package com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend;
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +64,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
 
         holder.btnMakeFriend.setText("Kết bạn");
         holder.btnMakeFriend.setTag("Kết bạn");
-        holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorGray));
+        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_negative);
 
         // If one userProfile is in userFriendList of current user login
         for (int j = 0; j < userFriendList.size(); j++) {
@@ -82,7 +81,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                     case "friend":
                         holder.btnMakeFriend.setText(R.string.friend);
                         holder.btnMakeFriend.setTag("Bạn bè");
-                        holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorMain));
+                        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_positive);
                         break;
                 }
             }
@@ -94,7 +93,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                     case "Đã gửi":
                         holder.btnMakeFriend.setText("Kết bạn");
                         holder.btnMakeFriend.setTag("Kết bạn");
-                        holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorGray));
+                        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_negative);
                         // Delete data from the current user login
                         referenceFriend.child("UserFriend")
                                 .child(currentUser.getUid())
@@ -110,7 +109,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                     case "Đồng ý":
                         holder.btnMakeFriend.setText(R.string.friend);
                         holder.btnMakeFriend.setTag("Bạn bè");
-                        holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorMain));
+                        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_positive);
                         // Add profile user request to the current user login
                         UserFriend userFriendBeRequested2 = new UserFriend(userProfile.getUid(),
                                 userProfile.getNickname(), userProfile.getAvatar(),
@@ -133,7 +132,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                     case "Bạn bè":
                         holder.btnMakeFriend.setText("Kết bạn");
                         holder.btnMakeFriend.setTag("Kết bạn");
-                        holder.btnMakeFriend.setBackgroundColor(context.getResources().getColor(R.color.colorGray));
+                        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_negative);
                         // Delete data to the current user login
                         referenceFriend.child("UserFriend")
                                 .child(currentUser.getUid())
