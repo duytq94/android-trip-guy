@@ -44,21 +44,6 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 
     private Validator validator;
 
-    @Click(R.id.activity_sign_up_btn_sign_up)
-    void btnSignUpClicked() {
-        validator.validate();
-    }
-
-    @Click(R.id.activity_sign_up_btn_sign_in)
-    void btnSignInClicked() {
-        startActivity(new Intent(SignUpActivity.this, SignInActivity_.class));
-    }
-
-    @Click(R.id.activity_sign_up_btn_reset_password)
-    void btnResetPasswordClicked() {
-        startActivity(new Intent(SignUpActivity.this, ResetPasswordActivity_.class));
-    }
-
     @NotEmpty
     @Email
     @ViewById(R.id.activity_sign_up_et_email)
@@ -86,6 +71,21 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, android.R.color.white));
         }
+    }
+
+    @Click(R.id.activity_sign_up_btn_sign_up)
+    void btnSignUpClicked() {
+        validator.validate();
+    }
+
+    @Click(R.id.activity_sign_up_btn_sign_in)
+    void btnSignInClicked() {
+        startActivity(new Intent(SignUpActivity.this, SignInActivity_.class));
+    }
+
+    @Click(R.id.activity_sign_up_btn_reset_password)
+    void btnResetPasswordClicked() {
+        startActivity(new Intent(SignUpActivity.this, ResetPasswordActivity_.class));
     }
 
     @Override
@@ -158,14 +158,6 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
                                 databaseReference.child("UserProfile")
                                         .child(firebaseUser.getUid())
                                         .setValue(userProfile);
-
-                                // Add empty list friend for user
-//                                UserFriend userFriend =
-//                                        new UserFriend(firebaseUser.getUid(), "", "", "", "");
-//                                databaseReference.child("UserFriend")
-//                                        .child(firebaseUser.getUid())
-//                                        .child(firebaseUser.getUid())
-//                                        .setValue(userFriend);
                             }
                             startActivity(new Intent(SignUpActivity.this, SplashScreenActivity_.class));
                             finish();

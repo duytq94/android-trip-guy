@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.dfa.vinatrip.BuildConfig;
 import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.Login.SignInActivity_;
+import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.UserProfileDetailActivity_;
 import com.dfa.vinatrip.R;
@@ -239,13 +240,8 @@ public class MeFragment extends Fragment {
             public void onClick(View v) {
                 if (currentUser != null) {
                     FirebaseAuth.getInstance().signOut();
-                    dataService.removeCurrentUser();
-
-                    // Restart app
-                    Intent restart = getActivity().getPackageManager()
-                            .getLaunchIntentForPackage(getActivity().getPackageName());
-                    restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(restart);
+                    dataService.clearData();
+                    startActivity(new Intent(getActivity(), MainActivity_.class));
                 } else {
                     Toast.makeText(getActivity(), "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
                 }

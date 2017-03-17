@@ -16,8 +16,7 @@
             <ImageView
                 android:id="@+id/item_plan_iv_is_my_plan"
                 android:layout_width="30dp"
-                android:layout_height="40dp"
-                android:scaleType="fitXY"
+                android:layout_height="30dp"
                 android:src="@drawable/ic_bookmark" />
 
             <LinearLayout
@@ -96,7 +95,6 @@
                     android:id="@+id/item_plan_iv_avatar"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:src="@drawable/photo_not_available" />
 
                 <TextView

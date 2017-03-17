@@ -88,8 +88,7 @@ public class MakePlanActivity extends AppCompatActivity {
         invitedFriendIdList = new ArrayList<>();
 
         userFriendList = new ArrayList<>();
-        userFriendList.addAll(dataService.getUserFriendList());
-        if (userFriendList.size() != 0) {
+        if (dataService.getUserFriendList() != null) {
             tvFriendNotAvailable.setVisibility(View.GONE);
         }
 
@@ -131,7 +130,7 @@ public class MakePlanActivity extends AppCompatActivity {
         plan.setFriendInvitedList(invitedFriendIdList);
 
         // Send data to storage of current user (the user create this trip plan)
-        databaseReference.child("UserPlan").child(currentUser.getUid()).push()
+        databaseReference.child("Plan").child(currentUser.getUid()).push()
                 .setValue(plan, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
@@ -154,7 +153,7 @@ public class MakePlanActivity extends AppCompatActivity {
 
     public void sendTripPlanToFriends() {
         for (String friendId : invitedFriendIdList) {
-            databaseReference.child("UserPlan").child(friendId).push()
+            databaseReference.child("Plan").child(friendId).push()
                     .setValue(plan, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {

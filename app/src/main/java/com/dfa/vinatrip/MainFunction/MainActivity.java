@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private MeFragment meFragment;
     private boolean doubleBackPress = false;
     private int selectedItemId;
+    private Snackbar snackbar;
 
     @ViewById(R.id.activity_main_bnv_menu)
     BottomNavigationView bnvMenu;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         selectFragment(bnvMenu.getMenu().getItem(0));
 
         if (!CheckNetwork.isNetworkConnected(MainActivity.this)) {
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.activity_main),
+            snackbar = Snackbar.make(findViewById(R.id.activity_main),
                     "Không có kết nối Internet", Snackbar.LENGTH_LONG);
             View viewSnackbar = snackbar.getView();
             TextView tvSnackbar =

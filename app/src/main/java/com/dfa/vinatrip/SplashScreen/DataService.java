@@ -3,6 +3,7 @@ package com.dfa.vinatrip.SplashScreen;
 import com.dfa.vinatrip.MainFunction.Location.Province;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
+import com.dfa.vinatrip.MainFunction.Plan.Plan;
 
 import org.androidannotations.annotations.EBean;
 
@@ -16,7 +17,15 @@ public class DataService {
     private List<UserProfile> userProfileList;
     private List<UserFriend> userFriendList;
     private List<Province> provinceList;
+    private List<Plan> planList;
     private UserProfile currentUser;
+
+    public void clearData() {
+        userFriendList.clear();
+        userFriendList.clear();
+        planList.clear();
+        currentUser = null;
+    }
 
     public void setCurrentUser(UserProfile currentUser) {
         this.currentUser = currentUser;
@@ -24,10 +33,6 @@ public class DataService {
 
     public UserProfile getCurrentUser() {
         return currentUser;
-    }
-
-    public void removeCurrentUser() {
-        currentUser = null;
     }
 
     public void addToUserFriendList(UserFriend newUserFriend) {
@@ -62,6 +67,10 @@ public class DataService {
         this.provinceList = provinceList;
     }
 
+    public void setPlanList(List<Plan> planList) {
+        this.planList = planList;
+    }
+
     public List<UserProfile> getUserProfileList() {
         return userProfileList;
     }
@@ -72,6 +81,10 @@ public class DataService {
 
     public List<Province> getProvinceList() {
         return provinceList;
+    }
+
+    public List<Plan> getPlanList() {
+        return planList;
     }
 
     private OnChangeUserFriendList onChangeUserFriendList;

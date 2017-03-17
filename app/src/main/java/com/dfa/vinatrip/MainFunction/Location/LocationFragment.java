@@ -174,7 +174,7 @@ public class LocationFragment extends Fragment {
         final Runnable update = new Runnable() {
             public void run() {
                 if (i < 4) {
-                    vpSlideShow.setCurrentItem(i, true);
+//                    vpSlideShow.setCurrentItem(i, true);
                     i++;
                 } else i = 0;
             }

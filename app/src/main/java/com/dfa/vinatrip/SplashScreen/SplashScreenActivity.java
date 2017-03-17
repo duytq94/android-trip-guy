@@ -241,7 +241,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         dataService.setUserFriendList(userFriendList);
-                        getCurrentUserProfile();
+                        loadPlan();
                     }
 
                     @Override
@@ -252,7 +252,53 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     public void loadPlan() {
+        planList = new ArrayList<>();
 
+        // If no Internet, this method will not run
+        databaseReference.child("Plan").child(firebaseUser.getUid())
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Plan plan = dataSnapshot.getValue(Plan.class);
+                        planList.add(plan);
+
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        // This method to be called after all the onChildAdded() calls have happened
+        databaseReference.child("Plan").child(firebaseUser.getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        dataService.setPlanList(planList);
+                        getCurrentUserProfile();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     public void getCurrentUserProfile() {

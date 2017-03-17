@@ -42,7 +42,6 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
         holder.tvDestination.setText(plan.getDestination());
         holder.tvDate.setText(plan.getDateGo() + " -> " + plan.getDateBack());
         holder.tvUserName.setText(plan.getUserMakePlan().getNickname());
-        holder.ivAvatar.setScaleType(ImageView.ScaleType.FIT_XY);
         Picasso.with(context).load(plan.getUserMakePlan().getAvatar())
                 .placeholder(R.drawable.ic_loading)
                 .error(R.drawable.photo_not_available)

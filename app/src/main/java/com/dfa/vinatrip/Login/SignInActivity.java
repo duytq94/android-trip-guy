@@ -38,21 +38,6 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
 
     private Validator validator;
 
-    @Click(R.id.activity_sign_in_btn_sign_up)
-    void btnSignUpClicked() {
-        startActivity(new Intent(SignInActivity.this, SignUpActivity_.class));
-    }
-
-    @Click(R.id.activity_sign_in_btn_sign_in)
-    void btnSignInClicked() {
-        validator.validate();
-    }
-
-    @Click(R.id.activity_sign_in_btn_reset_password)
-    void btnResetPassword() {
-        startActivity(new Intent(SignInActivity.this, ResetPasswordActivity_.class));
-    }
-
     @NotEmpty
     @Email
     @ViewById(R.id.activity_sign_in_et_email)
@@ -76,6 +61,21 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
         changeColorStatusBar();
     }
 
+    @Click(R.id.activity_sign_in_btn_sign_up)
+    void btnSignUpClicked() {
+        startActivity(new Intent(SignInActivity.this, SignUpActivity_.class));
+    }
+
+    @Click(R.id.activity_sign_in_btn_sign_in)
+    void btnSignInClicked() {
+        validator.validate();
+    }
+
+    @Click(R.id.activity_sign_in_btn_reset_password)
+    void btnResetPassword() {
+        startActivity(new Intent(SignInActivity.this, ResetPasswordActivity_.class));
+    }
+
     @Override
     public void onValidationSucceeded() {
         String email = etEmail.getText().toString();
@@ -88,9 +88,8 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressBar.setVisibility(View.GONE);
                         if (!task.isSuccessful()) {
-                            Toast.makeText(SignInActivity.this,
-                                    "Email hoặc mật khẩu không đúng!"
-                                    , Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignInActivity.this, "Email hoặc mật khẩu không đúng!",
+                                    Toast.LENGTH_SHORT).show();
                         } else {
                             startActivity(new Intent(SignInActivity.this, SplashScreenActivity_.class));
                         }
