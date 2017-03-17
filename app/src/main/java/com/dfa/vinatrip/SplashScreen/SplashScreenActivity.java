@@ -8,6 +8,7 @@ import com.dfa.vinatrip.MainFunction.Location.Province;
 import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
+import com.dfa.vinatrip.MainFunction.Plan.Plan;
 import com.dfa.vinatrip.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,6 +35,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     List<Province> provinceList;
     List<UserProfile> userProfileList;
     List<UserFriend> userFriendList;
+    List<Plan> planList;
 
     private DatabaseReference databaseReference;
     private FirebaseUser firebaseUser;
@@ -247,6 +249,10 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    public void loadPlan() {
+
     }
 
     public void getCurrentUserProfile() {

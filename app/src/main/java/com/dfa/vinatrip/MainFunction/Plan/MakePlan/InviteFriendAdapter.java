@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Plan;
+package com.dfa.vinatrip.MainFunction.Plan.MakePlan;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

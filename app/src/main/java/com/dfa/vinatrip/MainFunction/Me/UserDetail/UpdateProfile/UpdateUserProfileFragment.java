@@ -95,9 +95,8 @@ public class UpdateUserProfileFragment extends Fragment {
     }
 
     public void setContentViews() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.sex_array,
-                R.layout.item_spinner);
+        ArrayAdapter<CharSequence> adapter =
+                ArrayAdapter.createFromResource(getActivity(), R.array.sex_array, R.layout.item_spinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnSex.setAdapter(adapter);
 

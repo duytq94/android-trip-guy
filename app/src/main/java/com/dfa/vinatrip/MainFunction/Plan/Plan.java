@@ -5,16 +5,16 @@ import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TripPlan {
+public class Plan {
     String name, destination, schedule, dateGo, dateBack;
     List<String> friendInvitedList;
     UserProfile userMakePlan;
 
-    public TripPlan() {
+    public Plan() {
     }
 
-    public TripPlan(String name, String destination, String schedule, String dateGo,
-                    String dateBack, List<String> friendInvitedList, UserProfile userMakePlan) {
+    public Plan(String name, String destination, String schedule, String dateGo,
+                String dateBack, List<String> friendInvitedList, UserProfile userMakePlan) {
         this.name = name;
         this.destination = destination;
         this.schedule = schedule;

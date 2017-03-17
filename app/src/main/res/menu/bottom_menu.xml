@@ -4,7 +4,7 @@
     <!-- if more than 4 items, title of bottom bar will be hide -->
     <item
         android:id="@+id/iconLocation"
-        android:icon="@drawable/ic_location"
+        android:icon="@drawable/ic_explore"
         android:title="@string/menu_location" />
 
     <item

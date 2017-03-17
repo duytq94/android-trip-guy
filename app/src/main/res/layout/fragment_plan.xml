@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_plan_srl_reload"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fragment_plan_fab_make_new_plan"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/activity_vertical_margin"
-        android:src="@drawable/ic_make_new"
-        app:fabSize="normal" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</ScrollView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_plan_rv_plan"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="false"
+            android:padding="@dimen/recycler_view_padding" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fragment_plan_fab_make_new_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:src="@drawable/ic_make_new"
+            app:fabSize="normal" />
+    </FrameLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

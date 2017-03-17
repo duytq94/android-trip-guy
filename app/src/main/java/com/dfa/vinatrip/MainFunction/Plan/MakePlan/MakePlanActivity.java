@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Plan;
+package com.dfa.vinatrip.MainFunction.Plan.MakePlan;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
+import com.dfa.vinatrip.MainFunction.Plan.Plan;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.SplashScreen.DataService;
 import com.google.firebase.database.DatabaseError;
@@ -65,7 +66,7 @@ public class MakePlanActivity extends AppCompatActivity {
 
     private List<UserFriend> userFriendList;
     private InviteFriendAdapter inviteFriendAdapter;
-    private TripPlan tripPlan;
+    private Plan plan;
     private Calendar calendar;
     private DatePickerDialog dpdDateGo, dpdDateBack;
     private List<String> invitedFriendIdList;
@@ -83,7 +84,7 @@ public class MakePlanActivity extends AppCompatActivity {
         currentUser = dataService.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         calendar = Calendar.getInstance();
-        tripPlan = new TripPlan();
+        plan = new Plan();
         invitedFriendIdList = new ArrayList<>();
 
         userFriendList = new ArrayList<>();
@@ -121,17 +122,17 @@ public class MakePlanActivity extends AppCompatActivity {
 
     @Click(R.id.activity_make_plan_btn_done)
     void onBtnDoneClick() {
-        tripPlan.setName(etTripName.getText().toString());
-        tripPlan.setDestination(etDestination.getText().toString());
-        tripPlan.setSchedule(etSchedule.getText().toString());
-        tripPlan.setDateGo(tvDateGo.getText().toString());
-        tripPlan.setDateBack(tvDateBack.getText().toString());
-        tripPlan.setUserMakePlan(dataService.getCurrentUser());
-        tripPlan.setFriendInvitedList(invitedFriendIdList);
+        plan.setName(etTripName.getText().toString());
+        plan.setDestination(etDestination.getText().toString());
+        plan.setSchedule(etSchedule.getText().toString());
+        plan.setDateGo(tvDateGo.getText().toString());
+        plan.setDateBack(tvDateBack.getText().toString());
+        plan.setUserMakePlan(dataService.getCurrentUser());
+        plan.setFriendInvitedList(invitedFriendIdList);
 
         // Send data to storage of current user (the user create this trip plan)
         databaseReference.child("UserPlan").child(currentUser.getUid()).push()
-                .setValue(tripPlan, new DatabaseReference.CompletionListener() {
+                .setValue(plan, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                         if (databaseError != null) {
@@ -139,7 +140,13 @@ public class MakePlanActivity extends AppCompatActivity {
                                     "Lỗi đường truyền, bạn hãy gửi lại!", Toast.LENGTH_SHORT).show();
                         } else {
                             // Send data to storage of friends be invited
-                            sendTripPlanToFriends();
+                            if (invitedFriendIdList.size() != 0) {
+                                sendTripPlanToFriends();
+                            } else {
+                                Toast.makeText(MakePlanActivity.this,
+                                        "Kế hoạch của bạn đã được tạo", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
                         }
                     }
                 });
@@ -148,7 +155,7 @@ public class MakePlanActivity extends AppCompatActivity {
     public void sendTripPlanToFriends() {
         for (String friendId : invitedFriendIdList) {
             databaseReference.child("UserPlan").child(friendId).push()
-                    .setValue(tripPlan, new DatabaseReference.CompletionListener() {
+                    .setValue(plan, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                             if (databaseError != null) {
@@ -156,7 +163,7 @@ public class MakePlanActivity extends AppCompatActivity {
                                         "Lỗi đường truyền, bạn hãy gửi lại!", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(MakePlanActivity.this,
-                                        "Kế hoạch của bạn đã được tạo!", Toast.LENGTH_SHORT).show();
+                                        "Kế hoạch của bạn đã được tạo", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                         }
