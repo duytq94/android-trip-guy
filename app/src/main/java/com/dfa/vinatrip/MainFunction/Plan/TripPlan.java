@@ -2,6 +2,7 @@ package com.dfa.vinatrip.MainFunction.Plan;
 
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TripPlan {
@@ -44,7 +45,8 @@ public class TripPlan {
     }
 
     public void setFriendInvitedList(List<String> friendInvitedList) {
-        this.friendInvitedList = friendInvitedList;
+        this.friendInvitedList = new ArrayList<>();
+        this.friendInvitedList.addAll(friendInvitedList);
     }
 
     public void setUserMakePlan(UserProfile userMakePlan) {
@@ -52,7 +54,6 @@ public class TripPlan {
     }
 
     public String getName() {
-
         return name;
     }
 

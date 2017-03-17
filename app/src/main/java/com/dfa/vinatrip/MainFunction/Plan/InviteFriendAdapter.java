@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.R;
-import com.google.firebase.database.DatabaseReference;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -21,12 +20,13 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
     private LayoutInflater layoutInflater;
     private Context context;
     private List<UserFriend> userFriendList;
-    private DatabaseReference referenceFriend;
+    private List<String> invitedFriendIdList;
 
-    public InviteFriendAdapter(Context context, List<UserFriend> userFriendList) {
+    public InviteFriendAdapter(Context context, List<UserFriend> userFriendList, List<String> invitedFriendIdList) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.userFriendList = userFriendList;
+        this.invitedFriendIdList = invitedFriendIdList;
     }
 
     @Override
@@ -53,15 +53,19 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
                         holder.btnMakeFriend.setText(R.string.invited);
                         holder.btnMakeFriend.setTag("Đã mời");
                         holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_positive);
-
-
+                        invitedFriendIdList.add(userFriend.getFriendId());
                         break;
 
                     case "Đã mời":
                         holder.btnMakeFriend.setText("Mời");
                         holder.btnMakeFriend.setTag("Mời");
                         holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_negative);
-
+                        for (int i = 0; i < invitedFriendIdList.size(); i++) {
+                            if (invitedFriendIdList.get(i).equals(userFriend.getFriendId())) {
+                                invitedFriendIdList.remove(i);
+                                break;
+                            }
+                        }
 
                         break;
                 }

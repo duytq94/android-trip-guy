@@ -25,6 +25,7 @@ import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.SplashScreen.DataService;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -82,69 +83,11 @@ public class UpdateUserProfileFragment extends Fragment {
     TextView tvBirthday;
 
     private DatabaseReference databaseReference;
-    private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
     private UserProfile currentUser;
     private Calendar calendar;
     private Uri uri;
     private int PICK_IMAGE = 1;
-
-    @Click
-    void fragment_update_user_profile_btn_done() {
-        // Check if user update info but don't update avatar
-        if (uri == null) {
-            UserProfile newUserProfile = new UserProfile(etNickname.getText().toString(),
-                    currentUser.getAvatar(),
-                    etIntroduceYourSelf.getText().toString(),
-                    etCity.getText().toString(),
-                    tvBirthday.getText().toString(),
-                    currentUser.getUid(),
-                    spnSex.getSelectedItem().toString(),
-                    currentUser.getEmail());
-
-            databaseReference.child("UserProfile").child(currentUser.getUid()).setValue(newUserProfile);
-            dataService.setCurrentUser(newUserProfile);
-            Toast.makeText(getActivity(), "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
-        } else {
-            uploadUserAvatar();
-        }
-    }
-
-    @Click
-    void fragment_update_user_profile_btn_cancel() {
-        getActivity().finish();
-    }
-
-    @Click
-    void fragment_update_user_profile_iv_change_avatar() {
-        Intent intentToLibrary = new Intent();
-        intentToLibrary.setType("image/*");
-        intentToLibrary.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intentToLibrary, PICK_IMAGE);
-    }
-
-    @Click
-    void fragment_update_user_profile_ll_birthday() {
-        // When date be set
-        DatePickerDialog.OnDateSetListener listener
-                = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                tvBirthday.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-                calendar.set(year, month, dayOfMonth);
-            }
-        };
-
-        // Set current position time when start dialog
-        String strDate[] = tvBirthday.getText().toString().split("/");
-        int day = Integer.parseInt(strDate[0]);
-        int month = Integer.parseInt(strDate[1]) - 1;
-        int year = Integer.parseInt(strDate[2]);
-        DatePickerDialog dialog = new DatePickerDialog(getActivity(),
-                listener, year, month, day);
-        dialog.setTitle("Chọn ngày sinh");
-        dialog.show();
-    }
 
     @AfterViews
     void onCreateView() {
@@ -159,7 +102,6 @@ public class UpdateUserProfileFragment extends Fragment {
         spnSex.setAdapter(adapter);
 
         currentUser = dataService.getCurrentUser();
-        firebaseStorage = FirebaseStorage.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         calendar = Calendar.getInstance();
@@ -215,7 +157,7 @@ public class UpdateUserProfileFragment extends Fragment {
             byte[] byteArrayPhoto = baos.toByteArray();
 
             // Get the path and name photo be upload
-            storageReference = firebaseStorage
+            storageReference = FirebaseStorage.getInstance()
                     .getReferenceFromUrl("gs://tripguy-10864.appspot.com")
                     .child("AvatarProfileUser")
                     .child(currentUser.getUid() + ".jpg");
@@ -235,7 +177,7 @@ public class UpdateUserProfileFragment extends Fragment {
                             progressBar.setVisibility(View.GONE);
                             tvPercent.setVisibility(View.GONE);
                             Toast.makeText(getActivity(),
-                                    "Cập nhật thất bại\nHÃy thử lại",
+                                    "Cập nhật không thành công\nBạn vui lòng thử lại",
                                     Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -279,6 +221,72 @@ public class UpdateUserProfileFragment extends Fragment {
         int height = Math.round(ratio * realImage.getHeight());
 
         return Bitmap.createScaledBitmap(realImage, width, height, filter);
+    }
+
+    @Click
+    void fragment_update_user_profile_btn_done() {
+        // Check if user update info but don't update avatar
+        if (uri == null) {
+            final UserProfile newUserProfile = new UserProfile(etNickname.getText().toString(),
+                    currentUser.getAvatar(),
+                    etIntroduceYourSelf.getText().toString(),
+                    etCity.getText().toString(),
+                    tvBirthday.getText().toString(),
+                    currentUser.getUid(),
+                    spnSex.getSelectedItem().toString(),
+                    currentUser.getEmail());
+
+            databaseReference.child("UserProfile").child(currentUser.getUid())
+                    .setValue(newUserProfile, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if (databaseError != null) {
+                                Toast.makeText(getActivity(), "Lỗi đường truyền, bạn hãy gửi lại!",
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                dataService.setCurrentUser(newUserProfile);
+                                Toast.makeText(getActivity(), "Cập nhật thành công!",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        } else {
+            uploadUserAvatar();
+        }
+    }
+
+    @Click
+    void fragment_update_user_profile_btn_cancel() {
+        getActivity().finish();
+    }
+
+    @Click
+    void fragment_update_user_profile_iv_change_avatar() {
+        Intent intentToLibrary = new Intent();
+        intentToLibrary.setType("image/*");
+        intentToLibrary.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intentToLibrary, PICK_IMAGE);
+    }
+
+    @Click
+    void fragment_update_user_profile_ll_birthday() {
+        // When date be set
+        DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                tvBirthday.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+                calendar.set(year, month, dayOfMonth);
+            }
+        };
+
+        // Set current position time when start dialog
+        String strDate[] = tvBirthday.getText().toString().split("/");
+        int day = Integer.parseInt(strDate[0]);
+        int month = Integer.parseInt(strDate[1]) - 1;
+        int year = Integer.parseInt(strDate[2]);
+        DatePickerDialog dialog = new DatePickerDialog(getActivity(), listener, year, month, day);
+        dialog.setTitle("Chọn ngày sinh");
+        dialog.show();
     }
 
     @Override

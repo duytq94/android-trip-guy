@@ -68,6 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:hint="@string/nickname"
+                    android:inputType="textPersonName"
                     android:paddingLeft="10dp"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_medium" />
@@ -84,6 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:hint="@string/city"
+                    android:inputType="textCapSentences"
                     android:paddingLeft="10dp"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_medium" />
@@ -100,6 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:hint="@string/introduce_your_self"
+                    android:inputType="textCapSentences"
                     android:paddingLeft="10dp"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_medium" />

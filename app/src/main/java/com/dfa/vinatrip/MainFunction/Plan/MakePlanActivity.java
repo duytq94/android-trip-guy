@@ -14,10 +14,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
+import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.SplashScreen.DataService;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -58,80 +63,36 @@ public class MakePlanActivity extends AppCompatActivity {
     @ViewById(R.id.activity_make_plan_tv_friend_not_available)
     TextView tvFriendNotAvailable;
 
-    @Click(R.id.activity_make_plan_btn_cancel)
-    void onBtnCancelClick() {
-        super.onBackPressed();
-    }
-
-    @Click(R.id.activity_make_plan_btn_done)
-    void onBtnDoneClick() {
-        tripPlan.setName(etTripName.getText().toString());
-        tripPlan.setDestination(etDestination.getText().toString());
-        tripPlan.setSchedule(etSchedule.getText().toString());
-        tripPlan.setUserMakePlan(dataService.getCurrentUser());
-    }
-
-    @Click(R.id.activity_make_plan_ll_date_go)
-    void onLlDateGoClick() {
-        // When date be set
-        DatePickerDialog.OnDateSetListener listener
-                = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                tvDateGo.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-                calendar.set(year, month, dayOfMonth);
-            }
-        };
-
-        // Set current position time when start dialog
-        String strDate[] = tvDateGo.getText().toString().split("/");
-        int day = Integer.parseInt(strDate[0]);
-        int month = Integer.parseInt(strDate[1]) - 1;
-        int year = Integer.parseInt(strDate[2]);
-        DatePickerDialog dialog = new DatePickerDialog(this, listener, year, month, day);
-        dialog.setTitle("Chọn ngày đi");
-        dialog.show();
-    }
-
-    @Click(R.id.activity_make_plan_ll_date_back)
-    void onLlDateBackClick() {
-        // When date be set
-        DatePickerDialog.OnDateSetListener listener
-                = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                tvDateGo.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-                calendar.set(year, month, dayOfMonth);
-            }
-        };
-
-        // Set current position time when start dialog
-        String strDate[] = tvDateGo.getText().toString().split("/");
-        int day = Integer.parseInt(strDate[0]);
-        int month = Integer.parseInt(strDate[1]) - 1;
-        int year = Integer.parseInt(strDate[2]);
-        DatePickerDialog dialog = new DatePickerDialog(this, listener, year, month, day);
-        dialog.setTitle("Chọn ngày về");
-        dialog.show();
-    }
-
     private List<UserFriend> userFriendList;
     private InviteFriendAdapter inviteFriendAdapter;
     private TripPlan tripPlan;
     private Calendar calendar;
+    private DatePickerDialog dpdDateGo, dpdDateBack;
+    private List<String> invitedFriendIdList;
+    private DatabaseReference databaseReference;
+    private UserProfile currentUser;
 
     @AfterViews
     void onCreate() {
+        initViews();
         changeColorStatusBar();
-        calendar = Calendar.getInstance();
         setCurrentDayForView();
+    }
+
+    public void initViews() {
+        currentUser = dataService.getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        calendar = Calendar.getInstance();
         tripPlan = new TripPlan();
+        invitedFriendIdList = new ArrayList<>();
+
         userFriendList = new ArrayList<>();
         userFriendList.addAll(dataService.getUserFriendList());
         if (userFriendList.size() != 0) {
             tvFriendNotAvailable.setVisibility(View.GONE);
         }
-        inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList);
+
+        inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList, invitedFriendIdList);
         rvListFriend.setAdapter(inviteFriendAdapter);
         StaggeredGridLayoutManager staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
@@ -153,6 +114,100 @@ public class MakePlanActivity extends AppCompatActivity {
         }
     }
 
+    @Click(R.id.activity_make_plan_btn_cancel)
+    void onBtnCancelClick() {
+        super.onBackPressed();
+    }
+
+    @Click(R.id.activity_make_plan_btn_done)
+    void onBtnDoneClick() {
+        tripPlan.setName(etTripName.getText().toString());
+        tripPlan.setDestination(etDestination.getText().toString());
+        tripPlan.setSchedule(etSchedule.getText().toString());
+        tripPlan.setDateGo(tvDateGo.getText().toString());
+        tripPlan.setDateBack(tvDateBack.getText().toString());
+        tripPlan.setUserMakePlan(dataService.getCurrentUser());
+        tripPlan.setFriendInvitedList(invitedFriendIdList);
+
+        // Send data to storage of current user (the user create this trip plan)
+        databaseReference.child("UserPlan").child(currentUser.getUid()).push()
+                .setValue(tripPlan, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        if (databaseError != null) {
+                            Toast.makeText(MakePlanActivity.this,
+                                    "Lỗi đường truyền, bạn hãy gửi lại!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Send data to storage of friends be invited
+                            sendTripPlanToFriends();
+                        }
+                    }
+                });
+    }
+
+    public void sendTripPlanToFriends() {
+        for (String friendId : invitedFriendIdList) {
+            databaseReference.child("UserPlan").child(friendId).push()
+                    .setValue(tripPlan, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if (databaseError != null) {
+                                Toast.makeText(MakePlanActivity.this,
+                                        "Lỗi đường truyền, bạn hãy gửi lại!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(MakePlanActivity.this,
+                                        "Kế hoạch của bạn đã được tạo!", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        }
+                    });
+        }
+    }
+
+    @Click(R.id.activity_make_plan_ll_date_go)
+    void onLlDateGoClick() {
+        // When date be set
+        DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                tvDateGo.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+                tvDateBack.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+                calendar.set(year, month, dayOfMonth);
+            }
+        };
+
+        // Set current position time when start dialog
+        String strDate[] = tvDateGo.getText().toString().split("/");
+        int day = Integer.parseInt(strDate[0]);
+        int month = Integer.parseInt(strDate[1]) - 1;
+        int year = Integer.parseInt(strDate[2]);
+        dpdDateGo = new DatePickerDialog(this, listener, year, month, day);
+        dpdDateGo.getDatePicker().setMinDate(System.currentTimeMillis());
+        dpdDateGo.setTitle("Chọn ngày đi");
+        dpdDateGo.show();
+    }
+
+    @Click(R.id.activity_make_plan_ll_date_back)
+    void onLlDateBackClick() {
+        // When date be set
+        DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                tvDateBack.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+                calendar.set(year, month, dayOfMonth);
+            }
+        };
+
+        // Set current position time when start dialog
+        String strDate[] = tvDateBack.getText().toString().split("/");
+        int day = Integer.parseInt(strDate[0]);
+        int month = Integer.parseInt(strDate[1]) - 1;
+        int year = Integer.parseInt(strDate[2]);
+        dpdDateBack = new DatePickerDialog(this, listener, year, month, day);
+        dpdDateBack.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        dpdDateBack.setTitle("Chọn ngày về");
+        dpdDateBack.show();
+    }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
