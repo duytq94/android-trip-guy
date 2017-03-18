@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainFunction.MainActivity_" />
-        <activity android:name=".MainFunction.Location.ProvinceDetail.ProvinceDetailActivity_" />
+        <activity android:name=".MainFunction.Province.ProvinceDetail.ProvinceDetailActivity_" />
         <activity android:name=".SearchableActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -37,16 +37,17 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".MainFunction.Location.EachItemProvinceDetail.EachItemProvinceDetailActivity_" />
+        <activity android:name=".MainFunction.Province.EachItemProvinceDetail.EachItemProvinceDetailActivity_" />
         <activity android:name=".MapActivity_" />
         <activity android:name=".Login.SignUpActivity_" />
         <activity android:name=".Login.SignInActivity_" />
         <activity android:name=".Login.ResetPasswordActivity_" />
         <activity android:name=".MainFunction.Me.UserDetail.UserProfileDetailActivity_" />
-        <activity android:name=".MainFunction.Location.EachItemProvinceDetail.Rating.RatingActivity_" />
-        <activity android:name=".MainFunction.Location.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity_" />
+        <activity android:name=".MainFunction.Province.EachItemProvinceDetail.Rating.RatingActivity_" />
+        <activity android:name=".MainFunction.Province.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity_" />
         <activity android:name=".SplashScreen.SplashScreenActivity_" />
-        <activity android:name=".MainFunction.Plan.MakePlan.MakePlanActivity_"></activity>
+        <activity android:name=".MainFunction.Plan.MakePlan.MakePlanActivity_" />
+        <activity android:name=".MainFunction.Plan.DetailPlanActivity_"></activity>
     </application>
 
 </manifest>

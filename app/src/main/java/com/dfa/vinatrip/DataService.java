@@ -1,6 +1,6 @@
 package com.dfa.vinatrip;
 
-import com.dfa.vinatrip.MainFunction.Location.Province;
+import com.dfa.vinatrip.MainFunction.Province.Province;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.Plan.Plan;

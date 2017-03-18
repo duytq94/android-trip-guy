@@ -2,10 +2,11 @@ package com.dfa.vinatrip.MainFunction.Plan;
 
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Plan {
+public class Plan implements Serializable {
     String name, destination, schedule, dateGo, dateBack;
     List<String> friendInvitedList;
     UserProfile userMakePlan;

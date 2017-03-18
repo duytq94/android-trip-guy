@@ -19,8 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.CheckNetwork;
-import com.dfa.vinatrip.MainFunction.Location.LocationFragment;
-import com.dfa.vinatrip.MainFunction.Location.LocationFragment_;
+import com.dfa.vinatrip.MainFunction.Province.ProvinceFragment;
+import com.dfa.vinatrip.MainFunction.Province.ProvinceFragment_;
 import com.dfa.vinatrip.MainFunction.Me.MeFragment;
 import com.dfa.vinatrip.MainFunction.Me.MeFragment_;
 import com.dfa.vinatrip.MainFunction.MyFriend.MyFriendFragment;
@@ -37,7 +37,7 @@ import org.androidannotations.annotations.ViewById;
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
 
-    private LocationFragment locationFragment;
+    private ProvinceFragment provinceFragment;
     private PlanFragment planFragment;
     private ShareFragment shareFragment;
     private MyFriendFragment myFriendFragment;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         addNewFragments();
 
-        // load fragment_location first
+        // load fragment_province first
         selectFragment(bnvMenu.getMenu().getItem(0));
 
         if (!CheckNetwork.isNetworkConnected(MainActivity.this)) {
@@ -91,35 +91,35 @@ public class MainActivity extends AppCompatActivity {
     public void selectFragment(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.iconLocation:
-                getSupportFragmentManager().beginTransaction().show(locationFragment).commit();
+                getSupportFragmentManager().beginTransaction().show(provinceFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(planFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(shareFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(myFriendFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(meFragment).commit();
                 break;
             case R.id.iconPlan:
-                getSupportFragmentManager().beginTransaction().hide(locationFragment).commit();
+                getSupportFragmentManager().beginTransaction().hide(provinceFragment).commit();
                 getSupportFragmentManager().beginTransaction().show(planFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(shareFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(myFriendFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(meFragment).commit();
                 break;
             case R.id.iconShare:
-                getSupportFragmentManager().beginTransaction().hide(locationFragment).commit();
+                getSupportFragmentManager().beginTransaction().hide(provinceFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(planFragment).commit();
                 getSupportFragmentManager().beginTransaction().show(shareFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(myFriendFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(meFragment).commit();
                 break;
             case R.id.iconMemory:
-                getSupportFragmentManager().beginTransaction().hide(locationFragment).commit();
+                getSupportFragmentManager().beginTransaction().hide(provinceFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(planFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(shareFragment).commit();
                 getSupportFragmentManager().beginTransaction().show(myFriendFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(meFragment).commit();
                 break;
             case R.id.iconMe:
-                getSupportFragmentManager().beginTransaction().hide(locationFragment).commit();
+                getSupportFragmentManager().beginTransaction().hide(provinceFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(planFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(shareFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(myFriendFragment).commit();
@@ -130,10 +130,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addNewFragments() {
-        locationFragment = new LocationFragment_();
+        provinceFragment = new ProvinceFragment_();
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.activity_main_fl_container, locationFragment, "locationFragment")
+                .add(R.id.activity_main_fl_container, provinceFragment, "provinceFragment")
                 .commit();
 
         planFragment = new PlanFragment_();

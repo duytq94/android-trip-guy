@@ -10,10 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.CheckNetwork;
+import com.dfa.vinatrip.DataService;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.Plan.MakePlan.MakePlanActivity_;
+import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.DataService;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -75,6 +76,23 @@ public class PlanFragment extends Fragment {
             StaggeredGridLayoutManager staggeredGridLayoutManager =
                     new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
             rvPlan.setLayoutManager(staggeredGridLayoutManager);
+
+            rvPlan.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), rvPlan,
+                    new RecyclerItemClickListener.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            Intent intent = new Intent(getActivity(), DetailPlanActivity_.class);
+
+                            // Send Plan to DetailPlanActivity
+                            intent.putExtra("Plan", planList.get(position));
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onLongItemClick(View view, int position) {
+
+                        }
+                    }));
         }
     }
 

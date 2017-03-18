@@ -4,7 +4,7 @@
     android:id="@+id/activity_rating_rl_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dfa.vinatrip.MainFunction.Location.EachItemProvinceDetail.Rating.RatingActivity">
+    tools:context="com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.RatingActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,6 +70,9 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
     @ViewById(R.id.activity_make_plan_tv_friend_not_available)
     TextView tvFriendNotAvailable;
+
+    @ViewById(R.id.activity_make_plan_progressBar)
+    ProgressBar progressBar;
 
     private List<UserFriend> userFriendList;
     private InviteFriendAdapter inviteFriendAdapter;
@@ -144,7 +148,9 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
                             if (databaseError != null) {
                                 Toast.makeText(MakePlanActivity.this,
                                         "Lỗi đường truyền, bạn hãy gửi lại!", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
                             } else {
+                                progressBar.setVisibility(View.GONE);
                                 Toast.makeText(MakePlanActivity.this,
                                         "Kế hoạch của bạn đã được tạo", Toast.LENGTH_SHORT).show();
                                 finish();
@@ -227,6 +233,8 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
     @Override
     public void onValidationSucceeded() {
+        progressBar.setVisibility(View.VISIBLE);
+
         plan.setName(etTripName.getText().toString());
         plan.setDestination(etDestination.getText().toString());
         plan.setSchedule(etSchedule.getText().toString());
@@ -243,11 +251,13 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
                         if (databaseError != null) {
                             Toast.makeText(MakePlanActivity.this,
                                     "Lỗi đường truyền, bạn hãy gửi lại!", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         } else {
                             // Send data to storage of friends be invited
                             if (invitedFriendIdList.size() != 0) {
                                 sendTripPlanToFriends();
                             } else {
+                                progressBar.setVisibility(View.GONE);
                                 Toast.makeText(MakePlanActivity.this,
                                         "Kế hoạch của bạn đã được tạo", Toast.LENGTH_SHORT).show();
                                 finish();
