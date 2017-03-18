@@ -66,7 +66,6 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
                                 break;
                             }
                         }
-
                         break;
                 }
             }

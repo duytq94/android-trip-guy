@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.MainFunction.Location;
 
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +19,11 @@ public class ProvinceAdapter extends RecyclerView.Adapter<ProvinceAdapter.Provin
     private List<Province> provinceList;
     private LayoutInflater layoutInflater;
     private Context context;
-    private SwipeRefreshLayout srlReload;
 
-    public ProvinceAdapter(Context context, List<Province> provinceList, SwipeRefreshLayout srlReload) {
+    public ProvinceAdapter(Context context, List<Province> provinceList) {
         this.provinceList = provinceList;
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
-        this.srlReload = srlReload;
     }
 
     @Override
@@ -51,8 +48,6 @@ public class ProvinceAdapter extends RecyclerView.Adapter<ProvinceAdapter.Provin
                         new Callback() {
                             @Override
                             public void onSuccess() {
-                                // turn icon waiting off when finish
-                                srlReload.setRefreshing(false);
                             }
 
                             @Override

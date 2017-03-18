@@ -37,6 +37,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -82,12 +83,13 @@ public class LocationFragment extends Fragment {
     private CustomPagerAdapter customPagerAdapter;
     private int i = 0;
     private TextView[] tvDots;
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference;
     private android.support.v7.app.ActionBar actionBar;
 
     @AfterViews
     void onCreateView() {
         setupActionBar();
+
         customPagerAdapter = new CustomPagerAdapter(getActivity());
         vpSlideShow.setAdapter(customPagerAdapter);
 
@@ -116,20 +118,9 @@ public class LocationFragment extends Fragment {
         srlReload.setColorSchemeResources(R.color.colorMain);
 
         provinceList = new ArrayList<>();
-        provinceAdapter = new ProvinceAdapter(getActivity(), provinceList, srlReload);
+        provinceList.addAll(dataService.getProvinceList());
+        provinceAdapter = new ProvinceAdapter(getActivity(), provinceList);
         rvProvinces.setAdapter(provinceAdapter);
-
-        srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (CheckNetwork.isNetworkConnected(getActivity())) {
-                    provinceList.clear();
-                    loadProvince();
-                } else {
-                    srlReload.setRefreshing(false);
-                }
-            }
-        });
 
         StaggeredGridLayoutManager staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -154,9 +145,17 @@ public class LocationFragment extends Fragment {
                     }
                 }));
 
-        provinceList.clear();
-        provinceList.addAll(dataService.getProvinceList());
-        provinceAdapter.notifyDataSetChanged();
+        srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (CheckNetwork.isNetworkConnected(getActivity())) {
+                    provinceList.clear();
+                    loadProvince();
+                } else {
+                    srlReload.setRefreshing(false);
+                }
+            }
+        });
     }
 
     public void autoScrollSlideShow() {
@@ -174,7 +173,7 @@ public class LocationFragment extends Fragment {
         final Runnable update = new Runnable() {
             public void run() {
                 if (i < 4) {
-//                    vpSlideShow.setCurrentItem(i, true);
+                    vpSlideShow.setCurrentItem(i, true);
                     i++;
                 } else i = 0;
             }
@@ -209,7 +208,7 @@ public class LocationFragment extends Fragment {
 
     public void loadProvince() {
         srlReload.setRefreshing(true);
-        DatabaseReference databaseReference = firebaseDatabase.getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         // If no Internet, this method will not run
         databaseReference.child("Province").addChildEventListener(
@@ -241,6 +240,21 @@ public class LocationFragment extends Fragment {
 
                     }
                 });
+
+        // This method to be called after all the onChildAdded() calls have happened
+        databaseReference.child("Province").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // update provinceList again
+                dataService.setProvinceList(provinceList);
+                srlReload.setRefreshing(false);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public class FixedSpeedScroller extends Scroller {

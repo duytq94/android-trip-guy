@@ -1,14 +1,15 @@
 package com.dfa.vinatrip.MainFunction.Plan;
 
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -19,13 +20,13 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
     private List<Plan> planList;
     private LayoutInflater layoutInflater;
     private Context context;
-    private SwipeRefreshLayout srlReload;
+    private UserProfile currentUser;
 
-    public PlanAdapter(Context context, List<Plan> planList, SwipeRefreshLayout srlReload) {
+    public PlanAdapter(Context context, List<Plan> planList, UserProfile currentUser) {
         this.planList = planList;
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
-        this.srlReload = srlReload;
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -40,8 +41,17 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
 
         holder.tvName.setText(plan.getName());
         holder.tvDestination.setText(plan.getDestination());
-        holder.tvDate.setText(plan.getDateGo() + " -> " + plan.getDateBack());
+        holder.tvDate.setText(plan.getDateGo() + " " + Html.fromHtml("&#10132;") + " " + plan.getDateBack());
         holder.tvUserName.setText(plan.getUserMakePlan().getNickname());
+
+        if (plan.getUserMakePlan().getUid().equals(currentUser.getUid())) {
+            holder.tvUpdate.setEnabled(true);
+        } else {
+            holder.ivIsMyPlan.setImageResource(0);
+            holder.tvUpdate.setEnabled(false);
+            holder.tvUpdate.setTextColor(R.color.colorGray);
+        }
+
         Picasso.with(context).load(plan.getUserMakePlan().getAvatar())
                 .placeholder(R.drawable.ic_loading)
                 .error(R.drawable.photo_not_available)
@@ -49,8 +59,6 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
                         new Callback() {
                             @Override
                             public void onSuccess() {
-                                // turn icon waiting off when finish
-                                srlReload.setRefreshing(false);
                             }
 
                             @Override

@@ -7,6 +7,7 @@ import com.dfa.vinatrip.MainFunction.Plan.Plan;
 
 import org.androidannotations.annotations.EBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
@@ -56,19 +57,27 @@ public class DataService {
     }
 
     public void setUserProfileList(List<UserProfile> userProfileList) {
-        this.userProfileList = userProfileList;
+        this.userProfileList = new ArrayList<>();
+        this.userProfileList.clear();
+        this.userProfileList.addAll(userProfileList);
     }
 
     public void setUserFriendList(List<UserFriend> userFriendList) {
-        this.userFriendList = userFriendList;
+        this.userFriendList = new ArrayList<>();
+        this.userFriendList.clear();
+        this.userFriendList.addAll(userFriendList);
     }
 
     public void setProvinceList(List<Province> provinceList) {
-        this.provinceList = provinceList;
+        this.provinceList = new ArrayList<>();
+        this.provinceList.clear();
+        this.provinceList.addAll(provinceList);
     }
 
     public void setPlanList(List<Plan> planList) {
-        this.planList = planList;
+        this.planList = new ArrayList<>();
+        this.planList.clear();
+        this.planList.addAll(planList);
     }
 
     public List<UserProfile> getUserProfileList() {

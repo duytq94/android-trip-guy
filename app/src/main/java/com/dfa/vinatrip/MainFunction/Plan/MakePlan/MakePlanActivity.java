@@ -75,12 +75,12 @@ public class MakePlanActivity extends AppCompatActivity {
 
     @AfterViews
     void onCreate() {
-        initViews();
+        initView();
         changeColorStatusBar();
         setCurrentDayForView();
     }
 
-    public void initViews() {
+    public void initView() {
         currentUser = dataService.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         calendar = Calendar.getInstance();
@@ -90,6 +90,7 @@ public class MakePlanActivity extends AppCompatActivity {
         userFriendList = new ArrayList<>();
         if (dataService.getUserFriendList() != null) {
             tvFriendNotAvailable.setVisibility(View.GONE);
+            userFriendList.addAll(dataService.getUserFriendList());
         }
 
         inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList, invitedFriendIdList);
