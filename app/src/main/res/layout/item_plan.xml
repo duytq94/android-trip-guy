@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="140dp"
     android:layout_margin="@dimen/card_view_margin">
 
     <RelativeLayout
@@ -32,7 +32,6 @@
                     android:gravity="center_horizontal|center_vertical"
                     android:paddingBottom="@dimen/text_view_padding"
                     android:paddingTop="@dimen/text_view_padding"
-                    android:text="abc"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_large" />
 
@@ -58,8 +57,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="@dimen/text_view_padding"
-                            android:gravity="center_vertical"
-                            android:text="where" />
+                            android:gravity="center_vertical" />
 
                     </LinearLayout>
 
@@ -80,8 +78,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="@dimen/text_view_padding"
-                            android:gravity="center_vertical"
-                            android:text="abc" />
+                            android:gravity="center_vertical" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -103,9 +100,7 @@
                     android:id="@+id/item_plan_tv_user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/text_view_padding"
-                    android:gravity="center"
-                    android:text="dfa" />
+                    android:gravity="center" />
             </LinearLayout>
         </LinearLayout>
 

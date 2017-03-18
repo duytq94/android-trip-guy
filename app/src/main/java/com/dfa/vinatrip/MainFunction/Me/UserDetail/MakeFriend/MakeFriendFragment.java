@@ -51,7 +51,7 @@ public class MakeFriendFragment extends Fragment {
 
         userFriendList = new ArrayList<>();
         userProfileAdapter = new UserProfileAdapter(getActivity(), userProfileList,
-                userFriendList, referenceFriend, currentUser, srlReload);
+                userFriendList, referenceFriend, currentUser);
 
         if (CheckNetwork.isNetworkConnected(getActivity())) loadUserFriend();
 
@@ -61,9 +61,8 @@ public class MakeFriendFragment extends Fragment {
             @Override
             public void onRefresh() {
                 if (CheckNetwork.isNetworkConnected(getActivity())) {
+                    srlReload.setRefreshing(true);
                     loadUserFriend();
-                } else {
-                    srlReload.setRefreshing(false);
                 }
             }
         });
@@ -138,6 +137,7 @@ public class MakeFriendFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         rvListFriends.setAdapter(userProfileAdapter);
+                        srlReload.setRefreshing(false);
                     }
 
                     @Override

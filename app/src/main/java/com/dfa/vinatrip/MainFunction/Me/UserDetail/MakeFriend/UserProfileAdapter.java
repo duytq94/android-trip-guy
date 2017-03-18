@@ -22,7 +22,6 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
 
     private LayoutInflater layoutInflater;
     private Context context;
-    private SwipeRefreshLayout srlReload;
     private List<UserProfile> userProfileList;
     private List<UserFriend> userFriendList;
     private DatabaseReference referenceFriend;
@@ -30,10 +29,9 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
 
     public UserProfileAdapter(Context context, List<UserProfile> userProfileList,
                               List<UserFriend> userFriendList, DatabaseReference referenceFriend,
-                              UserProfile currentUser, SwipeRefreshLayout srlReload) {
+                              UserProfile currentUser) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
-        this.srlReload = srlReload;
 
         this.userProfileList = userProfileList;
         for (int i = 0; i < userProfileList.size(); i++) {
@@ -181,8 +179,6 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
                             new Callback() {
                                 @Override
                                 public void onSuccess() {
-                                    // turn icon waiting off when finish
-                                    srlReload.setRefreshing(false);
                                 }
 
                                 @Override

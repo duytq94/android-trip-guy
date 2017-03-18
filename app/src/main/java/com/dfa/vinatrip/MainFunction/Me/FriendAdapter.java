@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.MainFunction.Me;
 
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,15 +18,12 @@ import java.util.List;
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ProfileViewHolder> {
     private LayoutInflater layoutInflater;
     private Context context;
-    private SwipeRefreshLayout srlReload;
     private List<UserFriend> userFriendList;
     private TextView tvFriendNotAvailable;
 
-    public FriendAdapter(Context context, List<UserFriend> userFriendList,
-                         TextView tvFriendNotAvailable, SwipeRefreshLayout srlReload) {
+    public FriendAdapter(Context context, List<UserFriend> userFriendList, TextView tvFriendNotAvailable) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
-        this.srlReload = srlReload;
         this.tvFriendNotAvailable = tvFriendNotAvailable;
         this.userFriendList = userFriendList;
 
@@ -56,8 +52,6 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ProfileVie
                             new Callback() {
                                 @Override
                                 public void onSuccess() {
-                                    // turn icon waiting off when finish
-                                    srlReload.setRefreshing(false);
                                 }
 
                                 @Override

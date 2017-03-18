@@ -9,13 +9,13 @@
 
     <!-- String for welcome screen -->
     <string name="welcome_screen_title1">Thông tin địa điểm</string>
-    <string name="welcome_screen_desc1">Cung cấp thông tin điểm đến, khách sạn, ăn uống và nhiều thông tin khác!</string>
+    <string name="welcome_screen_desc1">Cung cấp thông tin điểm đến, khách sạn, ăn uống và nhiều thông tin khác</string>
     <string name="welcome_screen_title2">Lên lịch trình</string>
-    <string name="welcome_screen_desc2">Giúp bạn tạo lịch trình chu đáo để có chuyến đi trọn vẹn!</string>
+    <string name="welcome_screen_desc2">Giúp bạn tạo lịch trình chu đáo để có chuyến đi trọn vẹn</string>
     <string name="welcome_screen_title3">Chia sẻ trải nghiệm</string>
-    <string name="welcome_screen_desc3">Cùng cộng đồng người dùng VinaTrip chia sẻ các trải nghiệm với nhau để tạo nên chuyến du lịch tuyệt vời nhất!</string>
+    <string name="welcome_screen_desc3">Cùng cộng đồng người dùng VinaTrip chia sẻ các trải nghiệm với nhau để tạo nên chuyến du lịch tuyệt vời nhất</string>
     <string name="welcome_screen_title4">Lưu lại cảm xúc</string>
-    <string name="welcome_screen_desc4">Những nơi bạn đi qua sẽ được lưu lại cùng với những cảm xúc khó quên!</string>
+    <string name="welcome_screen_desc4">Những nơi bạn đi qua sẽ được lưu lại cùng với những cảm xúc khó quên</string>
 
     <!-- String for bottom menu -->
     <string name="menu_location">Địa điểm</string>
@@ -29,9 +29,9 @@
     <string name="hint_password">Password</string>
     <string name="sign_up">Đăng ký</string>
     <string name="btn_forgot_password">Quên mật khẩu?</string>
-    <string name="btn_link_to_login">Đã có tài khoản. Đăng nhập!</string>
+    <string name="btn_link_to_login">Đã có tài khoản. Đăng nhập</string>
     <string name="btn_login">Đăng nhập</string>
-    <string name="btn_link_to_register">Chưa có tài khoản? Đăng ký ngay!</string>
+    <string name="btn_link_to_register">Chưa có tài khoản? Đăng ký ngay</string>
     <string name="title_forgot_password">Quên mật khẩu?</string>
     <string name="body_forgot_password">Bạn hãy nhập địa chỉ email, chúng tôi sẽ gửi lại bạn mật khẩu mới</string>
     <string name="btn_reset_password">Reset mật khẩu</string>
@@ -94,7 +94,9 @@
 
     <string name="trip_plan">Kế hoạch chuyến đi</string>
 
+    <string name="plan_list_not_available">Hiện bạn chưa có kế hoạch du lịch nào</string>
+
     <string name="message_my_friend">Xem vị trí của bạn bè của bạn trên bản đồ, đặc biệt trong những chuyến du lịch,
-        bạn sẽ không bao giờ mất liên lạc với họ nữa!
+        bạn sẽ không bao giờ mất liên lạc với họ nữa.
     \nLưu ý: bạn có thể tắt định vị khi không dùng đến tính năng này.</string>
 </resources>

@@ -114,7 +114,7 @@ public class MeFragment extends Fragment {
 
         if (CheckNetwork.isNetworkConnected(getActivity())) {
             onClickListener();
-            setContentViews();
+            initView();
             hideViews(false);
         } else {
             hideViews(true);
@@ -125,9 +125,12 @@ public class MeFragment extends Fragment {
             public void onRefresh() {
                 if (CheckNetwork.isNetworkConnected(getActivity())) {
                     onClickListener();
-                    setContentViews();
+                    initView();
                     hideViews(false);
-                } else srlReload.setRefreshing(false);
+                    srlReload.setRefreshing(false);
+                } else {
+                    srlReload.setRefreshing(false);
+                }
             }
         });
     }
@@ -153,7 +156,7 @@ public class MeFragment extends Fragment {
         tvAppInfo.append("Version code: " + versionCode + "\n");
     }
 
-    public void setContentViews() {
+    public void initView() {
         String versionName = BuildConfig.VERSION_NAME;
         int versionCode = BuildConfig.VERSION_CODE;
 
@@ -194,7 +197,7 @@ public class MeFragment extends Fragment {
                     listUserFriends.addAll(dataService.getUserFriendList());
                     tvMakeFriend.setEnabled(true);
                     friendAdapter = new FriendAdapter(getActivity(), listUserFriends,
-                            tvFriendNotAvailable, srlReload);
+                            tvFriendNotAvailable);
                     rvListFriends.setAdapter(friendAdapter);
                 }
 
@@ -204,7 +207,7 @@ public class MeFragment extends Fragment {
                     listUserFriends.addAll(dataService.getUserFriendList());
                     tvMakeFriend.setEnabled(true);
                     friendAdapter = new FriendAdapter(getActivity(), listUserFriends,
-                            tvFriendNotAvailable, srlReload);
+                            tvFriendNotAvailable);
                     rvListFriends.setAdapter(friendAdapter);
                 }
             });
@@ -212,14 +215,12 @@ public class MeFragment extends Fragment {
             listUserFriends.addAll(dataService.getUserFriendList());
             tvMakeFriend.setEnabled(true);
             friendAdapter = new FriendAdapter(getActivity(), listUserFriends,
-                    tvFriendNotAvailable, srlReload);
+                    tvFriendNotAvailable);
             rvListFriends.setAdapter(friendAdapter);
 
             StaggeredGridLayoutManager staggeredGridLayoutManager =
                     new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
             rvListFriends.setLayoutManager(staggeredGridLayoutManager);
-        } else {
-            srlReload.setRefreshing(false);
         }
     }
 
@@ -304,7 +305,7 @@ public class MeFragment extends Fragment {
         // Reload data
         if (requestCode == NOTIFY_UPDATE_REQUEST) {
             if (CheckNetwork.isNetworkConnected(getActivity())) {
-                setContentViews();
+                initView();
                 hideViews(false);
             } else {
                 hideViews(true);

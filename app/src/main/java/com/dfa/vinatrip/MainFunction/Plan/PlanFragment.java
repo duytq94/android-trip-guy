@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.CheckNetwork;
@@ -40,6 +42,9 @@ public class PlanFragment extends Fragment {
     @ViewById(R.id.fragment_plan_srl_reload)
     SwipeRefreshLayout srlReload;
 
+    @ViewById(R.id.fragment_plan_ll_plan_list_not_available)
+    LinearLayout llPlanListNotAvailable;
+
     private List<Plan> planList;
     private PlanAdapter planAdapter;
     private DatabaseReference databaseReference;
@@ -62,17 +67,15 @@ public class PlanFragment extends Fragment {
             }
         });
 
-        if (dataService.getPlanList() != null && dataService.getCurrentUser() != null) {
+        if (dataService.getCurrentUser() != null && CheckNetwork.isNetworkConnected(getActivity())) {
             currentUser = dataService.getCurrentUser();
-            planList.addAll(dataService.getPlanList());
             planAdapter = new PlanAdapter(getActivity(), planList, currentUser);
             rvPlan.setAdapter(planAdapter);
+            loadPlan();
             StaggeredGridLayoutManager staggeredGridLayoutManager =
                     new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
             rvPlan.setLayoutManager(staggeredGridLayoutManager);
         }
-
-
     }
 
     @Click(R.id.fragment_plan_fab_make_new_plan)
@@ -83,7 +86,6 @@ public class PlanFragment extends Fragment {
         } else {
             Toast.makeText(getActivity(), "Bạn phải đăng nhập mới sử dụng được tính năng này", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public void loadPlan() {
@@ -95,6 +97,9 @@ public class PlanFragment extends Fragment {
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        llPlanListNotAvailable.setVisibility(View.GONE);
+                        rvPlan.setVisibility(View.VISIBLE);
+
                         Plan plan = dataSnapshot.getValue(Plan.class);
                         planList.add(plan);
                         planAdapter.notifyDataSetChanged();
@@ -126,8 +131,15 @@ public class PlanFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        // update planList again
-                        dataService.setPlanList(planList);
+                        // add planList to dataService
+                        if (planList.size() != 0) {
+                            llPlanListNotAvailable.setVisibility(View.GONE);
+                            rvPlan.setVisibility(View.VISIBLE);
+                            dataService.setPlanList(planList);
+                        } else {
+                            llPlanListNotAvailable.setVisibility(View.VISIBLE);
+                            rvPlan.setVisibility(View.GONE);
+                        }
                         srlReload.setRefreshing(false);
                     }
 
