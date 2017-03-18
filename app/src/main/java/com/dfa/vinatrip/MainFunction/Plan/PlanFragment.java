@@ -13,7 +13,7 @@ import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.Plan.MakePlan.MakePlanActivity_;
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.SplashScreen.DataService;
+import com.dfa.vinatrip.DataService;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

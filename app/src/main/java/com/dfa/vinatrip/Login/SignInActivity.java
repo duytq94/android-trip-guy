@@ -61,21 +61,6 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
         changeColorStatusBar();
     }
 
-    @Click(R.id.activity_sign_in_btn_sign_up)
-    void btnSignUpClicked() {
-        startActivity(new Intent(SignInActivity.this, SignUpActivity_.class));
-    }
-
-    @Click(R.id.activity_sign_in_btn_sign_in)
-    void btnSignInClicked() {
-        validator.validate();
-    }
-
-    @Click(R.id.activity_sign_in_btn_reset_password)
-    void btnResetPassword() {
-        startActivity(new Intent(SignInActivity.this, ResetPasswordActivity_.class));
-    }
-
     @Override
     public void onValidationSucceeded() {
         String email = etEmail.getText().toString();
@@ -117,6 +102,21 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
             }
             ((EditText) view).setError(message);
         }
+    }
+
+    @Click(R.id.activity_sign_in_btn_sign_up)
+    void btnSignUpClicked() {
+        startActivity(new Intent(SignInActivity.this, SignUpActivity_.class));
+    }
+
+    @Click(R.id.activity_sign_in_btn_sign_in)
+    void btnSignInClicked() {
+        validator.validate();
+    }
+
+    @Click(R.id.activity_sign_in_btn_reset_password)
+    void btnResetPassword() {
+        startActivity(new Intent(SignInActivity.this, ResetPasswordActivity_.class));
     }
 
     public void changeColorStatusBar() {

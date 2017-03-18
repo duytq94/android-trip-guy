@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.SplashScreen;
+package com.dfa.vinatrip;
 
 import com.dfa.vinatrip.MainFunction.Location.Province;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;

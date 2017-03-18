@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.SplashScreen.DataService;
+import com.dfa.vinatrip.DataService;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseError;

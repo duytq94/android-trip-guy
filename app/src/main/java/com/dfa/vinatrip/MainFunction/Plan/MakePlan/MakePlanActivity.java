@@ -16,14 +16,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dfa.vinatrip.DataService;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.Plan.Plan;
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.SplashScreen.DataService;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -38,7 +41,7 @@ import java.util.List;
 import java.util.Locale;
 
 @EActivity(R.layout.activity_make_plan)
-public class MakePlanActivity extends AppCompatActivity {
+public class MakePlanActivity extends AppCompatActivity implements Validator.ValidationListener {
 
     @Bean
     DataService dataService;
@@ -46,12 +49,15 @@ public class MakePlanActivity extends AppCompatActivity {
     @ViewById(R.id.activity_make_plan_rv_list_friend)
     RecyclerView rvListFriend;
 
+    @NotEmpty
     @ViewById(R.id.activity_make_plan_et_trip_name)
     EditText etTripName;
 
+    @NotEmpty
     @ViewById(R.id.activity_make_plan_et_destination)
     EditText etDestination;
 
+    @NotEmpty
     @ViewById(R.id.activity_make_plan_et_schedule)
     EditText etSchedule;
 
@@ -72,6 +78,7 @@ public class MakePlanActivity extends AppCompatActivity {
     private List<String> invitedFriendIdList;
     private DatabaseReference databaseReference;
     private UserProfile currentUser;
+    private Validator validator;
 
     @AfterViews
     void onCreate() {
@@ -81,6 +88,9 @@ public class MakePlanActivity extends AppCompatActivity {
     }
 
     public void initView() {
+        validator = new Validator(this);
+        validator.setValidationListener(this);
+
         currentUser = dataService.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         calendar = Calendar.getInstance();
@@ -122,34 +132,7 @@ public class MakePlanActivity extends AppCompatActivity {
 
     @Click(R.id.activity_make_plan_btn_done)
     void onBtnDoneClick() {
-        plan.setName(etTripName.getText().toString());
-        plan.setDestination(etDestination.getText().toString());
-        plan.setSchedule(etSchedule.getText().toString());
-        plan.setDateGo(tvDateGo.getText().toString());
-        plan.setDateBack(tvDateBack.getText().toString());
-        plan.setUserMakePlan(dataService.getCurrentUser());
-        plan.setFriendInvitedList(invitedFriendIdList);
-
-        // Send data to storage of current user (the user create this trip plan)
-        databaseReference.child("Plan").child(currentUser.getUid()).push()
-                .setValue(plan, new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        if (databaseError != null) {
-                            Toast.makeText(MakePlanActivity.this,
-                                    "Lỗi đường truyền, bạn hãy gửi lại!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            // Send data to storage of friends be invited
-                            if (invitedFriendIdList.size() != 0) {
-                                sendTripPlanToFriends();
-                            } else {
-                                Toast.makeText(MakePlanActivity.this,
-                                        "Kế hoạch của bạn đã được tạo", Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
-                        }
-                    }
-                });
+        validator.validate();
     }
 
     public void sendTripPlanToFriends() {
@@ -239,6 +222,47 @@ public class MakePlanActivity extends AppCompatActivity {
         if (activity != null && activity.getWindow() != null && activity.getWindow().getDecorView() != null) {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
+        }
+    }
+
+    @Override
+    public void onValidationSucceeded() {
+        plan.setName(etTripName.getText().toString());
+        plan.setDestination(etDestination.getText().toString());
+        plan.setSchedule(etSchedule.getText().toString());
+        plan.setDateGo(tvDateGo.getText().toString());
+        plan.setDateBack(tvDateBack.getText().toString());
+        plan.setUserMakePlan(dataService.getCurrentUser());
+        plan.setFriendInvitedList(invitedFriendIdList);
+
+        // Send data to storage of current user (the user create this trip plan)
+        databaseReference.child("Plan").child(currentUser.getUid()).push()
+                .setValue(plan, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        if (databaseError != null) {
+                            Toast.makeText(MakePlanActivity.this,
+                                    "Lỗi đường truyền, bạn hãy gửi lại!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Send data to storage of friends be invited
+                            if (invitedFriendIdList.size() != 0) {
+                                sendTripPlanToFriends();
+                            } else {
+                                Toast.makeText(MakePlanActivity.this,
+                                        "Kế hoạch của bạn đã được tạo", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = "Bạn không được để trống";
+            ((EditText) view).setError(message);
         }
     }
 }
