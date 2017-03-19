@@ -17,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -48,10 +49,11 @@ public class ProvinceHotelFragment extends Fragment {
 
         provinceHotelList = new ArrayList<>();
         provinceHotelAdapter =
-                new ProvinceHotelAdapter(getActivity(), provinceHotelList, srlReload);
+                new ProvinceHotelAdapter(getActivity(), provinceHotelList);
         rvHotels.setAdapter(provinceHotelAdapter);
 
         if (CheckNetwork.isNetworkConnected(getActivity())) {
+            srlReload.setRefreshing(true);
             loadProvinceHotel();
         }
 
@@ -60,6 +62,7 @@ public class ProvinceHotelFragment extends Fragment {
             public void onRefresh() {
                 if (CheckNetwork.isNetworkConnected(getActivity())) {
                     provinceHotelList.clear();
+                    srlReload.setRefreshing(true);
                     loadProvinceHotel();
                 } else {
                     srlReload.setRefreshing(false);
@@ -92,14 +95,10 @@ public class ProvinceHotelFragment extends Fragment {
     }
 
     public void loadProvinceHotel() {
-        srlReload.setRefreshing(true);
-
         DatabaseReference databaseReference = firebaseDatabase.getReference();
 
         // if no Internet, this method will not run
-        databaseReference
-                .child("ProvinceHotel")
-                .child(province.getName())
+        databaseReference.child("ProvinceHotel").child(province.getName())
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -143,6 +142,19 @@ public class ProvinceHotelFragment extends Fragment {
                     @Override
                     public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        databaseReference.child("ProvinceHotel").child(province.getName())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        srlReload.setRefreshing(false);
                     }
 
                     @Override

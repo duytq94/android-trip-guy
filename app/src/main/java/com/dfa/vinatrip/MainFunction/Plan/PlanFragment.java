@@ -1,8 +1,10 @@
 package com.dfa.vinatrip.MainFunction.Plan;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
@@ -104,6 +106,21 @@ public class PlanFragment extends Fragment {
         } else {
             Toast.makeText(getActivity(), "Bạn phải đăng nhập mới sử dụng được tính năng này", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Click(R.id.fragment_my_friend_iv_info)
+    void onIvInfoClick() {
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setTitle("Lập kế hoạch chuyến đi");
+        alertDialog.setMessage(getString(R.string.message_plan));
+        alertDialog.setIcon(R.drawable.ic_symbol);
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "XONG", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        alertDialog.show();
     }
 
     public void loadPlan() {

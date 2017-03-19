@@ -24,10 +24,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.dfa.vinatrip.DataService;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.DataService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -72,6 +72,36 @@ public class MyFriendFragment extends Fragment {
 
     @ViewById(R.id.fragment_my_friend_iv_turn_location)
     ImageView ivTurnLocation;
+
+    private GoogleMap googleMap;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private Location location;
+    private DatabaseReference databaseReference;
+    private UserProfile currentUser;
+    private List<UserFriend> userFriendList;
+    private List<UserLocation> userLocationList;
+    private ImageLoader imageLoader;
+    private Marker markerCurrentUser;
+    private List<UserFriendMarker> userFriendMarkerList;
+    private Boolean statusGPS;
+    private BroadcastReceiver broadcastReceiver;
+    private IntentFilter filter;
+    public static final int REQUEST_TURN_GPS = 1;
+
+    @AfterViews
+    void onCreateView() {
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        currentUser = dataService.getCurrentUser();
+        if (currentUser != null) {
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            changeIconLocation();
+            initBroadcastReceiver();
+            locationListener();
+            askPermission();
+            initViews();
+        }
+    }
 
     @Click(R.id.fragment_my_friend_iv_info)
     void onIvInfoClick() {
@@ -121,36 +151,6 @@ public class MyFriendFragment extends Fragment {
                 }
             });
             alertDialog.show();
-        }
-    }
-
-    private GoogleMap googleMap;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    private Location location;
-    private DatabaseReference databaseReference;
-    private UserProfile currentUser;
-    private List<UserFriend> userFriendList;
-    private List<UserLocation> userLocationList;
-    private ImageLoader imageLoader;
-    private Marker markerCurrentUser;
-    private List<UserFriendMarker> userFriendMarkerList;
-    private Boolean statusGPS;
-    private BroadcastReceiver broadcastReceiver;
-    private IntentFilter filter;
-    public static final int REQUEST_TURN_GPS = 1;
-
-    @AfterViews
-    void onCreateView() {
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        currentUser = dataService.getCurrentUser();
-        if (currentUser != null) {
-            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            changeIconLocation();
-            initBroadcastReceiver();
-            locationListener();
-            askPermission();
-            initViews();
         }
     }
 

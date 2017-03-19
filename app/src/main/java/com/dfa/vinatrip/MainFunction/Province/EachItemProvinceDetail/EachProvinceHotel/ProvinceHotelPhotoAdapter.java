@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachProvinceHotel;
 
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,18 +13,14 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ProvinceHotelPhotoAdapter extends
-        RecyclerView.Adapter<ProvinceHotelPhotoAdapter.PhotoViewHolder> {
+public class ProvinceHotelPhotoAdapter extends RecyclerView.Adapter<ProvinceHotelPhotoAdapter.PhotoViewHolder> {
     private LayoutInflater layoutInflater;
     private Context context;
-    private SwipeRefreshLayout srlReload;
     private List<String> listUrlPhotos;
 
-    public ProvinceHotelPhotoAdapter(Context context,
-                                     List<String> listUrlPhotos, SwipeRefreshLayout srlReload) {
+    public ProvinceHotelPhotoAdapter(Context context, List<String> listUrlPhotos) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
-        this.srlReload = srlReload;
         this.listUrlPhotos = listUrlPhotos;
     }
 
@@ -43,18 +38,7 @@ public class ProvinceHotelPhotoAdapter extends
         Picasso.with(context).load(listUrlPhotos.get(position))
                 .placeholder(R.drawable.ic_loading)
                 .error(R.drawable.photo_not_available)
-                .into(holder.ivPhoto,
-                        new Callback() {
-                            @Override
-                            public void onSuccess() {
-                                // Turn icon waiting off when finish
-                                srlReload.setRefreshing(false);
-                            }
-
-                            @Override
-                            public void onError() {
-                            }
-                        });
+                .into(holder.ivPhoto);
     }
 
     @Override

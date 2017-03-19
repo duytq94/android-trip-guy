@@ -17,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -47,10 +48,11 @@ public class ProvinceFoodFragment extends Fragment {
         srlReload.setColorSchemeResources(R.color.colorMain);
 
         provinceFoodList = new ArrayList<>();
-        provinceFoodAdapter = new ProvinceFoodAdapter(getActivity(), provinceFoodList, srlReload);
+        provinceFoodAdapter = new ProvinceFoodAdapter(getActivity(), provinceFoodList);
         rvFoods.setAdapter(provinceFoodAdapter);
 
         if (CheckNetwork.isNetworkConnected(getActivity())) {
+            srlReload.setRefreshing(true);
             loadProvinceFood();
         }
 
@@ -59,6 +61,7 @@ public class ProvinceFoodFragment extends Fragment {
             public void onRefresh() {
                 if (CheckNetwork.isNetworkConnected(getActivity())) {
                     provinceFoodList.clear();
+                    srlReload.setRefreshing(true);
                     loadProvinceFood();
                 } else {
                     srlReload.setRefreshing(false);
@@ -91,14 +94,10 @@ public class ProvinceFoodFragment extends Fragment {
     }
 
     public void loadProvinceFood() {
-        srlReload.setRefreshing(true);
-
         DatabaseReference databaseReference = firebaseDatabase.getReference();
 
         // if no Internet, this method will not run
-        databaseReference
-                .child("ProvinceFood")
-                .child(province.getName())
+        databaseReference.child("ProvinceFood").child(province.getName())
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -138,6 +137,19 @@ public class ProvinceFoodFragment extends Fragment {
                     @Override
                     public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        databaseReference.child("ProvinceFood").child(province.getName())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        srlReload.setRefreshing(false);
                     }
 
                     @Override

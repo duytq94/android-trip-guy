@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvincePhoto;
 
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.dfa.vinatrip.R;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -17,15 +15,12 @@ import java.util.List;
 public class ProvincePhotoAdapter extends RecyclerView.Adapter<ProvincePhotoAdapter.PhotoViewHolder> {
     private LayoutInflater layoutInflater;
     private Context context;
-    private SwipeRefreshLayout srlReload;
     private List<String> provincePhotoList;
 
     public ProvincePhotoAdapter(Context context,
-                                List<String> provincePhotoList,
-                                SwipeRefreshLayout srlReload) {
+                                List<String> provincePhotoList) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
-        this.srlReload = srlReload;
         this.provincePhotoList = provincePhotoList;
     }
 
@@ -43,18 +38,7 @@ public class ProvincePhotoAdapter extends RecyclerView.Adapter<ProvincePhotoAdap
         Picasso.with(context).load(provincePhotoList.get(position))
                 .placeholder(R.drawable.ic_loading)
                 .error(R.drawable.photo_not_available)
-                .into(holder.ivAvatar,
-                        new Callback() {
-                            @Override
-                            public void onSuccess() {
-                                // turn icon waiting off when finish
-                                srlReload.setRefreshing(false);
-                            }
-
-                            @Override
-                            public void onError() {
-                            }
-                        });
+                .into(holder.ivAvatar);
     }
 
     @Override

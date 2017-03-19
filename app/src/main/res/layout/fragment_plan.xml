@@ -5,47 +5,86 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/fragment_plan_ll_plan_list_not_available"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_vertical_margin"
-            android:visibility="gone">
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorMain">
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_plan_gray" />
+                android:id="@+id/fragment_my_friend_iv_symbol"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:src="@drawable/ic_symbol" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/plan_list_not_available"
-                android:textSize="@dimen/text_large" />
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/fragment_my_friend_iv_symbol"
+                android:text="Kế Hoạch Chuyến Đi"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_large"
+                android:textStyle="bold" />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/fragment_my_friend_iv_info"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_alignParentRight="true"
+                android:padding="16dp"
+                android:src="@drawable/ic_info" />
+        </RelativeLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_plan_rv_plan"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/recycler_view_padding" />
+            android:layout_height="match_parent">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fragment_plan_fab_make_new_plan"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/activity_vertical_margin"
-            android:src="@drawable/ic_make_new"
-            app:fabSize="normal" />
-    </FrameLayout>
+            <LinearLayout
+                android:id="@+id/fragment_plan_ll_plan_list_not_available"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_vertical_margin"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_plan_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/plan_list_not_available"
+                    android:textSize="@dimen/text_large" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_plan_rv_plan"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/recycler_view_padding" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fragment_plan_fab_make_new_plan"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:src="@drawable/ic_make_new"
+                app:fabSize="normal" />
+        </FrameLayout>
+    </LinearLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

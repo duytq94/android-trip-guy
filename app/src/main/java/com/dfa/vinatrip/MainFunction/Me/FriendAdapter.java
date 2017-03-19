@@ -48,16 +48,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ProfileVie
             Picasso.with(context).load(userFriend.getAvatar())
                     .placeholder(R.drawable.ic_loading)
                     .error(R.drawable.photo_not_available)
-                    .into(holder.ivAvatar,
-                            new Callback() {
-                                @Override
-                                public void onSuccess() {
-                                }
-
-                                @Override
-                                public void onError() {
-                                }
-                            });
+                    .into(holder.ivAvatar);
         }
     }
 

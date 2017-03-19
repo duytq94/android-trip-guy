@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.R;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -77,16 +76,7 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
             Picasso.with(context).load(userFriend.getAvatar())
                     .placeholder(R.drawable.ic_loading)
                     .error(R.drawable.photo_not_available)
-                    .into(holder.ivAvatar,
-                            new Callback() {
-                                @Override
-                                public void onSuccess() {
-                                }
-
-                                @Override
-                                public void onError() {
-                                }
-                            });
+                    .into(holder.ivAvatar);
         }
     }
 

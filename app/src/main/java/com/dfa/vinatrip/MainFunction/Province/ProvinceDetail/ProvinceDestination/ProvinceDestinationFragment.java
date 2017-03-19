@@ -17,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -49,10 +50,11 @@ public class ProvinceDestinationFragment extends Fragment {
 
         provinceDestinationList = new ArrayList<>();
         provinceDestinationAdapter =
-                new ProvinceDestinationAdapter(getActivity(), provinceDestinationList, srlReload);
+                new ProvinceDestinationAdapter(getActivity(), provinceDestinationList);
         rvDestinations.setAdapter(provinceDestinationAdapter);
 
         if (CheckNetwork.isNetworkConnected(getActivity())) {
+            srlReload.setRefreshing(true);
             loadProvinceDestination();
         }
 
@@ -60,6 +62,7 @@ public class ProvinceDestinationFragment extends Fragment {
             @Override
             public void onRefresh() {
                 if (CheckNetwork.isNetworkConnected(getActivity())) {
+                    srlReload.setRefreshing(true);
                     provinceDestinationList.clear();
                     loadProvinceDestination();
                 } else {
@@ -93,14 +96,10 @@ public class ProvinceDestinationFragment extends Fragment {
     }
 
     public void loadProvinceDestination() {
-        srlReload.setRefreshing(true);
-
         DatabaseReference databaseReference = firebaseDatabase.getReference();
 
         // if no Internet, this method will not run
-        databaseReference
-                .child("ProvinceDestination")
-                .child(province.getName())
+        databaseReference.child("ProvinceDestination").child(province.getName())
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -143,6 +142,19 @@ public class ProvinceDestinationFragment extends Fragment {
                     @Override
                     public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        databaseReference.child("ProvinceDestination").child(province.getName())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        srlReload.setRefreshing(false);
                     }
 
                     @Override

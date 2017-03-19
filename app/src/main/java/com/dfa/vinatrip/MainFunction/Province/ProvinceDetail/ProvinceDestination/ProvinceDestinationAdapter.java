@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDestination;
 
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,24 +9,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ProvinceDestinationAdapter extends
-        RecyclerView.Adapter<ProvinceDestinationAdapter.DestinationViewHolder> {
+public class ProvinceDestinationAdapter extends RecyclerView.Adapter<ProvinceDestinationAdapter.DestinationViewHolder> {
     private LayoutInflater layoutInflater;
     private Context context;
-    private SwipeRefreshLayout srlReload;
     private List<ProvinceDestination> provinceDestinationList;
 
-    public ProvinceDestinationAdapter(Context context,
-                                      List<ProvinceDestination> provinceDestinationList,
-                                      SwipeRefreshLayout srlReload) {
+    public ProvinceDestinationAdapter(Context context, List<ProvinceDestination> provinceDestinationList) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
-        this.srlReload = srlReload;
         this.provinceDestinationList = provinceDestinationList;
     }
 
@@ -51,18 +44,7 @@ public class ProvinceDestinationAdapter extends
         Picasso.with(context).load(provinceDestination.getAvatar())
                 .placeholder(R.drawable.ic_loading)
                 .error(R.drawable.photo_not_available)
-                .into(holder.ivAvatar,
-                        new Callback() {
-                            @Override
-                            public void onSuccess() {
-                                // turn icon waiting off when finish
-                                srlReload.setRefreshing(false);
-                            }
-
-                            @Override
-                            public void onError() {
-                            }
-                        });
+                .into(holder.ivAvatar);
     }
 
     @Override

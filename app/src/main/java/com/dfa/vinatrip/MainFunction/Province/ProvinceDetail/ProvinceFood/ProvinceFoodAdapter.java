@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceFood;
 
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,14 +17,11 @@ import java.util.List;
 public class ProvinceFoodAdapter extends RecyclerView.Adapter<ProvinceFoodAdapter.FoodViewHolder> {
     private LayoutInflater layoutInflater;
     private Context context;
-    private SwipeRefreshLayout srlReload;
     private List<ProvinceFood> provinceFoodList;
 
-    public ProvinceFoodAdapter(Context context,
-                               List<ProvinceFood> provinceFoodList, SwipeRefreshLayout srlReload) {
+    public ProvinceFoodAdapter(Context context, List<ProvinceFood> provinceFoodList) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
-        this.srlReload = srlReload;
         this.provinceFoodList = provinceFoodList;
     }
 
@@ -49,18 +45,7 @@ public class ProvinceFoodAdapter extends RecyclerView.Adapter<ProvinceFoodAdapte
         Picasso.with(context).load(provinceFood.getAvatar())
                 .placeholder(R.drawable.ic_loading)
                 .error(R.drawable.photo_not_available)
-                .into(holder.ivAvatar,
-                        new Callback() {
-                            @Override
-                            public void onSuccess() {
-                                // turn icon waiting off when finish
-                                srlReload.setRefreshing(false);
-                            }
-
-                            @Override
-                            public void onError() {
-                            }
-                        });
+                .into(holder.ivAvatar);
     }
 
     @Override

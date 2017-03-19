@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceHotel;
 
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -11,24 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ProvinceHotelAdapter extends
-        RecyclerView.Adapter<ProvinceHotelAdapter.HotelViewHolder> {
+public class ProvinceHotelAdapter extends RecyclerView.Adapter<ProvinceHotelAdapter.HotelViewHolder> {
     private LayoutInflater layoutInflater;
     private Context context;
-    private SwipeRefreshLayout srlReload;
     private List<ProvinceHotel> provinceHotelList;
 
-    public ProvinceHotelAdapter(Context context,
-                                List<ProvinceHotel> provinceHotelList,
-                                SwipeRefreshLayout srlReload) {
+    public ProvinceHotelAdapter(Context context, List<ProvinceHotel> provinceHotelList) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
-        this.srlReload = srlReload;
         this.provinceHotelList = provinceHotelList;
     }
 
@@ -74,18 +67,7 @@ public class ProvinceHotelAdapter extends
         Picasso.with(context).load(provinceHotel.getAvatar())
                 .placeholder(R.drawable.ic_loading)
                 .error(R.drawable.photo_not_available)
-                .into(holder.ivAvatar,
-                        new Callback() {
-                            @Override
-                            public void onSuccess() {
-                                // turn icon waiting off when finish
-                                srlReload.setRefreshing(false);
-                            }
-
-                            @Override
-                            public void onError() {
-                            }
-                        });
+                .into(holder.ivAvatar);
     }
 
     @Override

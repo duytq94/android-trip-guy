@@ -80,7 +80,7 @@ public class EachProvinceDestinationFragment extends Fragment {
     }
 
     @Click(R.id.fragment_each_province_destination_tv_rate)
-    void onTvRateClick(){
+    void onTvRateClick() {
         Intent intentRate = new Intent(getActivity(), RatingActivity_.class);
 
         // Send DetailDestination to RatingActivity
@@ -108,6 +108,7 @@ public class EachProvinceDestinationFragment extends Fragment {
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         if (CheckNetwork.isNetworkConnected(getActivity())) {
+            srlReload.setRefreshing(true);
             loadProvinceDestinationPhoto();
             loadProvinceDestinationRating();
         }
@@ -117,6 +118,7 @@ public class EachProvinceDestinationFragment extends Fragment {
                 if (CheckNetwork.isNetworkConnected(getActivity())) {
                     listUrlPhotos.clear();
                     listUserRatings.clear();
+                    srlReload.setRefreshing(true);
                     loadProvinceDestinationPhoto();
                     loadProvinceDestinationRating();
                 } else {
@@ -190,7 +192,7 @@ public class EachProvinceDestinationFragment extends Fragment {
 
         listUrlPhotos = new ArrayList<>();
         provinceDestinationPhotoAdapter =
-                new ProvinceDestinationPhotoAdapter(getActivity(), listUrlPhotos, srlReload);
+                new ProvinceDestinationPhotoAdapter(getActivity(), listUrlPhotos);
         rvProvinceDestinationPhotos.setAdapter(provinceDestinationPhotoAdapter);
 
         listUserRatings = new ArrayList<>();
@@ -218,13 +220,9 @@ public class EachProvinceDestinationFragment extends Fragment {
     }
 
     public void loadProvinceDestinationPhoto() {
-        srlReload.setRefreshing(true);
         DatabaseReference referencePhoto = firebaseDatabase.getReference();
         // if no Internet, this method will not run
-        referencePhoto
-                .child("ProvinceDestinationPhoto")
-                .child(detailDestination.getProvince())
-                .child(detailDestination.getName())
+        referencePhoto.child("ProvinceDestinationPhoto").child(detailDestination.getProvince()).child(detailDestination.getName())
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -255,30 +253,31 @@ public class EachProvinceDestinationFragment extends Fragment {
 
                     }
                 });
+
+        referencePhoto.child("ProvinceDestinationPhoto").child(detailDestination.getProvince()).child(detailDestination.getName())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        srlReload.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     public void loadProvinceDestinationRating() {
-        // if no Internet, this method will not run
         DatabaseReference referenceRating = firebaseDatabase.getReference();
-        referenceRating
-                .child("ProvinceDestinationRating")
-                .child(detailDestination.getProvince())
+
+        // if no Internet, this method will not run
+        referenceRating.child("ProvinceDestinationRating").child(detailDestination.getProvince())
                 .child(detailDestination.getName())
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        String uid, nickname, avatar, email, content, numStars, date;
-
-                        uid = dataSnapshot.child("uid").getValue().toString();
-                        nickname = dataSnapshot.child("nickname").getValue().toString();
-                        avatar = dataSnapshot.child("avatar").getValue().toString();
-                        email = dataSnapshot.child("email").getValue().toString();
-                        content = dataSnapshot.child("content").getValue().toString();
-                        numStars = dataSnapshot.child("numStars").getValue().toString();
-                        date = dataSnapshot.child("date").getValue().toString();
-
-                        UserRating userRating = new UserRating(uid, nickname, avatar,
-                                email, content, numStars, date);
+                        UserRating userRating = dataSnapshot.getValue(UserRating.class);
 
                         rvUserRatings.setVisibility(View.VISIBLE);
                         tvCommentNotAvailable.setVisibility(View.GONE);

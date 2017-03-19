@@ -97,6 +97,8 @@
     <string name="plan_list_not_available">Hiện bạn chưa có kế hoạch du lịch nào</string>
 
     <string name="message_my_friend">Xem vị trí của bạn bè của bạn trên bản đồ, đặc biệt trong những chuyến du lịch,
-        bạn sẽ không bao giờ mất liên lạc với họ nữa.
-    \nLưu ý: bạn có thể tắt định vị khi không dùng đến tính năng này.</string>
+        bạn sẽ không bao giờ mất liên lạc với họ nữa.\nLưu ý: bạn có thể tắt định vị khi không dùng đến tính năng này.</string>
+
+    <string name="message_plan">Lên kế hoạch, lịch trình cho chuyến đi của bạn, tag bạn bè cùng đi vào để mọi người có thể
+    theo dõi và đóng góp cho chuyến đi nhé.</string>
 </resources>

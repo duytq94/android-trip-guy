@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend;
 
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
 import com.google.firebase.database.DatabaseReference;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -175,16 +173,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
             Picasso.with(context).load(userProfile.getAvatar())
                     .placeholder(R.drawable.ic_loading)
                     .error(R.drawable.photo_not_available)
-                    .into(holder.ivAvatar,
-                            new Callback() {
-                                @Override
-                                public void onSuccess() {
-                                }
-
-                                @Override
-                                public void onError() {
-                                }
-                            });
+                    .into(holder.ivAvatar);
         }
     }
 

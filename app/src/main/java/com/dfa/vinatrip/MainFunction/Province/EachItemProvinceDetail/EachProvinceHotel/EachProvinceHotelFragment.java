@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -60,6 +61,42 @@ public class EachProvinceHotelFragment extends Fragment {
     @ViewById(R.id.fragment_each_province_hotel_iv_map)
     ImageView ivMap;
 
+    private ProvinceHotel detailHotel;
+    private List<String> listUrlPhotos;
+    private ProvinceHotelPhotoAdapter provinceHotelPhotoAdapter;
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+
+    @AfterViews
+    void onCreateView() {
+        // Get the Hotel be chosen from EachItemProvinceDetailActivity
+        detailHotel = (ProvinceHotel) getArguments().getSerializable("DetailHotel");
+
+        srlReload.setColorSchemeResources(R.color.colorMain);
+        if (CheckNetwork.isNetworkConnected(getActivity())) {
+            srlReload.setRefreshing(true);
+            loadProvinceHotelPhoto();
+        }
+        srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (CheckNetwork.isNetworkConnected(getActivity())) {
+                    listUrlPhotos.clear();
+                    srlReload.setRefreshing(true);
+                    loadProvinceHotelPhoto();
+                } else {
+                    srlReload.setRefreshing(false);
+                }
+            }
+        });
+
+        // set content for views
+        setContentViews();
+
+        StaggeredGridLayoutManager staggeredGridLayoutManager =
+                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
+        rvProvinceHotelPhotos.setLayoutManager(staggeredGridLayoutManager);
+    }
+
     @Click(R.id.fragment_each_province_hotel_ll_phone)
     void onLlPhoneClick() {
         if (ContextCompat.checkSelfPermission(getActivity(),
@@ -89,40 +126,6 @@ public class EachProvinceHotelFragment extends Fragment {
         getActivity().startActivity(intentMap);
     }
 
-    private ProvinceHotel detailHotel;
-    private List<String> listUrlPhotos;
-    private ProvinceHotelPhotoAdapter provinceHotelPhotoAdapter;
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-
-    @AfterViews
-    void onCreateView() {
-        // Get the Hotel be chosen from EachItemProvinceDetailActivity
-        detailHotel = (ProvinceHotel) getArguments().getSerializable("DetailHotel");
-
-        srlReload.setColorSchemeResources(R.color.colorMain);
-        if (CheckNetwork.isNetworkConnected(getActivity())) {
-            loadProvinceHotelPhoto();
-        }
-        srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (CheckNetwork.isNetworkConnected(getActivity())) {
-                    listUrlPhotos.clear();
-                    loadProvinceHotelPhoto();
-                } else {
-                    srlReload.setRefreshing(false);
-                }
-            }
-        });
-
-        // set content for views
-        setContentViews();
-
-        StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
-        rvProvinceHotelPhotos.setLayoutManager(staggeredGridLayoutManager);
-    }
-
     public void setContentViews() {
         tvDescription.setText(detailHotel.getDescription());
         tvMail.setText(detailHotel.getMail());
@@ -132,7 +135,7 @@ public class EachProvinceHotelFragment extends Fragment {
 
         listUrlPhotos = new ArrayList<>();
         provinceHotelPhotoAdapter =
-                new ProvinceHotelPhotoAdapter(getActivity(), listUrlPhotos, srlReload);
+                new ProvinceHotelPhotoAdapter(getActivity(), listUrlPhotos);
         rvProvinceHotelPhotos.setAdapter(provinceHotelPhotoAdapter);
 
         // Load static map
@@ -156,15 +159,10 @@ public class EachProvinceHotelFragment extends Fragment {
     }
 
     public void loadProvinceHotelPhoto() {
-        srlReload.setRefreshing(true);
-
         DatabaseReference databaseReference = firebaseDatabase.getReference();
 
         // if no Internet, this method will not run
-        databaseReference
-                .child("ProvinceHotelPhoto")
-                .child(detailHotel.getProvince())
-                .child(detailHotel.getName())
+        databaseReference.child("ProvinceHotelPhoto").child(detailHotel.getProvince()).child(detailHotel.getName())
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -188,6 +186,19 @@ public class EachProvinceHotelFragment extends Fragment {
                     @Override
                     public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        databaseReference.child("ProvinceHotelPhoto").child(detailHotel.getProvince()).child(detailHotel.getName())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        srlReload.setRefreshing(false);
                     }
 
                     @Override

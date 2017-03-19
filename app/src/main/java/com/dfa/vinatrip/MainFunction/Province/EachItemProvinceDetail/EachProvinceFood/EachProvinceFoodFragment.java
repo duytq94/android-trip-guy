@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -54,6 +55,42 @@ public class EachProvinceFoodFragment extends Fragment {
     @ViewById(R.id.fragment_each_province_food_iv_map)
     ImageView ivMap;
 
+    private ProvinceFood detailFood;
+    private List<String> listUrlPhotos;
+    private ProvinceFoodPhotoAdapter provinceFoodPhotoAdapter;
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+
+    @AfterViews
+    void onCreateView() {
+        // Get the Food be chosen from EachItemProvinceDetailActivity
+        detailFood = (ProvinceFood) getArguments().getSerializable("DetailFood");
+
+        srlReload.setColorSchemeResources(R.color.colorMain);
+        if (CheckNetwork.isNetworkConnected(getActivity())) {
+            srlReload.setRefreshing(true);
+            loadProvinceFoodPhoto();
+        }
+        srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (CheckNetwork.isNetworkConnected(getActivity())) {
+                    listUrlPhotos.clear();
+                    srlReload.setRefreshing(true);
+                    loadProvinceFoodPhoto();
+                } else {
+                    srlReload.setRefreshing(false);
+                }
+            }
+        });
+
+        // set content for views
+        setContentViews();
+
+        StaggeredGridLayoutManager staggeredGridLayoutManager =
+                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
+        rvProvinceFoodPhotos.setLayoutManager(staggeredGridLayoutManager);
+    }
+
     @Click(R.id.fragment_each_province_food_ll_phone)
     void onLlPhoneClick() {
         if (ContextCompat.checkSelfPermission(getActivity(),
@@ -76,40 +113,6 @@ public class EachProvinceFoodFragment extends Fragment {
         getActivity().startActivity(intentMap);
     }
 
-    private ProvinceFood detailFood;
-    private List<String> listUrlPhotos;
-    private ProvinceFoodPhotoAdapter provinceFoodPhotoAdapter;
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-
-    @AfterViews
-    void onCreateView() {
-        // Get the Food be chosen from EachItemProvinceDetailActivity
-        detailFood = (ProvinceFood) getArguments().getSerializable("DetailFood");
-
-        srlReload.setColorSchemeResources(R.color.colorMain);
-        if (CheckNetwork.isNetworkConnected(getActivity())) {
-            loadProvinceFoodPhoto();
-        }
-        srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (CheckNetwork.isNetworkConnected(getActivity())) {
-                    listUrlPhotos.clear();
-                    loadProvinceFoodPhoto();
-                } else {
-                    srlReload.setRefreshing(false);
-                }
-            }
-        });
-
-        // set content for views
-        setContentViews();
-
-        StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
-        rvProvinceFoodPhotos.setLayoutManager(staggeredGridLayoutManager);
-    }
-
     public void setContentViews() {
         tvDescription.setText(detailFood.getDescription());
         tvPhone.setText(detailFood.getPhone());
@@ -117,7 +120,7 @@ public class EachProvinceFoodFragment extends Fragment {
 
         listUrlPhotos = new ArrayList<>();
         provinceFoodPhotoAdapter =
-                new ProvinceFoodPhotoAdapter(getActivity(), listUrlPhotos, srlReload);
+                new ProvinceFoodPhotoAdapter(getActivity(), listUrlPhotos);
         rvProvinceFoodPhotos.setAdapter(provinceFoodPhotoAdapter);
 
         // Load static map
@@ -140,15 +143,10 @@ public class EachProvinceFoodFragment extends Fragment {
     }
 
     public void loadProvinceFoodPhoto() {
-        srlReload.setRefreshing(true);
-
         DatabaseReference databaseReference = firebaseDatabase.getReference();
 
         // if no Internet, this method will not run
-        databaseReference
-                .child("ProvinceFoodPhoto")
-                .child(detailFood.getProvince())
-                .child(detailFood.getName())
+        databaseReference.child("ProvinceFoodPhoto").child(detailFood.getProvince()).child(detailFood.getName())
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -172,6 +170,19 @@ public class EachProvinceFoodFragment extends Fragment {
                     @Override
                     public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        databaseReference.child("ProvinceFoodPhoto").child(detailFood.getProvince()).child(detailFood.getName())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        srlReload.setRefreshing(false);
                     }
 
                     @Override
