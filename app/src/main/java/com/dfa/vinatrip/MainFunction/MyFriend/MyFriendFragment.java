@@ -186,8 +186,7 @@ public class MyFriendFragment extends Fragment {
 
                     userFriendMarkerList = new ArrayList<>();
 
-                    userFriendList = new ArrayList<>();
-                    userFriendList.addAll(dataService.getUserFriendList());
+                    userFriendList = dataService.getUserFriendList();
 
                     userLocationList = new ArrayList<>();
                     loadUserLocation();
@@ -334,7 +333,7 @@ public class MyFriendFragment extends Fragment {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             markerCurrentUser = googleMap.addMarker(new MarkerOptions()
                     .position(latLng)
-                    .title(currentUser.getNickname())
+                    .title("Tôi")
                     .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
             markerCurrentUser.showInfoWindow();
 

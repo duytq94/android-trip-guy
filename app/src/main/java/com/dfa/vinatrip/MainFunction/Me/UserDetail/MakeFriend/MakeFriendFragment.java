@@ -36,7 +36,7 @@ public class MakeFriendFragment extends Fragment {
     @ViewById(R.id.fragment_make_friend_srl_reload)
     SwipeRefreshLayout srlReload;
 
-    private UserProfileAdapter userProfileAdapter;
+    private ListUserProfileAdapter listUserProfileAdapter;
     private DatabaseReference referenceFriend = FirebaseDatabase.getInstance().getReference();
     private List<UserFriend> userFriendList;
     private List<UserProfile> userProfileList;
@@ -50,7 +50,7 @@ public class MakeFriendFragment extends Fragment {
         currentUser = dataService.getCurrentUser();
 
         userFriendList = new ArrayList<>();
-        userProfileAdapter = new UserProfileAdapter(getActivity(), userProfileList,
+        listUserProfileAdapter = new ListUserProfileAdapter(getActivity(), userProfileList,
                 userFriendList, referenceFriend, currentUser);
 
         if (CheckNetwork.isNetworkConnected(getActivity())) loadUserFriend();
@@ -80,7 +80,7 @@ public class MakeFriendFragment extends Fragment {
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         UserFriend userFriend = dataSnapshot.getValue(UserFriend.class);
                         userFriendList.add(userFriend);
-                        userProfileAdapter.notifyDataSetChanged();
+                        listUserProfileAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -100,7 +100,7 @@ public class MakeFriendFragment extends Fragment {
                                 }
                             }
                         }
-                        userProfileAdapter.notifyDataSetChanged();
+                        listUserProfileAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -117,7 +117,7 @@ public class MakeFriendFragment extends Fragment {
                                 }
                             }
                         }
-                        userProfileAdapter.notifyDataSetChanged();
+                        listUserProfileAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -136,7 +136,7 @@ public class MakeFriendFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        rvListFriends.setAdapter(userProfileAdapter);
+                        rvListFriends.setAdapter(listUserProfileAdapter);
                         srlReload.setRefreshing(false);
                     }
 

@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.ProfileViewHolder> {
+public class ListUserProfileAdapter extends RecyclerView.Adapter<ListUserProfileAdapter.ProfileViewHolder> {
 
     private LayoutInflater layoutInflater;
     private Context context;
@@ -25,9 +25,9 @@ public class UserProfileAdapter extends RecyclerView.Adapter<UserProfileAdapter.
     private DatabaseReference referenceFriend;
     private UserProfile currentUser;
 
-    public UserProfileAdapter(Context context, List<UserProfile> userProfileList,
-                              List<UserFriend> userFriendList, DatabaseReference referenceFriend,
-                              UserProfile currentUser) {
+    public ListUserProfileAdapter(Context context, List<UserProfile> userProfileList,
+                                  List<UserFriend> userFriendList, DatabaseReference referenceFriend,
+                                  UserProfile currentUser) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
 

@@ -47,7 +47,7 @@
         <activity android:name=".MainFunction.Province.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity_" />
         <activity android:name=".SplashScreen.SplashScreenActivity_" />
         <activity android:name=".MainFunction.Plan.MakePlan.MakePlanActivity_" />
-        <activity android:name=".MainFunction.Plan.DetailPlanActivity_"></activity>
+        <activity android:name=".MainFunction.Plan.DetailPlan.DetailPlanActivity_"></activity>
     </application>
 
 </manifest>

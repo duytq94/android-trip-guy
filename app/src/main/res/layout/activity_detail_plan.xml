@@ -50,6 +50,7 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="50dp"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
                             android:layout_weight="1"
                             android:orientation="vertical">
 
@@ -58,8 +59,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="@dimen/text_view_padding"
-                                android:paddingRight="@dimen/text_view_padding"
-                                android:paddingTop="@dimen/text_view_padding" />
+                                android:paddingRight="@dimen/text_view_padding" />
 
                             <TextView
                                 android:id="@+id/activity_detail_plan_tv_email"
@@ -77,7 +77,8 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/card_view_margin">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -91,6 +92,13 @@
                         android:text="Bạn bè tham gia"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_large" />
+
+                    <TextView
+                        android:id="@+id/activity_detail_plan_tv_friend_not_available"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/text_view_padding"
+                        android:text="@string/friend_not_available" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/activity_detail_plan_rv_friend_join"
@@ -144,7 +152,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="@dimen/text_view_padding"
-                        android:text="Ngày đi và về"
+                        android:text="Ngày đi &amp; về"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_large" />
 
@@ -220,7 +228,8 @@
                     <TextView
                         android:id="@+id/activity_detail_plan_tv_schedule"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/text_view_padding" />
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>

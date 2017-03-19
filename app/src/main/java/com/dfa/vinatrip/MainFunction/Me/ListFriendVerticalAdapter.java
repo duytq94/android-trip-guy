@@ -10,18 +10,17 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.R;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ProfileViewHolder> {
+public class ListFriendVerticalAdapter extends RecyclerView.Adapter<ListFriendVerticalAdapter.ProfileViewHolder> {
     private LayoutInflater layoutInflater;
     private Context context;
     private List<UserFriend> userFriendList;
     private TextView tvFriendNotAvailable;
 
-    public FriendAdapter(Context context, List<UserFriend> userFriendList, TextView tvFriendNotAvailable) {
+    public ListFriendVerticalAdapter(Context context, List<UserFriend> userFriendList, TextView tvFriendNotAvailable) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.tvFriendNotAvailable = tvFriendNotAvailable;
@@ -33,7 +32,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ProfileVie
 
     @Override
     public ProfileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.item_friend, parent, false);
+        View view = layoutInflater.inflate(R.layout.item_friend_vertical, parent, false);
         return new ProfileViewHolder(view);
     }
 
@@ -63,9 +62,9 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ProfileVie
 
         public ProfileViewHolder(View itemView) {
             super(itemView);
-            tvNickname = (TextView) itemView.findViewById(R.id.item_friend_tv_nickname);
-            tvEmail = (TextView) itemView.findViewById(R.id.item_friend_tv_email);
-            ivAvatar = (ImageView) itemView.findViewById(R.id.item_friend_iv_avatar);
+            tvNickname = (TextView) itemView.findViewById(R.id.item_friend_vertical_tv_nickname);
+            tvEmail = (TextView) itemView.findViewById(R.id.item_friend_vertical_tv_email);
+            ivAvatar = (ImageView) itemView.findViewById(R.id.item_friend_vertical_iv_avatar);
         }
     }
 }

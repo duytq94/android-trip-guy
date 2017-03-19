@@ -16,12 +16,12 @@ import android.widget.Toast;
 
 import com.dfa.vinatrip.BuildConfig;
 import com.dfa.vinatrip.CheckNetwork;
+import com.dfa.vinatrip.DataService;
 import com.dfa.vinatrip.Login.SignInActivity_;
 import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.UserProfileDetailActivity_;
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.DataService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -105,7 +105,7 @@ public class MeFragment extends Fragment {
     private UserProfile currentUser;
     private List<UserProfile> listUserProfiles;
     private List<UserFriend> listUserFriends;
-    private FriendAdapter friendAdapter;
+    private ListFriendVerticalAdapter listFriendVerticalAdapter;
 
     @AfterViews
     void onCreateView() {
@@ -196,9 +196,9 @@ public class MeFragment extends Fragment {
                     listUserFriends.clear();
                     listUserFriends.addAll(dataService.getUserFriendList());
                     tvMakeFriend.setEnabled(true);
-                    friendAdapter = new FriendAdapter(getActivity(), listUserFriends,
+                    listFriendVerticalAdapter = new ListFriendVerticalAdapter(getActivity(), listUserFriends,
                             tvFriendNotAvailable);
-                    rvListFriends.setAdapter(friendAdapter);
+                    rvListFriends.setAdapter(listFriendVerticalAdapter);
                 }
 
                 @Override
@@ -206,17 +206,16 @@ public class MeFragment extends Fragment {
                     listUserFriends.clear();
                     listUserFriends.addAll(dataService.getUserFriendList());
                     tvMakeFriend.setEnabled(true);
-                    friendAdapter = new FriendAdapter(getActivity(), listUserFriends,
-                            tvFriendNotAvailable);
-                    rvListFriends.setAdapter(friendAdapter);
+                    listFriendVerticalAdapter = new ListFriendVerticalAdapter(getActivity(), listUserFriends, tvFriendNotAvailable);
+                    rvListFriends.setAdapter(listFriendVerticalAdapter);
                 }
             });
 
             listUserFriends.addAll(dataService.getUserFriendList());
             tvMakeFriend.setEnabled(true);
-            friendAdapter = new FriendAdapter(getActivity(), listUserFriends,
+            listFriendVerticalAdapter = new ListFriendVerticalAdapter(getActivity(), listUserFriends,
                     tvFriendNotAvailable);
-            rvListFriends.setAdapter(friendAdapter);
+            rvListFriends.setAdapter(listFriendVerticalAdapter);
 
             StaggeredGridLayoutManager staggeredGridLayoutManager =
                     new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);

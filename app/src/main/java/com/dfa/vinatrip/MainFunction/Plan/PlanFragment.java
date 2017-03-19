@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.DataService;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
+import com.dfa.vinatrip.MainFunction.Plan.DetailPlan.DetailPlanActivity_;
 import com.dfa.vinatrip.MainFunction.Plan.MakePlan.MakePlanActivity_;
 import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;

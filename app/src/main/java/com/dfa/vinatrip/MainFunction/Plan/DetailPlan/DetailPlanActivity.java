@@ -1,24 +1,36 @@
-package com.dfa.vinatrip.MainFunction.Plan;
+package com.dfa.vinatrip.MainFunction.Plan.DetailPlan;
 
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.dfa.vinatrip.DataService;
+import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
+import com.dfa.vinatrip.MainFunction.Me.UserProfile;
+import com.dfa.vinatrip.MainFunction.Plan.Plan;
 import com.dfa.vinatrip.R;
 import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 @EActivity(R.layout.activity_detail_plan)
 public class DetailPlanActivity extends AppCompatActivity {
+
+    @Bean
+    DataService dataService;
 
     @ViewById(R.id.my_toolbar)
     Toolbar toolbar;
@@ -47,11 +59,20 @@ public class DetailPlanActivity extends AppCompatActivity {
     @ViewById(R.id.activity_detail_plan_tv_schedule)
     TextView tvSchedule;
 
+    @ViewById(R.id.activity_detail_plan_tv_friend_not_available)
+    TextView tvFriendNotAvailable;
+
     private android.support.v7.app.ActionBar actionBar;
     private Plan plan;
+    private List<UserFriend> userFriendList;
+    private List<UserFriend> friendInvitedList;
+    private ListFriendHorizontalAdapter listFriendHorizontalAdapter;
+    private UserProfile currentUser;
 
     @AfterViews
     void onCreate() {
+        currentUser = dataService.getCurrentUser();
+
         // Get Plan from FragmentPlan
         plan = (Plan) getIntent().getSerializableExtra("Plan");
 
@@ -62,6 +83,36 @@ public class DetailPlanActivity extends AppCompatActivity {
 
     public void initView() {
         Picasso.with(this).load(plan.getUserMakePlan().getAvatar()).into(civAvatar);
+        tvNickname.setText(plan.getUserMakePlan().getNickname());
+        tvEmail.setText(plan.getUserMakePlan().getEmail());
+
+        // Filter the friends be invited from List friend
+        userFriendList = dataService.getUserFriendList();
+        friendInvitedList = new ArrayList<>();
+        // Add the current user to friendInvitedList (if they're not the user make this plan)
+        if (!currentUser.getUid().equals(plan.getUserMakePlan().getUid())) {
+            friendInvitedList.add(new UserFriend(currentUser.getUid(), "Tôi",
+                    currentUser.getAvatar(), currentUser.getEmail(), "true"));
+        }
+        for (String friendInvitedId : plan.getFriendInvitedList()) {
+            for (UserFriend userFriend : userFriendList) {
+                if (userFriend.getFriendId().equals(friendInvitedId)) {
+                    friendInvitedList.add(userFriend);
+                    break;
+                }
+            }
+        }
+
+        listFriendHorizontalAdapter = new ListFriendHorizontalAdapter(this, friendInvitedList, tvFriendNotAvailable);
+        rvFriendJoin.setAdapter(listFriendHorizontalAdapter);
+        StaggeredGridLayoutManager staggeredGridLayoutManager =
+                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
+        rvFriendJoin.setLayoutManager(staggeredGridLayoutManager);
+
+        tvDestination.setText(plan.getDestination());
+        tvDateGo.setText(plan.getDateGo());
+        tvDateBack.setText(plan.getDateBack());
+        tvSchedule.setText(plan.getSchedule());
     }
 
     public void changeColorStatusBar() {
