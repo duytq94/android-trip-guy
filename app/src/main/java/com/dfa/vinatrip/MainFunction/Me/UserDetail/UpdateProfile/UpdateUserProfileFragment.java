@@ -16,13 +16,14 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dfa.vinatrip.DataService;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.DataService;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseError;
@@ -81,6 +82,9 @@ public class UpdateUserProfileFragment extends Fragment {
 
     @ViewById(R.id.fragment_update_user_profile_tv_birthday)
     TextView tvBirthday;
+
+    @ViewById(R.id.fragment_update_user_profile_sv_root)
+    ScrollView svRoot;
 
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
@@ -144,6 +148,7 @@ public class UpdateUserProfileFragment extends Fragment {
     }
 
     public void uploadUserAvatar() {
+        svRoot.scrollTo(0, svRoot.getBottom());
         progressBar.setVisibility(View.VISIBLE);
         tvPercent.setVisibility(View.VISIBLE);
 

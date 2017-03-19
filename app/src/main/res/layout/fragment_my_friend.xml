@@ -23,7 +23,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/fragment_my_friend_iv_symbol"
-            android:text="Vị Trí Bạn Bè"
+            android:text="Vị trí bạn bè"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_large"
             android:textStyle="bold" />

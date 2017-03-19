@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -49,6 +50,9 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
     @ViewById(R.id.activity_make_plan_rv_list_friend)
     RecyclerView rvListFriend;
+
+    @ViewById(R.id.activity_make_plan_nsv_root)
+    NestedScrollView nsvRoot;
 
     @NotEmpty
     @ViewById(R.id.activity_make_plan_et_trip_name)
@@ -129,16 +133,6 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         }
     }
 
-    @Click(R.id.activity_make_plan_btn_cancel)
-    void onBtnCancelClick() {
-        super.onBackPressed();
-    }
-
-    @Click(R.id.activity_make_plan_btn_done)
-    void onBtnDoneClick() {
-        validator.validate();
-    }
-
     public void sendTripPlanToFriends() {
         for (String friendId : invitedFriendIdList) {
             databaseReference.child("Plan").child(friendId).push()
@@ -158,6 +152,21 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
                         }
                     });
         }
+    }
+
+    @Click(R.id.activity_make_plan_btn_cancel)
+    void onBtnCancelClick() {
+        super.onBackPressed();
+    }
+
+    @Click(R.id.activity_make_plan_btn_done)
+    void onBtnDoneClick() {
+        validator.validate();
+    }
+
+    @Click(R.id.activity_make_plan_btn_add_schedule)
+    void onBtnAddScheduleClick() {
+
     }
 
     @Click(R.id.activity_make_plan_ll_date_go)
@@ -233,6 +242,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
     @Override
     public void onValidationSucceeded() {
+        nsvRoot.scrollTo(0, nsvRoot.getBottom());
         progressBar.setVisibility(View.VISIBLE);
 
         plan.setName(etTripName.getText().toString());

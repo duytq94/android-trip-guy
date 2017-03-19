@@ -94,11 +94,13 @@ public class DetailPlanActivity extends AppCompatActivity {
             friendInvitedList.add(new UserFriend(currentUser.getUid(), "Tôi",
                     currentUser.getAvatar(), currentUser.getEmail(), "true"));
         }
-        for (String friendInvitedId : plan.getFriendInvitedList()) {
-            for (UserFriend userFriend : userFriendList) {
-                if (userFriend.getFriendId().equals(friendInvitedId)) {
-                    friendInvitedList.add(userFriend);
-                    break;
+        if (plan.getFriendInvitedList() != null) {
+            for (String friendInvitedId : plan.getFriendInvitedList()) {
+                for (UserFriend userFriend : userFriendList) {
+                    if (userFriend.getFriendId().equals(friendInvitedId)) {
+                        friendInvitedList.add(userFriend);
+                        break;
+                    }
                 }
             }
         }
