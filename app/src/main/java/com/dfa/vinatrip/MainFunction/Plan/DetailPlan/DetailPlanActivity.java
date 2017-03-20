@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.dfa.vinatrip.DataService;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
+import com.dfa.vinatrip.MainFunction.Plan.MakePlan.PlanSchedule;
 import com.dfa.vinatrip.MainFunction.Plan.Plan;
 import com.dfa.vinatrip.R;
 import com.squareup.picasso.Picasso;
@@ -114,7 +115,9 @@ public class DetailPlanActivity extends AppCompatActivity {
         tvDestination.setText(plan.getDestination());
         tvDateGo.setText(plan.getDateGo());
         tvDateBack.setText(plan.getDateBack());
-        tvSchedule.setText(plan.getPlanScheduleList().toString());
+        for (PlanSchedule planSchedule : plan.getPlanScheduleList()) {
+            tvSchedule.append("Ngày " + planSchedule.getDayOrder() + ": " + planSchedule.getContent() + "\n");
+        }
     }
 
     public void changeColorStatusBar() {
