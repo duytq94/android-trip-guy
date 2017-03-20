@@ -262,9 +262,11 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         nsvRoot.scrollTo(0, nsvRoot.getBottom());
         progressBar.setVisibility(View.VISIBLE);
 
-        planScheduleList.add(new PlanSchedule("1", tietSchedule.getText().toString()));
+        int order = 1;
+        planScheduleList.add(new PlanSchedule(order + "", tietSchedule.getText().toString()));
         for (int i = 0; i < textInputEditTextList.size(); i++) {
-            planScheduleList.add(new PlanSchedule(String.valueOf(i++), textInputEditTextList.get(i).getText().toString()));
+            order++;
+            planScheduleList.add(new PlanSchedule(order + "", textInputEditTextList.get(i).getText().toString()));
         }
 
         plan.setName(etTripName.getText().toString());
