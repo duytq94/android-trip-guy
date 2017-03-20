@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Build;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,8 +66,8 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     EditText etDestination;
 
     @NotEmpty
-    @ViewById(R.id.activity_make_plan_et_schedule)
-    EditText etSchedule;
+    @ViewById(R.id.activity_make_plan_tiet_schedule)
+    TextInputEditText tietSchedule;
 
     @ViewById(R.id.activity_make_plan_tv_date_go)
     TextView tvDateGo;
@@ -78,6 +81,9 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     @ViewById(R.id.activity_make_plan_progressBar)
     ProgressBar progressBar;
 
+    @ViewById(R.id.activity_make_plan_ll_schedule)
+    LinearLayout llSchedule;
+
     private List<UserFriend> userFriendList;
     private InviteFriendAdapter inviteFriendAdapter;
     private Plan plan;
@@ -87,6 +93,9 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     private DatabaseReference databaseReference;
     private UserProfile currentUser;
     private Validator validator;
+    private int countSchedule;
+    private List<TextInputEditText> textInputEditTextList;
+    private List<PlanSchedule> planScheduleList;
 
     @AfterViews
     void onCreate() {
@@ -96,6 +105,10 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     }
 
     public void initView() {
+        countSchedule = 1;
+        planScheduleList = new ArrayList<>();
+        textInputEditTextList = new ArrayList<>();
+
         validator = new Validator(this);
         validator.setValidationListener(this);
 
@@ -166,7 +179,11 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
     @Click(R.id.activity_make_plan_btn_add_schedule)
     void onBtnAddScheduleClick() {
-
+        TextInputLayout textInputLayout = (TextInputLayout) getLayoutInflater().inflate(R.layout.item_text_input, null);
+        textInputLayout.setHint("Ngày " + ++countSchedule);
+        TextInputEditText textInputEditText = (TextInputEditText) textInputLayout.findViewById(R.id.item_text_input_tiet);
+        textInputEditTextList.add(textInputEditText);
+        llSchedule.addView(textInputLayout);
     }
 
     @Click(R.id.activity_make_plan_ll_date_go)
@@ -245,9 +262,14 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         nsvRoot.scrollTo(0, nsvRoot.getBottom());
         progressBar.setVisibility(View.VISIBLE);
 
+        planScheduleList.add(new PlanSchedule("1", tietSchedule.getText().toString()));
+        for (int i = 0; i < textInputEditTextList.size(); i++) {
+            planScheduleList.add(new PlanSchedule(String.valueOf(i++), textInputEditTextList.get(i).getText().toString()));
+        }
+
         plan.setName(etTripName.getText().toString());
         plan.setDestination(etDestination.getText().toString());
-        plan.setSchedule(etSchedule.getText().toString());
+        plan.setPlanScheduleList(planScheduleList);
         plan.setDateGo(tvDateGo.getText().toString());
         plan.setDateBack(tvDateBack.getText().toString());
         plan.setUserMakePlan(dataService.getCurrentUser());

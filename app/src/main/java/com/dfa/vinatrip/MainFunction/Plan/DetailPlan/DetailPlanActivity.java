@@ -114,7 +114,7 @@ public class DetailPlanActivity extends AppCompatActivity {
         tvDestination.setText(plan.getDestination());
         tvDateGo.setText(plan.getDateGo());
         tvDateBack.setText(plan.getDateBack());
-        tvSchedule.setText(plan.getSchedule());
+        tvSchedule.setText(plan.getPlanScheduleList().toString());
     }
 
     public void changeColorStatusBar() {

@@ -1,27 +1,28 @@
 package com.dfa.vinatrip.MainFunction.Plan;
 
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
+import com.dfa.vinatrip.MainFunction.Plan.MakePlan.PlanSchedule;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Plan implements Serializable {
-    String name, destination, schedule, dateGo, dateBack;
+    String name, destination, dateGo, dateBack;
     List<String> friendInvitedList;
+    List<PlanSchedule> planScheduleList;
     UserProfile userMakePlan;
 
     public Plan() {
     }
 
-    public Plan(String name, String destination, String schedule, String dateGo,
-                String dateBack, List<String> friendInvitedList, UserProfile userMakePlan) {
+    public Plan(String name, String destination, String dateGo, String dateBack,
+                List<String> friendInvitedList, List<PlanSchedule> planScheduleList, UserProfile userMakePlan) {
         this.name = name;
         this.destination = destination;
-        this.schedule = schedule;
         this.dateGo = dateGo;
         this.dateBack = dateBack;
         this.friendInvitedList = friendInvitedList;
+        this.planScheduleList = planScheduleList;
         this.userMakePlan = userMakePlan;
     }
 
@@ -33,10 +34,6 @@ public class Plan implements Serializable {
         this.destination = destination;
     }
 
-    public void setSchedule(String schedule) {
-        this.schedule = schedule;
-    }
-
     public void setDateGo(String dateGo) {
         this.dateGo = dateGo;
     }
@@ -46,8 +43,11 @@ public class Plan implements Serializable {
     }
 
     public void setFriendInvitedList(List<String> friendInvitedList) {
-        this.friendInvitedList = new ArrayList<>();
-        this.friendInvitedList.addAll(friendInvitedList);
+        this.friendInvitedList = friendInvitedList;
+    }
+
+    public void setPlanScheduleList(List<PlanSchedule> planScheduleList) {
+        this.planScheduleList = planScheduleList;
     }
 
     public void setUserMakePlan(UserProfile userMakePlan) {
@@ -55,15 +55,12 @@ public class Plan implements Serializable {
     }
 
     public String getName() {
+
         return name;
     }
 
     public String getDestination() {
         return destination;
-    }
-
-    public String getSchedule() {
-        return schedule;
     }
 
     public String getDateGo() {
@@ -76,6 +73,10 @@ public class Plan implements Serializable {
 
     public List<String> getFriendInvitedList() {
         return friendInvitedList;
+    }
+
+    public List<PlanSchedule> getPlanScheduleList() {
+        return planScheduleList;
     }
 
     public UserProfile getUserMakePlan() {
