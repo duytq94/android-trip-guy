@@ -116,7 +116,7 @@ public class DetailPlanActivity extends AppCompatActivity {
         tvDateGo.setText(plan.getDateGo());
         tvDateBack.setText(plan.getDateBack());
         for (PlanSchedule planSchedule : plan.getPlanScheduleList()) {
-            tvSchedule.append("Ngày " + planSchedule.getDayOrder() + ": " + planSchedule.getContent() + "\n");
+            tvSchedule.append("Ngày aaa " + planSchedule.getDayOrder() + ": " + planSchedule.getContent() + "\n");
         }
     }
 
