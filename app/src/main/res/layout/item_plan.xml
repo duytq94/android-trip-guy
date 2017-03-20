@@ -97,6 +97,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/text_view_padding"
                     android:src="@drawable/photo_not_available" />
 
                 <TextView

@@ -41,7 +41,11 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
         holder.tvName.setText(plan.getName());
         holder.tvDestination.setText(plan.getDestination());
         holder.tvDate.setText(plan.getDateGo() + " " + Html.fromHtml("&#10132;") + " " + plan.getDateBack());
-        holder.tvUserName.setText(plan.getUserMakePlan().getNickname());
+        if (currentUser.getUid().equals(plan.getUserMakePlan().getUid())) {
+            holder.tvUserName.setText("Tôi");
+        } else {
+            holder.tvUserName.setText(plan.getUserMakePlan().getNickname());
+        }
 
         if (plan.getUserMakePlan().getUid().equals(currentUser.getUid())) {
             holder.tvUpdate.setEnabled(true);

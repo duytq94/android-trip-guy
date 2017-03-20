@@ -84,7 +84,11 @@ public class DetailPlanActivity extends AppCompatActivity {
 
     public void initView() {
         Picasso.with(this).load(plan.getUserMakePlan().getAvatar()).into(civAvatar);
-        tvNickname.setText(plan.getUserMakePlan().getNickname());
+        if (currentUser.getUid().equals(plan.getUserMakePlan().getUid())) {
+            tvNickname.setText("Tôi");
+        } else {
+            tvNickname.setText(plan.getUserMakePlan().getNickname());
+        }
         tvEmail.setText(plan.getUserMakePlan().getEmail());
 
         // Filter the friends be invited from List friend
