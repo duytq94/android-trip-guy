@@ -2,10 +2,8 @@ package com.dfa.vinatrip.SplashScreen;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.dfa.vinatrip.DataService.DataService;
-import com.dfa.vinatrip.DataService.FirebaseAPI;
 import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
@@ -25,14 +23,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 @EActivity(R.layout.activity_splash_screen)
 public class SplashScreenActivity extends AppCompatActivity {
@@ -40,9 +31,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Bean
     DataService dataService;
 
-    List<Province> provinceList;
-    List<UserProfile> userProfileList;
-    List<UserFriend> userFriendList;
+    private List<Province> provinceList;
+    private List<UserProfile> userProfileList;
+    private List<UserFriend> userFriendList;
 
     private DatabaseReference databaseReference;
     private FirebaseUser firebaseUser;
@@ -60,32 +51,8 @@ public class SplashScreenActivity extends AppCompatActivity {
             loadUserFriend();
             getCurrentUserProfile();
         } else {
-//            loadProvince();
-            loadProvinceTest();
+            loadProvince();
         }
-    }
-
-    public void loadProvinceTest() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://tripguy-10864.firebaseio.com")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        FirebaseAPI firebaseAPI = retrofit.create(FirebaseAPI.class);
-        firebaseAPI.loadProvince().enqueue(new Callback<HashMap<String, Province>>() {
-            @Override
-            public void onResponse(Call<HashMap<String, Province>> call, Response<HashMap<String, Province>> response) {
-                provinceList = new ArrayList<>();
-                provinceList.addAll(response.body().values());
-                dataService.setProvinceList(provinceList);
-                startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
-            }
-
-            @Override
-            public void onFailure(Call<HashMap<String, Province>> call, Throwable t) {
-
-            }
-        });
     }
 
     public void loadProvince() {
@@ -173,7 +140,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         databaseReference.child("Province").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Toast.makeText(SplashScreenActivity.this, "province", Toast.LENGTH_SHORT).show();
                 dataService.setProvinceList(provinceList);
                 count++;
                 if (count == 3) {
@@ -226,7 +192,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Toast.makeText(SplashScreenActivity.this, "user profile", Toast.LENGTH_SHORT).show();
                         dataService.setUserProfileList(userProfileList);
                         count++;
                         if (count == 3) {
@@ -284,7 +249,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Toast.makeText(SplashScreenActivity.this, "user friend", Toast.LENGTH_SHORT).show();
                         dataService.setUserFriendList(userFriendList);
                         count++;
                         if (count == 3) {
@@ -302,7 +266,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     public void getCurrentUserProfile() {
         for (UserProfile userProfile : userProfileList) {
             if (userProfile.getUid().equals(firebaseUser.getUid())) {
-                Toast.makeText(SplashScreenActivity.this, "current user", Toast.LENGTH_SHORT).show();
                 dataService.setCurrentUser(userProfile);
                 startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
                 finish();
