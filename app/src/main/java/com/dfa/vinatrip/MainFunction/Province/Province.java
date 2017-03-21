@@ -3,6 +3,7 @@ package com.dfa.vinatrip.MainFunction.Province;
 import java.io.Serializable;
 
 public class Province implements Serializable {
+
     private String name;
     private String title;
     private String avatar;

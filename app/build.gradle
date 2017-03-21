@@ -80,6 +80,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile 'com.android.support.constraint:constraint-layout:+'
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support:design:25.2.0'
     testCompile 'junit:junit:4.12'
@@ -106,12 +107,9 @@ dependencies {
     compile 'com.ms-square:expandableTextView:0.1.4'
     // Check field edit text
     compile 'com.mobsandgeeks:android-saripaar:2.0.2'
+
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
 }
 // this line has to put out of dependencies so app can run Google Map
-dependencies {
-    compile 'com.android.support.constraint:constraint-layout:+'
-}
-dependencies {
-    compile 'com.android.support.constraint:constraint-layout:+'
-}
 apply plugin: 'com.google.gms.google-services'

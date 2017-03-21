@@ -28,7 +28,7 @@ import android.widget.Scroller;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.CheckNetwork;
-import com.dfa.vinatrip.DataService;
+import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDetailActivity_;
 import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;

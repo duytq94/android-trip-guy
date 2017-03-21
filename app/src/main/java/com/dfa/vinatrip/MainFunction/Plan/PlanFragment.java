@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.CheckNetwork;
-import com.dfa.vinatrip.DataService;
+import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.Plan.DetailPlan.DetailPlanActivity_;
 import com.dfa.vinatrip.MainFunction.Plan.MakePlan.MakePlanActivity_;

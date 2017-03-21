@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.dfa.vinatrip.DataService;
-import com.dfa.vinatrip.MainFunction.Province.Province;
+import com.dfa.vinatrip.DataService.DataService;
+import com.dfa.vinatrip.DataService.FirebaseAPI;
 import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
-import com.dfa.vinatrip.MainFunction.Plan.Plan;
+import com.dfa.vinatrip.MainFunction.Province.Province;
 import com.dfa.vinatrip.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,7 +25,14 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @EActivity(R.layout.activity_splash_screen)
 public class SplashScreenActivity extends AppCompatActivity {
@@ -36,7 +43,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     List<Province> provinceList;
     List<UserProfile> userProfileList;
     List<UserFriend> userFriendList;
-    List<Plan> planList;
 
     private DatabaseReference databaseReference;
     private FirebaseUser firebaseUser;
@@ -48,8 +54,29 @@ public class SplashScreenActivity extends AppCompatActivity {
         if (firebaseUser != null) {
             loadProvinceAndMore();
         } else {
-            loadProvince();
+//            loadProvince();
+            loadProvinceTest();
         }
+    }
+
+    public void loadProvinceTest() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://tripguy-10864.firebaseio.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        FirebaseAPI firebaseAPI = retrofit.create(FirebaseAPI.class);
+        firebaseAPI.loadProvince().enqueue(new Callback<HashMap<String, Province>>() {
+            @Override
+            public void onResponse(Call<HashMap<String, Province>> call, Response<HashMap<String, Province>> response) {
+                Toast.makeText(SplashScreenActivity.this, "", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<HashMap<String, Province>> call, Throwable t) {
+
+            }
+        });
     }
 
     public void loadProvince() {

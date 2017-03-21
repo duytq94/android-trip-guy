@@ -1,4 +1,4 @@
-package com.dfa.vinatrip;
+package com.dfa.vinatrip.DataService;
 
 import com.dfa.vinatrip.MainFunction.Province.Province;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;

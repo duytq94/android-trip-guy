@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.dfa.vinatrip.BuildConfig;
 import com.dfa.vinatrip.CheckNetwork;
-import com.dfa.vinatrip.DataService;
+import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.Login.SignInActivity_;
 import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
