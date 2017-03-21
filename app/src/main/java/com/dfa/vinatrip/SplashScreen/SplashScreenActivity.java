@@ -47,12 +47,18 @@ public class SplashScreenActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseUser firebaseUser;
 
+    // Listen when all data load done
+    private int count = 0;
+
     @AfterViews
     void onCreate() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null) {
             loadProvinceAndMore();
+            loadUserProfile();
+            loadUserFriend();
+            getCurrentUserProfile();
         } else {
 //            loadProvince();
             loadProvinceTest();
@@ -69,7 +75,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         firebaseAPI.loadProvince().enqueue(new Callback<HashMap<String, Province>>() {
             @Override
             public void onResponse(Call<HashMap<String, Province>> call, Response<HashMap<String, Province>> response) {
-                Toast.makeText(SplashScreenActivity.this, "", Toast.LENGTH_SHORT).show();
+                provinceList = new ArrayList<>();
+                provinceList.addAll(response.body().values());
+                dataService.setProvinceList(provinceList);
+                startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
             }
 
             @Override
@@ -164,9 +173,12 @@ public class SplashScreenActivity extends AppCompatActivity {
         databaseReference.child("Province").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Toast.makeText(SplashScreenActivity.this, "province", Toast.LENGTH_SHORT).show();
                 dataService.setProvinceList(provinceList);
-                Toast.makeText(SplashScreenActivity.this, "province done", Toast.LENGTH_SHORT).show();
-                loadUserProfile();
+                count++;
+                if (count == 3) {
+                    getCurrentUserProfile();
+                }
             }
 
             @Override
@@ -214,8 +226,12 @@ public class SplashScreenActivity extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        Toast.makeText(SplashScreenActivity.this, "user profile", Toast.LENGTH_SHORT).show();
                         dataService.setUserProfileList(userProfileList);
-                        loadUserFriend();
+                        count++;
+                        if (count == 3) {
+                            getCurrentUserProfile();
+                        }
                     }
 
                     @Override
@@ -268,8 +284,12 @@ public class SplashScreenActivity extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        Toast.makeText(SplashScreenActivity.this, "user friend", Toast.LENGTH_SHORT).show();
                         dataService.setUserFriendList(userFriendList);
-                        getCurrentUserProfile();
+                        count++;
+                        if (count == 3) {
+                            getCurrentUserProfile();
+                        }
                     }
 
                     @Override
@@ -282,9 +302,10 @@ public class SplashScreenActivity extends AppCompatActivity {
     public void getCurrentUserProfile() {
         for (UserProfile userProfile : userProfileList) {
             if (userProfile.getUid().equals(firebaseUser.getUid())) {
+                Toast.makeText(SplashScreenActivity.this, "current user", Toast.LENGTH_SHORT).show();
                 dataService.setCurrentUser(userProfile);
                 startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
-                break;
+                finish();
             }
         }
     }
