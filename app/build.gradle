@@ -112,4 +112,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
 }
 // this line has to put out of dependencies so app can run Google Map
+dependencies {
+    compile 'com.android.support.constraint:constraint-layout:+'
+}
 apply plugin: 'com.google.gms.google-services'

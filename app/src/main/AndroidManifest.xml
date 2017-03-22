@@ -19,6 +19,14 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCyIPbgc4_qtZCXdaq945UK-sx_SQwYXd8" />
 
+        <activity android:name=".SearchableActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
         <activity android:name=".IntroApp.WelcomeActivity_">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,15 +36,6 @@
         </activity>
         <activity android:name=".MainFunction.MainActivity_" />
         <activity android:name=".MainFunction.Province.ProvinceDetail.ProvinceDetailActivity_" />
-        <activity android:name=".SearchableActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
         <activity android:name=".MainFunction.Province.EachItemProvinceDetail.EachItemProvinceDetailActivity_" />
         <activity android:name=".MapActivity_" />
         <activity android:name=".Login.SignUpActivity_" />
@@ -47,7 +46,7 @@
         <activity android:name=".MainFunction.Province.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity_" />
         <activity android:name=".SplashScreen.SplashScreenActivity_" />
         <activity android:name=".MainFunction.Plan.MakePlan.MakePlanActivity_" />
-        <activity android:name=".MainFunction.Plan.DetailPlan.DetailPlanActivity_"></activity>
+        <activity android:name=".MainFunction.Plan.DetailPlan.DetailPlanActivity_" />
     </application>
 
 </manifest>

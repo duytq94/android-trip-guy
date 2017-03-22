@@ -1,17 +1,13 @@
 package com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating;
 
 import android.app.Activity;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,8 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.Login.SignInActivity_;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDestination.ProvinceDestination;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
+import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDestination.ProvinceDestination;
 import com.dfa.vinatrip.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -253,24 +249,6 @@ public class RatingActivity extends AppCompatActivity {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the options menu from XML
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_menu, menu);
-
-        // Get the SearchView and set the searchable configuration
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-
-        // Assumes current activity is the searchable activity
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
-        searchView.setQueryHint("Tìm kiếm...");
-
-        return true;
     }
 
     @Override

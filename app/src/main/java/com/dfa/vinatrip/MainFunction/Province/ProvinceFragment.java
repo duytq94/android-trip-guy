@@ -72,6 +72,7 @@ public class ProvinceFragment extends Fragment {
 
     private ProvinceAdapter provinceAdapter;
     private List<Province> provinceList;
+    private SearchView searchView;
 
     // 4 photo in slide show
     private int[] mResources = {
@@ -335,13 +336,12 @@ public class ProvinceFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
         // Inflate the options menu from XML
-        inflater.inflate(R.menu.search_menu, menu);
+        getActivity().getMenuInflater().inflate(R.menu.search_menu, menu);
 
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        SearchView searchView = (SearchView) menu.findItem(R.id.search_menu_menuSearch).getActionView();
 
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
@@ -350,5 +350,25 @@ public class ProvinceFragment extends Fragment {
         searchView.setIconifiedByDefault(false);
 
         searchView.setQueryHint("Tìm kiếm...");
+
+//        MenuItem menuItem = menu.findItem(R.id.menu_search);
+//        searchView = (SearchView) menuItem.getActionView();
+//
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                if (TextUtils.isEmpty(query)) {
+//                    Toast.makeText(getActivity(), "empty", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Toast.makeText(getActivity(), "not empty", Toast.LENGTH_SHORT).show();
+//                }
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return false;
+//            }
+//        });
     }
 }

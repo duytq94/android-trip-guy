@@ -39,6 +39,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_vertical_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:paddingLeft="@dimen/text_view_padding"
             android:text="Nội dung"
@@ -48,6 +49,7 @@
             android:id="@+id/activity_rating_et_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_vertical_margin"
             android:inputType="textCapSentences|textMultiLine" />
 
     </LinearLayout>
@@ -56,6 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/activity_vertical_margin"
         android:orientation="vertical">
 
         <Button
