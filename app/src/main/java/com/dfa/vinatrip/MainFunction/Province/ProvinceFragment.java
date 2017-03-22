@@ -1,6 +1,5 @@
 package com.dfa.vinatrip.MainFunction.Province;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -75,12 +74,8 @@ public class ProvinceFragment extends Fragment {
     private SearchView searchView;
 
     // 4 photo in slide show
-    private int[] mResources = {
-            R.drawable.bg_test1,
-            R.drawable.bg_test2,
-            R.drawable.bg_test3,
-            R.drawable.bg_test4
-    };
+    private int[] mResources = {R.drawable.bg_test1, R.drawable.bg_test2, R.drawable.bg_test3, R.drawable.bg_test4};
+
     private CustomPagerAdapter customPagerAdapter;
     private int i = 0;
     private TextView[] tvDots;
@@ -336,39 +331,35 @@ public class ProvinceFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Inflate the options menu from XML
+//        // Inflate the options menu from XML
+//        getActivity().getMenuInflater().inflate(R.menu.search_menu, menu);
+//
+//        // Get the SearchView and set the searchable configuration
+//        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+//        SearchView searchView = (SearchView) menu.findItem(R.id.search_menu_menuSearch).getActionView();
+//
+//        // Assumes current activity is the searchable activity
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+//
+//        // Expand searchView, if not, it just show icon
+//        searchView.setIconifiedByDefault(false);
+//
+//        searchView.setQueryHint("Tìm kiếm...");
+
         getActivity().getMenuInflater().inflate(R.menu.search_menu, menu);
+        searchView = (SearchView) menu.findItem(R.id.search_menu_menuSearch).getActionView();
 
-        // Get the SearchView and set the searchable configuration
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search_menu_menuSearch).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                provinceAdapter.getFilter().filter(query);
+                return true;
+            }
 
-        // Assumes current activity is the searchable activity
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-
-        // Expand searchView, if not, it just show icon
-        searchView.setIconifiedByDefault(false);
-
-        searchView.setQueryHint("Tìm kiếm...");
-
-//        MenuItem menuItem = menu.findItem(R.id.menu_search);
-//        searchView = (SearchView) menuItem.getActionView();
-//
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                if (TextUtils.isEmpty(query)) {
-//                    Toast.makeText(getActivity(), "empty", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Toast.makeText(getActivity(), "not empty", Toast.LENGTH_SHORT).show();
-//                }
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                return false;
-//            }
-//        });
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 }

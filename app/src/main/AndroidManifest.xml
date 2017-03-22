@@ -34,7 +34,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainFunction.MainActivity_" />
+        <activity
+            android:name=".MainFunction.MainActivity_"
+            android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".MainFunction.Province.ProvinceDetail.ProvinceDetailActivity_" />
         <activity android:name=".MainFunction.Province.EachItemProvinceDetail.EachItemProvinceDetailActivity_" />
         <activity android:name=".MapActivity_" />
