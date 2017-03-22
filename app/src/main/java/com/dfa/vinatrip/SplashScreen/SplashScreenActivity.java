@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
 import com.dfa.vinatrip.DataService.DataService;
+import com.dfa.vinatrip.DataService.FirebaseApi;
 import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
@@ -11,19 +12,20 @@ import com.dfa.vinatrip.MainFunction.Province.Province;
 import com.dfa.vinatrip.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @EActivity(R.layout.activity_splash_screen)
 public class SplashScreenActivity extends AppCompatActivity {
@@ -35,241 +37,114 @@ public class SplashScreenActivity extends AppCompatActivity {
     private List<UserProfile> userProfileList;
     private List<UserFriend> userFriendList;
 
-    private DatabaseReference databaseReference;
     private FirebaseUser firebaseUser;
+
+    private Retrofit retrofit;
+    private FirebaseApi firebaseApi;
 
     // Listen when all data load done
     private int count = 0;
 
     @AfterViews
     void onCreate() {
-        databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        retrofit = new Retrofit.Builder().baseUrl("https://tripguy-10864.firebaseio.com")
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        firebaseApi = retrofit.create(FirebaseApi.class);
+
         if (firebaseUser != null) {
             loadProvinceAndMore();
             loadUserProfile();
             loadUserFriend();
-            getCurrentUserProfile();
         } else {
             loadProvince();
         }
     }
 
     public void loadProvince() {
-        provinceList = new ArrayList<>();
-
-        // If no Internet, this method will not run
-        databaseReference.child("Province").addChildEventListener(
-                new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        Province province = dataSnapshot.getValue(Province.class);
-                        provinceList.add(province);
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-        // This method to be called after all the onChildAdded() calls have happened
-        databaseReference.child("Province").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseApi.loadProvince().enqueue(new Callback<HashMap<String, Province>>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onResponse(Call<HashMap<String, Province>> call, Response<HashMap<String, Province>> response) {
+                provinceList = new ArrayList<>();
+                provinceList.addAll(response.body().values());
                 dataService.setProvinceList(provinceList);
                 startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onFailure(Call<HashMap<String, Province>> call, Throwable t) {
 
             }
         });
     }
 
     public void loadProvinceAndMore() {
-        provinceList = new ArrayList<>();
-
-        // If no Internet, this method will not run
-        databaseReference.child("Province").addChildEventListener(
-                new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        Province province = dataSnapshot.getValue(Province.class);
-                        provinceList.add(province);
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-        // This method to be called after all the onChildAdded() calls have happened
-        databaseReference.child("Province").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseApi.loadProvince().enqueue(new Callback<HashMap<String, Province>>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onResponse(Call<HashMap<String, Province>> call, Response<HashMap<String, Province>> response) {
+                provinceList = new ArrayList<>();
+                provinceList.addAll(response.body().values());
                 dataService.setProvinceList(provinceList);
                 count++;
                 if (count == 3) {
-                    getCurrentUserProfile();
+                    startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
+                    finish();
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onFailure(Call<HashMap<String, Province>> call, Throwable t) {
 
             }
         });
     }
 
     public void loadUserProfile() {
-        userProfileList = new ArrayList<>();
-
-        // If no Internet, this method will not run
-        databaseReference.child("UserProfile").addChildEventListener(new ChildEventListener() {
+        firebaseApi.loadUserProfile().enqueue(new Callback<HashMap<String, UserProfile>>() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-                userProfileList.add(userProfile);
+            public void onResponse(Call<HashMap<String, UserProfile>> call, Response<HashMap<String, UserProfile>> response) {
+                userProfileList = new ArrayList<UserProfile>();
+                userProfileList.addAll(response.body().values());
+                dataService.setUserProfileList(userProfileList);
+                for (UserProfile userProfile : userProfileList) {
+                    if (userProfile.getUid().equals(firebaseUser.getUid())) {
+                        dataService.setCurrentUser(userProfile);
+                        break;
+                    }
+                }
+                count++;
+                if (count == 3) {
+                    startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
+                    finish();
+                }
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            public void onFailure(Call<HashMap<String, UserProfile>> call, Throwable t) {
 
             }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
         });
-
-        // This method to be called after all the onChildAdded() calls have happened
-        databaseReference.child("UserProfile")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        dataService.setUserProfileList(userProfileList);
-                        count++;
-                        if (count == 3) {
-                            getCurrentUserProfile();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
     }
 
     public void loadUserFriend() {
-        userFriendList = new ArrayList<>();
-
-        // If no Internet, this method will not run
-        databaseReference.child("UserFriend").child(firebaseUser.getUid())
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        UserFriend userFriend = dataSnapshot.getValue(UserFriend.class);
-
-                        // Don't add the friend not agree yet to list
-                        if (!userFriend.getFriendId().equals(firebaseUser.getUid()) &&
-                                userFriend.getState().equals("friend")) {
-                            userFriendList.add(userFriend);
-                        }
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-        // This method to be called after all the onChildAdded() calls have happened
-        databaseReference.child("UserFriend").child(firebaseUser.getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        dataService.setUserFriendList(userFriendList);
-                        count++;
-                        if (count == 3) {
-                            getCurrentUserProfile();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-    }
-
-    public void getCurrentUserProfile() {
-        for (UserProfile userProfile : userProfileList) {
-            if (userProfile.getUid().equals(firebaseUser.getUid())) {
-                dataService.setCurrentUser(userProfile);
-                startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
-                finish();
+        firebaseApi.loadUserFriend(firebaseUser.getUid()).enqueue(new Callback<HashMap<String, UserFriend>>() {
+            @Override
+            public void onResponse(Call<HashMap<String, UserFriend>> call, Response<HashMap<String, UserFriend>> response) {
+                userFriendList = new ArrayList<UserFriend>();
+                userFriendList.addAll(response.body().values());
+                dataService.setUserFriendList(userFriendList);
+                count++;
+                if (count == 3) {
+                    startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
+                    finish();
+                }
             }
-        }
+
+            @Override
+            public void onFailure(Call<HashMap<String, UserFriend>> call, Throwable t) {
+
+            }
+        });
     }
 }
