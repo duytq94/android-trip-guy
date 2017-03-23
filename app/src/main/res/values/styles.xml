@@ -13,13 +13,14 @@
     </style>
 
     <style name="RatingBar" parent="Theme.AppCompat">
-        <item name="colorControlNormal">@color/colorGray</item>
+        <item name="colorControlNormal">@android:color/darker_gray</item>
         <item name="colorControlActivated">@color/colorRatingStar</item>
     </style>
 
     <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark">
         <item name="autoCompleteTextViewStyle">@style/cursorColor</item>
     </style>
+
     <style name="cursorColor" parent="Widget.AppCompat.AutoCompleteTextView">
         <item name="android:textCursorDrawable">@drawable/cursor</item>
     </style>

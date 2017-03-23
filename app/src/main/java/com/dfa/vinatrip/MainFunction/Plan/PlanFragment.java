@@ -62,7 +62,7 @@ public class PlanFragment extends Fragment {
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (CheckNetwork.isNetworkConnected(getActivity())) {
+                if (dataService.getCurrentUser() != null && CheckNetwork.isNetworkConnected(getActivity())) {
                     planList.clear();
                     loadPlan();
                 } else {

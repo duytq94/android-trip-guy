@@ -52,7 +52,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
         } else {
             holder.ivIsMyPlan.setImageResource(0);
             holder.tvUpdate.setEnabled(false);
-            holder.tvUpdate.setTextColor(R.color.colorGray);
+            holder.tvUpdate.setTextColor(android.R.color.darker_gray);
         }
 
         Picasso.with(context).load(plan.getUserMakePlan().getAvatar())

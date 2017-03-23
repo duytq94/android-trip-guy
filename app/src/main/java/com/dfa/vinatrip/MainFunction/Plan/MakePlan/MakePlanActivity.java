@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -66,7 +67,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     EditText etDestination;
 
     @NotEmpty
-    @ViewById(R.id.activity_make_plan_tiet_schedule)
+    @ViewById(R.id.item_day_schedule_tiet)
     TextInputEditText tietSchedule;
 
     @ViewById(R.id.activity_make_plan_tv_date_go)
@@ -93,8 +94,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     private DatabaseReference databaseReference;
     private UserProfile currentUser;
     private Validator validator;
-    private int countSchedule;
-    private List<TextInputEditText> textInputEditTextList;
+    private int countDaySchedule;
     private List<PlanSchedule> planScheduleList;
 
     @AfterViews
@@ -105,9 +105,8 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     }
 
     public void initView() {
-        countSchedule = 1;
+        countDaySchedule = 1;
         planScheduleList = new ArrayList<>();
-        textInputEditTextList = new ArrayList<>();
 
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -179,11 +178,19 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
     @Click(R.id.activity_make_plan_btn_add_schedule)
     void onBtnAddScheduleClick() {
-        TextInputLayout textInputLayout = (TextInputLayout) getLayoutInflater().inflate(R.layout.item_text_input, null);
-        textInputLayout.setHint("Ngày " + ++countSchedule);
-        TextInputEditText textInputEditText = (TextInputEditText) textInputLayout.findViewById(R.id.item_text_input_tiet);
-        textInputEditTextList.add(textInputEditText);
+        TextInputLayout textInputLayout = (TextInputLayout) getLayoutInflater().inflate(R.layout.item_day_schedule, null);
+        textInputLayout.setHint("Ngày " + ++countDaySchedule);
         llSchedule.addView(textInputLayout);
+    }
+
+    @Click(R.id.activity_make_plan_btn_remove_schedule)
+    void onBtnRemoveScheduleClick() {
+        countDaySchedule = llSchedule.getChildCount();
+        for (int i = countDaySchedule; i > 1; i--) {
+            llSchedule.removeView(llSchedule.getChildAt(i - 1));
+            --countDaySchedule;
+            break;
+        }
     }
 
     @Click(R.id.activity_make_plan_ll_date_go)
@@ -259,14 +266,13 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
     @Override
     public void onValidationSucceeded() {
+
         nsvRoot.scrollTo(0, nsvRoot.getBottom());
         progressBar.setVisibility(View.VISIBLE);
-
-        int order = 1;
-        planScheduleList.add(new PlanSchedule(order + "", tietSchedule.getText().toString()));
-        for (int i = 0; i < textInputEditTextList.size(); i++) {
-            order++;
-            planScheduleList.add(new PlanSchedule(order + "", textInputEditTextList.get(i).getText().toString()));
+        for (int i = 0; i < countDaySchedule; i++) {
+            TextInputEditText textInputEditText = (TextInputEditText) ((ViewGroup) (llSchedule.getChildAt(i))).getChildAt(0);
+//            TextInputEditText textInputEditText = (TextInputEditText) (llSchedule.getChildAt(i)).findViewById(R.id.item_day_schedule_tiet);
+            planScheduleList.add(new PlanSchedule((i + 1) + "", textInputEditText.getText().toString()));
         }
 
         plan.setName(etTripName.getText().toString());

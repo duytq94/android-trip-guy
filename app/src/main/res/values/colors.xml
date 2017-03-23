@@ -27,6 +27,5 @@
 
     <color name="colorBlackTransparent">#60000000</color>
 
-    <color name="colorGray">#808080</color>
     <color name="colorDeepGray">#696969</color>
 </resources>

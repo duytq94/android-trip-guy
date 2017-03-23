@@ -33,7 +33,9 @@
         <activity android:name=".MainFunction.Province.EachItemProvinceDetail.EachItemProvinceDetailActivity_" />
         <activity android:name=".MapActivity_" />
         <activity android:name=".Login.SignUpActivity_" />
-        <activity android:name=".Login.SignInActivity_" />
+        <activity
+            android:name=".Login.SignInActivity_"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".Login.ResetPasswordActivity_" />
         <activity android:name=".MainFunction.Me.UserDetail.UserProfileDetailActivity_" />
         <activity android:name=".MainFunction.Province.EachItemProvinceDetail.Rating.RatingActivity_" />

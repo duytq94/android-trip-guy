@@ -43,7 +43,7 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
 
         holder.btnMakeFriend.setText("Mời");
         holder.btnMakeFriend.setTag("Mời");
-        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_negative);
+        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_neutral);
         holder.btnMakeFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +58,7 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
                     case "Đã mời":
                         holder.btnMakeFriend.setText("Mời");
                         holder.btnMakeFriend.setTag("Mời");
-                        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_negative);
+                        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_neutral);
                         for (int i = 0; i < invitedFriendIdList.size(); i++) {
                             if (invitedFriendIdList.get(i).equals(userFriend.getFriendId())) {
                                 invitedFriendIdList.remove(i);
