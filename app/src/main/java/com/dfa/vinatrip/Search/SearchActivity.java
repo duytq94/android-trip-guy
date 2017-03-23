@@ -12,8 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
-import android.widget.TextView;
 
 import com.dfa.vinatrip.MainFunction.Province.Province;
 import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDetailActivity_;
@@ -24,7 +22,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 @EActivity(R.layout.activity_search)
@@ -50,11 +47,10 @@ public class SearchActivity extends AppCompatActivity {
         provinceAdapter2 = new ProvinceAdapter2(this, provinceList);
         rvResult.setAdapter(provinceAdapter2);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvResult.setLayoutManager(linearLayoutManager);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvResult.getContext(),
-                linearLayoutManager.getOrientation());
-        rvResult.addItemDecoration(dividerItemDecoration);
+        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvResult.setLayoutManager(manager);
+        DividerItemDecoration decoration = new DividerItemDecoration(rvResult.getContext(), manager.getOrientation());
+        rvResult.addItemDecoration(decoration);
 
         rvResult.addOnItemTouchListener(new RecyclerItemClickListener(this, rvResult,
                 new RecyclerItemClickListener.OnItemClickListener() {

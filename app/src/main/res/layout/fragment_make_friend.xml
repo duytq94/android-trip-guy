@@ -1,17 +1,11 @@
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_make_friend_srl_reload"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment_make_friend_rv_list_friends"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_make_friend_rv_list_friends"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dp" />
-    </LinearLayout>
-</android.support.v4.widget.SwipeRefreshLayout>
+        android:padding="5dp" />
+</LinearLayout>

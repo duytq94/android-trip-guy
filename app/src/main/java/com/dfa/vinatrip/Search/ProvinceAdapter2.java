@@ -16,20 +16,18 @@ import com.dfa.vinatrip.R;
 import java.util.ArrayList;
 import java.util.List;
 
+// This adapter has feature filter list (for search)
 public class ProvinceAdapter2 extends RecyclerView.Adapter<ProvinceAdapter2.ProvinceViewHolder> implements Filterable {
     private List<Province> provinceList;
     private LayoutInflater layoutInflater;
-    private Context context;
 
-    private ItemFilter mFilter = new ItemFilter();
-    private List<Province> provinceFiltered;
+    private ItemFilter itemFilter = new ItemFilter();
+    private List<Province> provinceListFiltered;
 
     public ProvinceAdapter2(Context context, List<Province> provinceList) {
         this.provinceList = provinceList;
         this.layoutInflater = LayoutInflater.from(context);
-        this.context = context;
-
-        this.provinceFiltered = provinceList;
+        this.provinceListFiltered = provinceList;
     }
 
     @Override
@@ -40,7 +38,7 @@ public class ProvinceAdapter2 extends RecyclerView.Adapter<ProvinceAdapter2.Prov
 
     @Override
     public void onBindViewHolder(ProvinceAdapter2.ProvinceViewHolder holder, int position) {
-        Province province = provinceFiltered.get(position);
+        Province province = provinceListFiltered.get(position);
 
         holder.tvTitle.setText(province.getName());
         holder.tvContent.setText(province.getTitle());
@@ -48,12 +46,12 @@ public class ProvinceAdapter2 extends RecyclerView.Adapter<ProvinceAdapter2.Prov
 
     @Override
     public int getItemCount() {
-        return provinceFiltered.size();
+        return provinceListFiltered.size();
     }
 
     @Override
     public Filter getFilter() {
-        return mFilter;
+        return itemFilter;
     }
 
     public static class ProvinceViewHolder extends RecyclerView.ViewHolder {
@@ -69,27 +67,23 @@ public class ProvinceAdapter2 extends RecyclerView.Adapter<ProvinceAdapter2.Prov
     public class ItemFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-
             String filterString = constraint.toString().toLowerCase();
-
             FilterResults results = new FilterResults();
 
-            final List<Province> list = provinceList;
-
-            int count = list.size();
+            int count = provinceList.size();
             final ArrayList<Province> nlist = new ArrayList<Province>(count);
 
             Province filterableProvince;
 
             if (TextUtils.isEmpty(filterString)) {
-                nlist.addAll(list);
+                nlist.addAll(provinceList);
                 results.values = nlist;
                 results.count = nlist.size();
                 return results;
             }
 
             for (int i = 0; i < count; i++) {
-                filterableProvince = list.get(i);
+                filterableProvince = provinceList.get(i);
                 if (filterableProvince.getName().toLowerCase().contains(filterString)) {
                     nlist.add(filterableProvince);
                 }
@@ -103,7 +97,7 @@ public class ProvinceAdapter2 extends RecyclerView.Adapter<ProvinceAdapter2.Prov
         @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            provinceFiltered = (ArrayList<Province>) results.values;
+            provinceListFiltered = (ArrayList<Province>) results.values;
             notifyDataSetChanged();
         }
 

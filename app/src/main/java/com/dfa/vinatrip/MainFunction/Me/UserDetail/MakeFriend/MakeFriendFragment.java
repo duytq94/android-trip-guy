@@ -1,14 +1,14 @@
 package com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.dfa.vinatrip.CheckNetwork;
+import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.DataService.DataService;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,9 +33,6 @@ public class MakeFriendFragment extends Fragment {
     @ViewById(R.id.fragment_make_friend_rv_list_friends)
     RecyclerView rvListFriends;
 
-    @ViewById(R.id.fragment_make_friend_srl_reload)
-    SwipeRefreshLayout srlReload;
-
     private ListUserProfileAdapter listUserProfileAdapter;
     private DatabaseReference referenceFriend = FirebaseDatabase.getInstance().getReference();
     private List<UserFriend> userFriendList;
@@ -55,21 +52,10 @@ public class MakeFriendFragment extends Fragment {
 
         if (CheckNetwork.isNetworkConnected(getActivity())) loadUserFriend();
 
-        srlReload.setColorSchemeResources(R.color.colorMain);
-
-        srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (CheckNetwork.isNetworkConnected(getActivity())) {
-                    srlReload.setRefreshing(true);
-                    loadUserFriend();
-                }
-            }
-        });
-
-        StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        rvListFriends.setLayoutManager(staggeredGridLayoutManager);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvListFriends.setLayoutManager(manager);
+        DividerItemDecoration decoration = new DividerItemDecoration(rvListFriends.getContext(), manager.getOrientation());
+        rvListFriends.addItemDecoration(decoration);
     }
 
     public void loadUserFriend() {
@@ -137,7 +123,6 @@ public class MakeFriendFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         rvListFriends.setAdapter(listUserProfileAdapter);
-                        srlReload.setRefreshing(false);
                     }
 
                     @Override
