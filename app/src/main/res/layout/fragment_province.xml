@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!-- Pull down page, data will load again -->
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_location_srlReload"
+    android:id="@+id/fragment_province_srlReload"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -14,19 +14,57 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/toolbar" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorMain">
+
+                <ImageView
+                    android:id="@+id/fragment_my_friend_iv_symbol"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:src="@drawable/ic_symbol" />
+
+                <RelativeLayout
+                    android:id="@+id/fragment_province_rl_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/fragment_my_friend_iv_symbol"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/fragment_province_iv_search"
+                        android:text="Bạn muốn đi đâu... "
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_large" />
+
+                    <ImageView
+                        android:id="@+id/fragment_province_iv_search"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_alignParentRight="true"
+                        android:padding="16dp"
+                        android:src="@drawable/ic_search" />
+
+                </RelativeLayout>
+            </RelativeLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <android.support.v4.view.ViewPager
-                    android:id="@+id/fragment_location_vp_slide_show"
+                    android:id="@+id/fragment_province_vp_slide_show"
                     android:layout_width="match_parent"
                     android:layout_height="150dp" />
 
                 <LinearLayout
-                    android:id="@+id/fragment_location_ll_dots"
+                    android:id="@+id/fragment_province_ll_dots"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dots_height"
                     android:layout_gravity="bottom"
@@ -36,7 +74,7 @@
             </FrameLayout>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/fragment_location_rv_provinces"
+                android:id="@+id/fragment_province_rv_provinces"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:nestedScrollingEnabled="false"

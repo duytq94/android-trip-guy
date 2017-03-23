@@ -9,14 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -31,6 +26,7 @@ import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDetailActivity_;
 import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.Search.SearchActivity_;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,9 +36,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,24 +52,20 @@ public class ProvinceFragment extends Fragment {
     @Bean
     DataService dataService;
 
-    @ViewById(R.id.my_toolbar)
-    Toolbar toolbar;
-
-    @ViewById(R.id.fragment_location_rv_provinces)
+    @ViewById(R.id.fragment_province_rv_provinces)
     RecyclerView rvProvinces;
 
-    @ViewById(R.id.fragment_location_srlReload)
+    @ViewById(R.id.fragment_province_srlReload)
     SwipeRefreshLayout srlReload;
 
-    @ViewById(R.id.fragment_location_vp_slide_show)
+    @ViewById(R.id.fragment_province_vp_slide_show)
     ViewPager vpSlideShow;
 
-    @ViewById(R.id.fragment_location_ll_dots)
+    @ViewById(R.id.fragment_province_ll_dots)
     LinearLayout llDots;
 
     private ProvinceAdapter provinceAdapter;
     private List<Province> provinceList;
-    private SearchView searchView;
 
     // 4 photo in slide show
     private int[] mResources = {R.drawable.bg_test1, R.drawable.bg_test2, R.drawable.bg_test3, R.drawable.bg_test4};
@@ -80,12 +74,9 @@ public class ProvinceFragment extends Fragment {
     private int i = 0;
     private TextView[] tvDots;
     private DatabaseReference databaseReference;
-    private android.support.v7.app.ActionBar actionBar;
 
     @AfterViews
     void onCreateView() {
-        setupActionBar();
-
         customPagerAdapter = new CustomPagerAdapter(getActivity());
         vpSlideShow.setAdapter(customPagerAdapter);
 
@@ -150,6 +141,14 @@ public class ProvinceFragment extends Fragment {
 
                     }
                 }));
+
+    }
+
+    @Click(R.id.fragment_province_rl_search)
+    void onRlSearchClick() {
+        Intent intent = new Intent(getActivity(), SearchActivity_.class );
+        intent.putExtra("ProvinceList", (Serializable) provinceList);
+        startActivity(intent);
     }
 
     public void autoScrollSlideShow() {
@@ -314,52 +313,9 @@ public class ProvinceFragment extends Fragment {
         }
     }
 
-    public void setupActionBar() {
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setIcon(R.drawable.ic_symbol);
-        }
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        // Inflate the options menu from XML
-//        getActivity().getMenuInflater().inflate(R.menu.search_menu, menu);
-//
-//        // Get the SearchView and set the searchable configuration
-//        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-//        SearchView searchView = (SearchView) menu.findItem(R.id.search_menu_menuSearch).getActionView();
-//
-//        // Assumes current activity is the searchable activity
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-//
-//        // Expand searchView, if not, it just show icon
-//        searchView.setIconifiedByDefault(false);
-//
-//        searchView.setQueryHint("Tìm kiếm...");
-
-        getActivity().getMenuInflater().inflate(R.menu.search_menu, menu);
-        searchView = (SearchView) menu.findItem(R.id.search_menu_menuSearch).getActionView();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                provinceAdapter.getFilter().filter(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
     }
 }
