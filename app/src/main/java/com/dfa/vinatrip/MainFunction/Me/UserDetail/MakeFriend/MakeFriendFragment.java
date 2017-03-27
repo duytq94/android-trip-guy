@@ -122,7 +122,9 @@ public class MakeFriendFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        rvListFriends.setAdapter(listUserProfileAdapter);
+                        if (isAdded()) {
+                            rvListFriends.setAdapter(listUserProfileAdapter);
+                        }
                     }
 
                     @Override

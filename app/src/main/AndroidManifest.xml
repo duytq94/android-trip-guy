@@ -32,18 +32,22 @@
         <activity android:name=".MainFunction.Province.ProvinceDetail.ProvinceDetailActivity_" />
         <activity android:name=".MainFunction.Province.EachItemProvinceDetail.EachItemProvinceDetailActivity_" />
         <activity android:name=".MapActivity_" />
-        <activity android:name=".Login.SignUpActivity_" />
+        <activity
+            android:name=".Login.SignUpActivity_"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Login.SignInActivity_"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".Login.ResetPasswordActivity_" />
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Login.ResetPasswordActivity_"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".MainFunction.Me.UserDetail.UserProfileDetailActivity_" />
         <activity android:name=".MainFunction.Province.EachItemProvinceDetail.Rating.RatingActivity_" />
         <activity android:name=".MainFunction.Province.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity_" />
         <activity android:name=".SplashScreen.SplashScreenActivity_" />
         <activity android:name=".MainFunction.Plan.MakePlan.MakePlanActivity_" />
         <activity android:name=".MainFunction.Plan.DetailPlan.DetailPlanActivity_" />
-        <activity android:name=".Search.SearchActivity_" />
+        <activity android:name=".Search.SearchActivity_"  />
     </application>
 
 </manifest>

@@ -182,7 +182,9 @@ public class EachProvinceFoodFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        srlReload.setRefreshing(false);
+                        if (isAdded()) {
+                            srlReload.setRefreshing(false);
+                        }
                     }
 
                     @Override

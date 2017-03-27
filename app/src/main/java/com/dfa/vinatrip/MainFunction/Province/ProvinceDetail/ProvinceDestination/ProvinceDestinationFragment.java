@@ -38,8 +38,9 @@ public class ProvinceDestinationFragment extends Fragment {
     private List<ProvinceDestination> provinceDestinationList;
     private ProvinceDestinationAdapter provinceDestinationAdapter;
     private Province province;
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-
+    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    private ChildEventListener childEventListener;
+    private ValueEventListener valueEventListener;
 
     @AfterViews
     void onCreateView() {
@@ -52,6 +53,69 @@ public class ProvinceDestinationFragment extends Fragment {
         provinceDestinationAdapter =
                 new ProvinceDestinationAdapter(getActivity(), provinceDestinationList);
         rvDestinations.setAdapter(provinceDestinationAdapter);
+
+        childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String name, avatar, address, description,
+                        typeOfTourism, scheduleAndFee, timeSpend, province;
+                float latitude, longitude;
+
+                name = dataSnapshot.child("name").getValue().toString();
+                avatar = dataSnapshot.child("avatar").getValue().toString();
+                address = dataSnapshot.child("address").getValue().toString();
+                description = dataSnapshot.child("description").getValue().toString();
+                typeOfTourism = dataSnapshot.child("typeOfTourism").getValue().toString();
+                scheduleAndFee = dataSnapshot.child("scheduleAndFee").getValue().toString();
+                timeSpend = dataSnapshot.child("timeSpend").getValue().toString();
+                latitude = Float.parseFloat(dataSnapshot.child("latitude").getValue()
+                        .toString());
+                longitude = Float.parseFloat(dataSnapshot.child("longitude").getValue()
+                        .toString());
+                province = dataSnapshot.child("province").getValue().toString();
+
+                ProvinceDestination provinceDestination = new
+                        ProvinceDestination(name, avatar, address, description,
+                        typeOfTourism, scheduleAndFee, timeSpend, province, latitude,
+                        longitude);
+
+                provinceDestinationList.add(provinceDestination);
+                provinceDestinationAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (isAdded()) {
+                    srlReload.setRefreshing(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
 
         if (CheckNetwork.isNetworkConnected(getActivity())) {
             srlReload.setRefreshing(true);
@@ -96,71 +160,18 @@ public class ProvinceDestinationFragment extends Fragment {
     }
 
     public void loadProvinceDestination() {
-        DatabaseReference databaseReference = firebaseDatabase.getReference();
-
         // if no Internet, this method will not run
         databaseReference.child("ProvinceDestination").child(province.getName())
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        String name, avatar, address, description,
-                                typeOfTourism, scheduleAndFee, timeSpend, province;
-                        float latitude, longitude;
-
-                        name = dataSnapshot.child("name").getValue().toString();
-                        avatar = dataSnapshot.child("avatar").getValue().toString();
-                        address = dataSnapshot.child("address").getValue().toString();
-                        description = dataSnapshot.child("description").getValue().toString();
-                        typeOfTourism = dataSnapshot.child("typeOfTourism").getValue().toString();
-                        scheduleAndFee = dataSnapshot.child("scheduleAndFee").getValue().toString();
-                        timeSpend = dataSnapshot.child("timeSpend").getValue().toString();
-                        latitude = Float.parseFloat(dataSnapshot.child("latitude").getValue()
-                                .toString());
-                        longitude = Float.parseFloat(dataSnapshot.child("longitude").getValue()
-                                .toString());
-                        province = dataSnapshot.child("province").getValue().toString();
-
-                        ProvinceDestination provinceDestination = new
-                                ProvinceDestination(name, avatar, address, description,
-                                typeOfTourism, scheduleAndFee, timeSpend, province, latitude,
-                                longitude);
-
-                        provinceDestinationList.add(provinceDestination);
-                        provinceDestinationAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                .addChildEventListener(childEventListener);
 
         databaseReference.child("ProvinceDestination").child(province.getName())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        srlReload.setRefreshing(false);
-                    }
+                .addListenerForSingleValueEvent(valueEventListener);
+    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+    @Override
+    public void onPause() {
+        super.onPause();
+        databaseReference.removeEventListener(childEventListener);
+        databaseReference.removeEventListener(valueEventListener);
     }
 }

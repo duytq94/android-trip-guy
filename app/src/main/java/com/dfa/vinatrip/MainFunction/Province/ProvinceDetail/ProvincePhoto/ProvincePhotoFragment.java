@@ -34,7 +34,9 @@ public class ProvincePhotoFragment extends Fragment {
     private List<String> provincePhotoList;
     private ProvincePhotoAdapter provincePhotoAdapter;
     private Province province;
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    private ChildEventListener childEventListener;
+    private ValueEventListener valueEventListener;
 
     @AfterViews
     void onCreateView() {
@@ -45,6 +47,49 @@ public class ProvincePhotoFragment extends Fragment {
         provincePhotoList = new ArrayList<>();
         provincePhotoAdapter = new ProvincePhotoAdapter(getActivity(), provincePhotoList);
         rvPhotos.setAdapter(provincePhotoAdapter);
+
+        childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String url;
+                url = dataSnapshot.getValue().toString();
+                provincePhotoList.add(url);
+                provincePhotoAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (isAdded()) {
+                    srlReload.setRefreshing(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
 
         if (CheckNetwork.isNetworkConnected(getActivity())) {
             srlReload.setRefreshing(true);
@@ -70,51 +115,18 @@ public class ProvincePhotoFragment extends Fragment {
     }
 
     public void loadProvincePhoto() {
-        DatabaseReference databaseReference = firebaseDatabase.getReference();
-
         // if no Internet, this method will not run
         databaseReference.child("ProvincePhoto").child(province.getName())
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        String url;
-                        url = dataSnapshot.getValue().toString();
-                        provincePhotoList.add(url);
-                        provincePhotoAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                .addChildEventListener(childEventListener);
 
         databaseReference.child("ProvincePhoto").child(province.getName())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        srlReload.setRefreshing(false);
-                    }
+                .addListenerForSingleValueEvent(valueEventListener);
+    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+    @Override
+    public void onPause() {
+        super.onPause();
+        databaseReference.removeEventListener(childEventListener);
+        databaseReference.removeEventListener(valueEventListener);
     }
 }

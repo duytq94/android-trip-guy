@@ -13,12 +13,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.MainFunction.Province.Province;
 import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDetailActivity_;
 import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
@@ -26,6 +28,9 @@ import java.util.List;
 
 @EActivity(R.layout.activity_search)
 public class SearchActivity extends AppCompatActivity {
+
+    @Bean
+    DataService dataService;
 
     @ViewById(R.id.my_toolbar)
     Toolbar toolbar;
@@ -43,7 +48,7 @@ public class SearchActivity extends AppCompatActivity {
         setupActionBar();
         changeColorStatusBar();
 
-        provinceList = (List<Province>) getIntent().getSerializableExtra("ProvinceList");
+        provinceList = dataService.getProvinceList();
         provinceAdapter2 = new ProvinceAdapter2(this, provinceList);
         rvResult.setAdapter(provinceAdapter2);
 

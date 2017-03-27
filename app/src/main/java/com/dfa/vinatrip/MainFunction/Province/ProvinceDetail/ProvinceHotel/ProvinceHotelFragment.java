@@ -38,7 +38,9 @@ public class ProvinceHotelFragment extends Fragment {
     private List<ProvinceHotel> provinceHotelList;
     private ProvinceHotelAdapter provinceHotelAdapter;
     private Province province;
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    private ChildEventListener childEventListener;
+    private ValueEventListener valueEventListener;
 
     @AfterViews
     void onCreateView() {
@@ -51,6 +53,70 @@ public class ProvinceHotelFragment extends Fragment {
         provinceHotelAdapter =
                 new ProvinceHotelAdapter(getActivity(), provinceHotelList);
         rvHotels.setAdapter(provinceHotelAdapter);
+
+        childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String name, rate, avatar, price, address, description,
+                        phone, mail, website, province;
+                float latitude, longitude;
+
+                name = dataSnapshot.child("name").getValue().toString();
+                rate = dataSnapshot.child("rate").getValue().toString();
+                avatar = dataSnapshot.child("avatar").getValue().toString();
+                price = dataSnapshot.child("price").getValue().toString();
+                address = dataSnapshot.child("address").getValue().toString();
+                description = dataSnapshot.child("description").getValue().toString();
+                phone = dataSnapshot.child("phone").getValue().toString();
+                mail = dataSnapshot.child("mail").getValue().toString();
+                website = dataSnapshot.child("website").getValue().toString();
+                latitude = Float.parseFloat(dataSnapshot.child("latitude").getValue()
+                        .toString());
+                longitude = Float.parseFloat(dataSnapshot.child("longitude").getValue()
+                        .toString());
+                province = dataSnapshot.child("province").getValue().toString();
+
+                ProvinceHotel provinceHotel = new
+                        ProvinceHotel(name, rate, avatar, price, address, description,
+                        phone, mail, website, province, latitude, longitude);
+
+                provinceHotelList.add(provinceHotel);
+                provinceHotelAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (isAdded()) {
+                    srlReload.setRefreshing(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
 
         if (CheckNetwork.isNetworkConnected(getActivity())) {
             srlReload.setRefreshing(true);
@@ -95,72 +161,18 @@ public class ProvinceHotelFragment extends Fragment {
     }
 
     public void loadProvinceHotel() {
-        DatabaseReference databaseReference = firebaseDatabase.getReference();
-
         // if no Internet, this method will not run
         databaseReference.child("ProvinceHotel").child(province.getName())
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        String name, rate, avatar, price, address, description,
-                                phone, mail, website, province;
-                        float latitude, longitude;
-
-                        name = dataSnapshot.child("name").getValue().toString();
-                        rate = dataSnapshot.child("rate").getValue().toString();
-                        avatar = dataSnapshot.child("avatar").getValue().toString();
-                        price = dataSnapshot.child("price").getValue().toString();
-                        address = dataSnapshot.child("address").getValue().toString();
-                        description = dataSnapshot.child("description").getValue().toString();
-                        phone = dataSnapshot.child("phone").getValue().toString();
-                        mail = dataSnapshot.child("mail").getValue().toString();
-                        website = dataSnapshot.child("website").getValue().toString();
-                        latitude = Float.parseFloat(dataSnapshot.child("latitude").getValue()
-                                .toString());
-                        longitude = Float.parseFloat(dataSnapshot.child("longitude").getValue()
-                                .toString());
-                        province = dataSnapshot.child("province").getValue().toString();
-
-                        ProvinceHotel provinceHotel = new
-                                ProvinceHotel(name, rate, avatar, price, address, description,
-                                phone, mail, website, province, latitude, longitude);
-
-                        provinceHotelList.add(provinceHotel);
-                        provinceHotelAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                .addChildEventListener(childEventListener);
 
         databaseReference.child("ProvinceHotel").child(province.getName())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        srlReload.setRefreshing(false);
-                    }
+                .addListenerForSingleValueEvent(valueEventListener);
+    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+    @Override
+    public void onPause() {
+        super.onPause();
+        databaseReference.removeEventListener(childEventListener);
+        databaseReference.removeEventListener(valueEventListener);
     }
 }

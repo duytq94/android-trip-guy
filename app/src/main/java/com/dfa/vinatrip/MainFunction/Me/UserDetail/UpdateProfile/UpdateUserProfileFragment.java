@@ -172,7 +172,9 @@ public class UpdateUserProfileFragment extends Fragment {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             long progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                            tvPercent.setText(progress + "%");
+                            if (isAdded()) {
+                                tvPercent.setText(progress + "%");
+                            }
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -194,22 +196,25 @@ public class UpdateUserProfileFragment extends Fragment {
                             else {
                                 linkAvatar = downloadUrl.toString();
                             }
-                            UserProfile newUserProfile =
-                                    new UserProfile(etNickname.getText().toString(),
-                                            linkAvatar,
-                                            etIntroduceYourSelf.getText().toString(),
-                                            etCity.getText().toString(),
-                                            tvBirthday.getText().toString(),
-                                            currentUser.getUid(),
-                                            spnSex.getSelectedItem().toString(),
-                                            currentUser.getEmail());
-                            databaseReference.child("UserProfile").child(currentUser.getUid())
-                                    .setValue(newUserProfile);
-                            dataService.setCurrentUser(newUserProfile);
-                            progressBar.setVisibility(View.GONE);
-                            tvPercent.setVisibility(View.GONE);
-                            Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT)
-                                    .show();
+
+                            if (isAdded()) {
+                                UserProfile newUserProfile =
+                                        new UserProfile(etNickname.getText().toString(),
+                                                linkAvatar,
+                                                etIntroduceYourSelf.getText().toString(),
+                                                etCity.getText().toString(),
+                                                tvBirthday.getText().toString(),
+                                                currentUser.getUid(),
+                                                spnSex.getSelectedItem().toString(),
+                                                currentUser.getEmail());
+                                databaseReference.child("UserProfile").child(currentUser.getUid())
+                                        .setValue(newUserProfile);
+                                dataService.setCurrentUser(newUserProfile);
+                                progressBar.setVisibility(View.GONE);
+                                tvPercent.setVisibility(View.GONE);
+                                Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT)
+                                        .show();
+                            }
                         }
                     });
         } catch (IOException e) {

@@ -147,7 +147,6 @@ public class ProvinceFragment extends Fragment {
     @Click(R.id.fragment_province_rl_search)
     void onRlSearchClick() {
         Intent intent = new Intent(getActivity(), SearchActivity_.class );
-        intent.putExtra("ProvinceList", (Serializable) provinceList);
         startActivity(intent);
     }
 

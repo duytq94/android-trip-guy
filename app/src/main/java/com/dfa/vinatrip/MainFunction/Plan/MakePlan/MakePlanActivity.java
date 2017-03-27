@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -96,6 +95,8 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     private Validator validator;
     private int countDaySchedule;
     private List<PlanSchedule> planScheduleList;
+    private String planId;
+    private Plan currentPlan;
 
     @AfterViews
     void onCreate() {
@@ -105,6 +106,11 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     }
 
     public void initView() {
+        // Get the current plan when user click to update plan on item recycler
+        if (getIntent().getSerializableExtra("Plan") != null) {
+            currentPlan = (Plan) getIntent().getSerializableExtra("Plan");
+        }
+
         countDaySchedule = 1;
         planScheduleList = new ArrayList<>();
 
@@ -147,7 +153,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
     public void sendTripPlanToFriends() {
         for (String friendId : invitedFriendIdList) {
-            databaseReference.child("Plan").child(friendId).push()
+            databaseReference.child("Plan").child(friendId).child(planId)
                     .setValue(plan, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
@@ -270,11 +276,14 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         nsvRoot.scrollTo(0, nsvRoot.getBottom());
         progressBar.setVisibility(View.VISIBLE);
         for (int i = 0; i < countDaySchedule; i++) {
-            TextInputEditText textInputEditText = (TextInputEditText) ((ViewGroup) (llSchedule.getChildAt(i))).getChildAt(0);
-//            TextInputEditText textInputEditText = (TextInputEditText) (llSchedule.getChildAt(i)).findViewById(R.id.item_day_schedule_tiet);
+            TextInputEditText textInputEditText = (TextInputEditText) (llSchedule.getChildAt(i)).findViewById(R.id.item_day_schedule_tiet);
             planScheduleList.add(new PlanSchedule((i + 1) + "", textInputEditText.getText().toString()));
         }
 
+        // Set id by the time
+        planId = System.currentTimeMillis() + "";
+
+        plan.setId(planId);
         plan.setName(etTripName.getText().toString());
         plan.setDestination(etDestination.getText().toString());
         plan.setPlanScheduleList(planScheduleList);
@@ -284,7 +293,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         plan.setFriendInvitedList(invitedFriendIdList);
 
         // Send data to storage of current user (the user create this trip plan)
-        databaseReference.child("Plan").child(currentUser.getUid()).push()
+        databaseReference.child("Plan").child(currentUser.getUid()).child(planId)
                 .setValue(plan, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {

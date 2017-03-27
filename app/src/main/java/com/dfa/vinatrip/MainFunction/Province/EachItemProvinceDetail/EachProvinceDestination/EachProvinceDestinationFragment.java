@@ -258,7 +258,9 @@ public class EachProvinceDestinationFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        srlReload.setRefreshing(false);
+                        if (isAdded()) {
+                            srlReload.setRefreshing(false);
+                        }
                     }
 
                     @Override
@@ -279,8 +281,10 @@ public class EachProvinceDestinationFragment extends Fragment {
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         UserRating userRating = dataSnapshot.getValue(UserRating.class);
 
-                        rvUserRatings.setVisibility(View.VISIBLE);
-                        tvCommentNotAvailable.setVisibility(View.GONE);
+                        if (isAdded()) {
+                            rvUserRatings.setVisibility(View.VISIBLE);
+                            tvCommentNotAvailable.setVisibility(View.GONE);
+                        }
                         listUserRatings.add(userRating);
                         ratingAdapter.notifyDataSetChanged();
                     }

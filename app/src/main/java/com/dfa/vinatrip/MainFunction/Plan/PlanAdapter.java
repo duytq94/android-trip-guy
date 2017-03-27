@@ -1,15 +1,19 @@
 package com.dfa.vinatrip.MainFunction.Plan;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
+import com.dfa.vinatrip.MainFunction.Plan.DetailPlan.DetailPlanActivity_;
+import com.dfa.vinatrip.MainFunction.Plan.MakePlan.MakePlanActivity_;
 import com.dfa.vinatrip.R;
 import com.squareup.picasso.Picasso;
 
@@ -35,8 +39,19 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
     }
 
     @Override
-    public void onBindViewHolder(PlanAdapter.PlanViewHolder holder, int position) {
-        Plan plan = planList.get(position);
+    public void onBindViewHolder(PlanAdapter.PlanViewHolder holder, final int position) {
+        final Plan plan = planList.get(position);
+
+        holder.rlDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, DetailPlanActivity_.class);
+
+                // Send Plan to DetailPlanActivity
+                intent.putExtra("Plan", planList.get(position));
+                context.startActivity(intent);
+            }
+        });
 
         holder.tvName.setText(plan.getName());
         holder.tvDestination.setText(plan.getDestination());
@@ -49,6 +64,16 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
 
         if (plan.getUserMakePlan().getUid().equals(currentUser.getUid())) {
             holder.tvUpdate.setEnabled(true);
+            holder.tvUpdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, MakePlanActivity_.class);
+
+                    // Send Plan to MakePlanActivity to update info
+                    intent.putExtra("Plan", planList.get(position));
+                    context.startActivity(intent);
+                }
+            });
         } else {
             holder.ivIsMyPlan.setImageResource(0);
             holder.tvUpdate.setEnabled(false);
@@ -69,6 +94,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
     public static class PlanViewHolder extends RecyclerView.ViewHolder {
         private TextView tvName, tvDestination, tvDate, tvUserName, tvUpdate;
         private ImageView ivAvatar, ivIsMyPlan;
+        private RelativeLayout rlDetail;
 
         public PlanViewHolder(View itemView) {
             super(itemView);
@@ -79,6 +105,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
             tvUpdate = (TextView) itemView.findViewById(R.id.item_plan_tv_update);
             ivAvatar = (ImageView) itemView.findViewById(R.id.item_plan_iv_avatar);
             ivIsMyPlan = (ImageView) itemView.findViewById(R.id.item_plan_iv_is_my_plan);
+            rlDetail = (RelativeLayout) itemView.findViewById(R.id.item_plan_rl_detail);
         }
     }
 }
