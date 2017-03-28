@@ -1,9 +1,9 @@
 package com.dfa.vinatrip.DataService;
 
-import com.dfa.vinatrip.MainFunction.Province.Province;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.Plan.Plan;
+import com.dfa.vinatrip.MainFunction.Province.Province;
 
 import org.androidannotations.annotations.EBean;
 
@@ -15,10 +15,10 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 @EBean(scope = Singleton)
 public class DataService {
 
-    private List<UserProfile> userProfileList;
-    private List<UserFriend> userFriendList;
-    private List<Province> provinceList;
-    private List<Plan> planList;
+    private List<UserProfile> userProfileList = new ArrayList<>();
+    private List<UserFriend> userFriendList = new ArrayList<>();
+    private List<Province> provinceList = new ArrayList<>();
+    private List<Plan> planList = new ArrayList<>();
     private UserProfile currentUser;
 
     public void clearData() {
@@ -57,25 +57,21 @@ public class DataService {
     }
 
     public void setUserProfileList(List<UserProfile> userProfileList) {
-        this.userProfileList = new ArrayList<>();
         this.userProfileList.clear();
         this.userProfileList.addAll(userProfileList);
     }
 
     public void setUserFriendList(List<UserFriend> userFriendList) {
-        this.userFriendList = new ArrayList<>();
         this.userFriendList.clear();
         this.userFriendList.addAll(userFriendList);
     }
 
     public void setProvinceList(List<Province> provinceList) {
-        this.provinceList = new ArrayList<>();
         this.provinceList.clear();
         this.provinceList.addAll(provinceList);
     }
 
     public void setPlanList(List<Plan> planList) {
-        this.planList = new ArrayList<>();
         this.planList.clear();
         this.planList.addAll(planList);
     }

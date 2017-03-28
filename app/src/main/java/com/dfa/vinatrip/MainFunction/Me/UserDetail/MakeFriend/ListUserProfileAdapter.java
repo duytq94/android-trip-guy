@@ -1,6 +1,8 @@
 package com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,20 +128,37 @@ public class ListUserProfileAdapter extends RecyclerView.Adapter<ListUserProfile
                         break;
 
                     case "Bạn bè":
-                        holder.btnMakeFriend.setText("Kết bạn");
-                        holder.btnMakeFriend.setTag("Kết bạn");
-                        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_neutral);
-                        // Delete data to the current user login
-                        referenceFriend.child("UserFriend")
-                                .child(currentUser.getUid())
-                                .child(userProfile.getUid())
-                                .removeValue();
 
-                        // Delete data to the user be requested
-                        referenceFriend.child("UserFriend")
-                                .child(userProfile.getUid())
-                                .child(currentUser.getUid())
-                                .removeValue();
+                        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+                        alertDialog.setTitle("Hủy kết bạn");
+                        alertDialog.setMessage("Bạn có chắc chắn muốn hủy kết bạn với người này?");
+                        alertDialog.setIcon(R.drawable.ic_symbol);
+                        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ĐỒNG Ý", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                holder.btnMakeFriend.setText("Kết bạn");
+                                holder.btnMakeFriend.setTag("Kết bạn");
+                                holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_neutral);
+                                // Delete data to the current user login
+                                referenceFriend.child("UserFriend")
+                                        .child(currentUser.getUid())
+                                        .child(userProfile.getUid())
+                                        .removeValue();
+
+                                // Delete data to the user be requested
+                                referenceFriend.child("UserFriend")
+                                        .child(userProfile.getUid())
+                                        .child(currentUser.getUid())
+                                        .removeValue();
+                            }
+                        });
+                        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "HỦY", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+                        alertDialog.show();
                         break;
 
                     case "Kết bạn":

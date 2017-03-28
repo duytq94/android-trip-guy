@@ -104,7 +104,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         firebaseApi.loadUserProfile().enqueue(new Callback<HashMap<String, UserProfile>>() {
             @Override
             public void onResponse(Call<HashMap<String, UserProfile>> call, Response<HashMap<String, UserProfile>> response) {
-                userProfileList = new ArrayList<UserProfile>();
+                userProfileList = new ArrayList<>();
                 userProfileList.addAll(response.body().values());
                 dataService.setUserProfileList(userProfileList);
                 for (UserProfile userProfile : userProfileList) {
@@ -131,9 +131,11 @@ public class SplashScreenActivity extends AppCompatActivity {
         firebaseApi.loadUserFriend(firebaseUser.getUid()).enqueue(new Callback<HashMap<String, UserFriend>>() {
             @Override
             public void onResponse(Call<HashMap<String, UserFriend>> call, Response<HashMap<String, UserFriend>> response) {
-                userFriendList = new ArrayList<UserFriend>();
-                userFriendList.addAll(response.body().values());
-                dataService.setUserFriendList(userFriendList);
+                userFriendList = new ArrayList<>();
+                if (response.body() != null) {
+                    userFriendList.addAll(response.body().values());
+                    dataService.setUserFriendList(userFriendList);
+                }
                 count++;
                 if (count == 3) {
                     startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));

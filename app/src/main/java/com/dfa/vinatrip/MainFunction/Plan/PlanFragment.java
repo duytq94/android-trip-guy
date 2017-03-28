@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -74,9 +75,8 @@ public class PlanFragment extends Fragment {
             planAdapter = new PlanAdapter(getActivity(), planList, currentUser);
             rvPlan.setAdapter(planAdapter);
             loadPlan();
-            StaggeredGridLayoutManager staggeredGridLayoutManager =
-                    new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-            rvPlan.setLayoutManager(staggeredGridLayoutManager);
+            LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            rvPlan.setLayoutManager(manager);
         }
     }
 
