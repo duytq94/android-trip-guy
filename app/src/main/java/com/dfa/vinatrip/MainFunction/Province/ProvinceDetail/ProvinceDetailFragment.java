@@ -44,7 +44,7 @@ public class ProvinceDetailFragment extends Fragment {
     @AfterViews
     void onCreateView() {
         // Get Province from ProvinceDetailActivity
-        province = (Province) getArguments().getSerializable("Province");
+        province = getArguments().getParcelable("Province");
 
         setupViewPager(vpProvinceDetail, province);
         tlMenu.setupWithViewPager(vpProvinceDetail);
@@ -101,7 +101,7 @@ public class ProvinceDetailFragment extends Fragment {
 
         // Send Province to each Fragment
         Bundle bundleProvince = new Bundle();
-        bundleProvince.putSerializable("Province", province);
+        bundleProvince.putParcelable("Province", province);
 
         provinceDescriptionFragment = new ProvinceDescriptionFragment_();
         provinceDescriptionFragment.setArguments(bundleProvince);

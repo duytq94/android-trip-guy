@@ -45,11 +45,11 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
 
     public void selectFragment() {
         // Get the Hotel be chosen from ProvinceHotelFragment
-        if (getIntent().getSerializableExtra("DetailHotel") != null) {
-            ProvinceHotel detailHotel = (ProvinceHotel) getIntent().getSerializableExtra("DetailHotel");
+        if (getIntent().getParcelableExtra("DetailHotel") != null) {
+            ProvinceHotel detailHotel = getIntent().getParcelableExtra("DetailHotel");
             titleActionBar = detailHotel.getName();
             Bundle bundleHotel = new Bundle();
-            bundleHotel.putSerializable("DetailHotel", detailHotel);
+            bundleHotel.putParcelable("DetailHotel", detailHotel);
             eachProvinceHotelFragment = new EachProvinceHotelFragment_();
             // Send the Hotel be chosen to EachProvinceHotelFragment
             eachProvinceHotelFragment.setArguments(bundleHotel);
@@ -61,13 +61,13 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
         }
 
         // Get the Destination be chosen from ProvinceDestinationFragment
-        if (getIntent().getSerializableExtra("DetailDestination") != null) {
-            ProvinceDestination detailDestination = (ProvinceDestination) getIntent().getSerializableExtra("DetailDestination");
+        if (getIntent().getParcelableExtra("DetailDestination") != null) {
+            ProvinceDestination detailDestination = getIntent().getParcelableExtra("DetailDestination");
             titleActionBar = detailDestination.getName();
 
 
             Bundle bundleDestination = new Bundle();
-            bundleDestination.putSerializable("DetailDestination", detailDestination);
+            bundleDestination.putParcelable("DetailDestination", detailDestination);
             eachProvinceDestinationFragment = new EachProvinceDestinationFragment_();
             // Send the Hotel be chosen to EachProvinceHotelFragment
             eachProvinceDestinationFragment.setArguments(bundleDestination);
@@ -78,12 +78,13 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
             return;
         }
 
-        if (getIntent().getSerializableExtra("DetailFood") != null) {
+        if (getIntent().getParcelableExtra("DetailFood") != null) {
             // Get the Food be chosen from ProvinceFoodFragment
-            ProvinceFood detailFood = (ProvinceFood) getIntent().getSerializableExtra("DetailFood");
+            ProvinceFood detailFood = getIntent().getParcelableExtra("DetailFood");
             titleActionBar = detailFood.getName();
+
             Bundle bundleFood = new Bundle();
-            bundleFood.putSerializable("DetailFood", detailFood);
+            bundleFood.putParcelable("DetailFood", detailFood);
             eachProvinceFoodFragment = new EachProvinceFoodFragment_();
             // Send the Food be chosen to EachProvinceHotelFragment
             eachProvinceFoodFragment.setArguments(bundleFood);

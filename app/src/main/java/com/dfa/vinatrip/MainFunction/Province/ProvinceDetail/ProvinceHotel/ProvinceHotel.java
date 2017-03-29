@@ -1,8 +1,9 @@
 package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceHotel;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class ProvinceHotel implements Serializable {
+public class ProvinceHotel implements Parcelable {
     private String name, rate, avatar, price, address, description, phone, mail, website, province;
     private float latitude, longitude;
 
@@ -71,4 +72,52 @@ public class ProvinceHotel implements Serializable {
         this.longitude = longitude;
 
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeString(this.rate);
+        dest.writeString(this.avatar);
+        dest.writeString(this.price);
+        dest.writeString(this.address);
+        dest.writeString(this.description);
+        dest.writeString(this.phone);
+        dest.writeString(this.mail);
+        dest.writeString(this.website);
+        dest.writeString(this.province);
+        dest.writeFloat(this.latitude);
+        dest.writeFloat(this.longitude);
+    }
+
+    protected ProvinceHotel(Parcel in) {
+        this.name = in.readString();
+        this.rate = in.readString();
+        this.avatar = in.readString();
+        this.price = in.readString();
+        this.address = in.readString();
+        this.description = in.readString();
+        this.phone = in.readString();
+        this.mail = in.readString();
+        this.website = in.readString();
+        this.province = in.readString();
+        this.latitude = in.readFloat();
+        this.longitude = in.readFloat();
+    }
+
+    public static final Parcelable.Creator<ProvinceHotel> CREATOR = new Parcelable.Creator<ProvinceHotel>() {
+        @Override
+        public ProvinceHotel createFromParcel(Parcel source) {
+            return new ProvinceHotel(source);
+        }
+
+        @Override
+        public ProvinceHotel[] newArray(int size) {
+            return new ProvinceHotel[size];
+        }
+    };
 }

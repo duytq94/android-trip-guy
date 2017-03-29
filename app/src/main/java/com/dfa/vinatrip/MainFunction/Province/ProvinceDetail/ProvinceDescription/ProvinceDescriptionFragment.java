@@ -22,7 +22,7 @@ public class ProvinceDescriptionFragment extends Fragment {
     @AfterViews
     void onCreateView() {
         // Get Province from ProvinceDetailFragment
-        province = (Province) getArguments().getSerializable("Province");
+        province = getArguments().getParcelable("Province");
 
         if (province != null) {
             tvDescription.setText(Html.fromHtml(province.getDescription()));

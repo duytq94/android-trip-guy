@@ -14,6 +14,46 @@
             android:background="@color/colorBackground"
             android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorMain">
+
+                <ImageView
+                    android:id="@+id/fragment_me_iv_symbol"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:src="@drawable/ic_symbol" />
+
+                <RelativeLayout
+                    android:id="@+id/fragment_province_rl_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/fragment_me_iv_symbol"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/fragment_province_iv_search"
+                        android:text="Tìm bạn..."
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_large" />
+
+                    <ImageView
+                        android:id="@+id/fragment_province_iv_search"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_alignParentRight="true"
+                        android:padding="16dp"
+                        android:src="@drawable/ic_search" />
+
+                </RelativeLayout>
+            </RelativeLayout>
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp">

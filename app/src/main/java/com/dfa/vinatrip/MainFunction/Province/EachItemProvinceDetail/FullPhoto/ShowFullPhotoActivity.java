@@ -47,8 +47,7 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
         // Get data from
         listUrlPhotos = getIntent().getStringArrayListExtra("ListUrlPhotos");
         position = getIntent().getIntExtra("Position", 0);
-        detailDestination =
-                (ProvinceDestination) getIntent().getSerializableExtra("DetailDestination");
+        detailDestination = getIntent().getParcelableExtra("DetailDestination");
 
         changeColorStatusBar();
         setupActionBar();

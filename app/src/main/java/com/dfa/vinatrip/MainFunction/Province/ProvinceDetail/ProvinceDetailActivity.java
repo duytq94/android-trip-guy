@@ -47,10 +47,10 @@ public class ProvinceDetailActivity extends AppCompatActivity {
     @AfterViews
     void onCreate() {
         // Get Province from ProvinceFragment
-        province = (Province) getIntent().getSerializableExtra("Province");
+        province = getIntent().getParcelableExtra("Province");
         ProvinceDetailFragment provinceDetailFragment = new ProvinceDetailFragment_();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("Province", province);
+        bundle.putParcelable("Province", province);
         provinceDetailFragment.setArguments(bundle);
 
         changeColorStatusBar();

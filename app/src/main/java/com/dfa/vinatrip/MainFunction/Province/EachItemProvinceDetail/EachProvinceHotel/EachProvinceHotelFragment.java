@@ -69,7 +69,7 @@ public class EachProvinceHotelFragment extends Fragment {
     @AfterViews
     void onCreateView() {
         // Get the Hotel be chosen from EachItemProvinceDetailActivity
-        detailHotel = (ProvinceHotel) getArguments().getSerializable("DetailHotel");
+        detailHotel = getArguments().getParcelable("DetailHotel");
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         if (CheckNetwork.isNetworkConnected(getActivity())) {

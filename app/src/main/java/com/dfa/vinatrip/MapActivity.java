@@ -42,6 +42,8 @@ public class MapActivity extends AppCompatActivity {
 
     @AfterViews
     void onCreate() {
+        setupActionBar();
+
         mapFragment.onCreate(null);
         mapFragment.onResume();
         mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -88,7 +90,7 @@ public class MapActivity extends AppCompatActivity {
             }
         });
 
-        setupActionBar();
+
         changeColorStatusBar();
     }
 
@@ -99,20 +101,19 @@ public class MapActivity extends AppCompatActivity {
     }
 
     public void setupActionBar() {
-        if (getIntent().getSerializableExtra("DetailHotel") != null) {
+        if (getIntent().getParcelableExtra("DetailHotel") != null) {
             // Get ProvinceHotel form EachProvinceHotelFragment
-            detailHotel = (ProvinceHotel) getIntent().getSerializableExtra("DetailHotel");
+            detailHotel = (ProvinceHotel) getIntent().getParcelableExtra("DetailHotel");
             titleActionBar = detailHotel.getName();
         }
-        if (getIntent().getSerializableExtra("DetailFood") != null) {
+        if (getIntent().getParcelableExtra("DetailFood") != null) {
             // Get ProvinceFood from EachProvinceFoodFragment
-            detailFood = (ProvinceFood) getIntent().getSerializableExtra("DetailFood");
+            detailFood = (ProvinceFood) getIntent().getParcelableExtra("DetailFood");
             titleActionBar = detailFood.getName();
         }
-        if (getIntent().getSerializableExtra("DetailDestination") != null) {
+        if (getIntent().getParcelableExtra("DetailDestination") != null) {
             // Get ProvinceDestination from EachProvinceDestinationFragment
-            detailDestination =
-                    (ProvinceDestination) getIntent().getSerializableExtra("DetailDestination");
+            detailDestination = getIntent().getParcelableExtra("DetailDestination");
             titleActionBar = detailDestination.getName();
         }
 

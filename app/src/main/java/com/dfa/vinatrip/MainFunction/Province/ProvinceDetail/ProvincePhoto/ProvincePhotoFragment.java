@@ -40,7 +40,7 @@ public class ProvincePhotoFragment extends Fragment {
 
     @AfterViews
     void onCreateView() {
-        province = (Province) getArguments().getSerializable("Province");
+        province = getArguments().getParcelable("Province");
 
         srlReload.setColorSchemeResources(R.color.colorMain);
 

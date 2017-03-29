@@ -22,7 +22,7 @@
     <string name="menu_plan">Kế hoạch</string>
     <string name="menu_share">Chia sẻ</string>
     <string name="menu_my_friend">Bạn tôi</string>
-    <string name="menu_me">Tôi</string>
+    <string name="menu_me">Cá nhân</string>
 
     <!-- String for activity sign in, sign up -->
     <string name="hint_email">Email</string>

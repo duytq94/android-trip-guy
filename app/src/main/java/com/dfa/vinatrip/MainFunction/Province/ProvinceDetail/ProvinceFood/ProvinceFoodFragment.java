@@ -45,7 +45,7 @@ public class ProvinceFoodFragment extends Fragment {
     @AfterViews
     void onCreateView() {
         // Get Province from ProvinceDetailFragment
-        province = (Province) getArguments().getSerializable("Province");
+        province = getArguments().getParcelable("Province");
 
         srlReload.setColorSchemeResources(R.color.colorMain);
 

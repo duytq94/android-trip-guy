@@ -28,7 +28,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
@@ -103,8 +102,7 @@ public class EachProvinceDestinationFragment extends Fragment {
     @AfterViews
     void onCreateView() {
         // Get the DetailDestination be chosen from EachItemProvinceDetailActivity
-        detailDestination =
-                (ProvinceDestination) getArguments().getSerializable("DetailDestination");
+        detailDestination = getArguments().getParcelable("DetailDestination");
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         if (CheckNetwork.isNetworkConnected(getActivity())) {
@@ -191,13 +189,11 @@ public class EachProvinceDestinationFragment extends Fragment {
         tvAddress.setText(detailDestination.getAddress());
 
         listUrlPhotos = new ArrayList<>();
-        provinceDestinationPhotoAdapter =
-                new ProvinceDestinationPhotoAdapter(getActivity(), listUrlPhotos);
+        provinceDestinationPhotoAdapter = new ProvinceDestinationPhotoAdapter(getActivity(), listUrlPhotos);
         rvProvinceDestinationPhotos.setAdapter(provinceDestinationPhotoAdapter);
 
         listUserRatings = new ArrayList<>();
-        ratingAdapter =
-                new RatingAdapter(getActivity(), listUserRatings);
+        ratingAdapter = new RatingAdapter(getActivity(), listUserRatings);
         rvUserRatings.setAdapter(ratingAdapter);
 
         // Load static map
@@ -206,17 +202,7 @@ public class EachProvinceDestinationFragment extends Fragment {
                 + "," + detailDestination.getLongitude()
                 + "&zoom=15&size=100x120&sensor=false";
         Picasso.with(getActivity()).load(url)
-                .into(ivMap, new Callback() {
-                    @Override
-                    public void onSuccess() {
-
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                });
+                .into(ivMap);
     }
 
     public void loadProvinceDestinationPhoto() {
@@ -311,8 +297,7 @@ public class EachProvinceDestinationFragment extends Fragment {
                 });
 
         // This method to be called after all the onChildAdded() calls have happened
-        referenceRating
-                .child("ProvinceDestinationRating")
+        referenceRating.child("ProvinceDestinationRating")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

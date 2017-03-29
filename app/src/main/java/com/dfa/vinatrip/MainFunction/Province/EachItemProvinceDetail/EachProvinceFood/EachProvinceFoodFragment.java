@@ -63,7 +63,7 @@ public class EachProvinceFoodFragment extends Fragment {
     @AfterViews
     void onCreateView() {
         // Get the Food be chosen from EachItemProvinceDetailActivity
-        detailFood = (ProvinceFood) getArguments().getSerializable("DetailFood");
+        detailFood = getArguments().getParcelable("DetailFood");
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         if (CheckNetwork.isNetworkConnected(getActivity())) {

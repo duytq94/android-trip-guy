@@ -1,8 +1,9 @@
 package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceFood;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class ProvinceFood implements Serializable {
+public class ProvinceFood implements Parcelable {
     private String name, avatar, price, address, description, timeOpen, phone, province;
     private float latitude, longitude;
 
@@ -61,4 +62,48 @@ public class ProvinceFood implements Serializable {
         this.longitude = longitude;
 
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeString(this.avatar);
+        dest.writeString(this.price);
+        dest.writeString(this.address);
+        dest.writeString(this.description);
+        dest.writeString(this.timeOpen);
+        dest.writeString(this.phone);
+        dest.writeString(this.province);
+        dest.writeFloat(this.latitude);
+        dest.writeFloat(this.longitude);
+    }
+
+    protected ProvinceFood(Parcel in) {
+        this.name = in.readString();
+        this.avatar = in.readString();
+        this.price = in.readString();
+        this.address = in.readString();
+        this.description = in.readString();
+        this.timeOpen = in.readString();
+        this.phone = in.readString();
+        this.province = in.readString();
+        this.latitude = in.readFloat();
+        this.longitude = in.readFloat();
+    }
+
+    public static final Parcelable.Creator<ProvinceFood> CREATOR = new Parcelable.Creator<ProvinceFood>() {
+        @Override
+        public ProvinceFood createFromParcel(Parcel source) {
+            return new ProvinceFood(source);
+        }
+
+        @Override
+        public ProvinceFood[] newArray(int size) {
+            return new ProvinceFood[size];
+        }
+    };
 }
