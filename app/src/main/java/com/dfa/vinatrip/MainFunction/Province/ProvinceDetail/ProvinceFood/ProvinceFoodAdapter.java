@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -37,8 +36,8 @@ public class ProvinceFoodAdapter extends RecyclerView.Adapter<ProvinceFoodAdapte
 
         //bind data to viewholder
         holder.tvName.setText(provinceFood.getName());
-        holder.tvTimeOpen.setText("   " + provinceFood.getTimeOpen());
-        holder.tvPrice.setText("   " + provinceFood.getPrice());
+        holder.tvTimeOpen.setText(String.format("%s%s", "   ", provinceFood.getTimeOpen()));
+        holder.tvPrice.setText(String.format("%s%s", "   ", provinceFood.getPrice()));
 
         // all provinceFood will the same scale
         holder.ivAvatar.setScaleType(ImageView.ScaleType.FIT_XY);

@@ -36,8 +36,8 @@ public class ProvinceDestinationAdapter extends RecyclerView.Adapter<ProvinceDes
 
         //bind data to viewholder
         holder.tvName.setText(provinceDestination.getName());
-        holder.tvTimeSpend.setText("   " + provinceDestination.getTimeSpend());
-        holder.tvTypeOfTourism.setText("   " + provinceDestination.getTypeOfTourism());
+        holder.tvTimeSpend.setText(String.format("%s%s", "   ", provinceDestination.getTimeSpend()));
+        holder.tvTypeOfTourism.setText(String.format("%s%s", "   ", provinceDestination.getTypeOfTourism()));
 
         // all provinceDestination will the same scale
         holder.ivAvatar.setScaleType(ImageView.ScaleType.FIT_XY);

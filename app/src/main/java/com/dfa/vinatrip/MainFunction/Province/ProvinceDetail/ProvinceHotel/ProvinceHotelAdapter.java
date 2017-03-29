@@ -38,7 +38,8 @@ public class ProvinceHotelAdapter extends RecyclerView.Adapter<ProvinceHotelAdap
         //bind data to viewholder
         holder.tvName.setText(provinceHotel.getName());
 
-        String price = "$" + provinceHotel.getPrice();
+        String price = String.format("%s%s", "   ", "$" + provinceHotel.getPrice());
+
         holder.tvPrice.setText(price);
 
         // show symbol star
