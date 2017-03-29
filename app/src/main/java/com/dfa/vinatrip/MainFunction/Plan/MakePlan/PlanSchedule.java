@@ -1,8 +1,9 @@
 package com.dfa.vinatrip.MainFunction.Plan.MakePlan;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class PlanSchedule implements Serializable {
+public class PlanSchedule implements Parcelable {
     private String dayOrder, content;
 
     public PlanSchedule() {
@@ -28,4 +29,32 @@ public class PlanSchedule implements Serializable {
     public void setContent(String content) {
         this.content = content;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.dayOrder);
+        dest.writeString(this.content);
+    }
+
+    protected PlanSchedule(Parcel in) {
+        this.dayOrder = in.readString();
+        this.content = in.readString();
+    }
+
+    public static final Parcelable.Creator<PlanSchedule> CREATOR = new Parcelable.Creator<PlanSchedule>() {
+        @Override
+        public PlanSchedule createFromParcel(Parcel source) {
+            return new PlanSchedule(source);
+        }
+
+        @Override
+        public PlanSchedule[] newArray(int size) {
+            return new PlanSchedule[size];
+        }
+    };
 }

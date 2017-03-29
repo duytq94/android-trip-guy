@@ -106,8 +106,8 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         changeColorStatusBar();
 
         // Get the current plan when user click to update plan on item recycler
-        if (getIntent().getSerializableExtra("Plan") != null) {
-            currentPlan = (Plan) getIntent().getSerializableExtra("Plan");
+        if (getIntent().getParcelableExtra("Plan") != null) {
+            currentPlan = getIntent().getParcelableExtra("Plan");
             etTripName.setText(currentPlan.getName());
             etDestination.setText(currentPlan.getDestination());
             tvDateGo.setText(currentPlan.getDateGo());

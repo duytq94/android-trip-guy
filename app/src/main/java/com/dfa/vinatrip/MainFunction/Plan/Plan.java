@@ -1,19 +1,19 @@
 package com.dfa.vinatrip.MainFunction.Plan;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.Plan.MakePlan.PlanSchedule;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Plan implements Serializable {
+public class Plan implements Parcelable {
     String id, name, destination, dateGo, dateBack;
     List<String> friendInvitedList;
     List<PlanSchedule> planScheduleList;
     UserProfile userMakePlan;
-
-    public Plan() {
-    }
 
     public Plan(String id, String name, String destination, String dateGo, String dateBack,
                 List<String> friendInvitedList, List<PlanSchedule> planScheduleList, UserProfile userMakePlan) {
@@ -25,6 +25,9 @@ public class Plan implements Serializable {
         this.friendInvitedList = friendInvitedList;
         this.planScheduleList = planScheduleList;
         this.userMakePlan = userMakePlan;
+    }
+
+    public Plan() {
     }
 
     public String getId() {
@@ -90,4 +93,45 @@ public class Plan implements Serializable {
     public void setUserMakePlan(UserProfile userMakePlan) {
         this.userMakePlan = userMakePlan;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.destination);
+        dest.writeString(this.dateGo);
+        dest.writeString(this.dateBack);
+        dest.writeStringList(this.friendInvitedList);
+        dest.writeList(this.planScheduleList);
+        dest.writeParcelable(this.userMakePlan, flags);
+    }
+
+    protected Plan(Parcel in) {
+        this.id = in.readString();
+        this.name = in.readString();
+        this.destination = in.readString();
+        this.dateGo = in.readString();
+        this.dateBack = in.readString();
+        this.friendInvitedList = in.createStringArrayList();
+        this.planScheduleList = new ArrayList<PlanSchedule>();
+        in.readList(this.planScheduleList, PlanSchedule.class.getClassLoader());
+        this.userMakePlan = in.readParcelable(UserProfile.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Plan> CREATOR = new Parcelable.Creator<Plan>() {
+        @Override
+        public Plan createFromParcel(Parcel source) {
+            return new Plan(source);
+        }
+
+        @Override
+        public Plan[] newArray(int size) {
+            return new Plan[size];
+        }
+    };
 }

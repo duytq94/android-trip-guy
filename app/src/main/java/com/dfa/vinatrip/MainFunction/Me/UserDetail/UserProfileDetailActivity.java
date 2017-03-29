@@ -50,7 +50,7 @@ public class UserProfileDetailActivity extends AppCompatActivity {
         listUserProfiles = (List<UserProfile>) getIntent().getSerializableExtra("ListUserProfiles");
 
         // Get UserProfile from MeFragment
-        userProfile = (UserProfile) getIntent().getSerializableExtra("UserProfile");
+        userProfile = getIntent().getParcelableExtra("UserProfile");
 
         // Get FromView from MeFragment to know which view user clicked
         fromView = getIntent().getStringExtra("FromView");
@@ -58,7 +58,7 @@ public class UserProfileDetailActivity extends AppCompatActivity {
         UserProfileDetailFragment userProfileDetailFragment = new UserProfileDetailFragment_();
 
         Bundle bdUserProfile = new Bundle();
-        bdUserProfile.putSerializable("UserProfile", userProfile);
+        bdUserProfile.putParcelable("UserProfile", userProfile);
 
         Bundle bdFromView = new Bundle();
         bdFromView.putString("FromView", fromView);

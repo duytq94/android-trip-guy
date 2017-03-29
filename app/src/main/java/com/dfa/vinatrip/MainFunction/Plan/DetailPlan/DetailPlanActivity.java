@@ -75,7 +75,7 @@ public class DetailPlanActivity extends AppCompatActivity {
         currentUser = dataService.getCurrentUser();
 
         // Get Plan from FragmentPlan
-        plan = (Plan) getIntent().getSerializableExtra("Plan");
+        plan = getIntent().getParcelableExtra("Plan");
 
         changeColorStatusBar();
         setupAppBar();

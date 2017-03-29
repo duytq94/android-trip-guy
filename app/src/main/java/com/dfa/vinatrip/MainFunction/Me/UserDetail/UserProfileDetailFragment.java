@@ -73,7 +73,7 @@ public class UserProfileDetailFragment extends Fragment {
 
         // Send UserProfile to UpdateUserProfileFragment
         Bundle bdUserProfile = new Bundle();
-        bdUserProfile.putSerializable("UserProfile", userProfile);
+        bdUserProfile.putParcelable("UserProfile", userProfile);
         updateUserProfileFragment = new UpdateUserProfileFragment_();
         updateUserProfileFragment.setArguments(bdUserProfile);
 
