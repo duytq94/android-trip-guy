@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -124,7 +123,15 @@ public class PlanFragment extends Fragment {
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                        Plan plan = dataSnapshot.getValue(Plan.class);
+                        for (int i = 0; i < planList.size(); i++) {
+                            if (planList.get(i).getId().equals(plan.getId())) {
+                                planList.remove(i);
+                                planList.add(plan);
+                                break;
+                            }
+                        }
+                        planAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -158,6 +165,7 @@ public class PlanFragment extends Fragment {
                             rvPlan.setVisibility(View.GONE);
                         }
                         srlReload.setRefreshing(false);
+                        planAdapter.notifyDataSetChanged();
                     }
 
                     @Override

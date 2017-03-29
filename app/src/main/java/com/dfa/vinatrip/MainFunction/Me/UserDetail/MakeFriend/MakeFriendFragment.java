@@ -31,7 +31,7 @@ public class MakeFriendFragment extends Fragment {
     DataService dataService;
 
     @ViewById(R.id.fragment_make_friend_rv_list_friends)
-    RecyclerView rvListFriends;
+    RecyclerView rvListFriend;
 
     private ListUserProfileAdapter listUserProfileAdapter;
     private DatabaseReference referenceFriend = FirebaseDatabase.getInstance().getReference();
@@ -53,9 +53,9 @@ public class MakeFriendFragment extends Fragment {
         if (CheckNetwork.isNetworkConnected(getActivity())) loadUserFriend();
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvListFriends.setLayoutManager(manager);
-        DividerItemDecoration decoration = new DividerItemDecoration(rvListFriends.getContext(), manager.getOrientation());
-        rvListFriends.addItemDecoration(decoration);
+        rvListFriend.setLayoutManager(manager);
+        DividerItemDecoration decoration = new DividerItemDecoration(rvListFriend.getContext(), manager.getOrientation());
+        rvListFriend.addItemDecoration(decoration);
     }
 
     public void loadUserFriend() {
@@ -123,7 +123,7 @@ public class MakeFriendFragment extends Fragment {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (isAdded()) {
-                            rvListFriends.setAdapter(listUserProfileAdapter);
+                            rvListFriend.setAdapter(listUserProfileAdapter);
                         }
                     }
 

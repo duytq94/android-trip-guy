@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
+import com.dfa.vinatrip.MainFunction.Plan.Plan;
 import com.dfa.vinatrip.R;
 import com.squareup.picasso.Picasso;
 
@@ -20,12 +21,15 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
     private Context context;
     private List<UserFriend> userFriendList;
     private List<String> invitedFriendIdList;
+    private Plan currentPlan;
 
-    public InviteFriendAdapter(Context context, List<UserFriend> userFriendList, List<String> invitedFriendIdList) {
+    public InviteFriendAdapter(Context context, List<UserFriend> userFriendList,
+                               List<String> invitedFriendIdList, Plan currentPlan) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.userFriendList = userFriendList;
         this.invitedFriendIdList = invitedFriendIdList;
+        this.currentPlan = currentPlan;
     }
 
     @Override
@@ -41,9 +45,25 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
         holder.tvNickname.setText(userFriend.getNickname());
         holder.tvEmail.setText(userFriend.getEmail());
 
-        holder.btnMakeFriend.setText("Mời");
-        holder.btnMakeFriend.setTag("Mời");
-        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_neutral);
+        if (currentPlan != null && currentPlan.getFriendInvitedList() != null) {
+            holder.btnMakeFriend.setText("Mời");
+            holder.btnMakeFriend.setTag("Mời");
+            holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_neutral);
+
+            for (int i = 0; i < currentPlan.getFriendInvitedList().size(); i++) {
+                if (currentPlan.getFriendInvitedList().get(i).equals(userFriend.getFriendId())) {
+                    holder.btnMakeFriend.setText(R.string.invited);
+                    holder.btnMakeFriend.setTag("Đã mời");
+                    holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_positive);
+                    break;
+                }
+            }
+        } else {
+            holder.btnMakeFriend.setText("Mời");
+            holder.btnMakeFriend.setTag("Mời");
+            holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_neutral);
+        }
+
         holder.btnMakeFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
@@ -42,7 +42,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
     public void onBindViewHolder(PlanAdapter.PlanViewHolder holder, final int position) {
         final Plan plan = planList.get(position);
 
-        holder.rlDetail.setOnClickListener(new View.OnClickListener() {
+        holder.llDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailPlanActivity_.class);
@@ -56,14 +56,10 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
         holder.tvName.setText(plan.getName());
         holder.tvDestination.setText(plan.getDestination());
         holder.tvDate.setText(plan.getDateGo() + " " + Html.fromHtml("&#10132;") + " " + plan.getDateBack());
-        if (currentUser.getUid().equals(plan.getUserMakePlan().getUid())) {
-            holder.tvUserName.setText("Tôi");
-        } else {
-            holder.tvUserName.setText(plan.getUserMakePlan().getNickname());
-        }
 
         if (plan.getUserMakePlan().getUid().equals(currentUser.getUid())) {
-            holder.tvUpdate.setEnabled(true);
+            holder.tvUserName.setText("Tôi");
+            holder.tvUpdate.setVisibility(View.VISIBLE);
             holder.tvUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -76,8 +72,9 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
             });
         } else {
             holder.ivIsMyPlan.setImageResource(0);
-            holder.tvUpdate.setEnabled(false);
+            holder.tvUpdate.setVisibility(View.GONE);
             holder.tvUpdate.setTextColor(android.R.color.darker_gray);
+            holder.tvUserName.setText(plan.getUserMakePlan().getNickname());
         }
 
         Picasso.with(context).load(plan.getUserMakePlan().getAvatar())
@@ -94,7 +91,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
     public static class PlanViewHolder extends RecyclerView.ViewHolder {
         private TextView tvName, tvDestination, tvDate, tvUserName, tvUpdate;
         private ImageView ivAvatar, ivIsMyPlan;
-        private RelativeLayout rlDetail;
+        private LinearLayout llDetail;
 
         public PlanViewHolder(View itemView) {
             super(itemView);
@@ -105,7 +102,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
             tvUpdate = (TextView) itemView.findViewById(R.id.item_plan_tv_update);
             ivAvatar = (ImageView) itemView.findViewById(R.id.item_plan_iv_avatar);
             ivIsMyPlan = (ImageView) itemView.findViewById(R.id.item_plan_iv_is_my_plan);
-            rlDetail = (RelativeLayout) itemView.findViewById(R.id.item_plan_rl_detail);
+            llDetail = (LinearLayout) itemView.findViewById(R.id.item_plan_ll_detail);
         }
     }
 }

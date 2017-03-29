@@ -9,8 +9,8 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -31,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import org.androidannotations.annotations.AfterViews;
@@ -57,6 +58,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     @ViewById(R.id.activity_make_plan_nsv_root)
     NestedScrollView nsvRoot;
 
+    @Length(max = 40)
     @NotEmpty
     @ViewById(R.id.activity_make_plan_et_trip_name)
     EditText etTripName;
@@ -90,6 +92,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     private Calendar calendar;
     private DatePickerDialog dpdDateGo, dpdDateBack;
     private List<String> invitedFriendIdList;
+    private List<String> invitedFriendIdListOld;
     private DatabaseReference databaseReference;
     private UserProfile currentUser;
     private Validator validator;
@@ -100,17 +103,34 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
     @AfterViews
     void onCreate() {
-        initView();
         changeColorStatusBar();
-        setCurrentDayForView();
-    }
 
-    public void initView() {
         // Get the current plan when user click to update plan on item recycler
         if (getIntent().getSerializableExtra("Plan") != null) {
             currentPlan = (Plan) getIntent().getSerializableExtra("Plan");
-        }
+            etTripName.setText(currentPlan.getName());
+            etDestination.setText(currentPlan.getDestination());
+            tvDateGo.setText(currentPlan.getDateGo());
+            tvDateBack.setText(currentPlan.getDateBack());
 
+            for (int i = 0; i < currentPlan.getPlanScheduleList().size(); i++) {
+                if (i == 0) {
+                    tietSchedule.setText(currentPlan.getPlanScheduleList().get(i).getContent());
+                } else {
+                    TextInputLayout textInputLayout = (TextInputLayout) getLayoutInflater().inflate(R.layout.item_day_schedule, null);
+                    textInputLayout.setHint("Ngày " + ++countDaySchedule);
+                    textInputLayout.getEditText().setText(currentPlan.getPlanScheduleList().get(i).getContent());
+                    llSchedule.addView(textInputLayout);
+                }
+                initViewForUpdatePlan();
+            }
+        } else {
+            initViewForNewPlan();
+            setCurrentDayForView();
+        }
+    }
+
+    public void initViewForNewPlan() {
         countDaySchedule = 1;
         planScheduleList = new ArrayList<>();
 
@@ -129,11 +149,40 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
             userFriendList.addAll(dataService.getUserFriendList());
         }
 
-        inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList, invitedFriendIdList);
+        inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList, invitedFriendIdList, currentPlan);
         rvListFriend.setAdapter(inviteFriendAdapter);
-        StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        rvListFriend.setLayoutManager(staggeredGridLayoutManager);
+        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvListFriend.setLayoutManager(manager);
+    }
+
+    public void initViewForUpdatePlan() {
+        countDaySchedule = 1;
+        planScheduleList = new ArrayList<>();
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
+
+        currentUser = dataService.getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        calendar = Calendar.getInstance();
+        plan = new Plan();
+        invitedFriendIdList = new ArrayList<>();
+        invitedFriendIdListOld = new ArrayList<>();
+        if (currentPlan.getFriendInvitedList() != null) {
+            invitedFriendIdList.addAll(currentPlan.getFriendInvitedList());
+            invitedFriendIdListOld.addAll(currentPlan.getFriendInvitedList());
+        }
+
+        userFriendList = new ArrayList<>();
+        if (dataService.getUserFriendList() != null) {
+            tvFriendNotAvailable.setVisibility(View.GONE);
+            userFriendList.addAll(dataService.getUserFriendList());
+        }
+
+        inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList, invitedFriendIdList, currentPlan);
+        rvListFriend.setAdapter(inviteFriendAdapter);
+        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvListFriend.setLayoutManager(manager);
     }
 
     public void setCurrentDayForView() {
@@ -152,6 +201,35 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     }
 
     public void sendTripPlanToFriends() {
+        // Remove value from old friend be invited
+        if (invitedFriendIdListOld != null) {
+            boolean isExist;
+            for (int i = 0; i < invitedFriendIdListOld.size(); i++) {
+                isExist = false;
+                for (String friendId : invitedFriendIdList) {
+                    if (invitedFriendIdListOld.get(i).equals(friendId)) {
+                        isExist = true;
+                        break;
+                    }
+                }
+                if (!isExist) {
+                    databaseReference.child("Plan").child(invitedFriendIdListOld.get(i)).removeValue();
+                }
+            }
+        }
+
+        if (invitedFriendIdList.size() == 0) {
+            String message;
+            if (currentPlan != null) {
+                message = "Kế hoạch của bạn đã được cập nhật";
+            } else {
+                message = "Kế hoạch của bạn đã được tạo";
+            }
+            Toast.makeText(MakePlanActivity.this, message, Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
+        // Add value to new friend be invited
         for (String friendId : invitedFriendIdList) {
             databaseReference.child("Plan").child(friendId).child(planId)
                     .setValue(plan, new DatabaseReference.CompletionListener() {
@@ -163,8 +241,13 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
                                 progressBar.setVisibility(View.GONE);
                             } else {
                                 progressBar.setVisibility(View.GONE);
-                                Toast.makeText(MakePlanActivity.this,
-                                        "Kế hoạch của bạn đã được tạo", Toast.LENGTH_SHORT).show();
+                                String message;
+                                if (currentPlan != null) {
+                                    message = "Kế hoạch của bạn đã được cập nhật";
+                                } else {
+                                    message = "Kế hoạch của bạn đã được tạo";
+                                }
+                                Toast.makeText(MakePlanActivity.this, message, Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                         }
@@ -272,7 +355,6 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
     @Override
     public void onValidationSucceeded() {
-
         nsvRoot.scrollTo(0, nsvRoot.getBottom());
         progressBar.setVisibility(View.VISIBLE);
         for (int i = 0; i < countDaySchedule; i++) {
@@ -280,9 +362,13 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
             planScheduleList.add(new PlanSchedule((i + 1) + "", textInputEditText.getText().toString()));
         }
 
-        // Set id by the time
-        planId = System.currentTimeMillis() + "";
-
+        if (currentPlan == null) {
+            // Set id by the time
+            planId = System.currentTimeMillis() + "";
+        } else {
+            // Update to current plan
+            planId = currentPlan.getId();
+        }
         plan.setId(planId);
         plan.setName(etTripName.getText().toString());
         plan.setDestination(etDestination.getText().toString());
@@ -303,14 +389,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
                             progressBar.setVisibility(View.GONE);
                         } else {
                             // Send data to storage of friends be invited
-                            if (invitedFriendIdList.size() != 0) {
-                                sendTripPlanToFriends();
-                            } else {
-                                progressBar.setVisibility(View.GONE);
-                                Toast.makeText(MakePlanActivity.this,
-                                        "Kế hoạch của bạn đã được tạo", Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
+                            sendTripPlanToFriends();
                         }
                     }
                 });
@@ -320,7 +399,15 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     public void onValidationFailed(List<ValidationError> errors) {
         for (ValidationError error : errors) {
             View view = error.getView();
-            String message = "Bạn không được để trống";
+            String message = error.getCollatedErrorMessage(this);
+            switch (message) {
+                case "Invalid length":
+                    message = "Chiều dài quá 40 ký tự";
+                    break;
+                case "This field is required":
+                    message = "Không được để trống";
+                    break;
+            }
             ((EditText) view).setError(message);
         }
     }

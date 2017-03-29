@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
@@ -217,9 +218,8 @@ public class MeFragment extends Fragment {
                     tvFriendNotAvailable);
             rvListFriends.setAdapter(listFriendVerticalAdapter);
 
-            StaggeredGridLayoutManager staggeredGridLayoutManager =
-                    new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-            rvListFriends.setLayoutManager(staggeredGridLayoutManager);
+            LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            rvListFriends.setLayoutManager(manager);
         }
     }
 
