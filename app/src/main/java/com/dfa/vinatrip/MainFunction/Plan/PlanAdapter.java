@@ -44,10 +44,10 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
         final Plan plan = planList.get(position);
         lastItemPosition = planList.size() - 1;
 
-        if (position == lastItemPosition) {
-            holder.viewFooter.setVisibility(View.VISIBLE);
+        if (position == lastItemPosition && planList.size() > 2) {
+            holder.llFooter.setVisibility(View.VISIBLE);
         } else {
-            holder.viewFooter.setVisibility(View.GONE);
+            holder.llFooter.setVisibility(View.GONE);
         }
 
         holder.llDetail.setOnClickListener(new View.OnClickListener() {
@@ -99,8 +99,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
     public static class PlanViewHolder extends RecyclerView.ViewHolder {
         private TextView tvName, tvDestination, tvDate, tvUserName, tvUpdate;
         private ImageView ivAvatar, ivIsMyPlan;
-        private LinearLayout llDetail;
-        private View viewFooter;
+        private LinearLayout llDetail, llFooter;
 
         public PlanViewHolder(View itemView) {
             super(itemView);
@@ -112,7 +111,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
             ivAvatar = (ImageView) itemView.findViewById(R.id.item_plan_iv_avatar);
             ivIsMyPlan = (ImageView) itemView.findViewById(R.id.item_plan_iv_is_my_plan);
             llDetail = (LinearLayout) itemView.findViewById(R.id.item_plan_ll_detail);
-            viewFooter = itemView.findViewById(R.id.item_plan_view_footer);
+            llFooter = (LinearLayout) itemView.findViewById(R.id.item_plan_ll_footer);
         }
     }
 }
