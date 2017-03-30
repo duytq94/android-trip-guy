@@ -1,7 +1,12 @@
 package com.dfa.vinatrip.SplashScreen;
 
 import android.content.Intent;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.DataService.FirebaseApi;
@@ -16,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,20 +39,46 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Bean
     DataService dataService;
 
+    @ViewById(R.id.activity_splash_screen_iv_logo)
+    ImageView ivLogo;
+
     private List<Province> provinceList;
     private List<UserProfile> userProfileList;
     private List<UserFriend> userFriendList;
-
     private FirebaseUser firebaseUser;
-
     private Retrofit retrofit;
     private FirebaseApi firebaseApi;
+    private Animation zoomOut;
 
     // Listen when all data load done
     private int count = 0;
 
     @AfterViews
     void onCreate() {
+        changeColorStatusBar();
+        zoomOut = AnimationUtils.loadAnimation(this, R.anim.zoom_out);
+        ivLogo.startAnimation(zoomOut);
+        zoomOut.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation arg0) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+                ivLogo.startAnimation(zoomOut);
+
+            }
+        });
+
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         retrofit = new Retrofit.Builder().baseUrl("https://tripguy-10864.firebaseio.com")
@@ -62,6 +94,12 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
     }
 
+    public void changeColorStatusBar() {
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, android.R.color.white));
+        }
+    }
+
     public void loadProvince() {
         firebaseApi.loadProvince().enqueue(new Callback<HashMap<String, Province>>() {
             @Override
@@ -70,6 +108,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 provinceList.addAll(response.body().values());
                 dataService.setProvinceList(provinceList);
                 startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
+                finish();
             }
 
             @Override
