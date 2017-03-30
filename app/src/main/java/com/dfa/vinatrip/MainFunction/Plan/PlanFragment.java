@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -76,6 +77,8 @@ public class PlanFragment extends Fragment {
             loadPlan();
             LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             rvPlan.setLayoutManager(manager);
+            DividerItemDecoration decoration = new DividerItemDecoration(rvPlan.getContext(), manager.getOrientation());
+            rvPlan.addItemDecoration(decoration);
         }
     }
 

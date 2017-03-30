@@ -9,7 +9,6 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/activity_search_rv_result"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/recycler_view_padding" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

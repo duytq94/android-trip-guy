@@ -24,6 +24,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
     private LayoutInflater layoutInflater;
     private Context context;
     private UserProfile currentUser;
+    private int lastItemPosition;
 
     public PlanAdapter(Context context, List<Plan> planList, UserProfile currentUser) {
         this.planList = planList;
@@ -41,6 +42,13 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
     @Override
     public void onBindViewHolder(PlanAdapter.PlanViewHolder holder, final int position) {
         final Plan plan = planList.get(position);
+        lastItemPosition = planList.size() - 1;
+
+        if (position == lastItemPosition) {
+            holder.viewFooter.setVisibility(View.VISIBLE);
+        } else {
+            holder.viewFooter.setVisibility(View.GONE);
+        }
 
         holder.llDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +100,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
         private TextView tvName, tvDestination, tvDate, tvUserName, tvUpdate;
         private ImageView ivAvatar, ivIsMyPlan;
         private LinearLayout llDetail;
+        private View viewFooter;
 
         public PlanViewHolder(View itemView) {
             super(itemView);
@@ -103,6 +112,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
             ivAvatar = (ImageView) itemView.findViewById(R.id.item_plan_iv_avatar);
             ivIsMyPlan = (ImageView) itemView.findViewById(R.id.item_plan_iv_is_my_plan);
             llDetail = (LinearLayout) itemView.findViewById(R.id.item_plan_ll_detail);
+            viewFooter = itemView.findViewById(R.id.item_plan_view_footer);
         }
     }
 }

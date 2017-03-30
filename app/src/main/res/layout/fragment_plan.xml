@@ -74,8 +74,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/fragment_plan_rv_plan"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/recycler_view_padding" />
+                android:layout_height="match_parent" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fragment_plan_fab_make_new_plan"
