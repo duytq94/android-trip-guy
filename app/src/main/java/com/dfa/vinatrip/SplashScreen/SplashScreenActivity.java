@@ -57,7 +57,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     void onCreate() {
         changeColorStatusBar();
 
-        zoomOut = AnimationUtils.loadAnimation(this, R.anim.zoom_out);
+        zoomOut = AnimationUtils.loadAnimation(this, R.anim.anim_zoom_out);
         ivLogo.startAnimation(zoomOut);
         zoomOut.setAnimationListener(new Animation.AnimationListener() {
 
@@ -109,6 +109,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 provinceList.addAll(response.body().values());
                 dataService.setProvinceList(provinceList);
                 startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
+                overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
                 finish();
             }
 
@@ -129,6 +130,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 count++;
                 if (count == 3) {
                     startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
+                    overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
                     finish();
                 }
             }
@@ -156,6 +158,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 count++;
                 if (count == 3) {
                     startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
+                    overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
                     finish();
                 }
             }
@@ -179,6 +182,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 count++;
                 if (count == 3) {
                     startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
+                    overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
                     finish();
                 }
             }

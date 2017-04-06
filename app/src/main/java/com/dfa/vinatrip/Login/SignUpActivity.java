@@ -69,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 
     public void changeColorStatusBar() {
         if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorMain));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
         }
     }
 

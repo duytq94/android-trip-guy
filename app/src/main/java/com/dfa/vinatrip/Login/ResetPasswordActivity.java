@@ -74,7 +74,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
 
     public void changeColorStatusBar() {
         if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorMain));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
         }
     }
 
