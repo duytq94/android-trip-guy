@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.MainFunction.Me.UserDetail;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -17,7 +18,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import java.io.Serializable;
 import java.util.List;
 
 @EFragment(R.layout.fragment_user_profile_detail)
@@ -41,12 +41,12 @@ public class UserProfileDetailFragment extends Fragment {
         // Get UserProfile from UserProfileDetailActivity
         Bundle bdUserProfile;
         bdUserProfile = getArguments().getBundle("bdUserProfile");
-        userProfile = (UserProfile) bdUserProfile.getSerializable("UserProfile");
+        userProfile = bdUserProfile.getParcelable("UserProfile");
 
         // Get ListUserProfile from UserProfileDetailActivity
         Bundle bdListUserProfiles;
         bdListUserProfiles = getArguments().getBundle("bdListUserProfiles");
-        listUserProfiles = (List<UserProfile>) bdListUserProfiles.getSerializable("ListUserProfiles");
+        listUserProfiles = bdListUserProfiles.getParcelable("ListUserProfiles");
 
         // Get the FromView from UserProfileDetailActivity
         Bundle bdFromView;
@@ -79,7 +79,7 @@ public class UserProfileDetailFragment extends Fragment {
 
         // Send UserProfile and ListUserProfiles to MakeFriendFragment
         Bundle bdListUserProfiles = new Bundle();
-        bdListUserProfiles.putSerializable("ListUserProfiles", (Serializable) listUserProfiles);
+        bdListUserProfiles.putParcelable("ListUserProfiles", (Parcelable) listUserProfiles);
         Bundle bd = new Bundle();
         bd.putBundle("bdUserProfile", bdUserProfile);
         bd.putBundle("bdListUserProfiles", bdListUserProfiles);

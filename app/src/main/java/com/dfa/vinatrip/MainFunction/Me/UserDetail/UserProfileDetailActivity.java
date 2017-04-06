@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -25,7 +26,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class UserProfileDetailActivity extends AppCompatActivity {
 
         // Get ListUserProfiles form MeFragment
         listUserProfiles = new ArrayList<>();
-        listUserProfiles = (List<UserProfile>) getIntent().getSerializableExtra("ListUserProfiles");
+        listUserProfiles = getIntent().getParcelableExtra("ListUserProfiles");
 
         // Get UserProfile from MeFragment
         userProfile = getIntent().getParcelableExtra("UserProfile");
@@ -64,7 +64,7 @@ public class UserProfileDetailActivity extends AppCompatActivity {
         bdFromView.putString("FromView", fromView);
 
         Bundle bdListUserProfiles = new Bundle();
-        bdListUserProfiles.putSerializable("ListUserProfiles", (Serializable) listUserProfiles);
+        bdListUserProfiles.putParcelable("ListUserProfiles", (Parcelable) listUserProfiles);
 
         Bundle bd = new Bundle();
         bd.putBundle("bdUserProfile", bdUserProfile);

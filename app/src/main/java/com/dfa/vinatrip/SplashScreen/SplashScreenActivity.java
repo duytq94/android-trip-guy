@@ -1,9 +1,8 @@
 package com.dfa.vinatrip.SplashScreen;
 
 import android.content.Intent;
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -55,7 +54,10 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     @AfterViews
     void onCreate() {
-        changeColorStatusBar();
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+
         zoomOut = AnimationUtils.loadAnimation(this, R.anim.zoom_out);
         ivLogo.startAnimation(zoomOut);
         zoomOut.setAnimationListener(new Animation.AnimationListener() {
@@ -91,12 +93,6 @@ public class SplashScreenActivity extends AppCompatActivity {
             loadUserFriend();
         } else {
             loadProvince();
-        }
-    }
-
-    public void changeColorStatusBar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, android.R.color.white));
         }
     }
 

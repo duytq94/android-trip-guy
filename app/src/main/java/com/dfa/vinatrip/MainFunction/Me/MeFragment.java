@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,7 +32,6 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -258,7 +257,7 @@ public class MeFragment extends Fragment {
                     intentUpdate.putExtra("UserProfile", currentUser);
 
                     // Send ListUserProfiles to UserProfileDetailActivity
-                    intentUpdate.putExtra("ListUserProfiles", (Serializable) listUserProfiles);
+                    intentUpdate.putParcelableArrayListExtra("ListUserProfiles", (ArrayList<? extends Parcelable>) listUserProfiles);
 
                     // Send notify to inform that llUpdateProfile be clicked
                     String fromView = "llUpdateProfile";
@@ -282,7 +281,7 @@ public class MeFragment extends Fragment {
                     intentUpdate.putExtra("UserProfile", currentUser);
 
                     // Send ListUserProfiles to UserProfileDetailActivity
-                    intentUpdate.putExtra("ListUserProfiles", (Serializable) listUserProfiles);
+                    intentUpdate.putParcelableArrayListExtra("ListUserProfiles", (ArrayList<? extends Parcelable>) listUserProfiles);
 
                     // Send notify to inform that tvMakeFriend be clicked
                     String fromView = "tvMakeFriend";
