@@ -29,22 +29,23 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/fragment_my_friend_iv_info"
+            android:id="@+id/fragment_my_friend_iv_turn_location"
+
             android:layout_width="56dp"
             android:layout_height="56dp"
-            android:layout_toLeftOf="@+id/fragment_my_friend_iv_turn_location"
+            android:layout_toLeftOf="@+id/fragment_my_friend_iv_info"
             android:paddingBottom="16dp"
             android:paddingLeft="16dp"
             android:paddingTop="16dp"
-            android:src="@drawable/ic_info" />
+            android:src="@drawable/ic_location" />
 
         <ImageView
-            android:id="@+id/fragment_my_friend_iv_turn_location"
+            android:id="@+id/fragment_my_friend_iv_info"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_alignParentRight="true"
             android:padding="16dp"
-            android:src="@drawable/ic_location" />
+            android:src="@drawable/ic_info" />
     </RelativeLayout>
 
     <fragment

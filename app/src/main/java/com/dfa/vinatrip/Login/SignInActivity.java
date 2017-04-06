@@ -67,6 +67,8 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
     private Animation animSlideUp;
     private Animation animSlideDown;
 
+    private boolean isBtnSignInClick = false;
+
     @AfterViews
     void onCreate() {
         animSlideUp = AnimationUtils.loadAnimation(this, R.anim.anim_slide_up);
@@ -86,9 +88,12 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
                 if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
                     // keyboard is opened
                     ivSymbol.startAnimation(animSlideUp);
+                    isBtnSignInClick = false;
                 } else {
                     // keyboard is closed
-                    ivSymbol.startAnimation(animSlideDown);
+                    if (!isBtnSignInClick) {
+                        ivSymbol.startAnimation(animSlideDown);
+                    }
                 }
             }
         });
@@ -153,6 +158,7 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
 
     @Click(R.id.activity_sign_in_btn_sign_in)
     void btnSignInClicked() {
+        isBtnSignInClick = true;
         validator.validate();
     }
 

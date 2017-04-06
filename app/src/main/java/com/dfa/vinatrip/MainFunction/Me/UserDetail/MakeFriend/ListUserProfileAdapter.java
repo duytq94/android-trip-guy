@@ -128,11 +128,10 @@ public class ListUserProfileAdapter extends RecyclerView.Adapter<ListUserProfile
                         break;
 
                     case "Bạn bè":
-
                         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
                         alertDialog.setTitle("Hủy kết bạn");
                         alertDialog.setMessage("Bạn có chắc chắn muốn hủy kết bạn với người này?");
-                        alertDialog.setIcon(R.drawable.ic_symbol);
+                        alertDialog.setIcon(R.drawable.ic_notification);
                         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ĐỒNG Ý", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -152,7 +151,7 @@ public class ListUserProfileAdapter extends RecyclerView.Adapter<ListUserProfile
                                         .removeValue();
                             }
                         });
-                        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "HỦY", new DialogInterface.OnClickListener() {
+                        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "KHÔNG", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 

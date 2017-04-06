@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.MainFunction.Me;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -7,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,10 +20,10 @@ import android.widget.Toast;
 import com.dfa.vinatrip.BuildConfig;
 import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.Login.SignInActivity_;
-import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.UserProfileDetailActivity_;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.SplashScreen.SplashScreenActivity_;
 import com.dfa.vinatrip.TripGuyUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
@@ -238,9 +240,26 @@ public class MeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (currentUser != null) {
-                    FirebaseAuth.getInstance().signOut();
-                    dataService.clearData();
-                    startActivity(new Intent(getActivity(), MainActivity_.class));
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                    alertDialog.setTitle("Đăng xuất");
+                    alertDialog.setMessage("Bạn có chắc chắn muốn đăng xuất tài khoản?");
+                    alertDialog.setIcon(R.drawable.ic_notification);
+                    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ĐỒNG Ý", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            FirebaseAuth.getInstance().signOut();
+                            dataService.clearData();
+                            startActivity(new Intent(getActivity(), SplashScreenActivity_.class));
+                        }
+                    });
+                    alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "KHÔNG", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                    alertDialog.show();
+
                 } else {
                     Toast.makeText(getActivity(), "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
                 }

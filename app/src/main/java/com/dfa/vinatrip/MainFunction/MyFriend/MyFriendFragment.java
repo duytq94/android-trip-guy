@@ -100,6 +100,8 @@ public class MyFriendFragment extends Fragment {
             locationListener();
             askPermission();
             initViews();
+        } else {
+            ivTurnLocation.setVisibility(View.GONE);
         }
     }
 
