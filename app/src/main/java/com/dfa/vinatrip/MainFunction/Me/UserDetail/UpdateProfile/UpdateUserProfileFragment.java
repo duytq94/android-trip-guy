@@ -3,9 +3,11 @@ package com.dfa.vinatrip.MainFunction.Me.UserDetail.UpdateProfile;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -159,6 +161,17 @@ public class UpdateUserProfileFragment extends Fragment {
             bmPhoto = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bmPhoto = scaleDown(bmPhoto, 300, true);
+//
+//            ExifInterface exif = new ExifInterface(uri.toString());
+//            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+
+            String[] orientationColumn = {MediaStore.Images.Media.ORIENTATION};
+            Cursor cur = getActivity().getContentResolver().query(uri, orientationColumn, null, null, null);
+            int orientation = -1;
+            if (cur != null && cur.moveToFirst()) {
+                orientation = cur.getInt(cur.getColumnIndex(orientationColumn[0]));
+            }
+
             bmPhoto.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] byteArrayPhoto = baos.toByteArray();
 

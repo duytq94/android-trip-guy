@@ -67,6 +67,7 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
     private Animation animSlideUp;
     private Animation animSlideDown;
 
+    // To keep icon not run anim when click done
     private boolean isBtnSignInClick = false;
 
     @AfterViews
