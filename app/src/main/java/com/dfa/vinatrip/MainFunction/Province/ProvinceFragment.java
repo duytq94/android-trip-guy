@@ -21,12 +21,12 @@ import android.widget.LinearLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDetailActivity_;
 import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.Search.SearchActivity_;
+import com.dfa.vinatrip.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,7 +40,6 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +105,7 @@ public class ProvinceFragment extends Fragment {
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (CheckNetwork.isNetworkConnected(getActivity())) {
+                if (TripGuyUtils.isNetworkConnected(getActivity())) {
                     provinceList.clear();
                     loadProvince();
                 } else {

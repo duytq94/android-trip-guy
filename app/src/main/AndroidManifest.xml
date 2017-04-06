@@ -41,13 +41,15 @@
         <activity
             android:name=".Login.ResetPasswordActivity_"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".MainFunction.Me.UserDetail.UserProfileDetailActivity_" />
+        <activity
+            android:name=".MainFunction.Me.UserDetail.UserProfileDetailActivity_"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".MainFunction.Province.EachItemProvinceDetail.Rating.RatingActivity_" />
         <activity android:name=".MainFunction.Province.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity_" />
         <activity android:name=".SplashScreen.SplashScreenActivity_" />
         <activity android:name=".MainFunction.Plan.MakePlan.MakePlanActivity_" />
         <activity android:name=".MainFunction.Plan.DetailPlan.DetailPlanActivity_" />
-        <activity android:name=".Search.SearchActivity_"  />
+        <activity android:name=".Search.SearchActivity_" />
     </application>
 
 </manifest>

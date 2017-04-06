@@ -5,9 +5,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
-import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Province.Province;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -91,7 +91,7 @@ public class ProvincePhotoFragment extends Fragment {
             }
         };
 
-        if (CheckNetwork.isNetworkConnected(getActivity())) {
+        if (TripGuyUtils.isNetworkConnected(getActivity())) {
             srlReload.setRefreshing(true);
             loadProvincePhoto();
         }
@@ -99,7 +99,7 @@ public class ProvincePhotoFragment extends Fragment {
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (CheckNetwork.isNetworkConnected(getActivity())) {
+                if (TripGuyUtils.isNetworkConnected(getActivity())) {
                     provincePhotoList.clear();
                     srlReload.setRefreshing(true);
                     loadProvincePhoto();

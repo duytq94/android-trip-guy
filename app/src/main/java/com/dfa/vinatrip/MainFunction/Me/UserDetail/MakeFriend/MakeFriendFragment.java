@@ -5,10 +5,10 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,7 +50,7 @@ public class MakeFriendFragment extends Fragment {
         listUserProfileAdapter = new ListUserProfileAdapter(getActivity(), userProfileList,
                 userFriendList, referenceFriend, currentUser);
 
-        if (CheckNetwork.isNetworkConnected(getActivity())) loadUserFriend();
+        if (TripGuyUtils.isNetworkConnected(getActivity())) loadUserFriend();
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvListFriend.setLayoutManager(manager);

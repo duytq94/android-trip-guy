@@ -16,13 +16,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.BuildConfig;
-import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.Login.SignInActivity_;
 import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.UserProfileDetailActivity_;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.TripGuyUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -112,7 +112,7 @@ public class MeFragment extends Fragment {
         showAppInfo();
         srlReload.setColorSchemeResources(R.color.colorMain);
 
-        if (CheckNetwork.isNetworkConnected(getActivity())) {
+        if (TripGuyUtils.isNetworkConnected(getActivity())) {
             onClickListener();
             initView();
             hideViews(false);
@@ -123,7 +123,7 @@ public class MeFragment extends Fragment {
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (CheckNetwork.isNetworkConnected(getActivity())) {
+                if (TripGuyUtils.isNetworkConnected(getActivity())) {
                     onClickListener();
                     initView();
                     hideViews(false);
@@ -302,7 +302,7 @@ public class MeFragment extends Fragment {
         super.onActivityResult(requestCode, currentUserCode, data);
         // Reload data
         if (requestCode == NOTIFY_UPDATE_REQUEST) {
-            if (CheckNetwork.isNetworkConnected(getActivity())) {
+            if (TripGuyUtils.isNetworkConnected(getActivity())) {
                 initView();
                 hideViews(false);
             } else {

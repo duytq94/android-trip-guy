@@ -13,10 +13,10 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceHotel.ProvinceHotel;
 import com.dfa.vinatrip.MapActivity_;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -72,14 +72,14 @@ public class EachProvinceHotelFragment extends Fragment {
         detailHotel = getArguments().getParcelable("DetailHotel");
 
         srlReload.setColorSchemeResources(R.color.colorMain);
-        if (CheckNetwork.isNetworkConnected(getActivity())) {
+        if (TripGuyUtils.isNetworkConnected(getActivity())) {
             srlReload.setRefreshing(true);
             loadProvinceHotelPhoto();
         }
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (CheckNetwork.isNetworkConnected(getActivity())) {
+                if (TripGuyUtils.isNetworkConnected(getActivity())) {
                     listUrlPhotos.clear();
                     srlReload.setRefreshing(true);
                     loadProvinceHotelPhoto();

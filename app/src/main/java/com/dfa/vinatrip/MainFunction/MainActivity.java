@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Province.ProvinceFragment;
 import com.dfa.vinatrip.MainFunction.Province.ProvinceFragment_;
 import com.dfa.vinatrip.MainFunction.Me.MeFragment;
@@ -29,6 +28,7 @@ import com.dfa.vinatrip.MainFunction.Plan.PlanFragment;
 import com.dfa.vinatrip.MainFunction.Plan.PlanFragment_;
 import com.dfa.vinatrip.MainFunction.Share.ShareFragment;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.TripGuyUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         // load fragment_province first
         selectFragment(bnvMenu.getMenu().getItem(0));
 
-        if (!CheckNetwork.isNetworkConnected(MainActivity.this)) {
+        if (!TripGuyUtils.isNetworkConnected(MainActivity.this)) {
             snackbar = Snackbar.make(findViewById(R.id.activity_main),
                     "Không có kết nối Internet", Snackbar.LENGTH_LONG);
             View viewSnackbar = snackbar.getView();

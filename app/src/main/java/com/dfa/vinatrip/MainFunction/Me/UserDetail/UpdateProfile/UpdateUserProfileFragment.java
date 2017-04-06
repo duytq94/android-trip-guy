@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.TripGuyUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseError;
@@ -150,6 +151,7 @@ public class UpdateUserProfileFragment extends Fragment {
     public void uploadUserAvatar() {
         svRoot.scrollTo(0, svRoot.getBottom());
         progressBar.setVisibility(View.VISIBLE);
+        TripGuyUtils.setEnableAllViews(svRoot, false);
         tvPercent.setVisibility(View.VISIBLE);
 
         Bitmap bmPhoto;
@@ -181,6 +183,7 @@ public class UpdateUserProfileFragment extends Fragment {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
                             progressBar.setVisibility(View.GONE);
+                            TripGuyUtils.setEnableAllViews(svRoot, true);
                             tvPercent.setVisibility(View.GONE);
                             Toast.makeText(getActivity(),
                                     "Cập nhật không thành công\nBạn vui lòng thử lại",
@@ -211,6 +214,7 @@ public class UpdateUserProfileFragment extends Fragment {
                                         .setValue(newUserProfile);
                                 dataService.setCurrentUser(newUserProfile);
                                 progressBar.setVisibility(View.GONE);
+                                TripGuyUtils.setEnableAllViews(svRoot, true);
                                 tvPercent.setVisibility(View.GONE);
                                 Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT)
                                         .show();

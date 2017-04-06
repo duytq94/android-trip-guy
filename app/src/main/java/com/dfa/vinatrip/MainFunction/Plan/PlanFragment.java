@@ -12,11 +12,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.Plan.MakePlan.MakePlanActivity_;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -61,7 +61,7 @@ public class PlanFragment extends Fragment {
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (dataService.getCurrentUser() != null && CheckNetwork.isNetworkConnected(getActivity())) {
+                if (dataService.getCurrentUser() != null && TripGuyUtils.isNetworkConnected(getActivity())) {
                     planList.clear();
                     loadPlan();
                 } else {
@@ -70,7 +70,7 @@ public class PlanFragment extends Fragment {
             }
         });
 
-        if (dataService.getCurrentUser() != null && CheckNetwork.isNetworkConnected(getActivity())) {
+        if (dataService.getCurrentUser() != null && TripGuyUtils.isNetworkConnected(getActivity())) {
             currentUser = dataService.getCurrentUser();
             planAdapter = new PlanAdapter(getActivity(), planList, currentUser);
             rvPlan.setAdapter(planAdapter);

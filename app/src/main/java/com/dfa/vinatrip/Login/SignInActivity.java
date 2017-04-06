@@ -11,11 +11,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.SplashScreen.SplashScreenActivity_;
+import com.dfa.vinatrip.TripGuyUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -50,6 +52,9 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
     @ViewById(R.id.activity_sign_in_progressBar)
     ProgressBar progressBar;
 
+    @ViewById(R.id.activity_sign_in_ll_root)
+    LinearLayout llRoot;
+
     private FirebaseAuth firebaseAuth;
 
     @AfterViews
@@ -67,11 +72,13 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
         String password = etPassword.getText().toString();
 
         progressBar.setVisibility(View.VISIBLE);
+        TripGuyUtils.setEnableAllViews(llRoot, false);
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressBar.setVisibility(View.GONE);
+                        TripGuyUtils.setEnableAllViews(llRoot, true);
                         if (!task.isSuccessful()) {
                             Toast.makeText(SignInActivity.this, "Email hoặc mật khẩu không đúng!",
                                     Toast.LENGTH_SHORT).show();
@@ -121,7 +128,7 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
 
     public void changeColorStatusBar() {
         if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, android.R.color.white));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorMain));
         }
     }
 

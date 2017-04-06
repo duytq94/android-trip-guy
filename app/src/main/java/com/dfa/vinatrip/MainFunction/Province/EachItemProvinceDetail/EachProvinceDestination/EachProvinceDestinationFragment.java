@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.CheckNetwork;
 import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity_;
 import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.RatingActivity_;
 import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.RatingAdapter;
@@ -19,6 +18,7 @@ import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDestination
 import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;
 import com.dfa.vinatrip.MapActivity_;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.TripGuyUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -105,7 +105,7 @@ public class EachProvinceDestinationFragment extends Fragment {
         detailDestination = getArguments().getParcelable("DetailDestination");
 
         srlReload.setColorSchemeResources(R.color.colorMain);
-        if (CheckNetwork.isNetworkConnected(getActivity())) {
+        if (TripGuyUtils.isNetworkConnected(getActivity())) {
             srlReload.setRefreshing(true);
             loadProvinceDestinationPhoto();
             loadProvinceDestinationRating();
@@ -113,7 +113,7 @@ public class EachProvinceDestinationFragment extends Fragment {
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (CheckNetwork.isNetworkConnected(getActivity())) {
+                if (TripGuyUtils.isNetworkConnected(getActivity())) {
                     listUrlPhotos.clear();
                     listUserRatings.clear();
                     srlReload.setRefreshing(true);
@@ -171,7 +171,7 @@ public class EachProvinceDestinationFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         // Reload data
         if (requestCode == NOTIFY_UPDATE_REQUEST) {
-            if (CheckNetwork.isNetworkConnected(getActivity())) {
+            if (TripGuyUtils.isNetworkConnected(getActivity())) {
                 listUserRatings.clear();
                 loadProvinceDestinationRating();
             }
