@@ -43,8 +43,6 @@ import org.androidannotations.annotations.ViewById;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 @EFragment(R.layout.fragment_province)
 public class ProvinceFragment extends Fragment {
@@ -73,6 +71,8 @@ public class ProvinceFragment extends Fragment {
     private int i = 0;
     private TextView[] tvDots;
     private DatabaseReference databaseReference;
+    private Handler handler;
+    private Runnable update;
 
     @AfterViews
     void onCreateView() {
@@ -145,7 +145,7 @@ public class ProvinceFragment extends Fragment {
 
     @Click(R.id.fragment_province_rl_search)
     void onRlSearchClick() {
-        Intent intent = new Intent(getActivity(), SearchActivity_.class );
+        Intent intent = new Intent(getActivity(), SearchActivity_.class);
         startActivity(intent);
     }
 
@@ -160,21 +160,20 @@ public class ProvinceFragment extends Fragment {
             e.printStackTrace();
         }
 
-        final Handler handler = new Handler();
-        final Runnable update = new Runnable() {
+        handler = new Handler();
+        update = new Runnable() {
             public void run() {
                 if (i < 4) {
                     vpSlideShow.setCurrentItem(i, true);
                     i++;
-                } else i = 0;
+                    handler.postDelayed(this, 3000);
+                } else {
+                    i = 0;
+                    handler.postDelayed(this, 3000);
+                }
             }
         };
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(update);
-            }
-        }, 3000, 3000); //time wait to start scroll, time period
+        handler.post(update);
     }
 
     public void addBottomDots() {
@@ -315,5 +314,11 @@ public class ProvinceFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        handler.removeCallbacks(update);
     }
 }

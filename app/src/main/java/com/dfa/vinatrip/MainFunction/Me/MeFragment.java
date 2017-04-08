@@ -334,9 +334,11 @@ public class MeFragment extends Fragment {
     private Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            Blurry.with(getActivity()).color(Color.argb(70, 80, 80, 80)).radius(10)
-                    .from(bitmap).into(ivBlurAvatar);
-            ivAvatar.setImageBitmap(bitmap);
+            if (isAdded()) {
+                Blurry.with(getActivity()).color(Color.argb(70, 80, 80, 80)).radius(10)
+                        .from(bitmap).into(ivBlurAvatar);
+                ivAvatar.setImageBitmap(bitmap);
+            }
         }
 
         @Override

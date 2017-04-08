@@ -305,21 +305,23 @@ public class MyFriendFragment extends Fragment {
         imageLoader.loadImage(userLocation.getAvatar(), new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                View viewMaker = LayoutInflater.from(getActivity()).inflate(R.layout.maker_avatar, null);
-                CircleImageView civAvatar = (CircleImageView) viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
-                civAvatar.setImageBitmap(loadedImage);
-                Bitmap bmAvatar = createBitmapFromView(viewMaker);
+                if (isAdded()) {
+                    View viewMaker = LayoutInflater.from(getActivity()).inflate(R.layout.maker_avatar, null);
+                    CircleImageView civAvatar = (CircleImageView) viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
+                    civAvatar.setImageBitmap(loadedImage);
+                    Bitmap bmAvatar = createBitmapFromView(viewMaker);
 
-                LatLng latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
+                    LatLng latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
 
-                Marker marker = googleMap.addMarker(new MarkerOptions()
-                        .position(latLng)
-                        .title(userLocation.getNickname())
-                        .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
-                marker.showInfoWindow();
+                    Marker marker = googleMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(userLocation.getNickname())
+                            .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
+                    marker.showInfoWindow();
 
-                UserFriendMarker userFriendMarker = new UserFriendMarker(marker, userLocation.getUid());
-                userFriendMarkerList.add(userFriendMarker);
+                    UserFriendMarker userFriendMarker = new UserFriendMarker(marker, userLocation.getUid());
+                    userFriendMarkerList.add(userFriendMarker);
+                }
             }
         });
     }
@@ -327,22 +329,24 @@ public class MyFriendFragment extends Fragment {
     private Target currentUserTarget = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            View viewMaker = LayoutInflater.from(getActivity()).inflate(R.layout.maker_avatar, null);
-            CircleImageView civAvatar = (CircleImageView) viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
-            civAvatar.setImageBitmap(bitmap);
-            Bitmap bmAvatar = createBitmapFromView(viewMaker);
+            if (isAdded()) {
+                View viewMaker = LayoutInflater.from(getActivity()).inflate(R.layout.maker_avatar, null);
+                CircleImageView civAvatar = (CircleImageView) viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
+                civAvatar.setImageBitmap(bitmap);
+                Bitmap bmAvatar = createBitmapFromView(viewMaker);
 
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            markerCurrentUser = googleMap.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .title("Tôi")
-                    .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
-            markerCurrentUser.showInfoWindow();
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                markerCurrentUser = googleMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title("Tôi")
+                        .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
+                markerCurrentUser.showInfoWindow();
 
-            // For zooming automatically to the location of the markerCurrentUser
-            CameraPosition cameraPosition =
-                    new CameraPosition.Builder().target(latLng).zoom(17).build();
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                // For zooming automatically to the location of the markerCurrentUser
+                CameraPosition cameraPosition =
+                        new CameraPosition.Builder().target(latLng).zoom(17).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
         }
 
         @Override

@@ -30,6 +30,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -42,7 +45,7 @@ import java.util.Calendar;
 import java.util.List;
 
 @EActivity(R.layout.activity_rating)
-public class RatingActivity extends AppCompatActivity {
+public class RatingActivity extends AppCompatActivity implements Validator.ValidationListener {
 
     @ViewById(R.id.my_toolbar)
     Toolbar toolbar;
@@ -59,34 +62,13 @@ public class RatingActivity extends AppCompatActivity {
     @ViewById(R.id.activity_rating_tv_rating)
     TextView tvRate;
 
+    @NotEmpty
     @ViewById(R.id.activity_rating_et_content)
     EditText etContent;
 
     @Click
     void activity_rating_btn_submit() {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String date = simpleDateFormat.format(calendar.getTime());
-
-        for (int i = 0; i < listUserProfiles.size(); i++) {
-            if (listUserProfiles.get(i).getUid().equals(firebaseUser.getUid())) {
-                UserProfile userProfile = listUserProfiles.get(i);
-                UserRating userRating = new UserRating(userProfile.getUid(),
-                        userProfile.getNickname(),
-                        userProfile.getAvatar(),
-                        userProfile.getEmail(),
-                        etContent.getText().toString(),
-                        (int) ratingBar.getRating() + "",
-                        date);
-
-                databaseReference.child("ProvinceDestinationRating")
-                        .child(detailDestination.getProvince())
-                        .child(detailDestination.getName())
-                        .child(firebaseUser.getUid())
-                        .setValue(userRating);
-                finish();
-            }
-        }
+        validator.validate();
     }
 
     @Click
@@ -94,6 +76,7 @@ public class RatingActivity extends AppCompatActivity {
         finish();
     }
 
+    private Validator validator;
     private ActionBar actionBar;
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
@@ -172,7 +155,7 @@ public class RatingActivity extends AppCompatActivity {
 
                         // If user has comment, load old data to views
                         listUserRatings = new ArrayList<>();
-                        listUserRatings = (List<UserRating>) getIntent().getSerializableExtra("ListUserRatings");
+                        listUserRatings = getIntent().getParcelableArrayListExtra("ListUserRatings");
                         for (int i = 0; i < listUserRatings.size(); i++) {
                             UserRating userRating = listUserRatings.get(i);
                             // If don't have user, content of view will be empty
@@ -205,12 +188,15 @@ public class RatingActivity extends AppCompatActivity {
     }
 
     public void setContentViews() {
+        validator = new Validator(this);
+        validator.setValidationListener(this);
+
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null) {
             rlMain.setVisibility(View.VISIBLE);
             tvRate.setText("Bình thường");
 
-            detailDestination = (ProvinceDestination) getIntent().getSerializableExtra("DetailDestination");
+            detailDestination = getIntent().getParcelableExtra("DetailDestination");
 
             databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -274,6 +260,41 @@ public class RatingActivity extends AppCompatActivity {
         if (activity != null && activity.getWindow() != null && activity.getWindow().getDecorView() != null) {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
+        }
+    }
+
+    @Override
+    public void onValidationSucceeded() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String date = simpleDateFormat.format(calendar.getTime());
+
+        for (int i = 0; i < listUserProfiles.size(); i++) {
+            if (listUserProfiles.get(i).getUid().equals(firebaseUser.getUid())) {
+                UserProfile userProfile = listUserProfiles.get(i);
+                UserRating userRating = new UserRating(userProfile.getUid(),
+                        userProfile.getNickname(),
+                        userProfile.getAvatar(),
+                        userProfile.getEmail(),
+                        etContent.getText().toString(),
+                        (int) ratingBar.getRating() + "",
+                        date);
+
+                databaseReference.child("ProvinceDestinationRating")
+                        .child(detailDestination.getProvince())
+                        .child(detailDestination.getName())
+                        .child(firebaseUser.getUid())
+                        .setValue(userRating);
+                finish();
+            }
+        }
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            ((EditText) view).setError("Bạn không được để trống");
         }
     }
 }

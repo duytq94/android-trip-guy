@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachProvinceDestination;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -35,7 +36,6 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,7 +85,7 @@ public class EachProvinceDestinationFragment extends Fragment {
         // Send DetailDestination to RatingActivity
         intentRate.putExtra("DetailDestination", detailDestination);
         // Send ListUserRatings to know user has comment yet?
-        intentRate.putExtra("ListUserRatings", (Serializable) listUserRatings);
+        intentRate.putParcelableArrayListExtra("ListUserRatings", (ArrayList<? extends Parcelable>) listUserRatings);
         // Make RateActivity notify when it finish
         startActivityForResult(intentRate, NOTIFY_UPDATE_REQUEST);
     }

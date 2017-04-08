@@ -116,12 +116,14 @@ public class PlanFragment extends Fragment {
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        llPlanListNotAvailable.setVisibility(View.GONE);
-                        rvPlan.setVisibility(View.VISIBLE);
+                        if (isAdded()) {
+                            llPlanListNotAvailable.setVisibility(View.GONE);
+                            rvPlan.setVisibility(View.VISIBLE);
 
-                        Plan plan = dataSnapshot.getValue(Plan.class);
-                        planList.add(plan);
-                        planAdapter.notifyDataSetChanged();
+                            Plan plan = dataSnapshot.getValue(Plan.class);
+                            planList.add(plan);
+                            planAdapter.notifyDataSetChanged();
+                        }
                     }
 
                     @Override
@@ -158,17 +160,19 @@ public class PlanFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        // add planList to dataService
-                        if (planList.size() != 0) {
-                            llPlanListNotAvailable.setVisibility(View.GONE);
-                            rvPlan.setVisibility(View.VISIBLE);
-                            dataService.setPlanList(planList);
-                        } else {
-                            llPlanListNotAvailable.setVisibility(View.VISIBLE);
-                            rvPlan.setVisibility(View.GONE);
+                        if (isAdded()) {
+                            // add planList to dataService
+                            if (planList.size() != 0) {
+                                llPlanListNotAvailable.setVisibility(View.GONE);
+                                rvPlan.setVisibility(View.VISIBLE);
+                                dataService.setPlanList(planList);
+                            } else {
+                                llPlanListNotAvailable.setVisibility(View.VISIBLE);
+                                rvPlan.setVisibility(View.GONE);
+                            }
+                            srlReload.setRefreshing(false);
+                            planAdapter.notifyDataSetChanged();
                         }
-                        srlReload.setRefreshing(false);
-                        planAdapter.notifyDataSetChanged();
                     }
 
                     @Override

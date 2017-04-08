@@ -1,16 +1,19 @@
 package com.dfa.vinatrip.MainFunction.Me.UserDetail.UpdateProfile;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.provider.MediaStore;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -46,7 +49,6 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -95,6 +97,7 @@ public class UpdateUserProfileFragment extends Fragment {
     private Calendar calendar;
     private Uri uri;
     private int PICK_IMAGE = 1;
+    private Bitmap adjustedBitmap;
 
     @AfterViews
     void onCreateView() {
@@ -102,6 +105,8 @@ public class UpdateUserProfileFragment extends Fragment {
     }
 
     public void setContentViews() {
+        adjustedBitmap = null;
+
         ArrayAdapter<CharSequence> adapter =
                 ArrayAdapter.createFromResource(getActivity(), R.array.sex_array, R.layout.item_spinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -156,87 +161,70 @@ public class UpdateUserProfileFragment extends Fragment {
         TripGuyUtils.setEnableAllViews(svRoot, false);
         tvPercent.setVisibility(View.VISIBLE);
 
-        Bitmap bmPhoto;
-        try {
-            bmPhoto = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bmPhoto = scaleDown(bmPhoto, 300, true);
-//
-//            ExifInterface exif = new ExifInterface(uri.toString());
-//            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            String[] orientationColumn = {MediaStore.Images.Media.ORIENTATION};
-            Cursor cur = getActivity().getContentResolver().query(uri, orientationColumn, null, null, null);
-            int orientation = -1;
-            if (cur != null && cur.moveToFirst()) {
-                orientation = cur.getInt(cur.getColumnIndex(orientationColumn[0]));
-            }
+        adjustedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] byteArrayPhoto = baos.toByteArray();
 
-            bmPhoto.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] byteArrayPhoto = baos.toByteArray();
+        // Get the path and name photo be upload
+        storageReference = FirebaseStorage.getInstance()
+                .getReferenceFromUrl("gs://tripguy-10864.appspot.com")
+                .child("AvatarProfileUser")
+                .child(currentUser.getUid() + ".jpg");
 
-            // Get the path and name photo be upload
-            storageReference = FirebaseStorage.getInstance()
-                    .getReferenceFromUrl("gs://tripguy-10864.appspot.com")
-                    .child("AvatarProfileUser")
-                    .child(currentUser.getUid() + ".jpg");
-
-            UploadTask uploadTask = storageReference.putBytes(byteArrayPhoto);
-            uploadTask
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            long progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                            if (isAdded()) {
-                                tvPercent.setText(progress + "%");
-                            }
+        UploadTask uploadTask = storageReference.putBytes(byteArrayPhoto);
+        uploadTask
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        long progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                        if (isAdded()) {
+                            tvPercent.setText(progress + "%");
                         }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        progressBar.setVisibility(View.GONE);
+                        TripGuyUtils.setEnableAllViews(svRoot, true);
+                        tvPercent.setVisibility(View.GONE);
+                        Toast.makeText(getActivity(),
+                                "Cập nhật không thành công\nBạn vui lòng thử lại",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        String linkAvatar;
+                        if (downloadUrl == null) linkAvatar = currentUser.getAvatar();
+                        else {
+                            linkAvatar = downloadUrl.toString();
+                        }
+
+                        if (isAdded()) {
+                            UserProfile newUserProfile =
+                                    new UserProfile(etNickname.getText().toString(),
+                                            linkAvatar,
+                                            etIntroduceYourSelf.getText().toString(),
+                                            etCity.getText().toString(),
+                                            tvBirthday.getText().toString(),
+                                            currentUser.getUid(),
+                                            spnSex.getSelectedItem().toString(),
+                                            currentUser.getEmail());
+                            databaseReference.child("UserProfile").child(currentUser.getUid())
+                                    .setValue(newUserProfile);
+                            dataService.setCurrentUser(newUserProfile);
                             progressBar.setVisibility(View.GONE);
                             TripGuyUtils.setEnableAllViews(svRoot, true);
                             tvPercent.setVisibility(View.GONE);
-                            Toast.makeText(getActivity(),
-                                    "Cập nhật không thành công\nBạn vui lòng thử lại",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT)
+                                    .show();
                         }
-                    })
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                            String linkAvatar;
-                            if (downloadUrl == null) linkAvatar = currentUser.getAvatar();
-                            else {
-                                linkAvatar = downloadUrl.toString();
-                            }
-
-                            if (isAdded()) {
-                                UserProfile newUserProfile =
-                                        new UserProfile(etNickname.getText().toString(),
-                                                linkAvatar,
-                                                etIntroduceYourSelf.getText().toString(),
-                                                etCity.getText().toString(),
-                                                tvBirthday.getText().toString(),
-                                                currentUser.getUid(),
-                                                spnSex.getSelectedItem().toString(),
-                                                currentUser.getEmail());
-                                databaseReference.child("UserProfile").child(currentUser.getUid())
-                                        .setValue(newUserProfile);
-                                dataService.setCurrentUser(newUserProfile);
-                                progressBar.setVisibility(View.GONE);
-                                TripGuyUtils.setEnableAllViews(svRoot, true);
-                                tvPercent.setVisibility(View.GONE);
-                                Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT)
-                                        .show();
-                            }
-                        }
-                    });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                    }
+                });
     }
 
     public Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
@@ -288,10 +276,14 @@ public class UpdateUserProfileFragment extends Fragment {
 
     @Click
     void fragment_update_user_profile_iv_change_avatar() {
-        Intent intentToLibrary = new Intent();
-        intentToLibrary.setType("image/*");
-        intentToLibrary.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intentToLibrary, PICK_IMAGE);
+        askPermission();
+        if (checkPermission()) {
+            Intent intentToLibrary = new Intent();
+            intentToLibrary.setType("image/*");
+            intentToLibrary.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(intentToLibrary, PICK_IMAGE);
+        }
+
     }
 
     @Click
@@ -333,9 +325,29 @@ public class UpdateUserProfileFragment extends Fragment {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             bitmap = scaleDown(bitmap, 300, true);
-            Blurry.with(getActivity()).color(Color.argb(70, 80, 80, 80)).radius(10)
-                    .from(bitmap).into(ivBlurAvatar);
-            ivAvatar.setImageBitmap(bitmap);
+            try {
+                String realPath = TripGuyUtils.getRealPath(getActivity(), uri);
+                ExifInterface exif = new ExifInterface(realPath);
+                int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                if (orientation != 0f) {
+                    Matrix matrix = new Matrix();
+                    int rotationInDegrees = exifToDegrees(orientation);
+                    matrix.preRotate(rotationInDegrees);
+                    adjustedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                    adjustedBitmap = scaleDown(adjustedBitmap, 300, true);
+                }
+            } catch (Exception e) {
+            }
+
+            if (adjustedBitmap != null) {
+                Blurry.with(getActivity()).color(Color.argb(70, 80, 80, 80)).radius(10)
+                        .from(adjustedBitmap).into(ivBlurAvatar);
+                ivAvatar.setImageBitmap(adjustedBitmap);
+            } else {
+                Blurry.with(getActivity()).color(Color.argb(70, 80, 80, 80)).radius(10)
+                        .from(bitmap).into(ivBlurAvatar);
+                ivAvatar.setImageBitmap(bitmap);
+            }
         }
 
         @Override
@@ -348,4 +360,31 @@ public class UpdateUserProfileFragment extends Fragment {
 
         }
     };
+
+    public void askPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+                ActivityCompat.requestPermissions(getActivity(), permissions, 10);
+            }
+        }
+    }
+
+    public boolean checkPermission() {
+        return ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static int exifToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        }
+        return 0;
+    }
 }

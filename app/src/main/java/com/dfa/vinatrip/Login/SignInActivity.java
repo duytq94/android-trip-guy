@@ -43,8 +43,6 @@ import java.util.List;
 @EActivity(R.layout.activity_sign_in)
 public class SignInActivity extends AppCompatActivity implements Validator.ValidationListener {
 
-    private Validator validator;
-
     @NotEmpty
     @Email
     @ViewById(R.id.activity_sign_in_et_email)
@@ -63,6 +61,7 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
     @ViewById(R.id.activity_sign_in_iv_symbol)
     ImageView ivSymbol;
 
+    private Validator validator;
     private FirebaseAuth firebaseAuth;
     private Animation animSlideUp;
     private Animation animSlideDown;

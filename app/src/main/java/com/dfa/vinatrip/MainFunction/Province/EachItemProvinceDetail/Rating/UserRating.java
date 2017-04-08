@@ -1,8 +1,9 @@
 package com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class UserRating implements Serializable {
+public class UserRating implements Parcelable {
     private String uid, nickname, avatar, email, content, numStars, date;
 
     public UserRating() {
@@ -45,5 +46,43 @@ public class UserRating implements Serializable {
     public String getDate() {
         return date;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.uid);
+        dest.writeString(this.nickname);
+        dest.writeString(this.avatar);
+        dest.writeString(this.email);
+        dest.writeString(this.content);
+        dest.writeString(this.numStars);
+        dest.writeString(this.date);
+    }
+
+    protected UserRating(Parcel in) {
+        this.uid = in.readString();
+        this.nickname = in.readString();
+        this.avatar = in.readString();
+        this.email = in.readString();
+        this.content = in.readString();
+        this.numStars = in.readString();
+        this.date = in.readString();
+    }
+
+    public static final Parcelable.Creator<UserRating> CREATOR = new Parcelable.Creator<UserRating>() {
+        @Override
+        public UserRating createFromParcel(Parcel source) {
+            return new UserRating(source);
+        }
+
+        @Override
+        public UserRating[] newArray(int size) {
+            return new UserRating[size];
+        }
+    };
 }
 
