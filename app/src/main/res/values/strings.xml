@@ -50,7 +50,7 @@
     <string name="sign_out">Đăng xuất</string>
     <string name="sign_in_up">Đăng nhập/Đăng ký</string>
     <string name="my_friends">Bạn của tôi</string>
-    <string name="make_friends">Thêm bạn &#8811;</string>
+    <string name="make_friends">Thêm bạn &#10148;</string>
     <string name="settings">Cài đặt</string>
     <string name="btn_save">Lưu</string>
     <string name="update_profile">Chỉnh sửa trang cá nhân</string>
@@ -69,8 +69,8 @@
 
     <string name="scheduleAndFee">Lịch trình &amp; chí phí tham khảo</string>
 
-    <string name="rating">Đánh giá &#8811;</string>
-    <string name="update_rating">Chỉnh sửa đánh giá &#8811;</string>
+    <string name="rating">Đánh giá &#10148;</string>
+    <string name="update_rating">Chỉnh sửa đánh giá &#10148;</string>
 
     <string name="description">Mô tả</string>
 
@@ -93,7 +93,8 @@
 
     <string name="invited">&#10004; Đã mời</string>
 
-    <string name="update_plan">Chỉnh sửa &#8811;</string>
+    <string name="update_plan">Chỉnh sửa &#10148;</string>
+    <string name="remove_plan">Xóa &#10006;</string>
 
     <string name="trip_plan">Kế hoạch chuyến đi</string>
 

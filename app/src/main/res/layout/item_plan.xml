@@ -103,16 +103,28 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/item_plan_tv_update"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:text="@string/update_plan"
-        android:textColor="@color/btn_press_state_green" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/item_plan_tv_remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:padding="@dimen/text_view_padding"
+            android:text="@string/remove_plan"
+            android:textColor="@color/btn_press_state_red" />
+
+        <TextView
+            android:id="@+id/item_plan_tv_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/text_view_padding"
+            android:text="@string/update_plan"
+            android:textColor="@color/btn_press_state_green" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/item_plan_ll_footer"
@@ -124,6 +136,4 @@
             android:layout_height="0.8dp"
             android:background="#cfcfcf" />
     </LinearLayout>
-
-
 </LinearLayout>

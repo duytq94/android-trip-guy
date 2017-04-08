@@ -85,6 +85,13 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
             holder.tvUserName.setText(plan.getUserMakePlan().getNickname());
         }
 
+        holder.tvRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         Picasso.with(context).load(plan.getUserMakePlan().getAvatar())
                 .placeholder(R.drawable.ic_loading)
                 .error(R.drawable.photo_not_available)
@@ -97,7 +104,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
     }
 
     public static class PlanViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvName, tvDestination, tvDate, tvUserName, tvUpdate;
+        private TextView tvName, tvDestination, tvDate, tvUserName, tvUpdate, tvRemove;
         private ImageView ivAvatar, ivIsMyPlan;
         private LinearLayout llDetail, llFooter;
 
@@ -108,6 +115,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
             tvDate = (TextView) itemView.findViewById(R.id.item_plan_tv_date);
             tvUserName = (TextView) itemView.findViewById(R.id.item_plan_tv_user_name);
             tvUpdate = (TextView) itemView.findViewById(R.id.item_plan_tv_update);
+            tvRemove = (TextView) itemView.findViewById(R.id.item_plan_tv_remove);
             ivAvatar = (ImageView) itemView.findViewById(R.id.item_plan_iv_avatar);
             ivIsMyPlan = (ImageView) itemView.findViewById(R.id.item_plan_iv_is_my_plan);
             llDetail = (LinearLayout) itemView.findViewById(R.id.item_plan_ll_detail);
