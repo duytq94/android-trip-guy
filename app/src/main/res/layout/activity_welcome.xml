@@ -58,7 +58,7 @@
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
         android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:background="@drawable/btn_bg_transparent"
+        android:background="@drawable/bg_btn_transparent"
         android:text="@string/sign_in_up"
         android:textColor="@android:color/white" />
 
@@ -70,7 +70,7 @@
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_vertical_margin"
         android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:background="@drawable/btn_bg_transparent"
+        android:background="@drawable/bg_btn_transparent"
         android:text="@string/btn_launch_now"
         android:textColor="@android:color/white" />
 </RelativeLayout>

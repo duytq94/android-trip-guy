@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dfa.vinatrip.BuildConfig;
 import com.dfa.vinatrip.DataService.DataService;
@@ -31,6 +30,7 @@ import com.squareup.picasso.Target;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -80,9 +80,6 @@ public class MeFragment extends Fragment {
     @ViewById(R.id.fragment_me_iv_blur_avatar)
     ImageView ivBlurAvatar;
 
-    @ViewById(R.id.fragment_me_ll_sign_in)
-    LinearLayout llSignIn;
-
     @ViewById(R.id.fragment_me_ll_sign_out)
     LinearLayout llSignOut;
 
@@ -104,6 +101,12 @@ public class MeFragment extends Fragment {
     @ViewById(R.id.fragment_me_rv_list_friends)
     RecyclerView rvListFriends;
 
+    @ViewById(R.id.fragment_me_ll_login)
+    LinearLayout llLogin;
+
+    @ViewById(R.id.fragment_me_ll_not_login)
+    LinearLayout llNotLogin;
+
     private UserProfile currentUser;
     private List<UserProfile> listUserProfiles;
     private List<UserFriend> listUserFriends;
@@ -111,42 +114,33 @@ public class MeFragment extends Fragment {
 
     @AfterViews
     void onCreateView() {
+        currentUser = dataService.getCurrentUser();
+
         showAppInfo();
         srlReload.setColorSchemeResources(R.color.colorMain);
 
         if (TripGuyUtils.isNetworkConnected(getActivity())) {
-            onClickListener();
-            initView();
-            hideViews(false);
-        } else {
-            hideViews(true);
+            if (currentUser != null) {
+                initView();
+            } else {
+                llLogin.setVisibility(View.GONE);
+                llNotLogin.setVisibility(View.VISIBLE);
+            }
         }
 
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if (TripGuyUtils.isNetworkConnected(getActivity())) {
-                    onClickListener();
-                    initView();
-                    hideViews(false);
+                    if (currentUser != null) {
+                        initView();
+                    }
                     srlReload.setRefreshing(false);
                 } else {
                     srlReload.setRefreshing(false);
                 }
             }
         });
-    }
-
-    public void hideViews(Boolean aBoolean) {
-        if (aBoolean) {
-            llInfo.setVisibility(View.GONE);
-            llMyFriends.setVisibility(View.GONE);
-            llSettings.setVisibility(View.GONE);
-        } else {
-            llInfo.setVisibility(View.VISIBLE);
-            llMyFriends.setVisibility(View.VISIBLE);
-            llSettings.setVisibility(View.VISIBLE);
-        }
     }
 
     public void showAppInfo() {
@@ -159,6 +153,9 @@ public class MeFragment extends Fragment {
     }
 
     public void initView() {
+        llLogin.setVisibility(View.VISIBLE);
+        llNotLogin.setVisibility(View.GONE);
+
         String versionName = BuildConfig.VERSION_NAME;
         int versionCode = BuildConfig.VERSION_CODE;
 
@@ -166,154 +163,124 @@ public class MeFragment extends Fragment {
         tvAppInfo.append("Version name: " + versionName + "\n");
         tvAppInfo.append("Version code: " + versionCode + "\n");
 
-        currentUser = dataService.getCurrentUser();
-        if (currentUser != null) {
-            listUserProfiles = new ArrayList<>();
-            listUserFriends = new ArrayList<>();
+        listUserProfiles = new ArrayList<>();
+        listUserFriends = new ArrayList<>();
 
-            // Wait until list user profile load done
-            tvMakeFriend.setEnabled(false);
+        // Wait until list user profile load done
+        tvMakeFriend.setEnabled(false);
 
 
-            listUserProfiles.addAll(dataService.getUserProfileList());
-            if (!currentUser.getNickname().equals("")) {
-                tvNickname.setText(currentUser.getNickname());
-            }
-            if (!currentUser.getCity().equals("")) {
-                tvCity.setText(currentUser.getCity());
-            }
-            if (!currentUser.getAvatar().isEmpty()) {
-                Picasso.with(getActivity())
-                        .load(currentUser.getAvatar())
-                        .into(target);
-            }
-            tvIntroduceYourSelf.setText(currentUser.getIntroduceYourSelf());
-            tvBirthday.setText(currentUser.getBirthday());
-            tvEmail.setText(currentUser.getEmail());
-            tvSex.setText(currentUser.getSex());
-
-            dataService.setOnChangeUserFriendList(new DataService.OnChangeUserFriendList() {
-                @Override
-                public void onAddItem() {
-                    listUserFriends.clear();
-                    listUserFriends.addAll(dataService.getUserFriendList());
-                    tvMakeFriend.setEnabled(true);
-                    listFriendVerticalAdapter = new ListFriendVerticalAdapter(getActivity(), listUserFriends,
-                            tvFriendNotAvailable);
-                    rvListFriends.setAdapter(listFriendVerticalAdapter);
-                }
-
-                @Override
-                public void onRemoveItem() {
-                    listUserFriends.clear();
-                    listUserFriends.addAll(dataService.getUserFriendList());
-                    tvMakeFriend.setEnabled(true);
-                    listFriendVerticalAdapter = new ListFriendVerticalAdapter(getActivity(), listUserFriends, tvFriendNotAvailable);
-                    rvListFriends.setAdapter(listFriendVerticalAdapter);
-                }
-            });
-
-            listUserFriends.addAll(dataService.getUserFriendList());
-            tvMakeFriend.setEnabled(true);
-            listFriendVerticalAdapter = new ListFriendVerticalAdapter(getActivity(), listUserFriends,
-                    tvFriendNotAvailable);
-            rvListFriends.setAdapter(listFriendVerticalAdapter);
-
-            LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-            rvListFriends.setLayoutManager(manager);
+        listUserProfiles.addAll(dataService.getUserProfileList());
+        if (!currentUser.getNickname().equals("")) {
+            tvNickname.setText(currentUser.getNickname());
         }
+        if (!currentUser.getCity().equals("")) {
+            tvCity.setText(currentUser.getCity());
+        }
+        if (!currentUser.getAvatar().isEmpty()) {
+            Picasso.with(getActivity())
+                    .load(currentUser.getAvatar())
+                    .into(target);
+        }
+        tvIntroduceYourSelf.setText(currentUser.getIntroduceYourSelf());
+        tvBirthday.setText(currentUser.getBirthday());
+        tvEmail.setText(currentUser.getEmail());
+        tvSex.setText(currentUser.getSex());
+
+        dataService.setOnChangeUserFriendList(new DataService.OnChangeUserFriendList() {
+            @Override
+            public void onAddItem() {
+                listUserFriends.clear();
+                listUserFriends.addAll(dataService.getUserFriendList());
+                tvMakeFriend.setEnabled(true);
+                listFriendVerticalAdapter = new ListFriendVerticalAdapter(getActivity(), listUserFriends,
+                        tvFriendNotAvailable);
+                rvListFriends.setAdapter(listFriendVerticalAdapter);
+            }
+
+            @Override
+            public void onRemoveItem() {
+                listUserFriends.clear();
+                listUserFriends.addAll(dataService.getUserFriendList());
+                tvMakeFriend.setEnabled(true);
+                listFriendVerticalAdapter = new ListFriendVerticalAdapter(getActivity(), listUserFriends, tvFriendNotAvailable);
+                rvListFriends.setAdapter(listFriendVerticalAdapter);
+            }
+        });
+
+        listUserFriends.addAll(dataService.getUserFriendList());
+        tvMakeFriend.setEnabled(true);
+        listFriendVerticalAdapter = new ListFriendVerticalAdapter(getActivity(), listUserFriends,
+                tvFriendNotAvailable);
+        rvListFriends.setAdapter(listFriendVerticalAdapter);
+
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvListFriends.setLayoutManager(manager);
     }
 
-    public void onClickListener() {
-        llSignIn.setOnClickListener(new View.OnClickListener() {
+    @Click(R.id.fragment_me_ll_sign_out)
+    void onLlSignOutClick() {
+        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        alertDialog.setTitle("Đăng xuất");
+        alertDialog.setMessage("Bạn có chắc chắn muốn đăng xuất tài khoản?");
+        alertDialog.setIcon(R.drawable.ic_notification);
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ĐỒNG Ý", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (currentUser == null) {
-                    startActivity(new Intent(getActivity(), SignInActivity_.class));
-                } else {
-                    Toast.makeText(getActivity(), "Bạn đã đăng nhập!", Toast.LENGTH_SHORT).show();
-                }
+            public void onClick(DialogInterface dialogInterface, int i) {
+                FirebaseAuth.getInstance().signOut();
+                dataService.clearData();
+                startActivity(new Intent(getActivity(), SplashScreenActivity_.class));
             }
         });
-
-        llSignOut.setOnClickListener(new View.OnClickListener() {
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "KHÔNG", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (currentUser != null) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-                    alertDialog.setTitle("Đăng xuất");
-                    alertDialog.setMessage("Bạn có chắc chắn muốn đăng xuất tài khoản?");
-                    alertDialog.setIcon(R.drawable.ic_notification);
-                    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ĐỒNG Ý", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            FirebaseAuth.getInstance().signOut();
-                            dataService.clearData();
-                            startActivity(new Intent(getActivity(), SplashScreenActivity_.class));
-                        }
-                    });
-                    alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "KHÔNG", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(DialogInterface dialogInterface, int i) {
 
-                        }
-                    });
-                    alertDialog.show();
-
-                } else {
-                    Toast.makeText(getActivity(), "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
-                }
             }
         });
+        alertDialog.show();
+    }
 
-        llUpdateProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentUser != null) {
-                    Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
+    @Click(R.id.fragment_me_ll_update_profile)
+    void onLlUpdateProfileClick() {
+        Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
 
-                    // Send UserProfile to UserProfileDetailActivity
-                    intentUpdate.putExtra("UserProfile", currentUser);
+        // Send UserProfile to UserProfileDetailActivity
+        intentUpdate.putExtra("UserProfile", currentUser);
 
-                    // Send ListUserProfiles to UserProfileDetailActivity
-                    intentUpdate.putParcelableArrayListExtra("ListUserProfiles", (ArrayList<? extends Parcelable>) listUserProfiles);
+        // Send ListUserProfiles to UserProfileDetailActivity
+        intentUpdate.putParcelableArrayListExtra("ListUserProfiles", (ArrayList<? extends Parcelable>) listUserProfiles);
 
-                    // Send notify to inform that llUpdateProfile be clicked
-                    String fromView = "llUpdateProfile";
-                    intentUpdate.putExtra("FromView", fromView);
+        // Send notify to inform that llUpdateProfile be clicked
+        String fromView = "llUpdateProfile";
+        intentUpdate.putExtra("FromView", fromView);
 
-                    // Make UserProfileDetailActivity notify when it finish
-                    startActivityForResult(intentUpdate, NOTIFY_UPDATE_REQUEST);
-                } else {
-                    Toast.makeText(getActivity(), "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        // Make UserProfileDetailActivity notify when it finish
+        startActivityForResult(intentUpdate, NOTIFY_UPDATE_REQUEST);
+    }
 
-        tvMakeFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentUser != null) {
-                    Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
+    @Click(R.id.fragment_me_tv_make_friend)
+    void onTvMakeFriendClick() {
+        Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
 
-                    // Send UserProfile to UserProfileDetailActivity
-                    intentUpdate.putExtra("UserProfile", currentUser);
+        // Send UserProfile to UserProfileDetailActivity
+        intentUpdate.putExtra("UserProfile", currentUser);
 
-                    // Send ListUserProfiles to UserProfileDetailActivity
-                    intentUpdate.putParcelableArrayListExtra("ListUserProfiles", (ArrayList<? extends Parcelable>) listUserProfiles);
+        // Send ListUserProfiles to UserProfileDetailActivity
+        intentUpdate.putParcelableArrayListExtra("ListUserProfiles", (ArrayList<? extends Parcelable>) listUserProfiles);
 
-                    // Send notify to inform that tvMakeFriend be clicked
-                    String fromView = "tvMakeFriend";
-                    intentUpdate.putExtra("FromView", fromView);
+        // Send notify to inform that tvMakeFriend be clicked
+        String fromView = "tvMakeFriend";
+        intentUpdate.putExtra("FromView", fromView);
 
-                    // Make UserProfileDetailActivity notify when it finish
-                    startActivityForResult(intentUpdate, NOTIFY_UPDATE_REQUEST);
-                } else {
-                    Toast.makeText(getActivity(), "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+        // Make UserProfileDetailActivity notify when it finish
+        startActivityForResult(intentUpdate, NOTIFY_UPDATE_REQUEST);
+    }
 
-                }
-            }
-        });
+    @Click(R.id.fragment_me_btn_sign_in)
+    void onBtnSignInClick() {
+        Intent intent = new Intent(getActivity(), SignInActivity_.class);
+        startActivity(intent);
     }
 
     @Override
@@ -323,9 +290,6 @@ public class MeFragment extends Fragment {
         if (requestCode == NOTIFY_UPDATE_REQUEST) {
             if (TripGuyUtils.isNetworkConnected(getActivity())) {
                 initView();
-                hideViews(false);
-            } else {
-                hideViews(true);
             }
         }
     }

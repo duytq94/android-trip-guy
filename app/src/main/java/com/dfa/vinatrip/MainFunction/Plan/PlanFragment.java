@@ -10,9 +10,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.dfa.vinatrip.DataService.DataService;
+import com.dfa.vinatrip.Login.SignInActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.Plan.MakePlan.MakePlanActivity_;
 import com.dfa.vinatrip.R;
@@ -48,6 +48,12 @@ public class PlanFragment extends Fragment {
     @ViewById(R.id.fragment_plan_ll_plan_list_not_available)
     LinearLayout llPlanListNotAvailable;
 
+    @ViewById(R.id.fragment_plan_ll_login)
+    LinearLayout llLogin;
+
+    @ViewById(R.id.fragment_plan_ll_not_login)
+    LinearLayout llNotLogin;
+
     private List<Plan> planList;
     private PlanAdapter planAdapter;
     private DatabaseReference databaseReference;
@@ -55,41 +61,51 @@ public class PlanFragment extends Fragment {
 
     @AfterViews
     void onCreateView() {
+        currentUser = dataService.getCurrentUser();
+
         planList = new ArrayList<>();
+
+        if (TripGuyUtils.isNetworkConnected(getActivity())) {
+            if (currentUser != null) {
+                initView();
+            } else {
+                llLogin.setVisibility(View.GONE);
+                llNotLogin.setVisibility(View.VISIBLE);
+            }
+        }
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (dataService.getCurrentUser() != null && TripGuyUtils.isNetworkConnected(getActivity())) {
-                    planList.clear();
-                    loadPlan();
+                if (TripGuyUtils.isNetworkConnected(getActivity())) {
+                    if (currentUser != null) {
+                        initView();
+                    }
+                    srlReload.setRefreshing(false);
                 } else {
                     srlReload.setRefreshing(false);
                 }
             }
         });
+    }
 
-        if (dataService.getCurrentUser() != null && TripGuyUtils.isNetworkConnected(getActivity())) {
-            currentUser = dataService.getCurrentUser();
-            planAdapter = new PlanAdapter(getActivity(), planList, currentUser);
-            rvPlan.setAdapter(planAdapter);
-            loadPlan();
-            LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-            rvPlan.setLayoutManager(manager);
-            DividerItemDecoration decoration = new DividerItemDecoration(rvPlan.getContext(), manager.getOrientation());
-            rvPlan.addItemDecoration(decoration);
-        }
+    public void initView() {
+        llLogin.setVisibility(View.VISIBLE);
+        llNotLogin.setVisibility(View.GONE);
+        planAdapter = new PlanAdapter(getActivity(), planList, currentUser);
+        rvPlan.setAdapter(planAdapter);
+        loadPlan();
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvPlan.setLayoutManager(manager);
+        DividerItemDecoration decoration = new DividerItemDecoration(rvPlan.getContext(), manager.getOrientation());
+        rvPlan.addItemDecoration(decoration);
     }
 
     @Click(R.id.fragment_plan_fab_make_new_plan)
     void onFabMakeNewPlanClick() {
-        if (dataService.getCurrentUser() != null) {
-            Intent intent = new Intent(getActivity(), MakePlanActivity_.class);
-            startActivity(intent);
-        } else {
-            Toast.makeText(getActivity(), "Bạn phải đăng nhập mới sử dụng được tính năng này", Toast.LENGTH_SHORT).show();
-        }
+        Intent intent = new Intent(getActivity(), MakePlanActivity_.class);
+        startActivity(intent);
     }
 
     @Click(R.id.fragment_my_friend_iv_info)
@@ -105,6 +121,12 @@ public class PlanFragment extends Fragment {
             }
         });
         alertDialog.show();
+    }
+
+    @Click(R.id.fragment_plan_btn_sign_in)
+    void onBtnSignInClick() {
+        Intent intent = new Intent(getActivity(), SignInActivity_.class);
+        startActivity(intent);
     }
 
     public void loadPlan() {

@@ -11,400 +11,437 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorBackground"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/fragment_me_ll_login"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorMain">
-
-                <ImageView
-                    android:id="@+id/fragment_me_iv_symbol"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:src="@drawable/ic_symbol" />
+                android:layout_height="match_parent"
+                android:background="@color/colorBackground"
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <RelativeLayout
-                    android:id="@+id/fragment_province_rl_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_toRightOf="@+id/fragment_me_iv_symbol"
-                    android:gravity="center">
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/colorMain">
+
+                    <ImageView
+                        android:id="@+id/fragment_me_iv_symbol"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:src="@drawable/ic_symbol" />
+
+                    <RelativeLayout
+                        android:id="@+id/fragment_province_rl_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/fragment_me_iv_symbol"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/fragment_province_iv_search"
+                            android:text="Tìm bạn..."
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/text_large" />
+
+                        <ImageView
+                            android:id="@+id/fragment_province_iv_search"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:layout_alignParentRight="true"
+                            android:padding="16dp"
+                            android:src="@drawable/ic_search" />
+
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp">
+
+                    <ImageView
+                        android:id="@+id/fragment_me_iv_blur_avatar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorBlackTransparent"
+                        android:scaleType="centerCrop" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/fragment_me_iv_avatar"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:src="@drawable/ic_avatar" />
+
+                    <TextView
+                        android:id="@+id/fragment_me_tv_nickname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="130dp"
+                        android:text="@string/nickname"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/text_large"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/fragment_me_tv_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="150dp"
+                        android:text="@string/city"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
+
+                </FrameLayout>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_view_margin">
+
+                    <LinearLayout
+                        android:id="@+id/fragment_me_ll_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/text_view_padding"
+                            android:text="@string/personal_info"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_large" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/text_view_padding"
+                            android:weightSum="5">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="@string/email" />
+
+                            <TextView
+                                android:id="@+id/fragment_me_tv_email"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/text_view_padding"
+                            android:weightSum="5">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="@string/birthday" />
+
+                            <TextView
+                                android:id="@+id/fragment_me_tv_birthday"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/text_view_padding"
+                            android:weightSum="5">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="@string/sex" />
+
+                            <TextView
+                                android:id="@+id/fragment_me_tv_sex"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/text_view_padding"
+                            android:weightSum="5">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="@string/introduce_your_self" />
+
+                            <TextView
+                                android:id="@+id/fragment_me_tv_introduce_your_self"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_view_margin">
+
+                    <LinearLayout
+                        android:id="@+id/fragment_me_ll_my_friends"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:paddingLeft="@dimen/text_view_padding"
+                                android:text="@string/my_friends"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_large" />
+
+                            <TextView
+                                android:id="@+id/fragment_me_tv_make_friend"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:padding="@dimen/text_view_padding"
+                                android:text="@string/make_friends"
+                                android:textColor="@color/btn_press_state_green" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/fragment_me_tv_friend_not_available"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/friend_not_available" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/fragment_me_rv_list_friends"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_view_margin">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/text_view_padding"
+                            android:text="@string/app_info"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_large" />
+
+                        <TextView
+                            android:id="@+id/fragment_me_tv_app_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/text_view_padding" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_view_margin">
+
+                    <LinearLayout
+                        android:id="@+id/fragment_me_ll_settings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/text_view_padding"
+                            android:text="@string/settings"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_large" />
+
+                        <LinearLayout
+                            android:id="@+id/fragment_me_ll_feed_back"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/text_view_padding">
+
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="30dp"
+                                android:layout_weight="1"
+                                android:src="@drawable/ic_feedback" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="3"
+                                android:gravity="center"
+                                android:text="@string/feedback"
+                                android:textColor="@color/btn_press_state_gray" />
+
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="30dp"
+                                android:layout_weight="1"
+                                android:src="@drawable/ic_go_to" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/fragment_me_ll_update_profile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/text_view_padding">
+
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="30dp"
+                                android:layout_weight="1"
+                                android:src="@drawable/ic_update_profile" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="3"
+                                android:gravity="center"
+                                android:text="@string/update_profile"
+                                android:textColor="@color/btn_press_state_gray" />
+
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="30dp"
+                                android:layout_weight="1"
+                                android:src="@drawable/ic_go_to" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/fragment_me_ll_sign_out"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/text_view_padding">
+
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="30dp"
+                                android:layout_weight="1"
+                                android:src="@drawable/ic_sign_out" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="3"
+                                android:gravity="center"
+                                android:text="@string/sign_out"
+                                android:textColor="@color/btn_press_state_gray" />
+
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="30dp"
+                                android:layout_weight="1"
+                                android:src="@drawable/ic_go_to" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fragment_me_ll_not_login"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_marginBottom="180dp"
+                    android:background="@color/colorMain">
+
+                    <ImageView
+                        android:id="@+id/fragment_me_iv_symbol2"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:src="@drawable/ic_symbol" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/fragment_province_iv_search"
-                        android:text="Tìm bạn..."
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@+id/fragment_me_iv_symbol2"
+                        android:text="Trang cá nhân"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/text_large" />
-
-                    <ImageView
-                        android:id="@+id/fragment_province_iv_search"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:layout_alignParentRight="true"
-                        android:padding="16dp"
-                        android:src="@drawable/ic_search" />
-
+                        android:textSize="@dimen/text_large"
+                        android:textStyle="bold" />
                 </RelativeLayout>
-            </RelativeLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp">
 
                 <ImageView
-                    android:id="@+id/fragment_me_iv_blur_avatar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorBlackTransparent"
-                    android:scaleType="centerCrop" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/fragment_me_iv_avatar"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:src="@drawable/ic_avatar" />
+                    android:src="@drawable/ic_me_gray" />
 
                 <TextView
-                    android:id="@+id/fragment_me_tv_nickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="130dp"
-                    android:text="@string/nickname"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/text_large"
-                    android:textStyle="bold" />
+                    android:layout_gravity="center"
+                    android:text="@string/not_login"
+                    android:textSize="@dimen/text_large" />
 
-                <TextView
-                    android:id="@+id/fragment_me_tv_city"
+                <Button
+                    android:id="@+id/fragment_me_btn_sign_in"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="150dp"
-                    android:text="@string/city"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold" />
-
-            </FrameLayout>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_view_margin">
-
-                <LinearLayout
-                    android:id="@+id/fragment_me_ll_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/text_view_padding"
-                        android:text="@string/personal_info"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_large" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/text_view_padding"
-                        android:weightSum="5">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="@string/email" />
-
-                        <TextView
-                            android:id="@+id/fragment_me_tv_email"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="3" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/text_view_padding"
-                        android:weightSum="5">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="@string/birthday" />
-
-                        <TextView
-                            android:id="@+id/fragment_me_tv_birthday"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="3" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/text_view_padding"
-                        android:weightSum="5">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="@string/sex" />
-
-                        <TextView
-                            android:id="@+id/fragment_me_tv_sex"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="3" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/text_view_padding"
-                        android:weightSum="5">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="@string/introduce_your_self" />
-
-                        <TextView
-                            android:id="@+id/fragment_me_tv_introduce_your_self"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="3" />
-                    </LinearLayout>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_view_margin">
-
-                <LinearLayout
-                    android:id="@+id/fragment_me_ll_my_friends"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:paddingLeft="@dimen/text_view_padding"
-                            android:text="@string/my_friends"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_large" />
-
-                        <TextView
-                            android:id="@+id/fragment_me_tv_make_friend"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:paddingRight="@dimen/text_view_padding"
-                            android:text="@string/make_friends"
-                            android:textColor="@color/colorMain" />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/fragment_me_tv_friend_not_available"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/text_view_padding"
-                        android:text="@string/friend_not_available" />
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/fragment_me_rv_list_friends"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false" />
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_view_margin">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/text_view_padding"
-                        android:text="@string/app_info"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_large" />
-
-                    <TextView
-                        android:id="@+id/fragment_me_tv_app_info"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/text_view_padding" />
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_view_margin">
-
-                <LinearLayout
-                    android:id="@+id/fragment_me_ll_settings"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/text_view_padding"
-                        android:text="@string/settings"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_large" />
-
-                    <LinearLayout
-                        android:id="@+id/fragment_me_ll_feed_back"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/text_view_padding">
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="30dp"
-                            android:layout_weight="1"
-                            android:src="@drawable/ic_feedback" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="3"
-                            android:gravity="center"
-                            android:text="@string/feedback" />
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="30dp"
-                            android:layout_weight="1"
-                            android:src="@drawable/ic_go_to" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/fragment_me_ll_update_profile"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/text_view_padding">
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="30dp"
-                            android:layout_weight="1"
-                            android:src="@drawable/ic_update_profile" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="3"
-                            android:gravity="center"
-                            android:text="@string/update_profile" />
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="30dp"
-                            android:layout_weight="1"
-                            android:src="@drawable/ic_go_to" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/fragment_me_ll_sign_in"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/text_view_padding">
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="30dp"
-                            android:layout_weight="1"
-                            android:src="@drawable/ic_sign_in" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="3"
-                            android:gravity="center"
-                            android:text="@string/sign_in_up" />
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="30dp"
-                            android:layout_weight="1"
-                            android:src="@drawable/ic_go_to" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/fragment_me_ll_sign_out"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/text_view_padding">
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="30dp"
-                            android:layout_weight="1"
-                            android:src="@drawable/ic_sign_out" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="3"
-                            android:gravity="center"
-                            android:text="@string/sign_out" />
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="30dp"
-                            android:layout_weight="1"
-                            android:src="@drawable/ic_go_to" />
-
-                    </LinearLayout>
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+                    android:layout_marginTop="20dip"
+                    android:text="@string/btn_login" />
+            </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>

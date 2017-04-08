@@ -8,8 +8,6 @@
         android:id="@+id/item_plan_ll_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:layout_marginRight="@dimen/activity_vertical_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:orientation="horizontal">
 
@@ -114,7 +112,7 @@
         android:layout_marginLeft="@dimen/activity_vertical_margin"
         android:layout_marginRight="@dimen/activity_vertical_margin"
         android:text="@string/update_plan"
-        android:textColor="@color/colorMain" />
+        android:textColor="@color/btn_press_state_green" />
 
     <LinearLayout
         android:id="@+id/item_plan_ll_footer"
