@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.Plan.DetailPlan.DetailPlanActivity_;
-import com.dfa.vinatrip.MainFunction.Plan.MakePlan.MakePlanActivity_;
 import com.dfa.vinatrip.R;
 import com.squareup.picasso.Picasso;
 
@@ -25,6 +24,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
     private Context context;
     private UserProfile currentUser;
     private int lastItemPosition;
+    private OnUpdateOrRemoveClick onUpdateOrRemoveClick;
 
     public PlanAdapter(Context context, List<Plan> planList, UserProfile currentUser) {
         this.planList = planList;
@@ -68,14 +68,18 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
         if (plan.getUserMakePlan().getUid().equals(currentUser.getUid())) {
             holder.tvUserName.setText("Tôi");
             holder.tvUpdate.setVisibility(View.VISIBLE);
+
             holder.tvUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, MakePlanActivity_.class);
+                    onUpdateOrRemoveClick.onUpdate(position);
+                }
+            });
 
-                    // Send Plan to MakePlanActivity to update info
-                    intent.putExtra("Plan", planList.get(position));
-                    context.startActivity(intent);
+            holder.tvRemove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onUpdateOrRemoveClick.onRemove(position);
                 }
             });
         } else {
@@ -85,12 +89,6 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
             holder.tvUserName.setText(plan.getUserMakePlan().getNickname());
         }
 
-        holder.tvRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         Picasso.with(context).load(plan.getUserMakePlan().getAvatar())
                 .placeholder(R.drawable.ic_loading)
@@ -121,5 +119,15 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
             llDetail = (LinearLayout) itemView.findViewById(R.id.item_plan_ll_detail);
             llFooter = (LinearLayout) itemView.findViewById(R.id.item_plan_ll_footer);
         }
+    }
+
+    public void setOnUpdateOrRemoveClick(OnUpdateOrRemoveClick onUpdateOrRemoveClick) {
+        this.onUpdateOrRemoveClick = onUpdateOrRemoveClick;
+    }
+
+    public interface OnUpdateOrRemoveClick {
+        void onUpdate(int position);
+
+        void onRemove(int position);
     }
 }

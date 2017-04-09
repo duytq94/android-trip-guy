@@ -80,6 +80,7 @@ public class PlanFragment extends Fragment {
             public void onRefresh() {
                 if (TripGuyUtils.isNetworkConnected(getActivity())) {
                     if (currentUser != null) {
+                        planList.clear();
                         initView();
                     }
                     srlReload.setRefreshing(false);
@@ -94,6 +95,42 @@ public class PlanFragment extends Fragment {
         llLogin.setVisibility(View.VISIBLE);
         llNotLogin.setVisibility(View.GONE);
         planAdapter = new PlanAdapter(getActivity(), planList, currentUser);
+
+        planAdapter.setOnUpdateOrRemoveClick(new PlanAdapter.OnUpdateOrRemoveClick() {
+            @Override
+            public void onUpdate(int position) {
+                Intent intent = new Intent(getActivity(), MakePlanActivity_.class);
+
+                // Send Plan to MakePlanActivity to update info
+                intent.putExtra("Plan", planList.get(position));
+                getActivity().startActivity(intent);
+            }
+
+            @Override
+            public void onRemove(final int position) {
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle("Xóa kế hoạch");
+                alertDialog.setMessage("Bạn có chắc chắn muốn xóa kế hoạch này?");
+                alertDialog.setIcon(R.drawable.ic_notification);
+                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ĐỒNG Ý", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        databaseReference.child("Plan").child(currentUser.getUid())
+                                .child(planList.get(position).getId()).removeValue();
+                        planList.remove(position);
+                        planAdapter.notifyDataSetChanged();
+                    }
+                });
+                alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "HỦY", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                alertDialog.show();
+            }
+        });
+
         rvPlan.setAdapter(planAdapter);
         loadPlan();
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
