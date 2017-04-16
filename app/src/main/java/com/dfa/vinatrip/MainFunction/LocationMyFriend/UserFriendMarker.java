@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.MyFriend;
+package com.dfa.vinatrip.MainFunction.LocationMyFriend;
 
 import com.google.android.gms.maps.model.Marker;
 

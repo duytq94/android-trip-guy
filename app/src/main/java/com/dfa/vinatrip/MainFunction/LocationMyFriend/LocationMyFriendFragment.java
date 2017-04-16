@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.MyFriend;
+package com.dfa.vinatrip.MainFunction.LocationMyFriend;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -61,16 +61,16 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-@EFragment(R.layout.fragment_my_friend)
-public class MyFriendFragment extends Fragment {
+@EFragment(R.layout.fragment_location_my_friend)
+public class LocationMyFriendFragment extends Fragment {
 
     @Bean
     DataService dataService;
 
-    @FragmentById(value = R.id.fragment_my_friend_map_my_friend, childFragment = true)
+    @FragmentById(value = R.id.fragment_location_my_friend_map_my_friend, childFragment = true)
     SupportMapFragment smfMyFriend;
 
-    @ViewById(R.id.fragment_my_friend_iv_turn_location)
+    @ViewById(R.id.fragment_location_my_friend_iv_turn_location)
     ImageView ivTurnLocation;
 
     private GoogleMap googleMap;
@@ -120,7 +120,7 @@ public class MyFriendFragment extends Fragment {
         alertDialog.show();
     }
 
-    @Click(R.id.fragment_my_friend_iv_turn_location)
+    @Click(R.id.fragment_location_my_friend_iv_turn_location)
     void onIvTurnLocationClick() {
         if (ivTurnLocation.getTag().equals("gps_on")) {
             AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();

@@ -58,6 +58,8 @@ public class PlanFragment extends Fragment {
     private PlanAdapter planAdapter;
     private DatabaseReference databaseReference;
     private UserProfile currentUser;
+    private ChildEventListener childEventListener;
+    private ValueEventListener valueEventListener;
 
     @AfterViews
     void onCreateView() {
@@ -132,6 +134,74 @@ public class PlanFragment extends Fragment {
         });
 
         rvPlan.setAdapter(planAdapter);
+
+        childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (isAdded()) {
+                    llPlanListNotAvailable.setVisibility(View.GONE);
+                    rvPlan.setVisibility(View.VISIBLE);
+
+                    Plan plan = dataSnapshot.getValue(Plan.class);
+                    planList.add(plan);
+                    planAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Plan plan = dataSnapshot.getValue(Plan.class);
+                for (int i = 0; i < planList.size(); i++) {
+                    if (planList.get(i).getId().equals(plan.getId())) {
+                        planList.remove(i);
+                        planList.add(plan);
+                        break;
+                    }
+                }
+                planAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                if (planList.size() == 0) {
+                    llPlanListNotAvailable.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (isAdded()) {
+                    // add planList to dataService
+                    if (planList.size() != 0) {
+                        llPlanListNotAvailable.setVisibility(View.GONE);
+                        rvPlan.setVisibility(View.VISIBLE);
+                        dataService.setPlanList(planList);
+                    } else {
+                        llPlanListNotAvailable.setVisibility(View.VISIBLE);
+                        rvPlan.setVisibility(View.GONE);
+                    }
+                    srlReload.setRefreshing(false);
+                    planAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
         loadPlan();
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvPlan.setLayoutManager(manager);
@@ -172,72 +242,17 @@ public class PlanFragment extends Fragment {
 
         // If no Internet, this method will not run
         databaseReference.child("Plan").child(currentUser.getUid())
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        if (isAdded()) {
-                            llPlanListNotAvailable.setVisibility(View.GONE);
-                            rvPlan.setVisibility(View.VISIBLE);
-
-                            Plan plan = dataSnapshot.getValue(Plan.class);
-                            planList.add(plan);
-                            planAdapter.notifyDataSetChanged();
-                        }
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        Plan plan = dataSnapshot.getValue(Plan.class);
-                        for (int i = 0; i < planList.size(); i++) {
-                            if (planList.get(i).getId().equals(plan.getId())) {
-                                planList.remove(i);
-                                planList.add(plan);
-                                break;
-                            }
-                        }
-                        planAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                .addChildEventListener(childEventListener);
 
         // This method to be called after all the onChildAdded() calls have happened
         databaseReference.child("Plan").child(currentUser.getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (isAdded()) {
-                            // add planList to dataService
-                            if (planList.size() != 0) {
-                                llPlanListNotAvailable.setVisibility(View.GONE);
-                                rvPlan.setVisibility(View.VISIBLE);
-                                dataService.setPlanList(planList);
-                            } else {
-                                llPlanListNotAvailable.setVisibility(View.VISIBLE);
-                                rvPlan.setVisibility(View.GONE);
-                            }
-                            srlReload.setRefreshing(false);
-                            planAdapter.notifyDataSetChanged();
-                        }
-                    }
+                .addListenerForSingleValueEvent(valueEventListener);
+    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+    @Override
+    public void onPause() {
+        super.onPause();
+        databaseReference.removeEventListener(childEventListener);
+        databaseReference.removeEventListener(valueEventListener);
     }
 }
