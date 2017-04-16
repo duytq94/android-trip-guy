@@ -23,7 +23,7 @@
                 android:background="@color/colorMain">
 
                 <ImageView
-                    android:id="@+id/fragment_my_friend_iv_symbol"
+                    android:id="@+id/fragment_plan_iv_symbol"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_centerVertical="true"
@@ -35,14 +35,14 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/fragment_my_friend_iv_symbol"
+                    android:layout_toRightOf="@+id/fragment_plan_iv_symbol"
                     android:text="Kế hoạch chuyến đi"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_large"
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:id="@+id/fragment_my_friend_iv_info"
+                    android:id="@+id/fragment_plan_iv_info"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
                     android:layout_alignParentRight="true"

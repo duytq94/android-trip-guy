@@ -6,8 +6,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
+import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.MakeFriendFragment;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.MakeFriendFragment_;
+import com.dfa.vinatrip.MainFunction.Me.UserDetail.MyFriend.MyFriendFragment;
+import com.dfa.vinatrip.MainFunction.Me.UserDetail.MyFriend.MyFriendFragment_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.UpdateProfile.UpdateUserProfileFragment;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.UpdateProfile.UpdateUserProfileFragment_;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
@@ -15,6 +18,7 @@ import com.dfa.vinatrip.MainFunction.ViewPagerSwipeFragmentAdapter;
 import com.dfa.vinatrip.R;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -22,6 +26,9 @@ import java.util.List;
 
 @EFragment(R.layout.fragment_user_profile_detail)
 public class UserProfileDetailFragment extends Fragment {
+
+    @Bean
+    DataService dataService;
 
     @ViewById(R.id.fragment_user_profile_detail_vp_user_profile_detail)
     ViewPager vpMeDetail;
@@ -35,6 +42,7 @@ public class UserProfileDetailFragment extends Fragment {
 
     private UpdateUserProfileFragment updateUserProfileFragment;
     private MakeFriendFragment makeFriendFragment;
+    private MyFriendFragment myFriendFragment;
 
     @AfterViews
     void onCreateView() {
@@ -86,8 +94,11 @@ public class UserProfileDetailFragment extends Fragment {
         makeFriendFragment = new MakeFriendFragment_();
         makeFriendFragment.setArguments(bd);
 
+        myFriendFragment = new MyFriendFragment_();
+
         adapter.addFragment(updateUserProfileFragment, "CHỈNH SỬA");
         adapter.addFragment(makeFriendFragment, "THÊM BẠN");
+        adapter.addFragment(myFriendFragment, "BẠN TÔI");
 
         vpMeDetail.setAdapter(adapter);
     }

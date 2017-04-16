@@ -193,8 +193,6 @@ public class MeFragment extends Fragment {
                 listUserFriends.clear();
                 listUserFriends.addAll(dataService.getUserFriendList());
                 tvMakeFriend.setEnabled(true);
-                listFriendVerticalAdapter = new ListFriendVerticalAdapter(getActivity(), listUserFriends,
-                        tvFriendNotAvailable);
                 rvListFriends.setAdapter(listFriendVerticalAdapter);
             }
 
@@ -203,7 +201,6 @@ public class MeFragment extends Fragment {
                 listUserFriends.clear();
                 listUserFriends.addAll(dataService.getUserFriendList());
                 tvMakeFriend.setEnabled(true);
-                listFriendVerticalAdapter = new ListFriendVerticalAdapter(getActivity(), listUserFriends, tvFriendNotAvailable);
                 rvListFriends.setAdapter(listFriendVerticalAdapter);
             }
         });

@@ -30,6 +30,12 @@ public class ListFriendVerticalAdapter extends RecyclerView.Adapter<ListFriendVe
         else this.tvFriendNotAvailable.setVisibility(View.GONE);
     }
 
+    public ListFriendVerticalAdapter(Context context, List<UserFriend> userFriendList) {
+        this.layoutInflater = LayoutInflater.from(context);
+        this.context = context;
+        this.userFriendList = userFriendList;
+    }
+
     @Override
     public ProfileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.item_friend_vertical, parent, false);

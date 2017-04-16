@@ -105,7 +105,7 @@ public class LocationMyFriendFragment extends Fragment {
         }
     }
 
-    @Click(R.id.fragment_my_friend_iv_info)
+    @Click(R.id.fragment_plan_iv_info)
     void onIvInfoClick() {
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
         alertDialog.setTitle("Xem vị trí bạn bè");
