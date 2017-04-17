@@ -9,8 +9,6 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -98,19 +96,21 @@ public class MeFragment extends Fragment {
     @ViewById(R.id.fragment_me_srlReload)
     SwipeRefreshLayout srlReload;
 
-    @ViewById(R.id.fragment_me_rv_list_friends)
-    RecyclerView rvListFriends;
-
     @ViewById(R.id.fragment_me_ll_login)
     LinearLayout llLogin;
 
     @ViewById(R.id.fragment_me_ll_not_login)
     LinearLayout llNotLogin;
 
+    @ViewById(R.id.fragment_me_ll_my_friend1)
+    LinearLayout llMyFriend1;
+
+    @ViewById(R.id.fragment_me_ll_my_friend2)
+    LinearLayout llMyFriend2;
+
     private UserProfile currentUser;
     private List<UserProfile> listUserProfiles;
     private List<UserFriend> listUserFriends;
-    private ListFriendVerticalAdapter listFriendVerticalAdapter;
 
     @AfterViews
     void onCreateView() {
@@ -166,10 +166,6 @@ public class MeFragment extends Fragment {
         listUserProfiles = new ArrayList<>();
         listUserFriends = new ArrayList<>();
 
-        // Wait until list user profile load done
-        tvMakeFriend.setEnabled(false);
-
-
         listUserProfiles.addAll(dataService.getUserProfileList());
         if (!currentUser.getNickname().equals("")) {
             tvNickname.setText(currentUser.getNickname());
@@ -187,32 +183,6 @@ public class MeFragment extends Fragment {
         tvEmail.setText(currentUser.getEmail());
         tvSex.setText(currentUser.getSex());
 
-        dataService.setOnChangeUserFriendList(new DataService.OnChangeUserFriendList() {
-            @Override
-            public void onAddItem() {
-                listUserFriends.clear();
-                listUserFriends.addAll(dataService.getUserFriendList());
-                tvMakeFriend.setEnabled(true);
-                rvListFriends.setAdapter(listFriendVerticalAdapter);
-            }
-
-            @Override
-            public void onRemoveItem() {
-                listUserFriends.clear();
-                listUserFriends.addAll(dataService.getUserFriendList());
-                tvMakeFriend.setEnabled(true);
-                rvListFriends.setAdapter(listFriendVerticalAdapter);
-            }
-        });
-
-        listUserFriends.addAll(dataService.getUserFriendList());
-        tvMakeFriend.setEnabled(true);
-        listFriendVerticalAdapter = new ListFriendVerticalAdapter(getActivity(), listUserFriends,
-                tvFriendNotAvailable);
-        rvListFriends.setAdapter(listFriendVerticalAdapter);
-
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvListFriends.setLayoutManager(manager);
     }
 
     @Click(R.id.fragment_me_ll_sign_out)
@@ -272,6 +242,22 @@ public class MeFragment extends Fragment {
 
         // Make UserProfileDetailActivity notify when it finish
         startActivityForResult(intentUpdate, NOTIFY_UPDATE_REQUEST);
+    }
+
+    @Click(R.id.fragment_me_tv_view_more)
+    void onTvViewMoreClick() {
+        Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
+
+        // Send UserProfile to UserProfileDetailActivity
+        intentUpdate.putExtra("UserProfile", currentUser);
+
+        // Send ListUserProfiles to UserProfileDetailActivity
+        intentUpdate.putParcelableArrayListExtra("ListUserProfiles", (ArrayList<? extends Parcelable>) listUserProfiles);
+
+        // Send notify to inform that tvViewMore be clicked
+        String fromView = "tvViewMore";
+        intentUpdate.putExtra("FromView", fromView);
+        startActivity(intentUpdate);
     }
 
     @Click(R.id.fragment_me_btn_sign_in)

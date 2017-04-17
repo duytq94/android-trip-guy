@@ -11,6 +11,7 @@ import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.MainFunction.Me.ListFriendVerticalAdapter;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.TripGuyUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -43,14 +44,14 @@ public class MyFriendFragment extends Fragment {
             @Override
             public void onAddItem() {
                 listUserFriends.clear();
-                listUserFriends.addAll(dataService.getUserFriendList());
+                listUserFriends.addAll(TripGuyUtils.filterListFriends(dataService.getUserFriendList()));
                 rvListFriends.setAdapter(listFriendVerticalAdapter);
             }
 
             @Override
             public void onRemoveItem() {
                 listUserFriends.clear();
-                listUserFriends.addAll(dataService.getUserFriendList());
+                listUserFriends.addAll(TripGuyUtils.filterListFriends(dataService.getUserFriendList()));
                 rvListFriends.setAdapter(listFriendVerticalAdapter);
                 if (listUserFriends.size() == 0) {
                     llFriendNotAvailable.setVisibility(View.VISIBLE);
@@ -60,7 +61,7 @@ public class MyFriendFragment extends Fragment {
             }
         });
 
-        listUserFriends.addAll(dataService.getUserFriendList());
+        listUserFriends.addAll(TripGuyUtils.filterListFriends(dataService.getUserFriendList()));
         listFriendVerticalAdapter = new ListFriendVerticalAdapter(getActivity(), listUserFriends);
         rvListFriends.setAdapter(listFriendVerticalAdapter);
 
