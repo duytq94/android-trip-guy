@@ -34,6 +34,7 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.blurry.Blurry;
 
 @EFragment(R.layout.fragment_me)
@@ -103,9 +104,21 @@ public class MeFragment extends Fragment {
 
     @ViewById(R.id.fragment_me_ll_my_friend1)
     LinearLayout llMyFriend1;
+    @ViewById(R.id.item_friend_vertical_civ_avatar1)
+    CircleImageView civAvatar1;
+    @ViewById(R.id.item_friend_vertical_tv_nickname1)
+    TextView tvNickname1;
+    @ViewById(R.id.item_friend_vertical_tv_email1)
+    TextView tvEmail1;
 
     @ViewById(R.id.fragment_me_ll_my_friend2)
     LinearLayout llMyFriend2;
+    @ViewById(R.id.item_friend_vertical_civ_avatar2)
+    CircleImageView civAvatar2;
+    @ViewById(R.id.item_friend_vertical_tv_nickname2)
+    TextView tvNickname2;
+    @ViewById(R.id.item_friend_vertical_tv_email2)
+    TextView tvEmail2;
 
     private UserProfile currentUser;
     private List<UserProfile> listUserProfiles;
@@ -165,6 +178,19 @@ public class MeFragment extends Fragment {
         listUserProfiles = new ArrayList<>();
         listUserFriends = new ArrayList<>();
 
+        initLlMyFriends();
+        dataService.setOnChangeUserFriendList(new DataService.OnChangeUserFriendList() {
+            @Override
+            public void onAddItem() {
+                initLlMyFriends();
+            }
+
+            @Override
+            public void onRemoveItem() {
+                initLlMyFriends();
+            }
+        });
+
         listUserProfiles.addAll(dataService.getUserProfileList());
         if (!currentUser.getNickname().equals("")) {
             tvNickname.setText(currentUser.getNickname());
@@ -182,6 +208,46 @@ public class MeFragment extends Fragment {
         tvEmail.setText(currentUser.getEmail());
         tvSex.setText(currentUser.getSex());
 
+    }
+
+    public void initLlMyFriends() {
+        listUserFriends.clear();
+        listUserFriends.addAll(TripGuyUtils.filterListFriends(dataService.getUserFriendList()));
+        UserFriend userFriend;
+        switch (listUserFriends.size()) {
+            case 0:
+                tvFriendNotAvailable.setVisibility(View.VISIBLE);
+                llMyFriend1.setVisibility(View.GONE);
+                llMyFriend2.setVisibility(View.GONE);
+                break;
+            case 1:
+                tvFriendNotAvailable.setVisibility(View.GONE);
+                userFriend = listUserFriends.get(0);
+                llMyFriend1.setVisibility(View.VISIBLE);
+                Picasso.with(getActivity()).load(userFriend.getAvatar()).into(civAvatar1);
+                tvNickname1.setText(userFriend.getNickname());
+                tvEmail1.setText(userFriend.getEmail());
+                llMyFriend2.setVisibility(View.GONE);
+                break;
+            case 3:
+                tvFriendNotAvailable.setVisibility(View.GONE);
+
+                userFriend = listUserFriends.get(0);
+                llMyFriend1.setVisibility(View.VISIBLE);
+                Picasso.with(getActivity()).load(userFriend.getAvatar()).into(civAvatar1);
+                tvNickname1.setText(userFriend.getNickname());
+                tvEmail1.setText(userFriend.getEmail());
+                llMyFriend1.setVisibility(View.GONE);
+
+                userFriend = listUserFriends.get(1);
+                llMyFriend2.setVisibility(View.VISIBLE);
+                Picasso.with(getActivity()).load(userFriend.getAvatar()).into(civAvatar2);
+                tvNickname2.setText(userFriend.getNickname());
+                tvEmail2.setText(userFriend.getEmail());
+                llMyFriend2.setVisibility(View.GONE);
+
+                break;
+        }
     }
 
     @Click(R.id.fragment_me_ll_sign_out)

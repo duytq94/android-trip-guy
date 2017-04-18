@@ -45,14 +45,14 @@ public class MyFriendFragment extends Fragment {
             public void onAddItem() {
                 listUserFriends.clear();
                 listUserFriends.addAll(TripGuyUtils.filterListFriends(dataService.getUserFriendList()));
-                rvListFriends.setAdapter(listFriendVerticalAdapter);
+                listFriendVerticalAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onRemoveItem() {
                 listUserFriends.clear();
                 listUserFriends.addAll(TripGuyUtils.filterListFriends(dataService.getUserFriendList()));
-                rvListFriends.setAdapter(listFriendVerticalAdapter);
+                listFriendVerticalAdapter.notifyDataSetChanged();
                 if (listUserFriends.size() == 0) {
                     llFriendNotAvailable.setVisibility(View.VISIBLE);
                 } else {

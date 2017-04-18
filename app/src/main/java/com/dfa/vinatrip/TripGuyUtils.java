@@ -38,7 +38,7 @@ public class TripGuyUtils {
     // Filter the friend has accepted (because some friend not accepted yet)
     public static List<UserFriend> filterListFriends(List<UserFriend> userFriendList) {
         for (int i = 0; i < userFriendList.size(); i++) {
-            if (userFriendList.get(i).getState().equals("friend")) {
+            if (!userFriendList.get(i).getState().equals("friend")) {
                 userFriendList.remove(i);
             }
         }
