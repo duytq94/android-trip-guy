@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,21 +18,20 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.dfa.vinatrip.MainFunction.Me.UserProfile;
+import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.R;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @EActivity(R.layout.activity_user_profile_detail)
 public class UserProfileDetailActivity extends AppCompatActivity {
 
-    private UserProfile userProfile;
-    private List<UserProfile> listUserProfiles;
+    @Bean
+    DataService dataService;
+
     private String fromView;
     private android.support.v7.app.ActionBar actionBar;
 
@@ -45,31 +43,16 @@ public class UserProfileDetailActivity extends AppCompatActivity {
 
         changeColorStatusBar();
 
-        // Get ListUserProfiles form MeFragment
-        listUserProfiles = new ArrayList<>();
-        listUserProfiles = getIntent().getParcelableExtra("ListUserProfiles");
-
-        // Get UserProfile from MeFragment
-        userProfile = getIntent().getParcelableExtra("UserProfile");
-
         // Get FromView from MeFragment to know which view user clicked
         fromView = getIntent().getStringExtra("FromView");
 
         UserProfileDetailFragment userProfileDetailFragment = new UserProfileDetailFragment_();
 
-        Bundle bdUserProfile = new Bundle();
-        bdUserProfile.putParcelable("UserProfile", userProfile);
-
         Bundle bdFromView = new Bundle();
         bdFromView.putString("FromView", fromView);
 
-        Bundle bdListUserProfiles = new Bundle();
-        bdListUserProfiles.putParcelable("ListUserProfiles", (Parcelable) listUserProfiles);
-
         Bundle bd = new Bundle();
-        bd.putBundle("bdUserProfile", bdUserProfile);
         bd.putBundle("bdFromView", bdFromView);
-        bd.putBundle("bdListUserProfiles", bdListUserProfiles);
 
         userProfileDetailFragment.setArguments(bd);
         startFragment(userProfileDetailFragment);
@@ -103,7 +86,7 @@ public class UserProfileDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(userProfile.getNickname());
+            actionBar.setTitle(dataService.getCurrentUser().getNickname());
             actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#228B22")));
 
             // Set button back

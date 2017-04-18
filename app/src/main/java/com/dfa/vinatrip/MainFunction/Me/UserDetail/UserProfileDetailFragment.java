@@ -1,6 +1,5 @@
 package com.dfa.vinatrip.MainFunction.Me.UserDetail;
 
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -21,8 +20,6 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.List;
-
 @EFragment(R.layout.fragment_user_profile_detail)
 public class UserProfileDetailFragment extends Fragment {
 
@@ -35,8 +32,6 @@ public class UserProfileDetailFragment extends Fragment {
     @ViewById(R.id.fragment_user_profile_detail_tl_menu)
     TabLayout tlMenu;
 
-    private UserProfile userProfile;
-    private List<UserProfile> listUserProfiles;
     private String fromView;
 
     private UpdateUserProfileFragment updateUserProfileFragment;
@@ -45,22 +40,10 @@ public class UserProfileDetailFragment extends Fragment {
 
     @AfterViews
     void onCreateView() {
-        // Get UserProfile from UserProfileDetailActivity
-        Bundle bdUserProfile;
-        bdUserProfile = getArguments().getBundle("bdUserProfile");
-        userProfile = bdUserProfile.getParcelable("UserProfile");
-
-        // Get ListUserProfile from UserProfileDetailActivity
-        Bundle bdListUserProfiles;
-        bdListUserProfiles = getArguments().getBundle("bdListUserProfiles");
-        listUserProfiles = bdListUserProfiles.getParcelable("ListUserProfiles");
-
         // Get the FromView from UserProfileDetailActivity
-        Bundle bdFromView;
-        bdFromView = getArguments().getBundle("bdFromView");
-        fromView = bdFromView.getString("FromView");
+        fromView = getArguments().getBundle("bdFromView").getString("FromView");
 
-        setupViewPager(vpMeDetail, userProfile);
+        setupViewPager(vpMeDetail, dataService.getCurrentUser());
 
         tlMenu.setupWithViewPager(vpMeDetail);
 

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -212,12 +211,6 @@ public class MeFragment extends Fragment {
     void onLlUpdateProfileClick() {
         Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
 
-        // Send UserProfile to UserProfileDetailActivity
-        intentUpdate.putExtra("UserProfile", currentUser);
-
-        // Send ListUserProfiles to UserProfileDetailActivity
-        intentUpdate.putParcelableArrayListExtra("ListUserProfiles", (ArrayList<? extends Parcelable>) listUserProfiles);
-
         // Send notify to inform that llUpdateProfile be clicked
         String fromView = "llUpdateProfile";
         intentUpdate.putExtra("FromView", fromView);
@@ -230,12 +223,6 @@ public class MeFragment extends Fragment {
     void onTvMakeFriendClick() {
         Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
 
-        // Send UserProfile to UserProfileDetailActivity
-        intentUpdate.putExtra("UserProfile", currentUser);
-
-        // Send ListUserProfiles to UserProfileDetailActivity
-        intentUpdate.putParcelableArrayListExtra("ListUserProfiles", (ArrayList<? extends Parcelable>) listUserProfiles);
-
         // Send notify to inform that tvMakeFriend be clicked
         String fromView = "tvMakeFriend";
         intentUpdate.putExtra("FromView", fromView);
@@ -247,12 +234,6 @@ public class MeFragment extends Fragment {
     @Click(R.id.fragment_me_tv_view_more)
     void onTvViewMoreClick() {
         Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
-
-        // Send UserProfile to UserProfileDetailActivity
-        intentUpdate.putExtra("UserProfile", currentUser);
-
-        // Send ListUserProfiles to UserProfileDetailActivity
-        intentUpdate.putParcelableArrayListExtra("ListUserProfiles", (ArrayList<? extends Parcelable>) listUserProfiles);
 
         // Send notify to inform that tvViewMore be clicked
         String fromView = "tvViewMore";
