@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_sign_up_ll_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="beforeDescendants"
@@ -29,6 +30,7 @@
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
             android:maxLines="1"
+            android:paddingLeft="@dimen/text_view_padding"
             android:textColor="@android:color/black" />
 
     </android.support.design.widget.TextInputLayout>
@@ -46,6 +48,7 @@
             android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:maxLines="1"
+            android:paddingLeft="@dimen/text_view_padding"
             android:textColor="@android:color/black" />
 
     </android.support.design.widget.TextInputLayout>
@@ -63,11 +66,11 @@
         android:id="@+id/activity_sign_up_btn_reset_password"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dip"
+        android:layout_marginTop="20dp"
         android:background="@null"
         android:text="@string/btn_forgot_password"
         android:textAllCaps="false"
-        android:textColor="@color/colorMain" />
+        android:textColor="@color/btn_press_state_green" />
 
     <!-- Link to Login Screen -->
 
@@ -79,8 +82,7 @@
         android:background="@null"
         android:text="@string/btn_link_to_login"
         android:textAllCaps="false"
-        android:textColor="@color/colorMain"
-        android:textSize="15dp" />
+        android:textColor="@color/btn_press_state_green" />
 
     <ProgressBar
         android:id="@+id/activity_sign_up_progressBar"

@@ -76,7 +76,6 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation arg0) {
                 ivLogo.startAnimation(zoomOut);
-
             }
         });
 
@@ -87,11 +86,11 @@ public class SplashScreenActivity extends AppCompatActivity {
         firebaseApi = retrofit.create(FirebaseApi.class);
 
         if (firebaseUser != null) {
-            loadProvinceAndMore();
+            loadProvince();
             loadUserProfile();
             loadUserFriend();
         } else {
-            loadProvince();
+            loadOnlyProvince();
         }
     }
 
@@ -101,7 +100,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
     }
 
-    public void loadProvince() {
+    public void loadOnlyProvince() {
         firebaseApi.loadProvince().enqueue(new Callback<HashMap<String, Province>>() {
             @Override
             public void onResponse(Call<HashMap<String, Province>> call, Response<HashMap<String, Province>> response) {
@@ -120,7 +119,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         });
     }
 
-    public void loadProvinceAndMore() {
+    public void loadProvince() {
         firebaseApi.loadProvince().enqueue(new Callback<HashMap<String, Province>>() {
             @Override
             public void onResponse(Call<HashMap<String, Province>> call, Response<HashMap<String, Province>> response) {

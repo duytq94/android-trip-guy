@@ -98,7 +98,6 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
             }
         });
 
-
         validator = new Validator(this);
         validator.setValidationListener(this);
 

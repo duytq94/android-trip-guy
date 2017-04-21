@@ -252,7 +252,9 @@ public class PlanFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        databaseReference.removeEventListener(childEventListener);
-        databaseReference.removeEventListener(valueEventListener);
+        if (databaseReference != null) {
+            databaseReference.removeEventListener(childEventListener);
+            databaseReference.removeEventListener(valueEventListener);
+        }
     }
 }

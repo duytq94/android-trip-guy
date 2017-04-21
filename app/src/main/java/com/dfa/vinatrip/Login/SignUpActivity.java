@@ -3,14 +3,20 @@ package com.dfa.vinatrip.Login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -42,8 +48,6 @@ import java.util.List;
 @EActivity(R.layout.activity_sign_up)
 public class SignUpActivity extends AppCompatActivity implements Validator.ValidationListener {
 
-    private Validator validator;
-
     @NotEmpty
     @Email
     @ViewById(R.id.activity_sign_up_et_email)
@@ -56,10 +60,49 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
     @ViewById(R.id.activity_sign_up_progressBar)
     ProgressBar progressBar;
 
+    @ViewById(R.id.activity_sign_up_ll_root)
+    LinearLayout llRoot;
+
+    @ViewById(R.id.activity_sign_up_iv_symbol)
+    ImageView ivSymbol;
+
+    private Validator validator;
     private FirebaseAuth firebaseAuth;
+    private Animation animSlideUp;
+    private Animation animSlideDown;
+
+    // To keep icon not run anim when click done
+    private boolean isBtnSignInClick = false;
 
     @AfterViews
     void onCreate() {
+        animSlideUp = AnimationUtils.loadAnimation(this, R.anim.anim_slide_up);
+        animSlideDown = AnimationUtils.loadAnimation(this, R.anim.anim_slide_down);
+
+        llRoot.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                llRoot.getWindowVisibleDisplayFrame(r);
+                int screenHeight = llRoot.getRootView().getHeight();
+
+                // r.bottom is the position above soft keypad or device button.
+                // if keypad is shown, the r.bottom is smaller than that before.
+                int keypadHeight = screenHeight - r.bottom;
+
+                if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+                    // keyboard is opened
+                    ivSymbol.startAnimation(animSlideUp);
+                    isBtnSignInClick = false;
+                } else {
+                    // keyboard is closed
+                    if (!isBtnSignInClick) {
+                        ivSymbol.startAnimation(animSlideDown);
+                    }
+                }
+            }
+        });
+
         validator = new Validator(this);
         validator.setValidationListener(this);
 
@@ -75,6 +118,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 
     @Click(R.id.activity_sign_up_btn_sign_up)
     void btnSignUpClicked() {
+        isBtnSignInClick = true;
         validator.validate();
     }
 

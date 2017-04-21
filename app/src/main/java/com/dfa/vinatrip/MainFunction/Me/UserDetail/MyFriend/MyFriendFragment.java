@@ -62,6 +62,12 @@ public class MyFriendFragment extends Fragment {
         });
 
         listUserFriends.addAll(TripGuyUtils.filterListFriends(dataService.getUserFriendList()));
+        if (listUserFriends.size() == 0) {
+            llFriendNotAvailable.setVisibility(View.VISIBLE);
+        } else {
+            llFriendNotAvailable.setVisibility(View.GONE);
+        }
+
         listFriendVerticalAdapter = new ListFriendVerticalAdapter(getActivity(), listUserFriends);
         rvListFriends.setAdapter(listFriendVerticalAdapter);
 

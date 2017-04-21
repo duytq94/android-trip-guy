@@ -229,7 +229,7 @@ public class MeFragment extends Fragment {
                 tvEmail1.setText(userFriend.getEmail());
                 llMyFriend2.setVisibility(View.GONE);
                 break;
-            case 3:
+            default:
                 tvFriendNotAvailable.setVisibility(View.GONE);
 
                 userFriend = listUserFriends.get(0);
@@ -237,14 +237,12 @@ public class MeFragment extends Fragment {
                 Picasso.with(getActivity()).load(userFriend.getAvatar()).into(civAvatar1);
                 tvNickname1.setText(userFriend.getNickname());
                 tvEmail1.setText(userFriend.getEmail());
-                llMyFriend1.setVisibility(View.GONE);
 
                 userFriend = listUserFriends.get(1);
                 llMyFriend2.setVisibility(View.VISIBLE);
                 Picasso.with(getActivity()).load(userFriend.getAvatar()).into(civAvatar2);
                 tvNickname2.setText(userFriend.getNickname());
                 tvEmail2.setText(userFriend.getEmail());
-                llMyFriend2.setVisibility(View.GONE);
 
                 break;
         }

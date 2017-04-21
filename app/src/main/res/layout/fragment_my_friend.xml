@@ -16,6 +16,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
+        android:paddingBottom="50dp"
         android:visibility="gone">
 
         <ImageView
@@ -28,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Hiện bạn chưa có người bạn nào"
+            android:text="Hiện chưa có bạn bè nào"
             android:textSize="@dimen/text_large" />
     </LinearLayout>
 
