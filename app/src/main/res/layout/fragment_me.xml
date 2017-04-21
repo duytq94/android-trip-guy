@@ -251,7 +251,7 @@
                             android:layout_height="wrap_content">
 
                             <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/item_friend_vertical_civ_avatar1"
+                                android:id="@+id/fragment_me_civ_friend_avatar1"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_gravity="center"
@@ -265,13 +265,13 @@
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/item_friend_vertical_tv_nickname1"
+                                    android:id="@+id/fragment_me_tv_friend_nickname1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:textColor="@android:color/black" />
 
                                 <TextView
-                                    android:id="@+id/item_friend_vertical_tv_email1"
+                                    android:id="@+id/fragment_me_tv_friend_email1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content" />
 
@@ -284,7 +284,7 @@
                             android:layout_height="wrap_content">
 
                             <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/item_friend_vertical_civ_avatar2"
+                                android:id="@+id/fragment_me_civ_friend_avatar2"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_gravity="center"
@@ -298,13 +298,13 @@
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/item_friend_vertical_tv_nickname2"
+                                    android:id="@+id/fragment_me_tv_friend_nickname2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:textColor="@android:color/black" />
 
                                 <TextView
-                                    android:id="@+id/item_friend_vertical_tv_email2"
+                                    android:id="@+id/fragment_me_tv_friend_email2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content" />
 
@@ -317,7 +317,121 @@
                             android:background="@color/light_gray" />
 
                         <TextView
-                            android:id="@+id/fragment_me_tv_view_more"
+                            android:id="@+id/fragment_me_tv_view_more_my_friend"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="Xem thêm"
+                            android:textColor="@color/btn_press_state_green" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_view_margin">
+
+                    <LinearLayout
+                        android:id="@+id/fragment_me_ll_my_ratings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:paddingLeft="@dimen/text_view_padding"
+                                android:text="Đánh giá của tôi"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/text_large" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/fragment_me_tv_rating_not_available"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/text_view_padding"
+                            android:text="@string/comment_not_available" />
+
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:id="@+id/fragment_me_ll_my_rating1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/fragment_me_civ_location1"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="@dimen/activity_horizontal_margin" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/activity_horizontal_margin"
+                                android:layout_weight="2"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/fragment_me_tv_name_location1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@android:color/black" />
+
+                                <TextView
+                                    android:id="@+id/fragment_me_tv_content1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:id="@+id/fragment_me_ll_my_rating2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/fragment_me_civ_location2"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="@dimen/activity_horizontal_margin" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/activity_horizontal_margin"
+                                android:layout_weight="2"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/fragment_me_tv_name_location2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@android:color/black" />
+
+                                <TextView
+                                    android:id="@+id/fragment_me_tv_content2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:background="@color/light_gray" />
+
+                        <TextView
+                            android:id="@+id/fragment_me_tv_view_more_my_rating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

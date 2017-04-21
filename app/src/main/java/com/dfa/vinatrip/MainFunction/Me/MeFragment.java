@@ -18,6 +18,7 @@ import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.Login.SignInActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.UserProfileDetailActivity_;
+import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.UserRating;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.SplashScreen.SplashScreenActivity_;
 import com.dfa.vinatrip.TripGuyUtils;
@@ -102,27 +103,49 @@ public class MeFragment extends Fragment {
     @ViewById(R.id.fragment_me_ll_not_login)
     LinearLayout llNotLogin;
 
+    @ViewById(R.id.fragment_me_tv_rating_not_available)
+    TextView tvRatingNotAvailable;
+
+    @ViewById(R.id.fragment_me_ll_my_rating1)
+    LinearLayout llMyRating1;
+    @ViewById(R.id.fragment_me_civ_location1)
+    CircleImageView civLocation1;
+    @ViewById(R.id.fragment_me_tv_name_location1)
+    TextView tvNameLocation1;
+    @ViewById(R.id.fragment_me_tv_content1)
+    TextView tvContent1;
+
+    @ViewById(R.id.fragment_me_ll_my_rating2)
+    LinearLayout llMyRating2;
+    @ViewById(R.id.fragment_me_civ_location2)
+    CircleImageView civLocation2;
+    @ViewById(R.id.fragment_me_tv_name_location2)
+    TextView tvNameLocation2;
+    @ViewById(R.id.fragment_me_tv_content2)
+    TextView tvContent2;
+
     @ViewById(R.id.fragment_me_ll_my_friend1)
     LinearLayout llMyFriend1;
-    @ViewById(R.id.item_friend_vertical_civ_avatar1)
+    @ViewById(R.id.fragment_me_civ_friend_avatar1)
     CircleImageView civAvatar1;
-    @ViewById(R.id.item_friend_vertical_tv_nickname1)
+    @ViewById(R.id.fragment_me_tv_friend_nickname1)
     TextView tvNickname1;
-    @ViewById(R.id.item_friend_vertical_tv_email1)
+    @ViewById(R.id.fragment_me_tv_friend_email1)
     TextView tvEmail1;
 
     @ViewById(R.id.fragment_me_ll_my_friend2)
     LinearLayout llMyFriend2;
-    @ViewById(R.id.item_friend_vertical_civ_avatar2)
+    @ViewById(R.id.fragment_me_civ_friend_avatar2)
     CircleImageView civAvatar2;
-    @ViewById(R.id.item_friend_vertical_tv_nickname2)
+    @ViewById(R.id.fragment_me_tv_friend_nickname2)
     TextView tvNickname2;
-    @ViewById(R.id.item_friend_vertical_tv_email2)
+    @ViewById(R.id.fragment_me_tv_friend_email2)
     TextView tvEmail2;
 
     private UserProfile currentUser;
     private List<UserProfile> listUserProfiles;
     private List<UserFriend> listUserFriends;
+    private List<UserRating> myRatingList;
 
     @AfterViews
     void onCreateView() {
@@ -177,19 +200,22 @@ public class MeFragment extends Fragment {
 
         listUserProfiles = new ArrayList<>();
         listUserFriends = new ArrayList<>();
+        myRatingList = new ArrayList<>();
 
-        initLlMyFriends();
+        initLlMyFriend();
         dataService.setOnChangeUserFriendList(new DataService.OnChangeUserFriendList() {
             @Override
             public void onAddItem() {
-                initLlMyFriends();
+                initLlMyFriend();
             }
 
             @Override
             public void onRemoveItem() {
-                initLlMyFriends();
+                initLlMyFriend();
             }
         });
+
+        initLlMyRating();
 
         listUserProfiles.addAll(dataService.getUserProfileList());
         if (!currentUser.getNickname().equals("")) {
@@ -210,7 +236,7 @@ public class MeFragment extends Fragment {
 
     }
 
-    public void initLlMyFriends() {
+    public void initLlMyFriend() {
         listUserFriends.clear();
         listUserFriends.addAll(TripGuyUtils.filterListFriends(dataService.getUserFriendList()));
         UserFriend userFriend;
@@ -243,6 +269,46 @@ public class MeFragment extends Fragment {
                 Picasso.with(getActivity()).load(userFriend.getAvatar()).into(civAvatar2);
                 tvNickname2.setText(userFriend.getNickname());
                 tvEmail2.setText(userFriend.getEmail());
+
+                break;
+        }
+    }
+
+    public void initLlMyRating() {
+        myRatingList.clear();
+        myRatingList.addAll(dataService.getMyRatingList());
+        UserRating myRating;
+        switch (myRatingList.size()) {
+            case 0:
+                tvRatingNotAvailable.setVisibility(View.VISIBLE);
+                llMyRating1.setVisibility(View.GONE);
+                llMyRating2.setVisibility(View.GONE);
+                break;
+            case 1:
+                tvRatingNotAvailable.setVisibility(View.GONE);
+                myRating = myRatingList.get(0);
+                llMyRating1.setVisibility(View.VISIBLE);
+                Picasso.with(getActivity()).load(myRating.getLocationPhoto()).into(civLocation1);
+                tvNameLocation1.setText(myRating.getLocationName());
+                tvContent1.setText(myRating.getContent());
+                llMyRating2.setVisibility(View.GONE);
+                break;
+            default:
+                tvFriendNotAvailable.setVisibility(View.GONE);
+
+                tvRatingNotAvailable.setVisibility(View.GONE);
+                myRating = myRatingList.get(0);
+                llMyRating1.setVisibility(View.VISIBLE);
+                Picasso.with(getActivity()).load(myRating.getLocationPhoto()).into(civLocation1);
+                tvNameLocation1.setText(myRating.getLocationName());
+                tvContent1.setText(myRating.getContent());
+
+                tvRatingNotAvailable.setVisibility(View.GONE);
+                myRating = myRatingList.get(1);
+                llMyRating2.setVisibility(View.VISIBLE);
+                Picasso.with(getActivity()).load(myRating.getLocationPhoto()).into(civLocation2);
+                tvNameLocation2.setText(myRating.getLocationName());
+                tvContent2.setText(myRating.getContent());
 
                 break;
         }
@@ -295,12 +361,22 @@ public class MeFragment extends Fragment {
         startActivityForResult(intentUpdate, NOTIFY_UPDATE_REQUEST);
     }
 
-    @Click(R.id.fragment_me_tv_view_more)
-    void onTvViewMoreClick() {
+    @Click(R.id.fragment_me_tv_view_more_my_friend)
+    void onTvViewMoreMyFriendClick() {
         Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
 
         // Send notify to inform that tvViewMore be clicked
-        String fromView = "tvViewMore";
+        String fromView = "tvViewMoreMyFriend";
+        intentUpdate.putExtra("FromView", fromView);
+        startActivity(intentUpdate);
+    }
+
+    @Click(R.id.fragment_me_tv_view_more_my_rating)
+    void onTvViewMoreMyRatingClick() {
+        Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
+
+        // Send notify to inform that tvViewMore be clicked
+        String fromView = "tvViewMoreMyRating";
         intentUpdate.putExtra("FromView", fromView);
         startActivity(intentUpdate);
     }

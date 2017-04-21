@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
@@ -129,12 +129,10 @@ public class EachProvinceDestinationFragment extends Fragment {
 
         setOnClickListener();
 
-        StaggeredGridLayoutManager manager =
-                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         rvProvinceDestinationPhotos.setLayoutManager(manager);
 
-        StaggeredGridLayoutManager manager1 =
-                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+        LinearLayoutManager manager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvUserRatings.setLayoutManager(manager1);
     }
 

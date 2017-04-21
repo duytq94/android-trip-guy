@@ -18,23 +18,19 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.Login.SignInActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDestination.ProvinceDestination;
 import com.dfa.vinatrip.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
@@ -46,6 +42,9 @@ import java.util.List;
 
 @EActivity(R.layout.activity_rating)
 public class RatingActivity extends AppCompatActivity implements Validator.ValidationListener {
+
+    @Bean
+    DataService dataService;
 
     @ViewById(R.id.my_toolbar)
     Toolbar toolbar;
@@ -78,101 +77,23 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
 
     private Validator validator;
     private ActionBar actionBar;
-    private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
     private ProvinceDestination detailDestination;
     private List<UserProfile> listUserProfiles;
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private List<UserRating> listUserRatings;
+    private UserProfile currentUser;
 
     @AfterViews()
     void onCreate() {
         setupActionBar();
         changeColorStatusBar();
-        loadUserProfileFromFirebase();
-        setContentViews();
+        initView();
     }
 
     public void changeColorStatusBar() {
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
         }
-    }
-
-    public void loadUserProfileFromFirebase() {
-        btnSubmit.setVisibility(View.GONE);
-        listUserProfiles = new ArrayList<>();
-        DatabaseReference databaseReference = firebaseDatabase.getReference();
-
-        // If no Internet, this method will not run
-        databaseReference.child("UserProfile").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String avatar, city, introduceYourSelf, nickname, birthday, uid, sex, email;
-
-                city = dataSnapshot.child("city").getValue().toString();
-                introduceYourSelf = dataSnapshot.child("introduceYourSelf").getValue().toString();
-                avatar = dataSnapshot.child("avatar").getValue().toString();
-                nickname = dataSnapshot.child("nickname").getValue().toString();
-                birthday = dataSnapshot.child("birthday").getValue().toString();
-                sex = dataSnapshot.child("sex").getValue().toString();
-                email = dataSnapshot.child("email").getValue().toString();
-                uid = dataSnapshot.getKey();
-
-                UserProfile userProfile = new UserProfile(nickname, avatar, introduceYourSelf,
-                        city, birthday, uid, sex, email);
-                listUserProfiles.add(userProfile);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        // This method to be called after all the onChildAdded() calls have happened
-        databaseReference.child("UserProfile")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // When listUserProfiles done loading, user can submit
-                        btnSubmit.setVisibility(View.VISIBLE);
-
-                        // If user has comment, load old data to views
-                        listUserRatings = new ArrayList<>();
-                        listUserRatings = getIntent().getParcelableArrayListExtra("ListUserRatings");
-                        for (int i = 0; i < listUserRatings.size(); i++) {
-                            UserRating userRating = listUserRatings.get(i);
-                            // If don't have user, content of view will be empty
-                            if (firebaseUser != null) {
-                                if (userRating.getUid().equals(firebaseUser.getUid())) {
-                                    ratingBar.setRating(Float.parseFloat(userRating.getNumStars()));
-                                    etContent.setText(userRating.getContent());
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
     }
 
     public void setupActionBar() {
@@ -187,12 +108,30 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
         }
     }
 
-    public void setContentViews() {
+    public void initView() {
+        currentUser = dataService.getCurrentUser();
+
+        listUserProfiles = new ArrayList<>();
+        listUserProfiles = dataService.getUserProfileList();
+
+        // If user has comment, load old data to views
+        listUserRatings = new ArrayList<>();
+        listUserRatings = getIntent().getParcelableArrayListExtra("ListUserRatings");
+        for (int i = 0; i < listUserRatings.size(); i++) {
+            UserRating userRating = listUserRatings.get(i);
+            // If don't have user, content of view will be empty
+            if (currentUser != null) {
+                if (userRating.getUid().equals(currentUser.getUid())) {
+                    ratingBar.setRating(Float.parseFloat(userRating.getNumStars()));
+                    etContent.setText(userRating.getContent());
+                }
+            }
+        }
+
         validator = new Validator(this);
         validator.setValidationListener(this);
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser != null) {
+        if (currentUser != null) {
             rlMain.setVisibility(View.VISIBLE);
             tvRate.setText("Bình thường");
 
@@ -270,7 +209,7 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
         String date = simpleDateFormat.format(calendar.getTime());
 
         for (int i = 0; i < listUserProfiles.size(); i++) {
-            if (listUserProfiles.get(i).getUid().equals(firebaseUser.getUid())) {
+            if (listUserProfiles.get(i).getUid().equals(currentUser.getUid())) {
                 UserProfile userProfile = listUserProfiles.get(i);
                 UserRating userRating = new UserRating(userProfile.getUid(),
                         userProfile.getNickname(),
@@ -278,13 +217,21 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
                         userProfile.getEmail(),
                         etContent.getText().toString(),
                         (int) ratingBar.getRating() + "",
-                        date);
+                        date,
+                        detailDestination.getName(),
+                        detailDestination.getAvatar());
 
                 databaseReference.child("ProvinceDestinationRating")
                         .child(detailDestination.getProvince())
                         .child(detailDestination.getName())
-                        .child(firebaseUser.getUid())
+                        .child(currentUser.getUid())
                         .setValue(userRating);
+
+                databaseReference.child("UserRating")
+                        .child(currentUser.getUid())
+                        .child(detailDestination.getName())
+                        .setValue(userRating);
+
                 finish();
             }
         }

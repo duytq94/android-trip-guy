@@ -13,6 +13,7 @@ import com.dfa.vinatrip.DataService.FirebaseApi;
 import com.dfa.vinatrip.MainFunction.MainActivity_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
+import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.UserRating;
 import com.dfa.vinatrip.MainFunction.Province.Province;
 import com.dfa.vinatrip.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,6 +46,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private List<Province> provinceList;
     private List<UserProfile> userProfileList;
     private List<UserFriend> userFriendList;
+    private List<UserRating> myRatingList;
     private FirebaseUser firebaseUser;
     private Retrofit retrofit;
     private FirebaseApi firebaseApi;
@@ -89,6 +91,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             loadProvince();
             loadUserProfile();
             loadUserFriend();
+            loadUserRating();
         } else {
             loadOnlyProvince();
         }
@@ -127,7 +130,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 provinceList.addAll(response.body().values());
                 dataService.setProvinceList(provinceList);
                 count++;
-                if (count == 3) {
+                if (count == 4) {
                     startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
                     overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
                     finish();
@@ -155,7 +158,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
                 }
                 count++;
-                if (count == 3) {
+                if (count == 4) {
                     startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
                     overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
                     finish();
@@ -179,7 +182,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     dataService.setUserFriendList(userFriendList);
                 }
                 count++;
-                if (count == 3) {
+                if (count == 4) {
                     startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
                     overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
                     finish();
@@ -188,6 +191,30 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<HashMap<String, UserFriend>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void loadUserRating() {
+        firebaseApi.loadMyRating(firebaseUser.getUid()).enqueue(new Callback<HashMap<String, UserRating>>() {
+            @Override
+            public void onResponse(Call<HashMap<String, UserRating>> call, Response<HashMap<String, UserRating>> response) {
+                myRatingList = new ArrayList<UserRating>();
+                if (response.body() != null) {
+                    myRatingList.addAll(response.body().values());
+                    dataService.setMyRatingList(myRatingList);
+                }
+                count++;
+                if (count == 4) {
+                    startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
+                    overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HashMap<String, UserRating>> call, Throwable t) {
 
             }
         });

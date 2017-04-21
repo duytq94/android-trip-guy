@@ -3,6 +3,7 @@ package com.dfa.vinatrip.DataService;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.Plan.Plan;
+import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.UserRating;
 import com.dfa.vinatrip.MainFunction.Province.Province;
 
 import org.androidannotations.annotations.EBean;
@@ -18,12 +19,14 @@ public class DataService {
     private List<UserProfile> userProfileList = new ArrayList<>();
     private List<UserFriend> userFriendList = new ArrayList<>();
     private List<Province> provinceList = new ArrayList<>();
+    private List<UserRating> myRatingList = new ArrayList<>();
     private List<Plan> planList = new ArrayList<>();
     private UserProfile currentUser;
 
     public void clearData() {
+        userProfileList.clear();
         userFriendList.clear();
-        userFriendList.clear();
+        myRatingList.clear();
         planList.clear();
         currentUser = null;
     }
@@ -71,6 +74,11 @@ public class DataService {
         this.provinceList.addAll(provinceList);
     }
 
+    public void setMyRatingList(List<UserRating> myRatingList) {
+        this.myRatingList.clear();
+        this.myRatingList.addAll(myRatingList);
+    }
+
     public void setPlanList(List<Plan> planList) {
         this.planList.clear();
         this.planList.addAll(planList);
@@ -86,6 +94,10 @@ public class DataService {
 
     public List<Province> getProvinceList() {
         return provinceList;
+    }
+
+    public List<UserRating> getMyRatingList() {
+        return myRatingList;
     }
 
     public List<Plan> getPlanList() {

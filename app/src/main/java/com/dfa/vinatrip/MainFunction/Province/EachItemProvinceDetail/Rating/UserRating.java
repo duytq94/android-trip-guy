@@ -4,12 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class UserRating implements Parcelable {
-    private String uid, nickname, avatar, email, content, numStars, date;
+    private String uid, nickname, avatar, email, content, numStars, date, locationName, locationPhoto;
 
     public UserRating() {
     }
 
-    public UserRating(String uid, String nickname, String avatar, String email, String content, String numStars, String date) {
+    public UserRating(String uid, String nickname, String avatar, String email, String content,
+                      String numStars, String date, String locationName, String locationPhoto) {
         this.uid = uid;
         this.nickname = nickname;
         this.avatar = avatar;
@@ -17,6 +18,8 @@ public class UserRating implements Parcelable {
         this.content = content;
         this.numStars = numStars;
         this.date = date;
+        this.locationName = locationName;
+        this.locationPhoto = locationPhoto;
     }
 
     public String getUid() {
@@ -41,6 +44,22 @@ public class UserRating implements Parcelable {
 
     public String getNumStars() {
         return numStars;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
+
+    public String getLocationPhoto() {
+        return locationPhoto;
+    }
+
+    public void setLocationPhoto(String locationPhoto) {
+        this.locationPhoto = locationPhoto;
     }
 
     public String getDate() {

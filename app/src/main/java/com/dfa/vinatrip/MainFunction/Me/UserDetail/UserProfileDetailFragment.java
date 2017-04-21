@@ -9,6 +9,8 @@ import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.MakeFriendFragment
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.MakeFriendFragment_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MyFriend.MyFriendFragment;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MyFriend.MyFriendFragment_;
+import com.dfa.vinatrip.MainFunction.Me.UserDetail.MyRating.MyRatingFragment;
+import com.dfa.vinatrip.MainFunction.Me.UserDetail.MyRating.MyRatingFragment_;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.UpdateProfile.UpdateUserProfileFragment;
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.UpdateProfile.UpdateUserProfileFragment_;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
@@ -37,6 +39,7 @@ public class UserProfileDetailFragment extends Fragment {
     private UpdateUserProfileFragment updateUserProfileFragment;
     private MakeFriendFragment makeFriendFragment;
     private MyFriendFragment myFriendFragment;
+    private MyRatingFragment myRatingFragment;
 
     @AfterViews
     void onCreateView() {
@@ -54,8 +57,11 @@ public class UserProfileDetailFragment extends Fragment {
             case "tvMakeFriend":
                 vpMeDetail.setCurrentItem(1);
                 break;
-            case "tvViewMore":
+            case "tvViewMoreMyFriend":
                 vpMeDetail.setCurrentItem(2);
+                break;
+            case "tvViewMoreMyRating":
+                vpMeDetail.setCurrentItem(3);
                 break;
         }
     }
@@ -66,10 +72,12 @@ public class UserProfileDetailFragment extends Fragment {
         updateUserProfileFragment = new UpdateUserProfileFragment_();
         makeFriendFragment = new MakeFriendFragment_();
         myFriendFragment = new MyFriendFragment_();
+        myRatingFragment = new MyRatingFragment_();
 
         adapter.addFragment(updateUserProfileFragment, "CHỈNH SỬA");
         adapter.addFragment(makeFriendFragment, "THÊM BẠN");
         adapter.addFragment(myFriendFragment, "BẠN TÔI");
+        adapter.addFragment(myRatingFragment, "ĐÁNH GIÁ");
 
         vpMeDetail.setAdapter(adapter);
     }

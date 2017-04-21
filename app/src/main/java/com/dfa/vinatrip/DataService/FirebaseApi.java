@@ -2,6 +2,7 @@ package com.dfa.vinatrip.DataService;
 
 import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
+import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.UserRating;
 import com.dfa.vinatrip.MainFunction.Province.Province;
 
 import java.util.HashMap;
@@ -19,4 +20,7 @@ public interface FirebaseApi {
 
     @GET("/UserFriend/{userId}.json")
     Call<HashMap<String, UserFriend>> loadUserFriend(@Path("userId") String userId);
+
+    @GET("/UserRating/{userId}.json")
+    Call<HashMap<String, UserRating>> loadMyRating(@Path("userId") String userId);
 }
