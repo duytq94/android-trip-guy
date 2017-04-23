@@ -205,17 +205,28 @@ public class MeFragment extends Fragment {
         initLlMyFriend();
         dataService.setOnChangeUserFriendList(new DataService.OnChangeUserFriendList() {
             @Override
-            public void onAddItem() {
+            public void onAddFriend() {
                 initLlMyFriend();
             }
 
             @Override
-            public void onRemoveItem() {
+            public void onRemoveFriend() {
                 initLlMyFriend();
             }
         });
 
         initLlMyRating();
+        dataService.setOnChangeMyRatingList(new DataService.OnChangeMyRatingList() {
+            @Override
+            public void onUpdateRating() {
+                initLlMyRating();
+            }
+
+            @Override
+            public void onAddRating() {
+                initLlMyRating();
+            }
+        });
 
         listUserProfiles.addAll(dataService.getUserProfileList());
         if (!currentUser.getNickname().equals("")) {
@@ -419,4 +430,5 @@ public class MeFragment extends Fragment {
 
         }
     };
+
 }

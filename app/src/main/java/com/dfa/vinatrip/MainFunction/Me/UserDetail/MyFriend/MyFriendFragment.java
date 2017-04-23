@@ -42,14 +42,14 @@ public class MyFriendFragment extends Fragment {
 
         dataService.setOnChangeUserFriendList(new DataService.OnChangeUserFriendList() {
             @Override
-            public void onAddItem() {
+            public void onAddFriend() {
                 listUserFriends.clear();
                 listUserFriends.addAll(TripGuyUtils.filterListFriends(dataService.getUserFriendList()));
                 listFriendVerticalAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onRemoveItem() {
+            public void onRemoveFriend() {
                 listUserFriends.clear();
                 listUserFriends.addAll(TripGuyUtils.filterListFriends(dataService.getUserFriendList()));
                 listFriendVerticalAdapter.notifyDataSetChanged();

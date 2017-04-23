@@ -23,6 +23,9 @@ public class DataService {
     private List<Plan> planList = new ArrayList<>();
     private UserProfile currentUser;
 
+    private OnChangeUserFriendList onChangeUserFriendList;
+    private OnChangeMyRatingList onChangeMyRatingList;
+
     public void clearData() {
         userProfileList.clear();
         userFriendList.clear();
@@ -46,17 +49,34 @@ public class DataService {
             }
         }
         userFriendList.add(newUserFriend);
-        onChangeUserFriendList.onAddItem();
+        onChangeUserFriendList.onAddFriend();
     }
 
     public void removeFromUserFriendList(String uid) {
         for (int i = 0; i < userFriendList.size(); i++) {
             if (userFriendList.get(i).getFriendId().equals(uid)) {
                 userFriendList.remove(i);
-                onChangeUserFriendList.onRemoveItem();
+                onChangeUserFriendList.onRemoveFriend();
                 break;
             }
         }
+    }
+
+    public void addToMyRatingList(UserRating myRating) {
+        myRatingList.add(myRating);
+        onChangeMyRatingList.onAddRating();
+        onChangeMyRatingList.onAddRating();
+    }
+
+    public void updateToMyRatingList(UserRating myRating) {
+        for (int i = 0; i < myRatingList.size(); i++) {
+            if (myRatingList.get(i).getLocationName().equals(myRating.getLocationName())) {
+                myRatingList.remove(i);
+                break;
+            }
+        }
+        myRatingList.add(myRating);
+        onChangeMyRatingList.onUpdateRating();
     }
 
     public void setUserProfileList(List<UserProfile> userProfileList) {
@@ -104,15 +124,23 @@ public class DataService {
         return planList;
     }
 
-    private OnChangeUserFriendList onChangeUserFriendList;
-
     public void setOnChangeUserFriendList(OnChangeUserFriendList onChangeUserFriendList) {
         this.onChangeUserFriendList = onChangeUserFriendList;
     }
 
-    public interface OnChangeUserFriendList {
-        void onAddItem();
+    public void setOnChangeMyRatingList(OnChangeMyRatingList onChangeMyRatingList) {
+        this.onChangeMyRatingList = onChangeMyRatingList;
+    }
 
-        void onRemoveItem();
+    public interface OnChangeUserFriendList {
+        void onAddFriend();
+
+        void onRemoveFriend();
+    }
+
+    public interface OnChangeMyRatingList {
+        void onUpdateRating();
+
+        void onAddRating();
     }
 }

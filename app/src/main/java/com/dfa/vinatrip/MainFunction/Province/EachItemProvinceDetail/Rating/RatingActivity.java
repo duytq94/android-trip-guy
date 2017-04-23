@@ -69,9 +69,9 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
     private ActionBar actionBar;
     private DatabaseReference databaseReference;
     private ProvinceDestination detailDestination;
-    private List<UserProfile> listUserProfiles;
     private List<UserRating> listUserRatings;
     private UserProfile currentUser;
+    private boolean isNewOrUpdate;
 
     @AfterViews()
     void onCreate() {
@@ -99,22 +99,22 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
     }
 
     public void initView() {
+        isNewOrUpdate = true;
         currentUser = dataService.getCurrentUser();
-
-        listUserProfiles = new ArrayList<>();
-        listUserProfiles = dataService.getUserProfileList();
 
         // If user has comment, load old data to views
         listUserRatings = new ArrayList<>();
         listUserRatings = getIntent().getParcelableArrayListExtra("ListUserRatings");
         for (int i = 0; i < listUserRatings.size(); i++) {
-            UserRating userRating = listUserRatings.get(i);
+            UserRating myRating = listUserRatings.get(i);
             // If don't have user, content of view will be empty
             if (currentUser != null) {
-                if (userRating.getUid().equals(currentUser.getUid())) {
-                    ratingBar.setRating(Float.parseFloat(userRating.getNumStars()));
-                    etContent.setText(userRating.getContent());
+                if (myRating.getUid().equals(currentUser.getUid())) {
+                    ratingBar.setRating(Float.parseFloat(myRating.getNumStars()));
+                    etContent.setText(myRating.getContent());
                     etContent.setSelection(etContent.getText().length());
+                    setTvRate(Integer.parseInt((myRating.getNumStars())));
+                    isNewOrUpdate = false;
                 }
             }
         }
@@ -124,7 +124,6 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
 
         if (currentUser != null) {
             llMain.setVisibility(View.VISIBLE);
-            tvRate.setText("Bình thường");
 
             detailDestination = getIntent().getParcelableExtra("DetailDestination");
 
@@ -133,28 +132,32 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
             ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 @Override
                 public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                    switch ((int) rating) {
-                        case 1:
-                            tvRate.setText("Rất tệ");
-                            break;
-                        case 2:
-                            tvRate.setText("Tệ");
-                            break;
-                        case 3:
-                            tvRate.setText("Bình thường");
-                            break;
-                        case 4:
-                            tvRate.setText("Tuyệt");
-                            break;
-                        case 5:
-                            tvRate.setText("Rất tuyệt");
-                            break;
-                    }
+                    setTvRate((int) rating);
                 }
             });
         } else {
             startActivity(new Intent(RatingActivity.this, SignInActivity_.class));
             finish();
+        }
+    }
+
+    public void setTvRate(int rating) {
+        switch (rating) {
+            case 1:
+                tvRate.setText("Rất tệ");
+                break;
+            case 2:
+                tvRate.setText("Tệ");
+                break;
+            case 3:
+                tvRate.setText("Bình thường");
+                break;
+            case 4:
+                tvRate.setText("Tuyệt");
+                break;
+            case 5:
+                tvRate.setText("Rất tuyệt");
+                break;
         }
     }
 
@@ -214,33 +217,35 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String date = simpleDateFormat.format(calendar.getTime());
 
-        for (int i = 0; i < listUserProfiles.size(); i++) {
-            if (listUserProfiles.get(i).getUid().equals(currentUser.getUid())) {
-                UserProfile userProfile = listUserProfiles.get(i);
-                UserRating userRating = new UserRating(userProfile.getUid(),
-                        userProfile.getNickname(),
-                        userProfile.getAvatar(),
-                        userProfile.getEmail(),
-                        etContent.getText().toString(),
-                        (int) ratingBar.getRating() + "",
-                        date,
-                        detailDestination.getName(),
-                        detailDestination.getAvatar());
+        UserProfile currentUser = dataService.getCurrentUser();
+        UserRating myRating = new UserRating(currentUser.getUid(),
+                currentUser.getNickname(),
+                currentUser.getAvatar(),
+                currentUser.getEmail(),
+                etContent.getText().toString(),
+                (int) ratingBar.getRating() + "",
+                date,
+                detailDestination.getName(),
+                detailDestination.getAvatar());
 
-                databaseReference.child("ProvinceDestinationRating")
-                        .child(detailDestination.getProvince())
-                        .child(detailDestination.getName())
-                        .child(currentUser.getUid())
-                        .setValue(userRating);
+        databaseReference.child("ProvinceDestinationRating")
+                .child(detailDestination.getProvince())
+                .child(detailDestination.getName())
+                .child(currentUser.getUid())
+                .setValue(myRating);
 
-                databaseReference.child("UserRating")
-                        .child(currentUser.getUid())
-                        .child(detailDestination.getName())
-                        .setValue(userRating);
+        databaseReference.child("UserRating")
+                .child(currentUser.getUid())
+                .child(detailDestination.getName())
+                .setValue(myRating);
 
-                finish();
-            }
+        if (isNewOrUpdate) {
+            dataService.addToMyRatingList(myRating);
+        } else {
+            dataService.updateToMyRatingList(myRating);
         }
+
+        finish();
     }
 
     @Override

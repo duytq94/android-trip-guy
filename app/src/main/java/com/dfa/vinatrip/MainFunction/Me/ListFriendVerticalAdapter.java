@@ -18,17 +18,6 @@ public class ListFriendVerticalAdapter extends RecyclerView.Adapter<ListFriendVe
     private LayoutInflater layoutInflater;
     private Context context;
     private List<UserFriend> userFriendList;
-    private TextView tvFriendNotAvailable;
-
-    public ListFriendVerticalAdapter(Context context, List<UserFriend> userFriendList, TextView tvFriendNotAvailable) {
-        this.layoutInflater = LayoutInflater.from(context);
-        this.context = context;
-        this.tvFriendNotAvailable = tvFriendNotAvailable;
-        this.userFriendList = userFriendList;
-
-        if (this.userFriendList.size() == 0) this.tvFriendNotAvailable.setVisibility(View.VISIBLE);
-        else this.tvFriendNotAvailable.setVisibility(View.GONE);
-    }
 
     public ListFriendVerticalAdapter(Context context, List<UserFriend> userFriendList) {
         this.layoutInflater = LayoutInflater.from(context);
