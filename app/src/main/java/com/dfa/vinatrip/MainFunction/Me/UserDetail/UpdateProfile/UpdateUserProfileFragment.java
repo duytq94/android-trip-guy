@@ -227,15 +227,6 @@ public class UpdateUserProfileFragment extends Fragment {
                 });
     }
 
-    public Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
-        float ratio = Math.min(
-                maxImageSize / realImage.getWidth(),
-                maxImageSize / realImage.getHeight());
-        int width = Math.round(ratio * realImage.getWidth());
-        int height = Math.round(ratio * realImage.getHeight());
-
-        return Bitmap.createScaledBitmap(realImage, width, height, filter);
-    }
 
     @Click
     void fragment_update_user_profile_btn_done() {
@@ -324,7 +315,7 @@ public class UpdateUserProfileFragment extends Fragment {
     private Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            bitmap = scaleDown(bitmap, 300, true);
+            bitmap = TripGuyUtils.scaleDown(bitmap, 300, true);
             try {
                 String realPath = TripGuyUtils.getRealPath(getActivity(), uri);
                 ExifInterface exif = new ExifInterface(realPath);
@@ -334,7 +325,7 @@ public class UpdateUserProfileFragment extends Fragment {
                     int rotationInDegrees = exifToDegrees(orientation);
                     matrix.preRotate(rotationInDegrees);
                     adjustedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-                    adjustedBitmap = scaleDown(adjustedBitmap, 300, true);
+                    adjustedBitmap = TripGuyUtils.scaleDown(adjustedBitmap, 300, true);
                 }
             } catch (Exception e) {
             }

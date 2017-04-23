@@ -14,8 +14,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.DataService.DataService;
@@ -52,8 +52,8 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
     @ViewById(R.id.activity_rating_btn_submit)
     Button btnSubmit;
 
-    @ViewById(R.id.activity_rating_rl_main)
-    RelativeLayout rlMain;
+    @ViewById(R.id.activity_rating_ll_main)
+    LinearLayout llMain;
 
     @ViewById(R.id.activity_rating_rating_bar)
     RatingBar ratingBar;
@@ -64,16 +64,6 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
     @NotEmpty
     @ViewById(R.id.activity_rating_et_content)
     EditText etContent;
-
-    @Click
-    void activity_rating_btn_submit() {
-        validator.validate();
-    }
-
-    @Click
-    void activity_rating_btn_cancel() {
-        finish();
-    }
 
     private Validator validator;
     private ActionBar actionBar;
@@ -124,6 +114,7 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
                 if (userRating.getUid().equals(currentUser.getUid())) {
                     ratingBar.setRating(Float.parseFloat(userRating.getNumStars()));
                     etContent.setText(userRating.getContent());
+                    etContent.setSelection(etContent.getText().length());
                 }
             }
         }
@@ -132,7 +123,7 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
         validator.setValidationListener(this);
 
         if (currentUser != null) {
-            rlMain.setVisibility(View.VISIBLE);
+            llMain.setVisibility(View.VISIBLE);
             tvRate.setText("Bình thường");
 
             detailDestination = getIntent().getParcelableExtra("DetailDestination");
@@ -165,6 +156,21 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
             startActivity(new Intent(RatingActivity.this, SignInActivity_.class));
             finish();
         }
+    }
+
+    @Click
+    void activity_rating_btn_submit() {
+        validator.validate();
+    }
+
+    @Click
+    void activity_rating_btn_cancel() {
+        finish();
+    }
+
+    @Click(R.id.activity_rating_btn_clear)
+    void onBtnClearClick() {
+        etContent.setText(null);
     }
 
     @Override

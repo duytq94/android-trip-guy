@@ -8,7 +8,7 @@
         android:id="@+id/fragment_my_friend_rv_list_friends"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp" />
+        android:padding="@dimen/recycler_view_padding" />
 
     <LinearLayout
         android:id="@+id/fragment_my_friend_ll_friend_not_available"
