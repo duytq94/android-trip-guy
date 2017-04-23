@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.UserRating;
+import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
 
 import org.androidannotations.annotations.AfterViews;
@@ -54,5 +55,18 @@ public class MyRatingFragment extends Fragment {
         DividerItemDecoration decoration = new DividerItemDecoration(rvListRatings.getContext(), manager.getOrientation());
         rvListRatings.addItemDecoration(decoration);
         rvListRatings.setLayoutManager(manager);
+
+        rvListRatings.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(),
+                rvListRatings, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+        }));
     }
 }
