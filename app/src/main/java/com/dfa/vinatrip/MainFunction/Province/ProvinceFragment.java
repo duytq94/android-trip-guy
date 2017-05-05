@@ -128,11 +128,8 @@ public class ProvinceFragment extends Fragment {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(getActivity(), ProvinceDetailActivity_.class);
-
                         // Send Province to ProvinceDetailActivity
-                        intent.putExtra("Province", provinceList.get(position));
-                        getActivity().startActivity(intent);
+                        ProvinceDetailActivity_.intent(getActivity()).province(provinceList.get(position)).start();
                     }
 
                     @Override

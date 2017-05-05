@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me.UserDetail.UpdateProfile;
+package com.dfa.vinatrip.MainFunction.Me.MeDetail.UpdateProfile;
 
 import android.Manifest;
 import android.app.Activity;

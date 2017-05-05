@@ -3,8 +3,8 @@ package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDestinatio
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachItemProvinceDetailActivity_;
@@ -135,9 +135,8 @@ public class ProvinceDestinationFragment extends Fragment {
             }
         });
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        rvDestinations.setLayoutManager(staggeredGridLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvDestinations.setLayoutManager(linearLayoutManager);
 
         // Catch event click on item of RecyclerView
         rvDestinations.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(),

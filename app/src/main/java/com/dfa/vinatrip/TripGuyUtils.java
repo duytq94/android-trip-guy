@@ -14,7 +14,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
+import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.UserFriend;
 
 import java.util.List;
 

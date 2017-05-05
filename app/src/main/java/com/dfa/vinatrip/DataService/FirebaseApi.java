@@ -1,6 +1,6 @@
 package com.dfa.vinatrip.DataService;
 
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
+import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.UserRating;
 import com.dfa.vinatrip.MainFunction.Province.Province;

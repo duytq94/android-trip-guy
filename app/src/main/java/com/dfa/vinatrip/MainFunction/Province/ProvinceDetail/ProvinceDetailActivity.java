@@ -24,6 +24,7 @@ import com.dfa.vinatrip.R;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 // Control when user click item about hotel, description...
@@ -39,15 +40,15 @@ public class ProvinceDetailActivity extends AppCompatActivity {
     @ViewById(R.id.activity_province_detail_iv_header)
     ImageView ivHeader;
 
+    @Extra
+    Province province;
+
     private android.support.v7.app.ActionBar actionBar;
-    private Province province;
     private IntentFilter intentFilter;
     private BroadcastReceiver broadcastReceiver;
 
     @AfterViews
     void onCreate() {
-        // Get Province from ProvinceFragment
-        province = getIntent().getParcelableExtra("Province");
         ProvinceDetailFragment provinceDetailFragment = new ProvinceDetailFragment_();
         Bundle bundle = new Bundle();
         bundle.putParcelable("Province", province);

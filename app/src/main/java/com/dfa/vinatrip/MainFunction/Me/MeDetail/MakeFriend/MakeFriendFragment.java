@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend;
+package com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend;
 
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;

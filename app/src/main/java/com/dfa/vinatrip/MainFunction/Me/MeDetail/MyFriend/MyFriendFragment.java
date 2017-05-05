@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me.UserDetail.MyFriend;
+package com.dfa.vinatrip.MainFunction.Me.MeDetail.MyFriend;
 
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 
 import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.MainFunction.Me.ListFriendVerticalAdapter;
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
+import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.TripGuyUtils;
 

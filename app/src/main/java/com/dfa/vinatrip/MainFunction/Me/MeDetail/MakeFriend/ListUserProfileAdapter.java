@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend;
+package com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend;
 
 import android.content.Context;
 import android.content.DialogInterface;

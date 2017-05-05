@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me.UserDetail.MyRating;
+package com.dfa.vinatrip.MainFunction.Me.MeDetail.MyRating;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

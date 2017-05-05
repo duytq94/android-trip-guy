@@ -1,6 +1,5 @@
 package com.dfa.vinatrip.SplashScreen;
 
-import android.content.Intent;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,7 @@ import android.widget.ImageView;
 import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.DataService.FirebaseApi;
 import com.dfa.vinatrip.MainFunction.MainActivity_;
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
+import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.UserRating;
 import com.dfa.vinatrip.MainFunction.Province.Province;
@@ -110,7 +109,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 provinceList = new ArrayList<>();
                 provinceList.addAll(response.body().values());
                 dataService.setProvinceList(provinceList);
-                startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
+                MainActivity_.intent(SplashScreenActivity.this).start();
                 overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
                 finish();
             }
@@ -131,7 +130,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 dataService.setProvinceList(provinceList);
                 count++;
                 if (count == 4) {
-                    startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
+                    MainActivity_.intent(SplashScreenActivity.this).start();
                     overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
                     finish();
                 }
@@ -159,7 +158,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
                 count++;
                 if (count == 4) {
-                    startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
+                    MainActivity_.intent(SplashScreenActivity.this).start();
                     overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
                     finish();
                 }
@@ -183,7 +182,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
                 count++;
                 if (count == 4) {
-                    startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
+                    MainActivity_.intent(SplashScreenActivity.this).start();
                     overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
                     finish();
                 }
@@ -207,7 +206,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
                 count++;
                 if (count == 4) {
-                    startActivity(new Intent(SplashScreenActivity.this, MainActivity_.class));
+                    MainActivity_.intent(SplashScreenActivity.this).start();
                     overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
                     finish();
                 }

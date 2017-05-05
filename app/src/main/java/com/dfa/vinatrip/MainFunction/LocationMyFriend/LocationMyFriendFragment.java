@@ -25,7 +25,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.dfa.vinatrip.DataService.DataService;
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.UserFriend;
+import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
 import com.google.android.gms.maps.CameraUpdateFactory;

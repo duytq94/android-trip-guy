@@ -43,7 +43,7 @@
             android:name=".Login.ResetPasswordActivity_"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".MainFunction.Me.UserDetail.UserProfileDetailActivity_"
+            android:name=".MainFunction.Me.MeDetail.UserProfileDetailActivity_"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".MainFunction.Province.EachItemProvinceDetail.Rating.RatingActivity_" />
         <activity android:name=".MainFunction.Province.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity_" />

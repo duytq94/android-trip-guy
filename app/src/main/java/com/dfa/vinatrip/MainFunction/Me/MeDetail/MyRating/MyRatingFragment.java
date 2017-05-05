@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me.UserDetail.MyRating;
+package com.dfa.vinatrip.MainFunction.Me.MeDetail.MyRating;
 
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import com.dfa.vinatrip.DataService.DataService;
 import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.UserRating;
+import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDetailActivity_;
 import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
 
@@ -60,6 +61,7 @@ public class MyRatingFragment extends Fragment {
                 rvListRatings, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                UserRating myRating = myRatingList.get(position);
 
             }
 

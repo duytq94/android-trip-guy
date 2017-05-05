@@ -1,18 +1,18 @@
-package com.dfa.vinatrip.MainFunction.Me.UserDetail;
+package com.dfa.vinatrip.MainFunction.Me.MeDetail;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
 import com.dfa.vinatrip.DataService.DataService;
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.MakeFriendFragment;
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.MakeFriend.MakeFriendFragment_;
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.MyFriend.MyFriendFragment;
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.MyFriend.MyFriendFragment_;
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.MyRating.MyRatingFragment;
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.MyRating.MyRatingFragment_;
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.UpdateProfile.UpdateUserProfileFragment;
-import com.dfa.vinatrip.MainFunction.Me.UserDetail.UpdateProfile.UpdateUserProfileFragment_;
+import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.MakeFriendFragment;
+import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.MakeFriendFragment_;
+import com.dfa.vinatrip.MainFunction.Me.MeDetail.MyFriend.MyFriendFragment;
+import com.dfa.vinatrip.MainFunction.Me.MeDetail.MyFriend.MyFriendFragment_;
+import com.dfa.vinatrip.MainFunction.Me.MeDetail.MyRating.MyRatingFragment;
+import com.dfa.vinatrip.MainFunction.Me.MeDetail.MyRating.MyRatingFragment_;
+import com.dfa.vinatrip.MainFunction.Me.MeDetail.UpdateProfile.UpdateUserProfileFragment;
+import com.dfa.vinatrip.MainFunction.Me.MeDetail.UpdateProfile.UpdateUserProfileFragment_;
 import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.MainFunction.ViewPagerSwipeFragmentAdapter;
 import com.dfa.vinatrip.R;

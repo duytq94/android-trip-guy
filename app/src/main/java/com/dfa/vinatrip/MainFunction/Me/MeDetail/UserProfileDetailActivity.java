@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me.UserDetail;
+package com.dfa.vinatrip.MainFunction.Me.MeDetail;
 
 import android.app.Activity;
 import android.content.Context;
