@@ -1,10 +1,9 @@
 package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceHotel;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachItemProvinceDetailActivity_;
@@ -71,14 +70,14 @@ public class ProvinceHotelFragment extends Fragment {
                 mail = dataSnapshot.child("mail").getValue().toString();
                 website = dataSnapshot.child("website").getValue().toString();
                 latitude = Float.parseFloat(dataSnapshot.child("latitude").getValue()
-                        .toString());
+                                                        .toString());
                 longitude = Float.parseFloat(dataSnapshot.child("longitude").getValue()
-                        .toString());
+                                                         .toString());
                 province = dataSnapshot.child("province").getValue().toString();
 
                 ProvinceHotel provinceHotel = new
                         ProvinceHotel(name, rate, avatar, price, address, description,
-                        phone, mail, website, province, latitude, longitude);
+                                      phone, mail, website, province, latitude, longitude);
 
                 provinceHotelList.add(provinceHotel);
                 provinceHotelAdapter.notifyDataSetChanged();
@@ -136,37 +135,34 @@ public class ProvinceHotelFragment extends Fragment {
             }
         });
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        rvHotels.setLayoutManager(staggeredGridLayoutManager);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvHotels.setLayoutManager(manager);
 
         // Catch event click on item of RecyclerView
-        rvHotels.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), rvHotels,
-                new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Intent intentToEachHotel =
-                                new Intent(getActivity(), EachItemProvinceDetailActivity_.class);
+        rvHotels.addOnItemTouchListener(new RecyclerItemClickListener(
+                getActivity(), rvHotels, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view,
+                                    int position) {
+                // Send the Hotel be chosen to EachItemProvinceDetailActivity
+                EachItemProvinceDetailActivity_.intent(getActivity())
+                                               .detailHotel(provinceHotelList.get(position)).start();
+            }
 
-                        // Send the Hotel be chosen to EachItemProvinceDetailActivity
-                        intentToEachHotel.putExtra("DetailHotel", provinceHotelList.get(position));
-                        getActivity().startActivity(intentToEachHotel);
-                    }
+            @Override
+            public void onLongItemClick(View view, int position) {
 
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-
-                    }
-                }));
+            }
+        }));
     }
 
     public void loadProvinceHotel() {
         // if no Internet, this method will not run
         databaseReference.child("ProvinceHotel").child(province.getName())
-                .addChildEventListener(childEventListener);
+                         .addChildEventListener(childEventListener);
 
         databaseReference.child("ProvinceHotel").child(province.getName())
-                .addListenerForSingleValueEvent(valueEventListener);
+                         .addListenerForSingleValueEvent(valueEventListener);
     }
 
     @Override

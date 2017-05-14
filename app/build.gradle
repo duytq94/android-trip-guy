@@ -118,10 +118,4 @@ dependencies {
     compile 'com.github.arimorty:floatingsearchview:2.0.3'
 }
 // this line has to put out of dependencies so app can run Google Map
-dependencies {
-    compile 'com.android.support.constraint:constraint-layout:+'
-}
-dependencies {
-    compile 'com.android.support.constraint:constraint-layout:+'
-}
 apply plugin: 'com.google.gms.google-services'

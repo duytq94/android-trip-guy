@@ -1,6 +1,5 @@
 package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDestination;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -69,15 +68,15 @@ public class ProvinceDestinationFragment extends Fragment {
                 scheduleAndFee = dataSnapshot.child("scheduleAndFee").getValue().toString();
                 timeSpend = dataSnapshot.child("timeSpend").getValue().toString();
                 latitude = Float.parseFloat(dataSnapshot.child("latitude").getValue()
-                        .toString());
+                                                        .toString());
                 longitude = Float.parseFloat(dataSnapshot.child("longitude").getValue()
-                        .toString());
+                                                         .toString());
                 province = dataSnapshot.child("province").getValue().toString();
 
                 ProvinceDestination provinceDestination = new
                         ProvinceDestination(name, avatar, address, description,
-                        typeOfTourism, scheduleAndFee, timeSpend, province, latitude,
-                        longitude);
+                                            typeOfTourism, scheduleAndFee, timeSpend, province, latitude,
+                                            longitude);
 
                 provinceDestinationList.add(provinceDestination);
                 provinceDestinationAdapter.notifyDataSetChanged();
@@ -135,20 +134,17 @@ public class ProvinceDestinationFragment extends Fragment {
             }
         });
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvDestinations.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvDestinations.setLayoutManager(manager);
 
         // Catch event click on item of RecyclerView
-        rvDestinations.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(),
-                rvDestinations, new RecyclerItemClickListener.OnItemClickListener() {
+        rvDestinations.addOnItemTouchListener(new RecyclerItemClickListener(
+                getActivity(), rvDestinations, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intentToEachDestination =
-                        new Intent(getActivity(), EachItemProvinceDetailActivity_.class);
-
                 // Send the Destination be chosen to EachItemProvinceDetailActivity
-                intentToEachDestination.putExtra("DetailDestination", provinceDestinationList.get(position));
-                getActivity().startActivity(intentToEachDestination);
+                EachItemProvinceDetailActivity_.intent(getActivity())
+                                               .detailDestination(provinceDestinationList.get(position)).start();
             }
 
             @Override
@@ -161,10 +157,10 @@ public class ProvinceDestinationFragment extends Fragment {
     public void loadProvinceDestination() {
         // if no Internet, this method will not run
         databaseReference.child("ProvinceDestination").child(province.getName())
-                .addChildEventListener(childEventListener);
+                         .addChildEventListener(childEventListener);
 
         databaseReference.child("ProvinceDestination").child(province.getName())
-                .addListenerForSingleValueEvent(valueEventListener);
+                         .addListenerForSingleValueEvent(valueEventListener);
     }
 
     @Override

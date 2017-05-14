@@ -21,6 +21,7 @@ import com.dfa.vinatrip.R;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.activity_each_item_province_detail)
@@ -36,6 +37,13 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
     private EachProvinceDestinationFragment eachProvinceDestinationFragment;
     private String titleActionBar;
 
+    @Extra
+    ProvinceHotel detailHotel;
+    @Extra
+    ProvinceDestination detailDestination;
+    @Extra
+    ProvinceFood detailFood;
+
     @AfterViews()
     void onCreate() {
         selectFragment();
@@ -45,8 +53,7 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
 
     public void selectFragment() {
         // Get the Hotel be chosen from ProvinceHotelFragment
-        if (getIntent().getParcelableExtra("DetailHotel") != null) {
-            ProvinceHotel detailHotel = getIntent().getParcelableExtra("DetailHotel");
+        if (detailHotel != null) {
             titleActionBar = detailHotel.getName();
             Bundle bundleHotel = new Bundle();
             bundleHotel.putParcelable("DetailHotel", detailHotel);
@@ -61,10 +68,8 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
         }
 
         // Get the Destination be chosen from ProvinceDestinationFragment
-        if (getIntent().getParcelableExtra("DetailDestination") != null) {
-            ProvinceDestination detailDestination = getIntent().getParcelableExtra("DetailDestination");
+        if (detailDestination != null) {
             titleActionBar = detailDestination.getName();
-
 
             Bundle bundleDestination = new Bundle();
             bundleDestination.putParcelable("DetailDestination", detailDestination);
@@ -78,9 +83,8 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
             return;
         }
 
-        if (getIntent().getParcelableExtra("DetailFood") != null) {
+        if (detailFood != null) {
             // Get the Food be chosen from ProvinceFoodFragment
-            ProvinceFood detailFood = getIntent().getParcelableExtra("DetailFood");
             titleActionBar = detailFood.getName();
 
             Bundle bundleFood = new Bundle();

@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.dfa.vinatrip.DataService.DataService;
+import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachItemProvinceDetailActivity_;
 import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.UserRating;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDetailActivity_;
 import com.dfa.vinatrip.MainFunction.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
 
@@ -53,16 +53,27 @@ public class MyRatingFragment extends Fragment {
         rvListRatings.setAdapter(myRatingAdapter);
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        DividerItemDecoration decoration = new DividerItemDecoration(rvListRatings.getContext(), manager.getOrientation());
+        DividerItemDecoration decoration = new DividerItemDecoration(rvListRatings.getContext(),
+                                                                     manager.getOrientation());
         rvListRatings.addItemDecoration(decoration);
         rvListRatings.setLayoutManager(manager);
 
-        rvListRatings.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(),
-                rvListRatings, new RecyclerItemClickListener.OnItemClickListener() {
+        rvListRatings.addOnItemTouchListener(new RecyclerItemClickListener(
+                getActivity(), rvListRatings, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 UserRating myRating = myRatingList.get(position);
-
+                switch (myRating.getType()) {
+                    case "hotel":
+                        EachItemProvinceDetailActivity_.intent(getActivity()).start();
+                        break;
+                    case "destination":
+                        EachItemProvinceDetailActivity_.intent(getActivity()).start();
+                        break;
+                    case "food":
+                        EachItemProvinceDetailActivity_.intent(getActivity()).start();
+                        break;
+                }
             }
 
             @Override

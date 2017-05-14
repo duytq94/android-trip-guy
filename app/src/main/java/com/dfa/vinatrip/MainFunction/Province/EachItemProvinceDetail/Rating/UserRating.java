@@ -4,13 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class UserRating implements Parcelable {
-    private String uid, nickname, avatar, email, content, numStars, date, locationName, locationPhoto;
+    private String uid, nickname, avatar, email, content, numStars, date, locationName, locationPhoto, type;
 
     public UserRating() {
     }
 
-    public UserRating(String uid, String nickname, String avatar, String email, String content,
-                      String numStars, String date, String locationName, String locationPhoto) {
+    public UserRating(String uid, String nickname, String avatar, String email, String content, String numStars,
+                      String date, String locationName, String locationPhoto, String type) {
         this.uid = uid;
         this.nickname = nickname;
         this.avatar = avatar;
@@ -20,30 +20,63 @@ public class UserRating implements Parcelable {
         this.date = date;
         this.locationName = locationName;
         this.locationPhoto = locationPhoto;
+        this.type = type;
     }
 
     public String getUid() {
         return uid;
     }
 
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     public String getNickname() {
         return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getAvatar() {
         return avatar;
     }
 
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getContent() {
         return content;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public String getNumStars() {
         return numStars;
+    }
+
+    public void setNumStars(String numStars) {
+        this.numStars = numStars;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getLocationName() {
@@ -62,8 +95,12 @@ public class UserRating implements Parcelable {
         this.locationPhoto = locationPhoto;
     }
 
-    public String getDate() {
-        return date;
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override

@@ -190,9 +190,9 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
         View v = getCurrentFocus();
 
         if (v != null &&
-                (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_MOVE) &&
-                v instanceof EditText &&
-                !v.getClass().getName().startsWith("android.webkit.")) {
+            (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_MOVE) &&
+            v instanceof EditText &&
+            !v.getClass().getName().startsWith("android.webkit.")) {
             int scrcoords[] = new int[2];
             v.getLocationOnScreen(scrcoords);
             float x = ev.getRawX() + v.getLeft() - scrcoords[0];
@@ -219,25 +219,26 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
 
         UserProfile currentUser = dataService.getCurrentUser();
         UserRating myRating = new UserRating(currentUser.getUid(),
-                currentUser.getNickname(),
-                currentUser.getAvatar(),
-                currentUser.getEmail(),
-                etContent.getText().toString(),
-                (int) ratingBar.getRating() + "",
-                date,
-                detailDestination.getName(),
-                detailDestination.getAvatar());
+                                             currentUser.getNickname(),
+                                             currentUser.getAvatar(),
+                                             currentUser.getEmail(),
+                                             etContent.getText().toString(),
+                                             (int) ratingBar.getRating() + "",
+                                             date,
+                                             detailDestination.getName(),
+                                             detailDestination.getAvatar(),
+                                             "destination");
 
         databaseReference.child("ProvinceDestinationRating")
-                .child(detailDestination.getProvince())
-                .child(detailDestination.getName())
-                .child(currentUser.getUid())
-                .setValue(myRating);
+                         .child(detailDestination.getProvince())
+                         .child(detailDestination.getName())
+                         .child(currentUser.getUid())
+                         .setValue(myRating);
 
         databaseReference.child("UserRating")
-                .child(currentUser.getUid())
-                .child(detailDestination.getName())
-                .setValue(myRating);
+                         .child(currentUser.getUid())
+                         .child(detailDestination.getName())
+                         .setValue(myRating);
 
         if (isNewOrUpdate) {
             dataService.addToMyRatingList(myRating);

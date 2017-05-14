@@ -1,10 +1,9 @@
 package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceFood;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachItemProvinceDetailActivity_;
@@ -67,13 +66,14 @@ public class ProvinceFoodFragment extends Fragment {
                 timeOpen = dataSnapshot.child("timeOpen").getValue().toString();
                 phone = dataSnapshot.child("phone").getValue().toString();
                 latitude = Float.parseFloat(dataSnapshot.child("latitude").getValue()
-                        .toString());
+                                                        .toString());
                 longitude = Float.parseFloat(dataSnapshot.child("longitude").getValue()
-                        .toString());
+                                                         .toString());
                 province = dataSnapshot.child("province").getValue().toString();
 
                 ProvinceFood provinceFood = new ProvinceFood(name, avatar, price, address,
-                        description, timeOpen, phone, province, latitude, longitude);
+                                                             description, timeOpen, phone, province, latitude,
+                                                             longitude);
 
                 provinceFoodList.add(provinceFood);
                 provinceFoodAdapter.notifyDataSetChanged();
@@ -131,37 +131,33 @@ public class ProvinceFoodFragment extends Fragment {
             }
         });
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        rvFoods.setLayoutManager(staggeredGridLayoutManager);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvFoods.setLayoutManager(manager);
 
         // Catch event click on item of RecyclerView
-        rvFoods.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), rvFoods,
-                new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Intent intentToEachFood =
-                                new Intent(getActivity(), EachItemProvinceDetailActivity_.class);
+        rvFoods.addOnItemTouchListener(new RecyclerItemClickListener(
+                getActivity(), rvFoods, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                // Send the Food be chosen to EachItemProvinceDetailActivity
+                EachItemProvinceDetailActivity_.intent(getActivity())
+                                               .detailFood(provinceFoodList.get(position)).start();
+            }
 
-                        // Send the Food be chosen to EachItemProvinceDetailActivity
-                        intentToEachFood.putExtra("DetailFood", provinceFoodList.get(position));
-                        getActivity().startActivity(intentToEachFood);
-                    }
+            @Override
+            public void onLongItemClick(View view, int position) {
 
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-
-                    }
-                }));
+            }
+        }));
     }
 
     public void loadProvinceFood() {
         // if no Internet, this method will not run
         databaseReference.child("ProvinceFood").child(province.getName())
-                .addChildEventListener(childEventListener);
+                         .addChildEventListener(childEventListener);
 
         databaseReference.child("ProvinceFood").child(province.getName())
-                .addListenerForSingleValueEvent(valueEventListener);
+                         .addListenerForSingleValueEvent(valueEventListener);
     }
 
     @Override
