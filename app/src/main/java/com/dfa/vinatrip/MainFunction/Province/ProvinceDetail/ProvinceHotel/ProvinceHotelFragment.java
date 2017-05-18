@@ -69,10 +69,8 @@ public class ProvinceHotelFragment extends Fragment {
                 phone = dataSnapshot.child("phone").getValue().toString();
                 mail = dataSnapshot.child("mail").getValue().toString();
                 website = dataSnapshot.child("website").getValue().toString();
-                latitude = Float.parseFloat(dataSnapshot.child("latitude").getValue()
-                                                        .toString());
-                longitude = Float.parseFloat(dataSnapshot.child("longitude").getValue()
-                                                         .toString());
+                latitude = Float.parseFloat(dataSnapshot.child("latitude").getValue().toString());
+                longitude = Float.parseFloat(dataSnapshot.child("longitude").getValue().toString());
                 province = dataSnapshot.child("province").getValue().toString();
 
                 ProvinceHotel provinceHotel = new
