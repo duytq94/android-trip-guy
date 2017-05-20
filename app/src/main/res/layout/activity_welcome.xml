@@ -4,7 +4,7 @@
     android:id="@+id/activity_welcome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dfa.vinatrip.IntroApp.WelcomeActivity">
+    tools:context="com.dfa.vinatrip.domains.intro.WelcomeActivity">
 
     <!-- ViewPager must place at top -->
     <android.support.v4.view.ViewPager

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.dfa.vinatrip.MapActivity">
+    tools:context="com.dfa.vinatrip.utils.MapActivity">
 
     <include layout="@layout/toolbar" />
 
