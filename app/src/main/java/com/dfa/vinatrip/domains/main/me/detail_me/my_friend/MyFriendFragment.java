@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me.MeDetail.MyFriend;
+package com.dfa.vinatrip.domains.main.me.detail_me.my_friend;
 
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -7,10 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.MainFunction.Me.ListFriendVerticalAdapter;
-import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.me.ListFriendVerticalAdapter;
+import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 
 import org.androidannotations.annotations.AfterViews;
@@ -72,7 +72,8 @@ public class MyFriendFragment extends Fragment {
         rvListFriends.setAdapter(listFriendVerticalAdapter);
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        DividerItemDecoration decoration = new DividerItemDecoration(rvListFriends.getContext(), manager.getOrientation());
+        DividerItemDecoration decoration = new DividerItemDecoration(rvListFriends.getContext(),
+                                                                     manager.getOrientation());
         rvListFriends.addItemDecoration(decoration);
         rvListFriends.setLayoutManager(manager);
     }

@@ -20,8 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.dfa.vinatrip.MainFunction.SplashScreen.SplashScreenActivity_;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

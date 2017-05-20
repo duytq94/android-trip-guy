@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachProvinceDestination;
+package com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_destination;
 
 import android.content.Intent;
 import android.os.Parcelable;
@@ -11,14 +11,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity_;
-import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.RatingActivity_;
-import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.RatingAdapter;
-import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.UserRating;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDestination.ProvinceDestination;
+import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_destination.ProvinceDestination;
+import com.dfa.vinatrip.domains.main.province.each_item_detail_province.full_photo.ShowFullPhotoActivity_;
+import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.RatingActivity_;
+import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.RatingAdapter;
+import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
 import com.dfa.vinatrip.utils.MapActivity_;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
-import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -93,8 +93,7 @@ public class EachProvinceDestinationFragment extends Fragment {
     private ProvinceDestination detailDestination;
     private List<String> listUrlPhotos;
     private List<UserRating> listUserRatings;
-    private com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachProvinceDestination.ProvinceDestinationPhotoAdapter
-            provinceDestinationPhotoAdapter;
+    private ProvinceDestinationPhotoAdapter provinceDestinationPhotoAdapter;
     private RatingAdapter ratingAdapter;
     private FirebaseUser firebaseUser;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -141,28 +140,28 @@ public class EachProvinceDestinationFragment extends Fragment {
         // Catch event when click item on RecyclerView
         rvProvinceDestinationPhotos.addOnItemTouchListener
                 (new RecyclerItemClickListener(getActivity(), rvProvinceDestinationPhotos,
-                        new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                Intent intentShowFull =
-                                        new Intent(getActivity(), ShowFullPhotoActivity_.class);
+                                               new RecyclerItemClickListener.OnItemClickListener() {
+                                                   @Override
+                                                   public void onItemClick(View view, int position) {
+                                                       Intent intentShowFull =
+                                                               new Intent(getActivity(), ShowFullPhotoActivity_.class);
 
-                                // Send ListUrlPhotos to ShowFullPhotoActivity
-                                intentShowFull.putStringArrayListExtra("ListUrlPhotos",
-                                        (ArrayList<String>) listUrlPhotos);
-                                // Send the Position photo user click
-                                intentShowFull.putExtra("Position", position);
-                                // Send DetailDestination to ShowFullPhotoActivity
-                                intentShowFull.putExtra("DetailDestination", detailDestination);
+                                                       // Send ListUrlPhotos to ShowFullPhotoActivity
+                                                       intentShowFull.putStringArrayListExtra("ListUrlPhotos",
+                                                                                              (ArrayList<String>) listUrlPhotos);
+                                                       // Send the Position photo user click
+                                                       intentShowFull.putExtra("Position", position);
+                                                       // Send DetailDestination to ShowFullPhotoActivity
+                                                       intentShowFull.putExtra("DetailDestination", detailDestination);
 
-                                startActivity(intentShowFull);
-                            }
+                                                       startActivity(intentShowFull);
+                                                   }
 
-                            @Override
-                            public void onLongItemClick(View view, int position) {
+                                                   @Override
+                                                   public void onLongItemClick(View view, int position) {
 
-                            }
-                        }));
+                                                   }
+                                               }));
     }
 
     @Override
@@ -188,7 +187,8 @@ public class EachProvinceDestinationFragment extends Fragment {
         tvAddress.setText(detailDestination.getAddress());
 
         listUrlPhotos = new ArrayList<>();
-        provinceDestinationPhotoAdapter = new com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachProvinceDestination.ProvinceDestinationPhotoAdapter(getActivity(), listUrlPhotos);
+        provinceDestinationPhotoAdapter
+                = new ProvinceDestinationPhotoAdapter(getActivity(), listUrlPhotos);
         rvProvinceDestinationPhotos.setAdapter(provinceDestinationPhotoAdapter);
 
         listUserRatings = new ArrayList<>();
@@ -197,62 +197,64 @@ public class EachProvinceDestinationFragment extends Fragment {
 
         // Load static map
         String url = "http://maps.google.com/maps/api/staticmap?center="
-                + detailDestination.getLatitude()
-                + "," + detailDestination.getLongitude()
-                + "&zoom=15&size=100x120&sensor=false";
+                     + detailDestination.getLatitude()
+                     + "," + detailDestination.getLongitude()
+                     + "&zoom=15&size=100x120&sensor=false";
         Picasso.with(getActivity()).load(url)
-                .into(ivMap);
+               .into(ivMap);
     }
 
     public void loadProvinceDestinationPhoto() {
         DatabaseReference referencePhoto = firebaseDatabase.getReference();
         // if no Internet, this method will not run
-        referencePhoto.child("ProvinceDestinationPhoto").child(detailDestination.getProvince()).child(detailDestination.getName())
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        String url;
-                        url = dataSnapshot.getValue().toString();
+        referencePhoto.child("ProvinceDestinationPhoto").child(detailDestination.getProvince())
+                      .child(detailDestination.getName())
+                      .addChildEventListener(new ChildEventListener() {
+                          @Override
+                          public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                              String url;
+                              url = dataSnapshot.getValue().toString();
 
-                        listUrlPhotos.add(url);
-                        provinceDestinationPhotoAdapter.notifyDataSetChanged();
-                    }
+                              listUrlPhotos.add(url);
+                              provinceDestinationPhotoAdapter.notifyDataSetChanged();
+                          }
 
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                          @Override
+                          public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                    }
+                          }
 
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                          @Override
+                          public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                    }
+                          }
 
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                          @Override
+                          public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                    }
+                          }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                          @Override
+                          public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                          }
+                      });
 
-        referencePhoto.child("ProvinceDestinationPhoto").child(detailDestination.getProvince()).child(detailDestination.getName())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (isAdded()) {
-                            srlReload.setRefreshing(false);
-                        }
-                    }
+        referencePhoto.child("ProvinceDestinationPhoto").child(detailDestination.getProvince())
+                      .child(detailDestination.getName())
+                      .addListenerForSingleValueEvent(new ValueEventListener() {
+                          @Override
+                          public void onDataChange(DataSnapshot dataSnapshot) {
+                              if (isAdded()) {
+                                  srlReload.setRefreshing(false);
+                              }
+                          }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                          @Override
+                          public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                          }
+                      });
     }
 
     public void loadProvinceDestinationRating() {
@@ -260,66 +262,66 @@ public class EachProvinceDestinationFragment extends Fragment {
 
         // if no Internet, this method will not run
         referenceRating.child("ProvinceDestinationRating").child(detailDestination.getProvince())
-                .child(detailDestination.getName())
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        UserRating userRating = dataSnapshot.getValue(UserRating.class);
+                       .child(detailDestination.getName())
+                       .addChildEventListener(new ChildEventListener() {
+                           @Override
+                           public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                               UserRating userRating = dataSnapshot.getValue(UserRating.class);
 
-                        if (isAdded()) {
-                            rvUserRatings.setVisibility(View.VISIBLE);
-                            tvCommentNotAvailable.setVisibility(View.GONE);
-                        }
-                        listUserRatings.add(userRating);
-                        ratingAdapter.notifyDataSetChanged();
-                    }
+                               if (isAdded()) {
+                                   rvUserRatings.setVisibility(View.VISIBLE);
+                                   tvCommentNotAvailable.setVisibility(View.GONE);
+                               }
+                               listUserRatings.add(userRating);
+                               ratingAdapter.notifyDataSetChanged();
+                           }
 
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                           @Override
+                           public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                    }
+                           }
 
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                           @Override
+                           public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                    }
+                           }
 
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                           @Override
+                           public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                    }
+                           }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                           @Override
+                           public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                           }
+                       });
 
         // This method to be called after all the onChildAdded() calls have happened
         referenceRating.child("ProvinceDestinationRating")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        tvRate.setVisibility(View.VISIBLE);
+                       .addListenerForSingleValueEvent(new ValueEventListener() {
+                           @Override
+                           public void onDataChange(DataSnapshot dataSnapshot) {
+                               tvRate.setVisibility(View.VISIBLE);
 
-                        // If user has comment, chnage text of tvRate
-                        for (int i = 0; i < listUserRatings.size(); i++) {
-                            UserRating userRating = listUserRatings.get(i);
-                            if (firebaseUser != null) {
-                                if (userRating.getUid().equals(firebaseUser.getUid())) {
-                                    tvRate.setText(R.string.update_rating);
-                                    return;
-                                }
-                            }
-                        }
-                        tvRate.setText(R.string.rating);
-                    }
+                               // If user has comment, chnage text of tvRate
+                               for (int i = 0; i < listUserRatings.size(); i++) {
+                                   UserRating userRating = listUserRatings.get(i);
+                                   if (firebaseUser != null) {
+                                       if (userRating.getUid().equals(firebaseUser.getUid())) {
+                                           tvRate.setText(R.string.update_rating);
+                                           return;
+                                       }
+                                   }
+                               }
+                               tvRate.setText(R.string.rating);
+                           }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                           @Override
+                           public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                           }
+                       });
     }
 
 }

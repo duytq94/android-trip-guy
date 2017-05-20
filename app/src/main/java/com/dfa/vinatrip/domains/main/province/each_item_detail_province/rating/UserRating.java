@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating;
+package com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating;
 
 import android.os.Parcel;
 import android.os.Parcelable;

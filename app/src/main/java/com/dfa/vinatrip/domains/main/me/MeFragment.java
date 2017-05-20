@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me;
+package com.dfa.vinatrip.domains.main.me;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,11 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.BuildConfig;
-import com.dfa.vinatrip.MainFunction.SplashScreen.SplashScreenActivity_;
+import com.dfa.vinatrip.domains.main.me.detail_me.UserProfileDetailActivity_;
+import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
+import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.UserFriend;
-import com.dfa.vinatrip.MainFunction.Me.MeDetail.UserProfileDetailActivity_;
-import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.UserRating;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.dfa.vinatrip.domains.login.SignInActivity_;

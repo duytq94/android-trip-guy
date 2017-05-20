@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceFood;
+package com.dfa.vinatrip.domains.main.province.detail_province.province_food;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -6,8 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachItemProvinceDetailActivity_;
-import com.dfa.vinatrip.MainFunction.Province.Province;
+import com.dfa.vinatrip.domains.main.province.Province;
+import com.dfa.vinatrip.domains.main.province.each_item_detail_province.EachItemProvinceDetailActivity_;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.utils.TripGuyUtils;

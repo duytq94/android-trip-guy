@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Province;
+package com.dfa.vinatrip.domains.main.province;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,11 +21,11 @@ import android.widget.LinearLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDetailActivity_;
-import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.province.detail_province.ProvinceDetailActivity_;
 import com.dfa.vinatrip.domains.search.SearchActivity_;
 import com.dfa.vinatrip.services.DataService;
+import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -124,25 +124,23 @@ public class ProvinceFragment extends Fragment {
         rvProvinces.setLayoutManager(staggeredGridLayoutManager);
 
         // Catch event when click on item RecyclerView
-        rvProvinces.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), rvProvinces,
-                                                                         new RecyclerItemClickListener.OnItemClickListener() {
-                                                                             @Override
-                                                                             public void onItemClick(View view,
-                                                                                                     int position) {
-                                                                                 // Send Province to ProvinceDetailActivity
-                                                                                 ProvinceDetailActivity_
-                                                                                         .intent(getActivity())
-                                                                                         .province(provinceList
-                                                                                                           .get(position))
-                                                                                         .start();
-                                                                             }
+        rvProvinces.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), rvProvinces,
+                                              new RecyclerItemClickListener.OnItemClickListener() {
+                                                  @Override
+                                                  public void onItemClick(View view, int position) {
+                                                      // Send Province to ProvinceDetailActivity
+                                                      ProvinceDetailActivity_
+                                                              .intent(getActivity())
+                                                              .province(provinceList.get(position))
+                                                              .start();
+                                                  }
 
-                                                                             @Override
-                                                                             public void onLongItemClick(View view,
-                                                                                                         int position) {
+                                                  @Override
+                                                  public void onLongItemClick(View view, int position) {
 
-                                                                             }
-                                                                         }));
+                                                  }
+                                              }));
 
     }
 

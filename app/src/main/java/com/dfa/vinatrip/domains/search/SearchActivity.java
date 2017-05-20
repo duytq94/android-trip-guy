@@ -12,8 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.dfa.vinatrip.MainFunction.Province.Province;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDetailActivity_;
+import com.dfa.vinatrip.domains.main.province.Province;
+import com.dfa.vinatrip.domains.main.province.detail_province.ProvinceDetailActivity_;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.services.DataService;

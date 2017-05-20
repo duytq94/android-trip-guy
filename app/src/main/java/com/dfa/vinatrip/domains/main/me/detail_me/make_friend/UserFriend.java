@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend;
+package com.dfa.vinatrip.domains.main.me.detail_me.make_friend;
 
 public class UserFriend {
     String friendId, nickname, avatar, email, state;

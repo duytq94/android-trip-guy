@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachProvinceFood;
+package com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_food;
 
 import android.Manifest;
 import android.content.Intent;
@@ -13,8 +13,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceFood.ProvinceFood;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_food.ProvinceFood;
 import com.dfa.vinatrip.utils.MapActivity_;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
@@ -57,8 +57,7 @@ public class EachProvinceFoodFragment extends Fragment {
 
     private ProvinceFood detailFood;
     private List<String> listUrlPhotos;
-    private com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachProvinceFood.ProvinceFoodPhotoAdapter
-            provinceFoodPhotoAdapter;
+    private ProvinceFoodPhotoAdapter provinceFoodPhotoAdapter;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
     @AfterViews
@@ -95,9 +94,9 @@ public class EachProvinceFoodFragment extends Fragment {
     @Click(R.id.fragment_each_province_food_ll_phone)
     void onLlPhoneClick() {
         if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                                              Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.CALL_PHONE}, 1);
+                                              new String[]{Manifest.permission.CALL_PHONE}, 1);
         } else {
             Intent intentCall =
                     new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + detailFood.getPhone()));
@@ -121,26 +120,26 @@ public class EachProvinceFoodFragment extends Fragment {
 
         listUrlPhotos = new ArrayList<>();
         provinceFoodPhotoAdapter =
-                new com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachProvinceFood.ProvinceFoodPhotoAdapter(getActivity(), listUrlPhotos);
+                new ProvinceFoodPhotoAdapter(getActivity(), listUrlPhotos);
         rvProvinceFoodPhotos.setAdapter(provinceFoodPhotoAdapter);
 
         // Load static map
         String url = "http://maps.google.com/maps/api/staticmap?center="
-                + detailFood.getLatitude()
-                + "," + detailFood.getLongitude()
-                + "&zoom=15&size=100x120&sensor=false";
+                     + detailFood.getLatitude()
+                     + "," + detailFood.getLongitude()
+                     + "&zoom=15&size=100x120&sensor=false";
         Picasso.with(getActivity()).load(url)
-                .into(ivMap, new Callback() {
-                    @Override
-                    public void onSuccess() {
+               .into(ivMap, new Callback() {
+                   @Override
+                   public void onSuccess() {
 
-                    }
+                   }
 
-                    @Override
-                    public void onError() {
+                   @Override
+                   public void onError() {
 
-                    }
-                });
+                   }
+               });
     }
 
     public void loadProvinceFoodPhoto() {
@@ -148,50 +147,50 @@ public class EachProvinceFoodFragment extends Fragment {
 
         // if no Internet, this method will not run
         databaseReference.child("ProvinceFoodPhoto").child(detailFood.getProvince()).child(detailFood.getName())
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        String url;
-                        url = dataSnapshot.getValue().toString();
+                         .addChildEventListener(new ChildEventListener() {
+                             @Override
+                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                 String url;
+                                 url = dataSnapshot.getValue().toString();
 
-                        listUrlPhotos.add(url);
-                        provinceFoodPhotoAdapter.notifyDataSetChanged();
-                    }
+                                 listUrlPhotos.add(url);
+                                 provinceFoodPhotoAdapter.notifyDataSetChanged();
+                             }
 
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                             @Override
+                             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                    }
+                             }
 
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                             @Override
+                             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                    }
+                             }
 
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                             @Override
+                             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                    }
+                             }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                             @Override
+                             public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                             }
+                         });
 
         databaseReference.child("ProvinceFoodPhoto").child(detailFood.getProvince()).child(detailFood.getName())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (isAdded()) {
-                            srlReload.setRefreshing(false);
-                        }
-                    }
+                         .addListenerForSingleValueEvent(new ValueEventListener() {
+                             @Override
+                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                 if (isAdded()) {
+                                     srlReload.setRefreshing(false);
+                                 }
+                             }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                             @Override
+                             public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                             }
+                         });
     }
 }

@@ -1,10 +1,10 @@
-package com.dfa.vinatrip.MainFunction.Plan;
+package com.dfa.vinatrip.domains.main.plan;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.dfa.vinatrip.MainFunction.Me.UserProfile;
-import com.dfa.vinatrip.MainFunction.Plan.MakePlan.PlanSchedule;
+import com.dfa.vinatrip.domains.main.me.UserProfile;
+import com.dfa.vinatrip.domains.main.plan.make_plan.PlanSchedule;
 
 import java.util.ArrayList;
 import java.util.List;

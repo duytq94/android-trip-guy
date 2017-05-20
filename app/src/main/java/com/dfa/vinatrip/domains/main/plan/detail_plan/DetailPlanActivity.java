@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Plan.DetailPlan;
+package com.dfa.vinatrip.domains.main.plan.detail_plan;
 
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
@@ -9,11 +9,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.dfa.vinatrip.domains.main.me.UserProfile;
+import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.domains.main.plan.Plan;
+import com.dfa.vinatrip.domains.main.plan.make_plan.PlanSchedule;
 import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.UserFriend;
-import com.dfa.vinatrip.MainFunction.Me.UserProfile;
-import com.dfa.vinatrip.MainFunction.Plan.MakePlan.PlanSchedule;
-import com.dfa.vinatrip.MainFunction.Plan.Plan;
 import com.dfa.vinatrip.R;
 import com.squareup.picasso.Picasso;
 

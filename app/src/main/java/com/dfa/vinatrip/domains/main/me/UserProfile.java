@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me;
+package com.dfa.vinatrip.domains.main.me;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.FullPhoto;
+package com.dfa.vinatrip.domains.main.province.each_item_detail_province.full_photo;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -16,8 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDestination.ProvinceDestination;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_destination.ProvinceDestination;
 import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
@@ -87,9 +87,9 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
             View itemView = layoutInflater.inflate(R.layout.item_photo_slide_show, container, false);
             ImageView imageView = (ImageView) itemView.findViewById(R.id.ivPhotoSlideShow);
             Picasso.with(ShowFullPhotoActivity.this)
-                    .load(listUrlPhotos.get(position))
-                    .placeholder(R.drawable.ic_loading)
-                    .into(imageView);
+                   .load(listUrlPhotos.get(position))
+                   .placeholder(R.drawable.ic_loading)
+                   .into(imageView);
             container.addView(itemView);
             return itemView;
         }

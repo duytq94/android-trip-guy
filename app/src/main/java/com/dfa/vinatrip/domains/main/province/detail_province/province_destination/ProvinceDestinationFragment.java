@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDestination;
+package com.dfa.vinatrip.domains.main.province.detail_province.province_destination;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -6,10 +6,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachItemProvinceDetailActivity_;
-import com.dfa.vinatrip.MainFunction.Province.Province;
-import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.province.Province;
+import com.dfa.vinatrip.domains.main.province.each_item_detail_province.EachItemProvinceDetailActivity_;
+import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -49,8 +49,7 @@ public class ProvinceDestinationFragment extends Fragment {
         srlReload.setColorSchemeResources(R.color.colorMain);
 
         provinceDestinationList = new ArrayList<>();
-        provinceDestinationAdapter =
-                new ProvinceDestinationAdapter(getActivity(), provinceDestinationList);
+        provinceDestinationAdapter = new ProvinceDestinationAdapter(getActivity(), provinceDestinationList);
         rvDestinations.setAdapter(provinceDestinationAdapter);
 
         childEventListener = new ChildEventListener() {

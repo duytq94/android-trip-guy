@@ -14,7 +14,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.UserFriend;
+import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 
 import java.util.List;
 
@@ -122,9 +122,9 @@ public class TripGuyUtils {
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
      *
-     * @param context       The context.
-     * @param uri           The Uri to query.
-     * @param selection     (Optional) Filter used in the query.
+     * @param context The context.
+     * @param uri The Uri to query.
+     * @param selection (Optional) Filter used in the query.
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */
@@ -139,7 +139,7 @@ public class TripGuyUtils {
 
         try {
             cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
-                    null);
+                                                        null);
             if (cursor != null && cursor.moveToFirst()) {
                 int columnIndex = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(columnIndex);

@@ -1,12 +1,12 @@
-package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvincePhoto;
+package com.dfa.vinatrip.domains.main.province.detail_province.province_photo;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
-import com.dfa.vinatrip.MainFunction.Province.Province;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.province.Province;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;

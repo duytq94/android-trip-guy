@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Plan;
+package com.dfa.vinatrip.domains.main.plan;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.MainFunction.Me.UserProfile;
-import com.dfa.vinatrip.MainFunction.Plan.DetailPlan.DetailPlanActivity_;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.me.UserProfile;
+import com.dfa.vinatrip.domains.main.plan.detail_plan.DetailPlanActivity_;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -91,9 +91,9 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
 
 
         Picasso.with(context).load(plan.getUserMakePlan().getAvatar())
-                .placeholder(R.drawable.ic_loading)
-                .error(R.drawable.photo_not_available)
-                .into(holder.ivAvatar);
+               .placeholder(R.drawable.ic_loading)
+               .error(R.drawable.photo_not_available)
+               .into(holder.ivAvatar);
     }
 
     @Override

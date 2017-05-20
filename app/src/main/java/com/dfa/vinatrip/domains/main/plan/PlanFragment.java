@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Plan;
+package com.dfa.vinatrip.domains.main.plan;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,12 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.MainFunction.Me.UserProfile;
-import com.dfa.vinatrip.MainFunction.Plan.MakePlan.MakePlanActivity_;
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.dfa.vinatrip.domains.login.SignInActivity_;
+import com.dfa.vinatrip.domains.main.me.UserProfile;
+import com.dfa.vinatrip.domains.main.plan.make_plan.MakePlanActivity_;
+import com.dfa.vinatrip.services.DataService;
+import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -98,40 +98,44 @@ public class PlanFragment extends Fragment {
         llNotLogin.setVisibility(View.GONE);
         planAdapter = new PlanAdapter(getActivity(), planList, currentUser);
 
-        planAdapter.setOnUpdateOrRemoveClick(new PlanAdapter.OnUpdateOrRemoveClick() {
-            @Override
-            public void onUpdate(int position) {
-                Intent intent = new Intent(getActivity(), MakePlanActivity_.class);
-
-                // Send Plan to MakePlanActivity to update info
-                intent.putExtra("Plan", planList.get(position));
-                getActivity().startActivity(intent);
-            }
-
-            @Override
-            public void onRemove(final int position) {
-                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-                alertDialog.setTitle("Xóa kế hoạch");
-                alertDialog.setMessage("Bạn có chắc chắn muốn xóa kế hoạch này?");
-                alertDialog.setIcon(R.drawable.ic_notification);
-                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ĐỒNG Ý", new DialogInterface.OnClickListener() {
+        planAdapter
+                .setOnUpdateOrRemoveClick(new PlanAdapter.OnUpdateOrRemoveClick() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        databaseReference.child("Plan").child(currentUser.getUid())
-                                .child(planList.get(position).getId()).removeValue();
-                        planList.remove(position);
-                        planAdapter.notifyDataSetChanged();
+                    public void onUpdate(int position) {
+                        Intent intent = new Intent(getActivity(), MakePlanActivity_.class);
+
+                        // Send Plan to MakePlanActivity to update info
+                        intent.putExtra("Plan", planList.get(position));
+                        getActivity().startActivity(intent);
+                    }
+
+                    @Override
+                    public void onRemove(final int position) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                        alertDialog.setTitle("Xóa kế hoạch");
+                        alertDialog.setMessage("Bạn có chắc chắn muốn xóa kế hoạch này?");
+                        alertDialog.setIcon(R.drawable.ic_notification);
+                        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ĐỒNG Ý",
+                                              new DialogInterface.OnClickListener() {
+                                                  @Override
+                                                  public void onClick(DialogInterface dialogInterface, int i) {
+                                                      databaseReference.child("Plan").child(currentUser.getUid())
+                                                                       .child(planList.get(position).getId())
+                                                                       .removeValue();
+                                                      planList.remove(position);
+                                                      planAdapter.notifyDataSetChanged();
+                                                  }
+                                              });
+                        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "HỦY",
+                                              new DialogInterface.OnClickListener() {
+                                                  @Override
+                                                  public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                  }
+                                              });
+                        alertDialog.show();
                     }
                 });
-                alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "HỦY", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                });
-                alertDialog.show();
-            }
-        });
 
         rvPlan.setAdapter(planAdapter);
 
@@ -242,11 +246,11 @@ public class PlanFragment extends Fragment {
 
         // If no Internet, this method will not run
         databaseReference.child("Plan").child(currentUser.getUid())
-                .addChildEventListener(childEventListener);
+                         .addChildEventListener(childEventListener);
 
         // This method to be called after all the onChildAdded() calls have happened
         databaseReference.child("Plan").child(currentUser.getUid())
-                .addListenerForSingleValueEvent(valueEventListener);
+                         .addListenerForSingleValueEvent(valueEventListener);
     }
 
     @Override

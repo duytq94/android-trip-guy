@@ -1,9 +1,9 @@
 package com.dfa.vinatrip.services;
 
-import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.UserFriend;
-import com.dfa.vinatrip.MainFunction.Me.UserProfile;
-import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.UserRating;
-import com.dfa.vinatrip.MainFunction.Province.Province;
+import com.dfa.vinatrip.domains.main.me.UserProfile;
+import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.domains.main.province.Province;
+import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
 
 import java.util.HashMap;
 

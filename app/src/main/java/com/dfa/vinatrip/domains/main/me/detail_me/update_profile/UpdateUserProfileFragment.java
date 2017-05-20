@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me.MeDetail.UpdateProfile;
+package com.dfa.vinatrip.domains.main.me.detail_me.update_profile;
 
 import android.Manifest;
 import android.app.Activity;
@@ -26,8 +26,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dfa.vinatrip.domains.main.me.UserProfile;
 import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.android.gms.tasks.OnFailureListener;

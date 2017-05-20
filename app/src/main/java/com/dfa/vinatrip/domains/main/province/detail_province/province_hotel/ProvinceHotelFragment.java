@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceHotel;
+package com.dfa.vinatrip.domains.main.province.detail_province.province_hotel;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -6,10 +6,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachItemProvinceDetailActivity_;
-import com.dfa.vinatrip.MainFunction.Province.Province;
-import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.province.Province;
+import com.dfa.vinatrip.domains.main.province.each_item_detail_province.EachItemProvinceDetailActivity_;
+import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -140,8 +140,7 @@ public class ProvinceHotelFragment extends Fragment {
         rvHotels.addOnItemTouchListener(new RecyclerItemClickListener(
                 getActivity(), rvHotels, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
-            public void onItemClick(View view,
-                                    int position) {
+            public void onItemClick(View view, int position) {
                 // Send the Hotel be chosen to EachItemProvinceDetailActivity
                 EachItemProvinceDetailActivity_.intent(getActivity())
                                                .detailHotel(provinceHotelList.get(position)).start();

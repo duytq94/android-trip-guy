@@ -15,9 +15,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.MainFunction.SplashScreen.SplashScreenActivity_;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.login.SignUpActivity_;
+import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;

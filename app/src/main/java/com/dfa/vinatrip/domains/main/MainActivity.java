@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction;
+package com.dfa.vinatrip.domains.main;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,16 +18,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dfa.vinatrip.MainFunction.LocationMyFriend.LocationMyFriendFragment;
-import com.dfa.vinatrip.MainFunction.LocationMyFriend.LocationMyFriendFragment_;
-import com.dfa.vinatrip.MainFunction.Me.MeFragment;
-import com.dfa.vinatrip.MainFunction.Me.MeFragment_;
-import com.dfa.vinatrip.MainFunction.Plan.PlanFragment;
-import com.dfa.vinatrip.MainFunction.Plan.PlanFragment_;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceFragment;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceFragment_;
-import com.dfa.vinatrip.MainFunction.Share.ShareFragment;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.location_my_friend.LocationMyFriendFragment;
+import com.dfa.vinatrip.domains.main.location_my_friend.LocationMyFriendFragment_;
+import com.dfa.vinatrip.domains.main.me.MeFragment;
+import com.dfa.vinatrip.domains.main.me.MeFragment_;
+import com.dfa.vinatrip.domains.main.plan.PlanFragment;
+import com.dfa.vinatrip.domains.main.plan.PlanFragment_;
+import com.dfa.vinatrip.domains.main.province.ProvinceFragment;
+import com.dfa.vinatrip.domains.main.province.ProvinceFragment_;
+import com.dfa.vinatrip.domains.main.share.ShareFragment;
 import com.dfa.vinatrip.utils.StopShiftModeBottomNavView;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 

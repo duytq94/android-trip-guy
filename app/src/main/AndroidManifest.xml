@@ -31,11 +31,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainFunction.MainActivity_"
+            android:name=".domains.main.MainActivity_"
             android:windowSoftInputMode="adjustNothing"
             />
-        <activity android:name=".MainFunction.Province.ProvinceDetail.ProvinceDetailActivity_" />
-        <activity android:name=".MainFunction.Province.EachItemProvinceDetail.EachItemProvinceDetailActivity_" />
+        <activity android:name=".domains.main.province.detail_province.ProvinceDetailActivity_" />
+        <activity android:name=".domains.main.province.each_item_detail_province.EachItemProvinceDetailActivity_" />
         <activity android:name=".utils.MapActivity_" />
         <activity
             android:name=".domains.login.SignUpActivity_"
@@ -50,14 +50,14 @@
             android:windowSoftInputMode="adjustResize"
             />
         <activity
-            android:name=".MainFunction.Me.MeDetail.UserProfileDetailActivity_"
+            android:name=".domains.main.me.detail_me.UserProfileDetailActivity_"
             android:windowSoftInputMode="adjustResize"
             />
-        <activity android:name=".MainFunction.Province.EachItemProvinceDetail.Rating.RatingActivity_" />
-        <activity android:name=".MainFunction.Province.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity_" />
-        <activity android:name=".MainFunction.SplashScreen.SplashScreenActivity_" />
-        <activity android:name=".MainFunction.Plan.MakePlan.MakePlanActivity_" />
-        <activity android:name=".MainFunction.Plan.DetailPlan.DetailPlanActivity_" />
+        <activity android:name=".domains.main.province.each_item_detail_province.rating.RatingActivity_" />
+        <activity android:name=".domains.main.province.each_item_detail_province.full_photo.ShowFullPhotoActivity_" />
+        <activity android:name=".domains.main.splash.SplashScreenActivity_" />
+        <activity android:name=".domains.main.plan.make_plan.MakePlanActivity_" />
+        <activity android:name=".domains.main.plan.detail_plan.DetailPlanActivity_" />
         <activity android:name=".domains.search.SearchActivity_" />
     </application>
 </manifest>

@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me.MeDetail.MyRating;
+package com.dfa.vinatrip.domains.main.me.detail_me.my_rating;
 
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -7,11 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachItemProvinceDetailActivity_;
-import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.UserRating;
-import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.province.each_item_detail_province.EachItemProvinceDetailActivity_;
+import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
+import com.dfa.vinatrip.services.DataService;
+import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;

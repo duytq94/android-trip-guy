@@ -6,10 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDestination.ProvinceDestination;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceFood.ProvinceFood;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceHotel.ProvinceHotel;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_destination.ProvinceDestination;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_food.ProvinceFood;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_hotel.ProvinceHotel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;

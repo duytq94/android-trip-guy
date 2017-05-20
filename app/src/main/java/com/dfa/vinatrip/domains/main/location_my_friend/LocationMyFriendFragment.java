@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.LocationMyFriend;
+package com.dfa.vinatrip.domains.main.location_my_friend;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -24,10 +24,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.UserFriend;
-import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.me.UserProfile;
+import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.services.DataService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -158,9 +158,12 @@ public class LocationMyFriendFragment extends Fragment {
 
     public void askPermission() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                String[] permissions = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                   PackageManager.PERMISSION_GRANTED) {
+                String[] permissions = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                                                    Manifest.permission.ACCESS_FINE_LOCATION};
                 ActivityCompat.requestPermissions(getActivity(), permissions, 10);
             }
         }
@@ -168,9 +171,11 @@ public class LocationMyFriendFragment extends Fragment {
 
     public boolean checkPermission() {
         return ActivityCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+                                                  Manifest.permission.ACCESS_FINE_LOCATION) ==
+               PackageManager.PERMISSION_GRANTED &&
+               ActivityCompat.checkSelfPermission(getActivity(),
+                                                  Manifest.permission.ACCESS_COARSE_LOCATION) ==
+               PackageManager.PERMISSION_GRANTED;
     }
 
     public void initViews() {
@@ -202,58 +207,59 @@ public class LocationMyFriendFragment extends Fragment {
     public void loadUserLocation() {
         // If no Internet, this method will not run
         databaseReference.child("UserLocation")
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        UserLocation userLocation = dataSnapshot.getValue(UserLocation.class);
-                        userLocationList.add(userLocation);
-                    }
+                         .addChildEventListener(new ChildEventListener() {
+                             @Override
+                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                 UserLocation userLocation = dataSnapshot.getValue(UserLocation.class);
+                                 userLocationList.add(userLocation);
+                             }
 
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        UserLocation userLocation = dataSnapshot.getValue(UserLocation.class);
-                        for (UserFriend userFriend : userFriendList) {
-                            if (userLocation.getUid().equals(userFriend.getFriendId())) {
-                                getUserFriendLocation(userLocation);
-                            }
-                        }
-                    }
+                             @Override
+                             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                 UserLocation userLocation = dataSnapshot.getValue(
+                                         UserLocation.class);
+                                 for (UserFriend userFriend : userFriendList) {
+                                     if (userLocation.getUid().equals(userFriend.getFriendId())) {
+                                         getUserFriendLocation(userLocation);
+                                     }
+                                 }
+                             }
 
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                             @Override
+                             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                    }
+                             }
 
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                             @Override
+                             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                    }
+                             }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                             @Override
+                             public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                             }
+                         });
 
         // This method to be called after all the onChildAdded() calls have happened
         databaseReference.child("UserLocation")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (UserFriend userFriend : userFriendList) {
-                            for (UserLocation userLocation : userLocationList) {
-                                if (userFriend.getFriendId().equals(userLocation.getUid())) {
-                                    getUserFriendLocation(userLocation);
-                                }
-                            }
-                        }
-                    }
+                         .addListenerForSingleValueEvent(new ValueEventListener() {
+                             @Override
+                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                 for (UserFriend userFriend : userFriendList) {
+                                     for (UserLocation userLocation : userLocationList) {
+                                         if (userFriend.getFriendId().equals(userLocation.getUid())) {
+                                             getUserFriendLocation(userLocation);
+                                         }
+                                     }
+                                 }
+                             }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                             @Override
+                             public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                             }
+                         });
     }
 
     public void locationListener() {
@@ -290,8 +296,8 @@ public class LocationMyFriendFragment extends Fragment {
                     markerCurrentUser.remove();
                 }
                 Picasso.with(getActivity())
-                        .load(currentUser.getAvatar())
-                        .into(currentUserTarget);
+                       .load(currentUser.getAvatar())
+                       .into(currentUserTarget);
             }
         }
     }
@@ -314,9 +320,9 @@ public class LocationMyFriendFragment extends Fragment {
                     LatLng latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
 
                     Marker marker = googleMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .title(userLocation.getNickname())
-                            .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
+                                                                .position(latLng)
+                                                                .title(userLocation.getNickname())
+                                                                .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
                     marker.showInfoWindow();
 
                     UserFriendMarker userFriendMarker = new UserFriendMarker(marker, userLocation.getUid());
@@ -337,9 +343,9 @@ public class LocationMyFriendFragment extends Fragment {
 
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 markerCurrentUser = googleMap.addMarker(new MarkerOptions()
-                        .position(latLng)
-                        .title("Tôi")
-                        .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
+                                                                .position(latLng)
+                                                                .title("Tôi")
+                                                                .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
                 markerCurrentUser.showInfoWindow();
 
                 // For zooming automatically to the location of the markerCurrentUser
@@ -361,15 +367,19 @@ public class LocationMyFriendFragment extends Fragment {
     };
 
     public void uploadCurrentUserLocation(Location location) {
-        UserLocation userLocation = new UserLocation(currentUser.getUid(), currentUser.getAvatar(),
-                currentUser.getNickname(), location.getLatitude(), location.getLongitude());
+        UserLocation userLocation = new UserLocation(currentUser.getUid(),
+                                                     currentUser.getAvatar(),
+                                                     currentUser.getNickname(),
+                                                     location.getLatitude(),
+                                                     location.getLongitude());
         databaseReference.child("UserLocation").child(currentUser.getUid()).setValue(userLocation);
     }
 
     public Bitmap createBitmapFromView(View view) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        view.setLayoutParams(
+                new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
         view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
         view.buildDrawingCache();

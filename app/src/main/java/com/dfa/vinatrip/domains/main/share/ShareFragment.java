@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Share;
+package com.dfa.vinatrip.domains.main.share;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachProvinceHotel;
+package com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_food;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,17 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.dfa.vinatrip.R;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ProvinceHotelPhotoAdapter extends RecyclerView.Adapter<ProvinceHotelPhotoAdapter.PhotoViewHolder> {
+public class ProvinceFoodPhotoAdapter extends RecyclerView.Adapter<ProvinceFoodPhotoAdapter.PhotoViewHolder> {
     private LayoutInflater layoutInflater;
     private Context context;
     private List<String> listUrlPhotos;
 
-    public ProvinceHotelPhotoAdapter(Context context, List<String> listUrlPhotos) {
+    public ProvinceFoodPhotoAdapter(Context context, List<String> listUrlPhotos) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.listUrlPhotos = listUrlPhotos;

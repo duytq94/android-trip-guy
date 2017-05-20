@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.SplashScreen;
+package com.dfa.vinatrip.domains.main.splash;
 
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
@@ -7,12 +7,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import com.dfa.vinatrip.MainFunction.MainActivity_;
-import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.UserFriend;
-import com.dfa.vinatrip.MainFunction.Me.UserProfile;
-import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.UserRating;
-import com.dfa.vinatrip.MainFunction.Province.Province;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.MainActivity_;
+import com.dfa.vinatrip.domains.main.me.UserProfile;
+import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.domains.main.province.Province;
+import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
 import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.services.FirebaseApi;
 import com.google.firebase.auth.FirebaseAuth;

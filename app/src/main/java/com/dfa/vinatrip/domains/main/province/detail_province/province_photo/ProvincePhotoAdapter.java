@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvincePhoto;
+package com.dfa.vinatrip.domains.main.province.detail_province.province_photo;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail;
+package com.dfa.vinatrip.domains.main.province.detail_province;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,8 +19,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import com.dfa.vinatrip.MainFunction.Province.Province;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.province.Province;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;

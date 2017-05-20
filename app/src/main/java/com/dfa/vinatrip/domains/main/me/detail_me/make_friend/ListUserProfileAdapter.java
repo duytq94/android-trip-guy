@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend;
+package com.dfa.vinatrip.domains.main.me.detail_me.make_friend;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,8 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.MainFunction.Me.UserProfile;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.me.UserProfile;
 import com.google.firebase.database.DatabaseReference;
 import com.squareup.picasso.Picasso;
 
@@ -94,14 +94,14 @@ public class ListUserProfileAdapter extends RecyclerView.Adapter<ListUserProfile
                         holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_neutral);
                         // Delete data from the current user login
                         referenceFriend.child("UserFriend")
-                                .child(currentUser.getUid())
-                                .child(userProfile.getUid())
-                                .removeValue();
+                                       .child(currentUser.getUid())
+                                       .child(userProfile.getUid())
+                                       .removeValue();
                         // Delete data from the user be requested
                         referenceFriend.child("UserFriend")
-                                .child(userProfile.getUid())
-                                .child(currentUser.getUid())
-                                .removeValue();
+                                       .child(userProfile.getUid())
+                                       .child(currentUser.getUid())
+                                       .removeValue();
                         break;
 
                     case "Đồng ý":
@@ -109,22 +109,26 @@ public class ListUserProfileAdapter extends RecyclerView.Adapter<ListUserProfile
                         holder.btnMakeFriend.setTag("Bạn bè");
                         holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_positive);
                         // Add profile user request to the current user login
-                        UserFriend userFriendBeRequested2 = new UserFriend(userProfile.getUid(),
+                        UserFriend userFriendBeRequested2
+                                = new UserFriend(
+                                userProfile.getUid(),
                                 userProfile.getNickname(), userProfile.getAvatar(),
                                 userProfile.getEmail(), "friend");
                         referenceFriend.child("UserFriend")
-                                .child(currentUser.getUid())
-                                .child(userProfile.getUid())
-                                .setValue(userFriendBeRequested2);
+                                       .child(currentUser.getUid())
+                                       .child(userProfile.getUid())
+                                       .setValue(userFriendBeRequested2);
 
                         // Add profile current user to the user request
-                        UserFriend userFriendCurrent2 = new UserFriend(currentUser.getUid(),
+                        UserFriend userFriendCurrent2
+                                = new UserFriend(
+                                currentUser.getUid(),
                                 currentUser.getNickname(), currentUser.getAvatar(),
                                 currentUser.getEmail(), "friend");
                         referenceFriend.child("UserFriend")
-                                .child(userProfile.getUid())
-                                .child(currentUser.getUid())
-                                .setValue(userFriendCurrent2);
+                                       .child(userProfile.getUid())
+                                       .child(currentUser.getUid())
+                                       .setValue(userFriendCurrent2);
                         break;
 
                     case "Bạn bè":
@@ -132,31 +136,34 @@ public class ListUserProfileAdapter extends RecyclerView.Adapter<ListUserProfile
                         alertDialog.setTitle("Hủy kết bạn");
                         alertDialog.setMessage("Bạn có chắc chắn muốn hủy kết bạn với người này?");
                         alertDialog.setIcon(R.drawable.ic_notification);
-                        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ĐỒNG Ý", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                holder.btnMakeFriend.setText("Kết bạn");
-                                holder.btnMakeFriend.setTag("Kết bạn");
-                                holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_neutral);
-                                // Delete data to the current user login
-                                referenceFriend.child("UserFriend")
-                                        .child(currentUser.getUid())
-                                        .child(userProfile.getUid())
-                                        .removeValue();
+                        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ĐỒNG Ý",
+                                              new DialogInterface.OnClickListener() {
+                                                  @Override
+                                                  public void onClick(DialogInterface dialogInterface, int i) {
+                                                      holder.btnMakeFriend.setText("Kết bạn");
+                                                      holder.btnMakeFriend.setTag("Kết bạn");
+                                                      holder.btnMakeFriend
+                                                              .setBackgroundResource(R.drawable.custom_button_neutral);
+                                                      // Delete data to the current user login
+                                                      referenceFriend.child("UserFriend")
+                                                                     .child(currentUser.getUid())
+                                                                     .child(userProfile.getUid())
+                                                                     .removeValue();
 
-                                // Delete data to the user be requested
-                                referenceFriend.child("UserFriend")
-                                        .child(userProfile.getUid())
-                                        .child(currentUser.getUid())
-                                        .removeValue();
-                            }
-                        });
-                        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "KHÔNG", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                      // Delete data to the user be requested
+                                                      referenceFriend.child("UserFriend")
+                                                                     .child(userProfile.getUid())
+                                                                     .child(currentUser.getUid())
+                                                                     .removeValue();
+                                                  }
+                                              });
+                        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "KHÔNG",
+                                              new DialogInterface.OnClickListener() {
+                                                  @Override
+                                                  public void onClick(DialogInterface dialogInterface, int i) {
 
-                            }
-                        });
+                                                  }
+                                              });
                         alertDialog.show();
                         break;
 
@@ -164,22 +171,26 @@ public class ListUserProfileAdapter extends RecyclerView.Adapter<ListUserProfile
                         holder.btnMakeFriend.setText(R.string.sent);
                         holder.btnMakeFriend.setTag("Đã gửi");
                         // Add profile user request to the current user
-                        UserFriend userFriendBeRequested4 = new UserFriend(userProfile.getUid(),
+                        UserFriend userFriendBeRequested4
+                                = new UserFriend(
+                                userProfile.getUid(),
                                 userProfile.getNickname(), userProfile.getAvatar(),
                                 userProfile.getEmail(), "requested");
                         referenceFriend.child("UserFriend")
-                                .child(currentUser.getUid())
-                                .child(userProfile.getUid())
-                                .setValue(userFriendBeRequested4);
+                                       .child(currentUser.getUid())
+                                       .child(userProfile.getUid())
+                                       .setValue(userFriendBeRequested4);
 
                         // Add profile current user to the user request
-                        UserFriend userFriendCurrent4 = new UserFriend(currentUser.getUid(),
+                        UserFriend userFriendCurrent4
+                                = new UserFriend(
+                                currentUser.getUid(),
                                 currentUser.getNickname(), currentUser.getAvatar(),
                                 currentUser.getEmail(), "beRequested");
                         referenceFriend.child("UserFriend")
-                                .child(userProfile.getUid())
-                                .child(currentUser.getUid())
-                                .setValue(userFriendCurrent4);
+                                       .child(userProfile.getUid())
+                                       .child(currentUser.getUid())
+                                       .setValue(userFriendCurrent4);
                         break;
                 }
             }
@@ -189,9 +200,9 @@ public class ListUserProfileAdapter extends RecyclerView.Adapter<ListUserProfile
             Picasso.with(context).load(R.drawable.ic_avatar).into(holder.ivAvatar);
         } else {
             Picasso.with(context).load(userProfile.getAvatar())
-                    .placeholder(R.drawable.ic_loading)
-                    .error(R.drawable.photo_not_available)
-                    .into(holder.ivAvatar);
+                   .placeholder(R.drawable.ic_loading)
+                   .error(R.drawable.photo_not_available)
+                   .into(holder.ivAvatar);
         }
     }
 

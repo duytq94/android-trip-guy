@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating;
+package com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating;
 
 
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

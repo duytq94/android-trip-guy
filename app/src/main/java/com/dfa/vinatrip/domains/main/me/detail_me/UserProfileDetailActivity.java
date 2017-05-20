@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me.MeDetail;
+package com.dfa.vinatrip.domains.main.me.detail_me;
 
 import android.app.Activity;
 import android.content.Context;

@@ -1,11 +1,11 @@
-package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDescription;
+package com.dfa.vinatrip.domains.main.province.detail_province.province_description;
 
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.MainFunction.Province.Province;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.province.Province;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;

@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Plan.MakePlan;
+package com.dfa.vinatrip.domains.main.plan.make_plan;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,9 +9,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.UserFriend;
-import com.dfa.vinatrip.MainFunction.Plan.Plan;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.domains.main.plan.Plan;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

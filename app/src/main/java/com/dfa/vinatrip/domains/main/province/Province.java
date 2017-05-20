@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Province;
+package com.dfa.vinatrip.domains.main.province;
 
 import android.os.Parcel;
 import android.os.Parcelable;

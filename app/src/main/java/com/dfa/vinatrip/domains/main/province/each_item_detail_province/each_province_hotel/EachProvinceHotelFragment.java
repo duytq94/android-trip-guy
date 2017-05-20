@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachProvinceHotel;
+package com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_hotel;
 
 import android.Manifest;
 import android.content.Intent;
@@ -13,8 +13,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceHotel.ProvinceHotel;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_hotel.ProvinceHotel;
 import com.dfa.vinatrip.utils.MapActivity_;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
@@ -63,8 +63,7 @@ public class EachProvinceHotelFragment extends Fragment {
 
     private ProvinceHotel detailHotel;
     private List<String> listUrlPhotos;
-    private com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachProvinceHotel.ProvinceHotelPhotoAdapter
-            provinceHotelPhotoAdapter;
+    private ProvinceHotelPhotoAdapter provinceHotelPhotoAdapter;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
     @AfterViews
@@ -101,12 +100,12 @@ public class EachProvinceHotelFragment extends Fragment {
     @Click(R.id.fragment_each_province_hotel_ll_phone)
     void onLlPhoneClick() {
         if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                                              Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.CALL_PHONE}, 1);
+                                              new String[]{Manifest.permission.CALL_PHONE}, 1);
         } else {
             Intent intentCall = new Intent(Intent.ACTION_CALL,
-                    Uri.parse("tel:" + detailHotel.getPhone()));
+                                           Uri.parse("tel:" + detailHotel.getPhone()));
             startActivity(intentCall);
         }
     }
@@ -136,27 +135,27 @@ public class EachProvinceHotelFragment extends Fragment {
 
         listUrlPhotos = new ArrayList<>();
         provinceHotelPhotoAdapter =
-                new com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.EachProvinceHotel.ProvinceHotelPhotoAdapter(getActivity(), listUrlPhotos);
+                new ProvinceHotelPhotoAdapter(getActivity(), listUrlPhotos);
         rvProvinceHotelPhotos.setAdapter(provinceHotelPhotoAdapter);
 
         // Load static map
         String url = "http://maps.google.com/maps/api/staticmap?center="
-                + detailHotel.getLatitude()
-                + "," + detailHotel.getLongitude()
-                + "&zoom=15&size=100x120&sensor=false";
+                     + detailHotel.getLatitude()
+                     + "," + detailHotel.getLongitude()
+                     + "&zoom=15&size=100x120&sensor=false";
         Picasso.with(getActivity())
-                .load(url)
-                .into(ivMap, new Callback() {
-                    @Override
-                    public void onSuccess() {
+               .load(url)
+               .into(ivMap, new Callback() {
+                   @Override
+                   public void onSuccess() {
 
-                    }
+                   }
 
-                    @Override
-                    public void onError() {
+                   @Override
+                   public void onError() {
 
-                    }
-                });
+                   }
+               });
     }
 
     public void loadProvinceHotelPhoto() {
@@ -164,50 +163,50 @@ public class EachProvinceHotelFragment extends Fragment {
 
         // if no Internet, this method will not run
         databaseReference.child("ProvinceHotelPhoto").child(detailHotel.getProvince()).child(detailHotel.getName())
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        String url;
-                        url = dataSnapshot.getValue().toString();
+                         .addChildEventListener(new ChildEventListener() {
+                             @Override
+                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                 String url;
+                                 url = dataSnapshot.getValue().toString();
 
-                        listUrlPhotos.add(url);
-                        provinceHotelPhotoAdapter.notifyDataSetChanged();
-                    }
+                                 listUrlPhotos.add(url);
+                                 provinceHotelPhotoAdapter.notifyDataSetChanged();
+                             }
 
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                             @Override
+                             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                    }
+                             }
 
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                             @Override
+                             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                    }
+                             }
 
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                             @Override
+                             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                    }
+                             }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                             @Override
+                             public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                             }
+                         });
 
         databaseReference.child("ProvinceHotelPhoto").child(detailHotel.getProvince()).child(detailHotel.getName())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (isAdded()) {
-                            srlReload.setRefreshing(false);
-                        }
-                    }
+                         .addListenerForSingleValueEvent(new ValueEventListener() {
+                             @Override
+                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                 if (isAdded()) {
+                                     srlReload.setRefreshing(false);
+                                 }
+                             }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                             @Override
+                             public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                             }
+                         });
     }
 }

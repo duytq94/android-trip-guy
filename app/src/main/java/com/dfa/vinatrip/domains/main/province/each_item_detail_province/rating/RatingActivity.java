@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating;
+package com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,9 +18,9 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.dfa.vinatrip.domains.main.me.UserProfile;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_destination.ProvinceDestination;
 import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.MainFunction.Me.UserProfile;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDestination.ProvinceDestination;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.login.SignInActivity_;
 import com.google.firebase.database.DatabaseReference;

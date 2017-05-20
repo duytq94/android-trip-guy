@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Plan.MakePlan;
+package com.dfa.vinatrip.domains.main.plan.make_plan;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Province.ProvinceDetail;
+package com.dfa.vinatrip.domains.main.province.detail_province;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,17 +7,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 
-import com.dfa.vinatrip.MainFunction.Province.Province;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDescription.ProvinceDescriptionFragment;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDescription.ProvinceDescriptionFragment_;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDestination.ProvinceDestinationFragment;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceDestination.ProvinceDestinationFragment_;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceFood.ProvinceFoodFragment;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceFood.ProvinceFoodFragment_;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceHotel.ProvinceHotelFragment;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvinceHotel.ProvinceHotelFragment_;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvincePhoto.ProvincePhotoFragment;
-import com.dfa.vinatrip.MainFunction.Province.ProvinceDetail.ProvincePhoto.ProvincePhotoFragment_;
+import com.dfa.vinatrip.domains.main.province.Province;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_description.ProvinceDescriptionFragment;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_description.ProvinceDescriptionFragment_;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_destination.ProvinceDestinationFragment;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_destination.ProvinceDestinationFragment_;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_food.ProvinceFoodFragment;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_food.ProvinceFoodFragment_;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_hotel.ProvinceHotelFragment;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_hotel.ProvinceHotelFragment_;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_photo.ProvincePhotoFragment;
+import com.dfa.vinatrip.domains.main.province.detail_province.province_photo.ProvincePhotoFragment_;
 import com.dfa.vinatrip.utils.ViewPagerSwipeFragmentAdapter;
 import com.dfa.vinatrip.R;
 

@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me.MeDetail.MyRating;
+package com.dfa.vinatrip.domains.main.me.detail_me.my_rating;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.UserRating;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

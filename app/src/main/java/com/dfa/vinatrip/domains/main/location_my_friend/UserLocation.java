@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.LocationMyFriend;
+package com.dfa.vinatrip.domains.main.location_my_friend;
 
 public class UserLocation {
     String uid, avatar, nickname;

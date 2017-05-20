@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Plan.MakePlan;
+package com.dfa.vinatrip.domains.main.plan.make_plan;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -21,10 +21,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dfa.vinatrip.domains.main.me.UserProfile;
+import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.domains.main.plan.Plan;
 import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.UserFriend;
-import com.dfa.vinatrip.MainFunction.Me.UserProfile;
-import com.dfa.vinatrip.MainFunction.Plan.Plan;
 import com.dfa.vinatrip.R;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

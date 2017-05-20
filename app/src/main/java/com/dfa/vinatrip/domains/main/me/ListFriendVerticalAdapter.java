@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.MainFunction.Me;
+package com.dfa.vinatrip.domains.main.me;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.MainFunction.Me.MeDetail.MakeFriend.UserFriend;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -40,9 +40,9 @@ public class ListFriendVerticalAdapter extends RecyclerView.Adapter<ListFriendVe
 
         if (!userFriend.getAvatar().equals("")) {
             Picasso.with(context).load(userFriend.getAvatar())
-                    .placeholder(R.drawable.ic_loading)
-                    .error(R.drawable.photo_not_available)
-                    .into(holder.ivAvatar);
+                   .placeholder(R.drawable.ic_loading)
+                   .error(R.drawable.photo_not_available)
+                   .into(holder.ivAvatar);
         }
     }
 

@@ -10,8 +10,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.MainFunction.Province.Province;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.province.Province;
 
 import java.util.ArrayList;
 import java.util.List;
