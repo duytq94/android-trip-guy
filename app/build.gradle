@@ -80,12 +80,11 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support.constraint:constraint-layout:+'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     testCompile 'junit:junit:4.12'
 
-    compile 'com.android.support:recyclerview-v7:23.0.0'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
 
     // Google Firebase
     compile 'com.google.firebase:firebase-database:10.0.1'
@@ -102,7 +101,7 @@ dependencies {
     // Load Google Maps
     compile 'com.google.android.gms:play-services:10.0.1'
 
-    compile 'com.android.support:cardview-v7:21.0.+'
+    compile "com.android.support:cardview-v7:25.3.1"
     compile 'de.hdodenhof:circleimageview:2.1.0'
 
     // Blur ImageView
@@ -113,8 +112,17 @@ dependencies {
     // Check field edit text
     compile 'com.mobsandgeeks:android-saripaar:2.0.2'
 
+    // Network
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+
+    // Dagger
+    compile "com.google.dagger:dagger:2.9"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.9"
+    provided 'javax.annotation:jsr250-api:1.0'
+
+    // MVP
+    compile 'com.hannesdorfmann.mosby3:mvi:3.0.4'
 }
 // this line has to put out of dependencies so app can run Google Map
 apply plugin: 'com.google.gms.google-services'
