@@ -1,12 +1,10 @@
 <resources>
     <string name="app_name">TripGuy</string>
     <string name="title_activity_welcome">Home Screen</string>
-
     <!-- String for buttons -->
     <string name="next">Kế tiếp</string>
     <string name="back">Về trước</string>
     <string name="btn_launch_now">Sử dụng ngay</string>
-
     <!-- String for welcome screen -->
     <string name="welcome_screen_title1">Thông tin địa điểm</string>
     <string name="welcome_screen_desc1">Cung cấp thông tin điểm đến, khách sạn, ăn uống và nhiều thông tin khác</string>
@@ -16,14 +14,12 @@
     <string name="welcome_screen_desc3">Cùng cộng đồng người dùng VinaTrip chia sẻ các trải nghiệm với nhau để tạo nên chuyến du lịch tuyệt vời nhất</string>
     <string name="welcome_screen_title4">Lưu lại cảm xúc</string>
     <string name="welcome_screen_desc4">Những nơi bạn đi qua sẽ được lưu lại cùng với những cảm xúc khó quên</string>
-
     <!-- String for bottom menu -->
     <string name="menu_location">Địa điểm</string>
     <string name="menu_plan">Kế hoạch</string>
     <string name="menu_share">Chia sẻ</string>
     <string name="menu_my_friend">Bạn tôi</string>
     <string name="menu_me">Cá nhân</string>
-
     <!-- String for activity sign in, sign up -->
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
@@ -36,7 +32,6 @@
     <string name="body_forgot_password">Bạn hãy nhập địa chỉ email, chúng tôi sẽ gửi lại bạn mật khẩu mới</string>
     <string name="btn_reset_password">Reset mật khẩu</string>
     <string name="btn_back">&#8810; Trở về</string>
-
     <!-- String for personal settings -->
     <string name="nickname">Nickname</string>
     <string name="city">Nơi ở</string>
@@ -56,54 +51,34 @@
     <string name="update_profile">Chỉnh sửa trang cá nhân</string>
     <string name="done">Xong</string>
     <string name="cancel">Hủy</string>
-
     <!-- String for layout item_province -->
     <string name="name_not_available">Name is not available</string>
     <string name="title_not_available">Title is not available</string>
-
     <string name="search_hint">Bạn muốn đi đâu?</string>
-
     <string name="contact">Thông tin liên lạc</string>
-
     <string name="location">Vị trí</string>
-
     <string name="scheduleAndFee">Lịch trình &amp; chí phí tham khảo</string>
-
     <string name="rating">Đánh giá &#10148;</string>
     <string name="update_rating">Chỉnh sửa đánh giá &#10148;</string>
-
     <string name="description">Mô tả</string>
-
     <string name="photo">Hình ảnh</string>
-
     <string name="title">Tiêu đề</string>
-
     <string name="btn_submit">Gửi</string>
-
     <string name="btn_add">Thêm &#8595;</string>
     <string name="btn_remove">Xóa &#8593;</string>
-
     <string name="comment_not_available">Hiện chưa có đánh giá nào</string>
-
     <string name="friend_not_available">Hiện chưa có bạn bè nào</string>
-
     <string name="friend">&#10004; Bạn bè</string>
     <string name="sent">&#10148; Đã gửi</string>
     <string name="agree">&#9873; Đồng ý</string>
-
     <string name="invited">&#10004; Đã mời</string>
-
     <string name="update_plan">Chỉnh sửa &#10148;</string>
     <string name="remove_plan">Xóa &#10006;</string>
-
     <string name="trip_plan">Kế hoạch chuyến đi</string>
-
     <string name="plan_list_not_available">Hiện bạn chưa có kế hoạch du lịch nào</string>
     <string name="not_login">Hiện bạn chưa đăng nhập</string>
-
     <string name="message_my_friend">Xem vị trí của bạn bè của bạn trên bản đồ, đặc biệt trong những chuyến du lịch,
         bạn sẽ không bao giờ mất liên lạc với họ nữa.\nLưu ý: bạn có thể tắt định vị khi không dùng đến tính năng này.</string>
-
     <string name="message_plan">Lên kế hoạch, lịch trình cho chuyến đi của bạn, tag bạn bè cùng đi vào để mọi người có thể
     theo dõi và đóng góp cho chuyến đi nhé.</string>
 </resources>

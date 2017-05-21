@@ -244,9 +244,8 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
                                  public void onComplete(DatabaseError databaseError,
                                                         DatabaseReference databaseReference) {
                                      if (databaseError != null) {
-                                         Toasty.error(MakePlanActivity.this,
-                                                        "Lỗi đường truyền, bạn hãy gửi lại!", Toast.LENGTH_SHORT)
-                                              .show();
+                                         Toasty.error(MakePlanActivity.this, "Lỗi đường truyền, bạn hãy gửi lại!",
+                                                      Toast.LENGTH_SHORT).show();
                                          progressBar.setVisibility(View.GONE);
                                      } else {
                                          progressBar.setVisibility(View.GONE);
@@ -339,7 +338,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
     @Click(R.id.activity_make_plan_ll_background)
     void onLlBackgroundClick() {
-
+        ChooseBackgroundPlan_.intent(this).start();
     }
 
     @Override
@@ -401,7 +400,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
                              public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                                  if (databaseError != null) {
                                      Toasty.error(MakePlanActivity.this,
-                                                    "Lỗi đường truyền, bạn hãy gửi lại!", Toast.LENGTH_SHORT).show();
+                                                  "Lỗi đường truyền, bạn hãy gửi lại!", Toast.LENGTH_SHORT).show();
                                      progressBar.setVisibility(View.GONE);
                                  } else {
                                      // Send data to storage of friends be invited

@@ -132,4 +132,7 @@ dependencies {
     compile 'com.hannesdorfmann.mosby3:mvp:3.0.4'
 }
 // this line has to put out of dependencies so app can run Google Map
+dependencies {
+    compile 'com.android.support.constraint:constraint-layout:+'
+}
 apply plugin: 'com.google.gms.google-services'
