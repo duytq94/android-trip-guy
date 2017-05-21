@@ -45,6 +45,8 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 @EActivity(R.layout.activity_sign_up)
 public class SignUpActivity extends AppCompatActivity implements Validator.ValidationListener {
 
@@ -179,11 +181,11 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
                                 try {
                                     throw task.getException();
                                 } catch (FirebaseAuthInvalidCredentialsException e) {
-                                    Toast.makeText(SignUpActivity.this,
-                                                   "Email không hợp lệ!",
-                                                   Toast.LENGTH_SHORT).show();
+                                    Toasty.error(SignUpActivity.this,
+                                                 "Email không hợp lệ!",
+                                                 Toast.LENGTH_SHORT).show();
                                 } catch (FirebaseAuthUserCollisionException e) {
-                                    Toast.makeText(SignUpActivity.this,
+                                    Toasty.error(SignUpActivity.this,
                                                    "Email đã được đăng ký!",
                                                    Toast.LENGTH_SHORT).show();
                                 } catch (Exception e) {

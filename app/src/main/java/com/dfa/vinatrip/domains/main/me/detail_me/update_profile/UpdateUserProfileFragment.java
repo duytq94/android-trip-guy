@@ -53,6 +53,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import es.dmoral.toasty.Toasty;
 import jp.wasabeef.blurry.Blurry;
 
 @EFragment(R.layout.fragment_update_user_profile)
@@ -189,9 +190,9 @@ public class UpdateUserProfileFragment extends Fragment {
                         progressBar.setVisibility(View.GONE);
                         TripGuyUtils.setEnableAllViews(svRoot, true);
                         tvPercent.setVisibility(View.GONE);
-                        Toast.makeText(getActivity(),
-                                "Cập nhật không thành công\nBạn vui lòng thử lại",
-                                Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(),
+                                     "Cập nhật không thành công\nBạn vui lòng thử lại",
+                                     Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -220,7 +221,7 @@ public class UpdateUserProfileFragment extends Fragment {
                             progressBar.setVisibility(View.GONE);
                             TripGuyUtils.setEnableAllViews(svRoot, true);
                             tvPercent.setVisibility(View.GONE);
-                            Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT)
+                            Toasty.success(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT)
                                     .show();
                         }
                     }
@@ -246,11 +247,11 @@ public class UpdateUserProfileFragment extends Fragment {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                             if (databaseError != null) {
-                                Toast.makeText(getActivity(), "Lỗi đường truyền, bạn hãy gửi lại!",
+                                Toasty.error(getActivity(), "Lỗi đường truyền, bạn hãy gửi lại!",
                                         Toast.LENGTH_SHORT).show();
                             } else {
                                 dataService.setCurrentUser(newUserProfile);
-                                Toast.makeText(getActivity(), "Cập nhật thành công!",
+                                Toasty.success(getActivity(), "Cập nhật thành công!",
                                         Toast.LENGTH_SHORT).show();
                             }
                         }

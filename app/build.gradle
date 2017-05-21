@@ -115,6 +115,9 @@ dependencies {
     // Photo view
     compile 'com.github.chrisbanes:PhotoView:2.0.0'
 
+    // Toasty
+    compile 'com.github.GrenderG:Toasty:1.2.5'
+
     // Network
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'

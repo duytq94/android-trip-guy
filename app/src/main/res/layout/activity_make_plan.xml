@@ -63,6 +63,31 @@
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
+            android:id="@+id/activity_make_plan_ll_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="2"
+                android:padding="8dp"
+                android:text="Hình nền"
+                android:textColor="@android:color/black"
+                />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/photo_not_available"
+                />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/activity_make_plan_ll_date_go"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

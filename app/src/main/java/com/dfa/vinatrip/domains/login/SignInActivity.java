@@ -40,6 +40,8 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 @EActivity(R.layout.activity_sign_in)
 public class SignInActivity extends AppCompatActivity implements Validator.ValidationListener {
 
@@ -119,8 +121,8 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
                             progressBar.setVisibility(View.GONE);
                             TripGuyUtils.setEnableAllViews(llRoot, true);
                             if (!task.isSuccessful()) {
-                                Toast.makeText(SignInActivity.this, "Email hoặc mật khẩu không đúng!",
-                                               Toast.LENGTH_SHORT).show();
+                                Toasty.error(SignInActivity.this, "Email hoặc mật khẩu không đúng!",
+                                             Toast.LENGTH_SHORT).show();
                             } else {
                                 startActivity(new Intent(SignInActivity.this, SplashScreenActivity_.class));
                             }

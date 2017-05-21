@@ -38,6 +38,8 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 @EActivity(R.layout.activity_reset_password)
 public class ResetPasswordActivity extends AppCompatActivity implements Validator.ValidationListener {
 
@@ -152,7 +154,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
     public void onValidationSucceeded() {
         String email = etEmail.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(ResetPasswordActivity.this, "Nhập email của bạn!", Toast.LENGTH_SHORT).show();
+            Toasty.warning(ResetPasswordActivity.this, "Nhập email của bạn!", Toast.LENGTH_SHORT).show();
             return;
         }
         progressBar.setVisibility(View.VISIBLE);
@@ -161,11 +163,11 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(ResetPasswordActivity.this,
+                            Toasty.success(ResetPasswordActivity.this,
                                     "Chúng tôi đã gửi mật khẩu đến email của bạn!",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(ResetPasswordActivity.this,
+                            Toasty.error(ResetPasswordActivity.this,
                                     "Reset mật khẩu không thành công!",
                                     Toast.LENGTH_SHORT).show();
                         }
