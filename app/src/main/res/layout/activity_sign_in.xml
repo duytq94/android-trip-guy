@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_sign_in_ll_root"
     android:layout_width="match_parent"
@@ -9,7 +10,8 @@
     android:gravity="center"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_vertical_margin"
-    android:paddingRight="@dimen/activity_vertical_margin">
+    android:paddingRight="@dimen/activity_vertical_margin"
+    >
 
     <ImageView
         android:id="@+id/activity_sign_in_iv_symbol"
@@ -17,11 +19,13 @@
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="30dp"
-        android:src="@drawable/ic_symbol" />
+        android:src="@drawable/ic_symbol"
+        />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <EditText
             android:id="@+id/activity_sign_in_et_email"
@@ -32,13 +36,15 @@
             android:inputType="textEmailAddress"
             android:paddingLeft="@dimen/text_view_padding"
             android:textColor="@android:color/black"
-            android:textColorHint="@android:color/black" />
+            android:textColorHint="@android:color/black"
+            />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:passwordToggleEnabled="true">
+        app:passwordToggleEnabled="true"
+        >
 
         <EditText
             android:id="@+id/activity_sign_in_et_password"
@@ -48,11 +54,10 @@
             android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:paddingLeft="@dimen/text_view_padding"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            />
     </android.support.design.widget.TextInputLayout>
-
     <!-- Login Button -->
-
     <Button
         android:id="@+id/activity_sign_in_btn_sign_in"
         android:layout_width="match_parent"
@@ -60,7 +65,8 @@
         android:layout_marginTop="20dip"
         android:background="@drawable/custom_button_positive"
         android:text="@string/btn_login"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        />
 
     <Button
         android:id="@+id/activity_sign_in_btn_reset_password"
@@ -70,10 +76,9 @@
         android:background="@null"
         android:text="@string/btn_forgot_password"
         android:textAllCaps="false"
-        android:textColor="@color/btn_press_state_green" />
-
+        android:textColor="@color/btn_press_state_green"
+        />
     <!-- Link to Login Screen -->
-
     <Button
         android:id="@+id/activity_sign_in_btn_sign_up"
         android:layout_width="match_parent"
@@ -82,7 +87,8 @@
         android:background="@null"
         android:text="@string/btn_link_to_register"
         android:textAllCaps="false"
-        android:textColor="@color/btn_press_state_green" />
+        android:textColor="@color/btn_press_state_green"
+        />
 
     <ProgressBar
         android:id="@+id/activity_sign_in_progressBar"
@@ -90,5 +96,6 @@
         android:layout_height="30dp"
         android:layout_gravity="center|bottom"
         android:layout_marginBottom="20dp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        />
 </LinearLayout>

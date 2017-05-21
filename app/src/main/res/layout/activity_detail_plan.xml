@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?><!-- Pull down page, data will load again -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragment_each_province_destination_srlReload"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <include layout="@layout/toolbar" />
-
     <!-- Combine two types of scroll, if not, two scroll bar will show -->
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_view_margin">
+                android:layout_margin="@dimen/card_view_margin"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
 
                     <TextView
                         android:layout_width="match_parent"
@@ -33,33 +38,38 @@
                         android:paddingLeft="@dimen/text_view_padding"
                         android:text="Người tổ chức"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_large" />
+                        android:textSize="@dimen/text_large"
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/activity_vertical_margin"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        >
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/activity_detail_plan_civ_avatar"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:src="@drawable/photo_not_available" />
+                            android:src="@drawable/photo_not_available"
+                            />
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="50dp"
                             android:layout_marginLeft="@dimen/activity_vertical_margin"
                             android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            >
 
                             <TextView
                                 android:id="@+id/activity_detail_plan_tv_nickname"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="@dimen/text_view_padding"
-                                android:paddingRight="@dimen/text_view_padding" />
+                                android:paddingRight="@dimen/text_view_padding"
+                                />
 
                             <TextView
                                 android:id="@+id/activity_detail_plan_tv_email"
@@ -67,10 +77,9 @@
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="@dimen/text_view_padding"
                                 android:paddingRight="@dimen/text_view_padding"
-                                android:paddingTop="@dimen/text_view_padding" />
+                                android:paddingTop="@dimen/text_view_padding"
+                                />
                         </LinearLayout>
-
-
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -78,12 +87,14 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_view_margin">
+                android:layout_margin="@dimen/card_view_margin"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
 
                     <TextView
                         android:layout_width="match_parent"
@@ -91,14 +102,16 @@
                         android:paddingLeft="@dimen/text_view_padding"
                         android:text="Bạn bè tham gia"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_large" />
+                        android:textSize="@dimen/text_large"
+                        />
 
                     <TextView
                         android:id="@+id/activity_detail_plan_tv_friend_not_available"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/text_view_padding"
-                        android:text="@string/friend_not_available" />
+                        android:text="@string/friend_not_available"
+                        />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/activity_detail_plan_rv_friend_join"
@@ -106,20 +119,22 @@
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"
                         android:padding="@dimen/recycler_view_padding"
-                        android:paddingTop="@dimen/recycler_view_padding" />
-
+                        android:paddingTop="@dimen/recycler_view_padding"
+                        />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_view_margin">
+                android:layout_margin="@dimen/card_view_margin"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
 
                     <TextView
                         android:layout_width="match_parent"
@@ -127,26 +142,29 @@
                         android:paddingLeft="@dimen/text_view_padding"
                         android:text="Nơi đến"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_large" />
+                        android:textSize="@dimen/text_large"
+                        />
 
                     <TextView
                         android:id="@+id/activity_detail_plan_tv_destination"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/text_view_padding" />
-
+                        android:padding="@dimen/text_view_padding"
+                        />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_view_margin">
+                android:layout_margin="@dimen/card_view_margin"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
 
                     <TextView
                         android:layout_width="match_parent"
@@ -154,12 +172,14 @@
                         android:paddingLeft="@dimen/text_view_padding"
                         android:text="Ngày đi &amp; về"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_large" />
+                        android:textSize="@dimen/text_large"
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        >
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -167,20 +187,22 @@
                             android:orientation="horizontal"
                             android:paddingBottom="@dimen/text_view_padding"
                             android:paddingLeft="@dimen/text_view_padding"
-                            android:paddingTop="@dimen/text_view_padding">
+                            android:paddingTop="@dimen/text_view_padding"
+                            >
 
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:src="@drawable/ic_schedule" />
+                                android:src="@drawable/ic_schedule"
+                                />
 
                             <TextView
                                 android:id="@+id/activity_detail_plan_tv_date_go"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginLeft="@dimen/text_view_padding"
-                                android:gravity="center_vertical" />
-
+                                android:gravity="center_vertical"
+                                />
                         </LinearLayout>
 
                         <LinearLayout
@@ -188,34 +210,38 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:paddingBottom="@dimen/text_view_padding"
-                            android:paddingLeft="@dimen/text_view_padding">
+                            android:paddingLeft="@dimen/text_view_padding"
+                            >
 
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:src="@drawable/ic_schedule" />
+                                android:src="@drawable/ic_schedule"
+                                />
 
                             <TextView
                                 android:id="@+id/activity_detail_plan_tv_date_back"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginLeft="@dimen/text_view_padding"
-                                android:gravity="center_vertical" />
+                                android:gravity="center_vertical"
+                                />
                         </LinearLayout>
                     </LinearLayout>
-
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_view_margin">
+                android:layout_margin="@dimen/card_view_margin"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
 
                     <TextView
                         android:layout_width="match_parent"
@@ -223,14 +249,15 @@
                         android:paddingLeft="@dimen/text_view_padding"
                         android:text="Lịch trình"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_large" />
+                        android:textSize="@dimen/text_large"
+                        />
 
                     <TextView
                         android:id="@+id/activity_detail_plan_tv_schedule"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/text_view_padding" />
-
+                        android:padding="@dimen/text_view_padding"
+                        />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>

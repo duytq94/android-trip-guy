@@ -1,12 +1,16 @@
 package com.dfa.vinatrip.domains.main.province.detail_province.province_photo;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.province.Province;
+import com.dfa.vinatrip.utils.RecyclerItemClickListener;
+import com.dfa.vinatrip.utils.ShowFullPhotoActivity_;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -109,18 +113,40 @@ public class ProvincePhotoFragment extends Fragment {
             }
         });
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        rvPhotos.setLayoutManager(staggeredGridLayoutManager);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvPhotos.setLayoutManager(manager);
+
+        rvPhotos.addOnItemTouchListener(new RecyclerItemClickListener(
+                getActivity(), rvPhotos,
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(getActivity(), ShowFullPhotoActivity_.class);
+
+                        // Send ListUrlPhotos to ShowFullPhotoActivity
+                        intent.putStringArrayListExtra("ListUrlPhotos", (ArrayList<String>) provincePhotoList);
+                        // Send the Position photo user click
+                        intent.putExtra("Position", position);
+                        // Send DetailProvince to ShowFullPhotoActivity
+                        intent.putExtra("DetailProvince", province);
+
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+                }));
     }
 
     public void loadProvincePhoto() {
         // if no Internet, this method will not run
         databaseReference.child("ProvincePhoto").child(province.getName())
-                .addChildEventListener(childEventListener);
+                         .addChildEventListener(childEventListener);
 
         databaseReference.child("ProvincePhoto").child(province.getName())
-                .addListenerForSingleValueEvent(valueEventListener);
+                         .addListenerForSingleValueEvent(valueEventListener);
     }
 
     @Override

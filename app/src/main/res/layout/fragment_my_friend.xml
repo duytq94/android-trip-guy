@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fragment_my_friend_rv_list_friends"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/recycler_view_padding" />
+        android:padding="@dimen/recycler_view_padding"
+        />
 
     <LinearLayout
         android:id="@+id/fragment_my_friend_ll_friend_not_available"
@@ -17,20 +20,22 @@
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="50dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        >
 
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_me_gray" />
+            android:src="@drawable/ic_me_gray"
+            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Hiện chưa có bạn bè nào"
-            android:textSize="@dimen/text_large" />
+            android:textSize="@dimen/text_large"
+            />
     </LinearLayout>
-
 </LinearLayout>

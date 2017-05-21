@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_memory">
+    android:background="@drawable/bg_memory"
+    >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -10,12 +12,14 @@
         android:layout_gravity="top"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingTop="@dimen/top_padding">
+        android:paddingTop="@dimen/top_padding"
+        >
 
         <ImageView
             android:layout_width="@dimen/img_width_height"
             android:layout_height="@dimen/img_width_height"
-            android:src="@drawable/ic_memory" />
+            android:src="@drawable/ic_memory"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -23,7 +27,8 @@
             android:text="@string/welcome_screen_title4"
             android:textColor="@android:color/white"
             android:textSize="@dimen/welcome_screen_title"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,8 +39,7 @@
             android:text="@string/welcome_screen_desc4"
             android:textAlignment="center"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/welcome_screen_desc" />
-
+            android:textSize="@dimen/welcome_screen_desc"
+            />
     </LinearLayout>
-
 </LinearLayout>

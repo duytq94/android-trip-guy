@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/text_view_padding"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/item_friend_horizontal_civ_avatar"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:src="@drawable/photo_not_available" />
+        android:src="@drawable/photo_not_available"
+        />
 
     <TextView
         android:id="@+id/item_friend_horizontal_tv_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        />
 </LinearLayout>

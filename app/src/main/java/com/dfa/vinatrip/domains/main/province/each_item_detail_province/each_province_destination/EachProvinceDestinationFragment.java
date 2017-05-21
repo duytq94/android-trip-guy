@@ -13,12 +13,12 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.province.detail_province.province_destination.ProvinceDestination;
-import com.dfa.vinatrip.domains.main.province.each_item_detail_province.full_photo.ShowFullPhotoActivity_;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.RatingActivity_;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.RatingAdapter;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
 import com.dfa.vinatrip.utils.MapActivity_;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
+import com.dfa.vinatrip.utils.ShowFullPhotoActivity_;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -139,29 +139,28 @@ public class EachProvinceDestinationFragment extends Fragment {
     public void setOnClickListener() {
         // Catch event when click item on RecyclerView
         rvProvinceDestinationPhotos.addOnItemTouchListener
-                (new RecyclerItemClickListener(getActivity(), rvProvinceDestinationPhotos,
-                                               new RecyclerItemClickListener.OnItemClickListener() {
-                                                   @Override
-                                                   public void onItemClick(View view, int position) {
-                                                       Intent intentShowFull =
-                                                               new Intent(getActivity(), ShowFullPhotoActivity_.class);
+                (new RecyclerItemClickListener(
+                        getActivity(), rvProvinceDestinationPhotos,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Intent intent = new Intent(getActivity(), ShowFullPhotoActivity_.class);
 
-                                                       // Send ListUrlPhotos to ShowFullPhotoActivity
-                                                       intentShowFull.putStringArrayListExtra("ListUrlPhotos",
-                                                                                              (ArrayList<String>) listUrlPhotos);
-                                                       // Send the Position photo user click
-                                                       intentShowFull.putExtra("Position", position);
-                                                       // Send DetailDestination to ShowFullPhotoActivity
-                                                       intentShowFull.putExtra("DetailDestination", detailDestination);
+                                // Send ListUrlPhotos to ShowFullPhotoActivity
+                                intent.putStringArrayListExtra("ListUrlPhotos", (ArrayList<String>) listUrlPhotos);
+                                // Send the Position photo user click
+                                intent.putExtra("Position", position);
+                                // Send DetailDestination to ShowFullPhotoActivity
+                                intent.putExtra("DetailDestination", detailDestination);
 
-                                                       startActivity(intentShowFull);
-                                                   }
+                                startActivity(intent);
+                            }
 
-                                                   @Override
-                                                   public void onLongItemClick(View view, int position) {
+                            @Override
+                            public void onLongItemClick(View view, int position) {
 
-                                                   }
-                                               }));
+                            }
+                        }));
     }
 
     @Override

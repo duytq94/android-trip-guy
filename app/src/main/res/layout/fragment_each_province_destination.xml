@@ -1,29 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?><!-- Pull down page, data will load again -->
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_each_province_destination_srlReload"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    >
     <!-- Combine two types of scroll, if not, two scroll bar will show -->
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_view_margin">
+                android:layout_margin="@dimen/card_view_margin"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
 
                     <TextView
                         android:layout_width="match_parent"
@@ -31,35 +36,38 @@
                         android:paddingLeft="@dimen/text_view_padding"
                         android:text="@string/location"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_large" />
+                        android:textSize="@dimen/text_large"
+                        />
 
                     <LinearLayout
                         android:id="@+id/fragment_each_province_destination_ll_address"
                         android:layout_width="match_parent"
                         android:layout_height="90dp"
                         android:orientation="horizontal"
-                        android:weightSum="5">
+                        android:weightSum="5"
+                        >
 
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_location2" />
+                            android:src="@drawable/ic_location2"
+                            />
 
                         <TextView
-
                             android:id="@+id/fragment_each_province_destination_tv_address"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="3"
-                            android:gravity="center_vertical" />
+                            android:gravity="center_vertical"
+                            />
 
                         <ImageView
                             android:id="@+id/fragment_each_province_destination_iv_map"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1" />
-
+                            android:layout_weight="1"
+                            />
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -67,12 +75,14 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/recycler_view_padding">
+                android:layout_margin="@dimen/recycler_view_padding"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
 
                     <TextView
                         android:layout_width="match_parent"
@@ -80,26 +90,30 @@
                         android:paddingLeft="@dimen/text_view_padding"
                         android:text="@string/photo"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_large" />
+                        android:textSize="@dimen/text_large"
+                        />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/fragment_each_province_destination_rv_photos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"
-                        android:padding="@dimen/recycler_view_padding" />
+                        android:padding="@dimen/recycler_view_padding"
+                        />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_view_margin">
+                android:layout_margin="@dimen/card_view_margin"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
 
                     <TextView
                         android:layout_width="match_parent"
@@ -107,7 +121,8 @@
                         android:paddingLeft="@dimen/text_view_padding"
                         android:text="@string/description"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_large" />
+                        android:textSize="@dimen/text_large"
+                        />
 
                     <com.ms.square.android.expandabletextview.ExpandableTextView
                         android:id="@+id/fragment_each_province_destination_exptv_description"
@@ -115,13 +130,15 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         expandableTextView:animDuration="400"
-                        expandableTextView:maxCollapsedLines="4">
+                        expandableTextView:maxCollapsedLines="4"
+                        >
 
                         <TextView
                             android:id="@id/expandable_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="@dimen/text_view_padding" />
+                            android:padding="@dimen/text_view_padding"
+                            />
 
                         <ImageButton
                             android:id="@id/expand_collapse"
@@ -129,21 +146,23 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="right|bottom"
                             android:layout_margin="16dp"
-                            android:background="@android:color/transparent" />
+                            android:background="@android:color/transparent"
+                            />
                     </com.ms.square.android.expandabletextview.ExpandableTextView>
-
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_view_margin">
+                android:layout_margin="@dimen/card_view_margin"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
 
                     <TextView
                         android:layout_width="match_parent"
@@ -151,7 +170,8 @@
                         android:paddingLeft="@dimen/text_view_padding"
                         android:text="@string/scheduleAndFee"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_large" />
+                        android:textSize="@dimen/text_large"
+                        />
 
                     <com.ms.square.android.expandabletextview.ExpandableTextView
                         android:id="@+id/fragment_each_province_destination_exptv_schedule_and_fee"
@@ -159,13 +179,15 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         expandableTextView:animDuration="400"
-                        expandableTextView:maxCollapsedLines="4">
+                        expandableTextView:maxCollapsedLines="4"
+                        >
 
                         <TextView
                             android:id="@id/expandable_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="@dimen/text_view_padding" />
+                            android:padding="@dimen/text_view_padding"
+                            />
 
                         <ImageButton
                             android:id="@id/expand_collapse"
@@ -173,25 +195,28 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="right|bottom"
                             android:layout_margin="16dp"
-                            android:background="@android:color/transparent" />
+                            android:background="@android:color/transparent"
+                            />
                     </com.ms.square.android.expandabletextview.ExpandableTextView>
-
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_view_margin">
+                android:layout_margin="@dimen/card_view_margin"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    >
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -199,7 +224,8 @@
                             android:paddingLeft="@dimen/text_view_padding"
                             android:text="@string/feedback"
                             android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_large" />
+                            android:textSize="@dimen/text_large"
+                            />
 
                         <TextView
                             android:id="@+id/fragment_each_province_destination_tv_rate"
@@ -208,7 +234,8 @@
                             android:layout_alignParentRight="true"
                             android:padding="@dimen/text_view_padding"
                             android:text="@string/rating"
-                            android:textColor="@color/btn_press_state_green" />
+                            android:textColor="@color/btn_press_state_green"
+                            />
                     </RelativeLayout>
 
                     <TextView
@@ -216,13 +243,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/text_view_padding"
-                        android:text="@string/comment_not_available" />
+                        android:text="@string/comment_not_available"
+                        />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/fragment_each_province_destination_rv_user_ratings"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>

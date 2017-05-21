@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_welcome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dfa.vinatrip.domains.intro.WelcomeActivity">
-
+    tools:context="com.dfa.vinatrip.domains.intro.WelcomeActivity"
+    >
     <!-- ViewPager must place at top -->
     <android.support.v4.view.ViewPager
         android:id="@+id/activity_welcome_vp_slide_intro"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_above="@+id/activity_welcome_ll_dots"
-        android:background="@android:color/white" />
+        android:background="@android:color/white"
+        />
 
     <LinearLayout
         android:id="@+id/activity_welcome_ll_dots"
@@ -25,7 +28,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/dots_margin_bottom"
         android:gravity="center"
-        android:orientation="horizontal" />
+        android:orientation="horizontal"
+        />
 
     <Button
         android:id="@+id/activity_welcome_btn_next"
@@ -36,7 +40,8 @@
         android:layout_alignParentRight="true"
         android:background="@null"
         android:text="@string/next"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        />
 
     <Button
         android:id="@+id/activity_welcome_btn_back"
@@ -48,7 +53,8 @@
         android:background="@null"
         android:text="@string/back"
         android:textColor="@android:color/white"
-        android:visibility="gone" />
+        android:visibility="gone"
+        />
 
     <Button
         android:id="@+id/activity_welcome_btn_sign_up"
@@ -60,7 +66,8 @@
         android:layout_marginRight="@dimen/activity_vertical_margin"
         android:background="@drawable/bg_btn_transparent"
         android:text="@string/sign_in_up"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        />
 
     <Button
         android:id="@+id/activity_welcome_btn_launch_now"
@@ -72,5 +79,6 @@
         android:layout_marginRight="@dimen/activity_vertical_margin"
         android:background="@drawable/bg_btn_transparent"
         android:text="@string/btn_launch_now"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        />
 </RelativeLayout>

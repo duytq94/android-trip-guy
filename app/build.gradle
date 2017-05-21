@@ -112,6 +112,9 @@ dependencies {
     // Check field edit text
     compile 'com.mobsandgeeks:android-saripaar:2.0.2'
 
+    // Photo view
+    compile 'com.github.chrisbanes:PhotoView:2.0.0'
+
     // Network
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
@@ -123,6 +126,7 @@ dependencies {
 
     // MVP
     compile 'com.hannesdorfmann.mosby3:mvi:3.0.4'
+    compile 'com.hannesdorfmann.mosby3:mvp:3.0.4'
 }
 // this line has to put out of dependencies so app can run Google Map
 apply plugin: 'com.google.gms.google-services'

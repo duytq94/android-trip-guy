@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_full_photo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.FullPhoto.ShowFullPhotoActivity">
+    >
 
     <include layout="@layout/toolbar" />
 
@@ -13,6 +13,6 @@
         android:id="@+id/activity_full_photo_vp_show_full"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/black" />
-
+        android:background="@android:color/black"
+        />
 </LinearLayout>

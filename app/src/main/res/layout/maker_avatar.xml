@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/maker_avatar_fl"
     android:layout_width="50dp"
-    android:layout_height="50dp">
+    android:layout_height="50dp"
+    >
 
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/marker_avatar" />
+        android:src="@drawable/marker_avatar"
+        />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/maker_avatar_civ_avatar"
@@ -15,6 +18,6 @@
         android:layout_height="30dp"
         android:layout_marginLeft="10.1dp"
         android:layout_marginTop="4dp"
-        android:src="@drawable/bg_plan" />
-
+        android:src="@drawable/bg_plan"
+        />
 </FrameLayout>

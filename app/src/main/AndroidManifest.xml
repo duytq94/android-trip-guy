@@ -55,7 +55,7 @@
             android:windowSoftInputMode="adjustResize"
             />
         <activity android:name=".domains.main.province.each_item_detail_province.rating.RatingActivity_" />
-        <activity android:name=".domains.main.province.each_item_detail_province.full_photo.ShowFullPhotoActivity_" />
+        <activity android:name=".utils.ShowFullPhotoActivity_" />
         <activity android:name=".domains.main.splash.SplashScreenActivity_" />
         <activity android:name=".domains.main.plan.make_plan.MakePlanActivity_" />
         <activity android:name=".domains.main.plan.detail_plan.DetailPlanActivity_" />

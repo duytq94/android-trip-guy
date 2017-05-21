@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_rating_ll_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.dfa.vinatrip.MainFunction.Province.EachItemProvinceDetail.Rating.RatingActivity">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <include layout="@layout/toolbar" />
 
@@ -24,7 +25,8 @@
             android:text="Bình thường"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_large"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
 
         <RatingBar
             android:id="@+id/activity_rating_rating_bar"
@@ -34,7 +36,8 @@
             android:numStars="5"
             android:rating="3"
             android:stepSize="1"
-            android:theme="@style/RatingBar" />
+            android:theme="@style/RatingBar"
+            />
 
         <TextView
             android:layout_width="match_parent"
@@ -43,18 +46,21 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:paddingLeft="@dimen/text_view_padding"
             android:text="Nội dung"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            />
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <EditText
                 android:id="@+id/activity_rating_et_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_vertical_margin"
-                android:inputType="textCapSentences|textMultiLine" />
+                android:inputType="textCapSentences|textMultiLine"
+                />
 
             <Button
                 android:id="@+id/activity_rating_btn_clear"
@@ -62,10 +68,9 @@
                 android:layout_height="25dp"
                 android:layout_gravity="right"
                 android:layout_marginRight="@dimen/activity_vertical_margin"
-                android:background="@drawable/ic_clear" />
-
+                android:background="@drawable/ic_clear"
+                />
         </FrameLayout>
-
     </LinearLayout>
 
     <LinearLayout
@@ -73,7 +78,8 @@
         android:layout_height="0dp"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <Button
             android:id="@+id/activity_rating_btn_submit"
@@ -83,7 +89,8 @@
             android:layout_marginTop="20dip"
             android:background="@drawable/custom_button_positive"
             android:text="@string/btn_submit"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            />
 
         <Button
             android:id="@+id/activity_rating_btn_cancel"
@@ -94,6 +101,7 @@
             android:background="@null"
             android:text="@string/cancel"
             android:textAllCaps="false"
-            android:textColor="@color/btn_press_state_green" />
+            android:textColor="@color/btn_press_state_green"
+            />
     </LinearLayout>
 </LinearLayout>

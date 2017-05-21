@@ -300,7 +300,7 @@ public class ProvinceFragment extends Fragment {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             View itemView = layoutInflater.inflate(R.layout.item_photo_slide_show, container, false);
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.ivPhotoSlideShow);
+            ImageView imageView = (ImageView) itemView.findViewById(R.id.pvPhotoSlideShow);
             imageView.setImageResource(mResources[position]);
             container.addView(itemView);
             return itemView;

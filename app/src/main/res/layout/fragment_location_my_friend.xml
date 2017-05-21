@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorMain">
+        android:background="@color/colorMain"
+        >
 
         <ImageView
             android:id="@+id/fragment_location_my_friend_iv_symbol"
@@ -15,7 +18,8 @@
             android:layout_height="24dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:src="@drawable/ic_symbol" />
+            android:src="@drawable/ic_symbol"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -26,18 +30,19 @@
             android:text="Vị trí bạn bè"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_large"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
 
         <ImageView
             android:id="@+id/fragment_location_my_friend_iv_turn_location"
-
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_toLeftOf="@+id/fragment_location_my_friend_iv_info"
             android:paddingBottom="16dp"
             android:paddingLeft="16dp"
             android:paddingTop="16dp"
-            android:src="@drawable/ic_location" />
+            android:src="@drawable/ic_location"
+            />
 
         <ImageView
             android:id="@+id/fragment_location_my_friend_iv_info"
@@ -45,12 +50,14 @@
             android:layout_height="56dp"
             android:layout_alignParentRight="true"
             android:padding="16dp"
-            android:src="@drawable/ic_info" />
+            android:src="@drawable/ic_info"
+            />
     </RelativeLayout>
 
     <fragment
         android:id="@+id/fragment_location_my_friend_map_my_friend"
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
 </LinearLayout>

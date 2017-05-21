@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.main.province.each_item_detail_province.full_photo;
+package com.dfa.vinatrip.utils;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.province.Province;
 import com.dfa.vinatrip.domains.main.province.detail_province.province_destination.ProvinceDestination;
 import com.squareup.picasso.Picasso;
 
@@ -41,13 +42,14 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
 
     private android.support.v7.app.ActionBar actionBar;
     private ProvinceDestination detailDestination;
+    private Province detailProvince;
 
     @AfterViews
     void onCreate() {
-        // Get data from
         listUrlPhotos = getIntent().getStringArrayListExtra("ListUrlPhotos");
         position = getIntent().getIntExtra("Position", 0);
         detailDestination = getIntent().getParcelableExtra("DetailDestination");
+        detailProvince = getIntent().getParcelableExtra("DetailProvince");
 
         changeColorStatusBar();
         setupActionBar();
@@ -85,7 +87,7 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             View itemView = layoutInflater.inflate(R.layout.item_photo_slide_show, container, false);
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.ivPhotoSlideShow);
+            ImageView imageView = (ImageView) itemView.findViewById(R.id.pvPhotoSlideShow);
             Picasso.with(ShowFullPhotoActivity.this)
                    .load(listUrlPhotos.get(position))
                    .placeholder(R.drawable.ic_loading)
@@ -104,13 +106,18 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(detailDestination.getName());
+            if (detailDestination != null) {
+                actionBar.setTitle(detailDestination.getName());
+            } else {
+                actionBar.setTitle(detailProvince.getName());
+            }
             actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
 
             // Set button back
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
     }
 
     @Override

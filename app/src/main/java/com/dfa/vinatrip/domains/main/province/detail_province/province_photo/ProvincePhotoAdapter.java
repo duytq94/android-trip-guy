@@ -17,8 +17,7 @@ public class ProvincePhotoAdapter extends RecyclerView.Adapter<ProvincePhotoAdap
     private Context context;
     private List<String> provincePhotoList;
 
-    public ProvincePhotoAdapter(Context context,
-                                List<String> provincePhotoList) {
+    public ProvincePhotoAdapter(Context context, List<String> provincePhotoList) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.provincePhotoList = provincePhotoList;
@@ -32,13 +31,11 @@ public class ProvincePhotoAdapter extends RecyclerView.Adapter<ProvincePhotoAdap
 
     @Override
     public void onBindViewHolder(PhotoViewHolder holder, int position) {
-        //bind data to viewholder
-        // all provincePhoto will the same scale
         holder.ivAvatar.setScaleType(ImageView.ScaleType.FIT_XY);
         Picasso.with(context).load(provincePhotoList.get(position))
-                .placeholder(R.drawable.ic_loading)
-                .error(R.drawable.photo_not_available)
-                .into(holder.ivAvatar);
+               .placeholder(R.drawable.ic_loading)
+               .error(R.drawable.photo_not_available)
+               .into(holder.ivAvatar);
     }
 
     @Override
