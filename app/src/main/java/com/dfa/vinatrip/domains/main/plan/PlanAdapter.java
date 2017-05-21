@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.domains.main.plan;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.me.UserProfile;
-import com.dfa.vinatrip.domains.main.plan.detail_plan.DetailPlanActivity_;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -45,19 +43,15 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
         lastItemPosition = planList.size() - 1;
 
         if (position == lastItemPosition && planList.size() > 2) {
-            holder.llFooter.setVisibility(View.VISIBLE);
+            holder.viewFooter.setVisibility(View.VISIBLE);
         } else {
-            holder.llFooter.setVisibility(View.GONE);
+            holder.viewFooter.setVisibility(View.GONE);
         }
 
         holder.llDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, DetailPlanActivity_.class);
-
-                // Send Plan to DetailPlanActivity
-                intent.putExtra("Plan", planList.get(position));
-                context.startActivity(intent);
+                onUpdateOrRemoveClick.onClick(position);
             }
         });
 
@@ -83,12 +77,10 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
                 }
             });
         } else {
-            holder.ivIsMyPlan.setImageResource(0);
             holder.tvUpdate.setVisibility(View.GONE);
             holder.tvUpdate.setTextColor(android.R.color.darker_gray);
             holder.tvUserName.setText(plan.getUserMakePlan().getNickname());
         }
-
 
         Picasso.with(context).load(plan.getUserMakePlan().getAvatar())
                .placeholder(R.drawable.ic_loading)
@@ -103,8 +95,9 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
 
     public static class PlanViewHolder extends RecyclerView.ViewHolder {
         private TextView tvName, tvDestination, tvDate, tvUserName, tvUpdate, tvRemove;
-        private ImageView ivAvatar, ivIsMyPlan;
-        private LinearLayout llDetail, llFooter;
+        private ImageView ivAvatar;
+        private LinearLayout llDetail;
+        private View viewFooter;
 
         public PlanViewHolder(View itemView) {
             super(itemView);
@@ -115,9 +108,8 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
             tvUpdate = (TextView) itemView.findViewById(R.id.item_plan_tv_update);
             tvRemove = (TextView) itemView.findViewById(R.id.item_plan_tv_remove);
             ivAvatar = (ImageView) itemView.findViewById(R.id.item_plan_iv_avatar);
-            ivIsMyPlan = (ImageView) itemView.findViewById(R.id.item_plan_iv_is_my_plan);
             llDetail = (LinearLayout) itemView.findViewById(R.id.item_plan_ll_detail);
-            llFooter = (LinearLayout) itemView.findViewById(R.id.item_plan_ll_footer);
+            viewFooter = itemView.findViewById(R.id.item_plan_view_footer);
         }
     }
 
@@ -129,5 +121,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
         void onUpdate(int position);
 
         void onRemove(int position);
+
+        void onClick(int position);
     }
 }

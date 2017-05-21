@@ -14,8 +14,10 @@ import android.widget.LinearLayout;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.login.SignInActivity_;
 import com.dfa.vinatrip.domains.main.me.UserProfile;
+import com.dfa.vinatrip.domains.main.plan.detail_plan.DetailPlanActivity_;
 import com.dfa.vinatrip.domains.main.plan.make_plan.MakePlanActivity_;
 import com.dfa.vinatrip.services.DataService;
+import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -98,44 +100,52 @@ public class PlanFragment extends Fragment {
         llNotLogin.setVisibility(View.GONE);
         planAdapter = new PlanAdapter(getActivity(), planList, currentUser);
 
-        planAdapter
-                .setOnUpdateOrRemoveClick(new PlanAdapter.OnUpdateOrRemoveClick() {
-                    @Override
-                    public void onUpdate(int position) {
-                        Intent intent = new Intent(getActivity(), MakePlanActivity_.class);
+        planAdapter.setOnUpdateOrRemoveClick(new PlanAdapter.OnUpdateOrRemoveClick() {
+            @Override
+            public void onUpdate(int position) {
+                Intent intent = new Intent(getActivity(), MakePlanActivity_.class);
 
-                        // Send Plan to MakePlanActivity to update info
-                        intent.putExtra("Plan", planList.get(position));
-                        getActivity().startActivity(intent);
-                    }
+                // Send Plan to MakePlanActivity to update info
+                intent.putExtra("Plan", planList.get(position));
+                getActivity().startActivity(intent);
+            }
 
-                    @Override
-                    public void onRemove(final int position) {
-                        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-                        alertDialog.setTitle("Xóa kế hoạch");
-                        alertDialog.setMessage("Bạn có chắc chắn muốn xóa kế hoạch này?");
-                        alertDialog.setIcon(R.drawable.ic_notification);
-                        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ĐỒNG Ý",
-                                              new DialogInterface.OnClickListener() {
-                                                  @Override
-                                                  public void onClick(DialogInterface dialogInterface, int i) {
-                                                      databaseReference.child("Plan").child(currentUser.getUid())
-                                                                       .child(planList.get(position).getId())
-                                                                       .removeValue();
-                                                      planList.remove(position);
-                                                      planAdapter.notifyDataSetChanged();
-                                                  }
-                                              });
-                        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "HỦY",
-                                              new DialogInterface.OnClickListener() {
-                                                  @Override
-                                                  public void onClick(DialogInterface dialogInterface, int i) {
+            @Override
+            public void onRemove(final int position) {
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle("Xóa kế hoạch");
+                alertDialog.setMessage("Bạn có chắc chắn muốn xóa kế hoạch này?");
+                alertDialog.setIcon(R.drawable.ic_notification);
+                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ĐỒNG Ý",
+                                      new DialogInterface.OnClickListener() {
+                                          @Override
+                                          public void onClick(DialogInterface dialogInterface, int i) {
+                                              databaseReference.child("Plan").child(currentUser.getUid())
+                                                               .child(planList.get(position).getId())
+                                                               .removeValue();
+                                              planList.remove(position);
+                                              planAdapter.notifyDataSetChanged();
+                                          }
+                                      });
+                alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "HỦY",
+                                      new DialogInterface.OnClickListener() {
+                                          @Override
+                                          public void onClick(DialogInterface dialogInterface, int i) {
 
-                                                  }
-                                              });
-                        alertDialog.show();
-                    }
-                });
+                                          }
+                                      });
+                alertDialog.show();
+            }
+
+            @Override
+            public void onClick(int position) {
+                Intent intent = new Intent(getActivity(), DetailPlanActivity_.class);
+
+                // Send Plan to DetailPlanActivity
+                intent.putExtra("Plan", planList.get(position));
+                startActivity(intent);
+            }
+        });
 
         rvPlan.setAdapter(planAdapter);
 
@@ -209,8 +219,6 @@ public class PlanFragment extends Fragment {
         loadPlan();
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvPlan.setLayoutManager(manager);
-        DividerItemDecoration decoration = new DividerItemDecoration(rvPlan.getContext(), manager.getOrientation());
-        rvPlan.addItemDecoration(decoration);
     }
 
     @Click(R.id.fragment_plan_fab_make_new_plan)

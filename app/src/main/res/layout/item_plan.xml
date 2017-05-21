@@ -6,154 +6,154 @@
     android:orientation="vertical"
     >
 
-    <LinearLayout
-        android:id="@+id/item_plan_ll_detail"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:orientation="horizontal"
+        android:layout_margin="@dimen/card_view_margin"
         >
 
-        <ImageView
-            android:id="@+id/item_plan_iv_is_my_plan"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_bookmark"
-            />
-
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical"
             >
 
-            <TextView
-                android:id="@+id/item_plan_tv_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal|center_vertical"
-                android:paddingBottom="@dimen/text_view_padding"
-                android:paddingTop="@dimen/text_view_padding"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/text_large"
-                />
-
             <LinearLayout
+                android:id="@+id/item_plan_ll_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 >
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingBottom="@dimen/text_view_padding"
-                    android:paddingLeft="@dimen/text_view_padding"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
                     >
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_location_gray"
+                    <TextView
+                        android:id="@+id/item_plan_tv_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:paddingBottom="@dimen/text_view_padding"
+                        android:paddingTop="@dimen/text_view_padding"
+                        android:text="Vũng Tàu"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_large"
                         />
 
-                    <TextView
-                        android:id="@+id/item_plan_tv_destination"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/text_view_padding"
-                        android:gravity="center_vertical"
-                        />
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingBottom="@dimen/text_view_padding"
+                            android:paddingLeft="16dp"
+                            >
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_location_gray"
+                                />
+
+                            <TextView
+                                android:id="@+id/item_plan_tv_destination"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="@dimen/text_view_padding"
+                                android:gravity="center_vertical"
+                                />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingBottom="@dimen/text_view_padding"
+                            android:paddingLeft="16dp"
+                            >
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_schedule"
+                                />
+
+                            <TextView
+                                android:id="@+id/item_plan_tv_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="@dimen/text_view_padding"
+                                android:gravity="center_vertical"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingBottom="@dimen/text_view_padding"
-                    android:paddingLeft="@dimen/text_view_padding"
+                    android:orientation="vertical"
+                    android:padding="@dimen/text_view_padding"
                     >
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_schedule"
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/item_plan_iv_avatar"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/text_view_padding"
+                        android:src="@drawable/photo_not_available"
                         />
 
                     <TextView
-                        android:id="@+id/item_plan_tv_date"
+                        android:id="@+id/item_plan_tv_user_name"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/text_view_padding"
-                        android:gravity="center_vertical"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
                         />
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/text_view_padding"
-            >
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/item_plan_iv_avatar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/text_view_padding"
-                android:src="@drawable/photo_not_available"
-                />
-
-            <TextView
-                android:id="@+id/item_plan_tv_user_name"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                />
+                >
+
+                <TextView
+                    android:id="@+id/item_plan_tv_remove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:padding="@dimen/text_view_padding"
+                    android:text="@string/remove_plan"
+                    android:textColor="@color/btn_press_state_red"
+                    />
+
+                <TextView
+                    android:id="@+id/item_plan_tv_update"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:padding="@dimen/text_view_padding"
+                    android:text="@string/update_plan"
+                    android:textColor="@color/btn_press_state_green"
+                    />
+            </RelativeLayout>
         </LinearLayout>
-    </LinearLayout>
+    </android.support.v7.widget.CardView>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-
-        <TextView
-            android:id="@+id/item_plan_tv_remove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:padding="@dimen/text_view_padding"
-            android:text="@string/remove_plan"
-            android:textColor="@color/btn_press_state_red"
-            />
-
-        <TextView
-            android:id="@+id/item_plan_tv_update"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:padding="@dimen/text_view_padding"
-            android:text="@string/update_plan"
-            android:textColor="@color/btn_press_state_green"
-            />
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/item_plan_ll_footer"
+    <View
+        android:id="@+id/item_plan_view_footer"
         android:layout_width="match_parent"
         android:layout_height="74dp"
-        >
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.8dp"
-            android:background="#cfcfcf"
-            />
-    </LinearLayout>
+        />
 </LinearLayout>
