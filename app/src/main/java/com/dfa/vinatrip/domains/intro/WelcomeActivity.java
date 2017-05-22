@@ -15,14 +15,19 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.login.SignUpActivity_;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+
+import javax.inject.Inject;
 
 @EActivity(R.layout.activity_welcome)
 public class WelcomeActivity extends AppCompatActivity {
@@ -32,18 +37,18 @@ public class WelcomeActivity extends AppCompatActivity {
     private int[] layouts;
     private CheckFirstTimeLaunch prefManager;
 
-//    @App
-//    MainApplication application;
-//    @Inject
-//    WelcomePresenter presenter;
+    @App
+    MainApplication application;
+    @Inject
+    WelcomePresenter presenter;
 
-//    @AfterInject
-//    protected void inject() {
-//        DaggerWelcomeComponent.builder()
-//                              .applicationComponent(application.getApplicationComponent())
-//                              .build()
-//                              .inject(this);
-//    }
+    @AfterInject
+    protected void inject() {
+        DaggerWelcomeComponent.builder()
+                              .applicationComponent(application.getApplicationComponent())
+                              .build()
+                              .inject(this);
+    }
 
     // Catch event when page change, dots color will change
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {

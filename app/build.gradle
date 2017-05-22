@@ -19,6 +19,7 @@ repositories {
 
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
+apply plugin: 'com.neenbedankt.android-apt'
 
 dependencies {
     apt "org.androidannotations:androidannotations:4.0.0"
@@ -122,9 +123,9 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
 
-    // Dagger
-    compile "com.google.dagger:dagger:2.9"
-    annotationProcessor "com.google.dagger:dagger-compiler:2.9"
+    //Dagger
+    apt 'com.google.dagger:dagger-compiler:2.0'
+    compile 'com.google.dagger:dagger:2.0'
     provided 'javax.annotation:jsr250-api:1.0'
 
     // MVP

@@ -134,32 +134,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void addNewFragments() {
         provinceFragment = new ProvinceFragment_();
+        planFragment = new PlanFragment_();
+        shareFragment = new ShareFragment();
+        locationMyFriendFragment = new LocationMyFriendFragment_();
+        meFragment = new MeFragment_();
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.activity_main_fl_container, provinceFragment, "provinceFragment")
-                .commit();
-
-        planFragment = new PlanFragment_();
-        getSupportFragmentManager()
-                .beginTransaction()
                 .add(R.id.activity_main_fl_container, planFragment, "planFragment")
-                .commit();
-
-        shareFragment = new ShareFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
                 .add(R.id.activity_main_fl_container, shareFragment, "shareFragment")
-                .commit();
-
-        locationMyFriendFragment = new LocationMyFriendFragment_();
-        getSupportFragmentManager()
-                .beginTransaction()
                 .add(R.id.activity_main_fl_container, locationMyFriendFragment, "locationMyFriendFragment")
-                .commit();
-
-        meFragment = new MeFragment_();
-        getSupportFragmentManager()
-                .beginTransaction()
                 .add(R.id.activity_main_fl_container, meFragment, "meFragment")
                 .commit();
     }
