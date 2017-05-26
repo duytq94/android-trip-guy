@@ -99,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().hide(shareFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(locationMyFriendFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(meFragment).commit();
+//                getSupportFragmentManager().beginTransaction()
+//                                           .replace(R.id.activity_main_fl_container, provinceFragment).commit();
                 break;
             case R.id.iconPlan:
                 getSupportFragmentManager().beginTransaction().hide(provinceFragment).commit();
@@ -106,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().hide(shareFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(locationMyFriendFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(meFragment).commit();
+//                getSupportFragmentManager().beginTransaction()
+//                                           .replace(R.id.activity_main_fl_container, planFragment).commit();
                 break;
             case R.id.iconShare:
                 getSupportFragmentManager().beginTransaction().hide(provinceFragment).commit();
@@ -113,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().show(shareFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(locationMyFriendFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(meFragment).commit();
+//                getSupportFragmentManager().beginTransaction()
+//                                           .replace(R.id.activity_main_fl_container, shareFragment).commit();
                 break;
             case R.id.iconMemory:
                 getSupportFragmentManager().beginTransaction().hide(provinceFragment).commit();
@@ -120,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().hide(shareFragment).commit();
                 getSupportFragmentManager().beginTransaction().show(locationMyFriendFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(meFragment).commit();
+//                getSupportFragmentManager().beginTransaction()
+//                                           .replace(R.id.activity_main_fl_container, locationMyFriendFragment).commit();
                 break;
             case R.id.iconMe:
                 getSupportFragmentManager().beginTransaction().hide(provinceFragment).commit();
@@ -127,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().hide(shareFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(locationMyFriendFragment).commit();
                 getSupportFragmentManager().beginTransaction().show(meFragment).commit();
+//                getSupportFragmentManager().beginTransaction()
+//                                           .replace(R.id.activity_main_fl_container, meFragment).commit();
                 break;
         }
         selectedItemId = item.getItemId();

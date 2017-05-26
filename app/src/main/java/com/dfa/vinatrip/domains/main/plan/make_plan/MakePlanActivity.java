@@ -338,7 +338,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
     @Click(R.id.activity_make_plan_ll_background)
     void onLlBackgroundClick() {
-        ChooseBackgroundPlan_.intent(this).start();
+        ChooseBackgroundPlanActivity_.intent(this).start();
     }
 
     @Override

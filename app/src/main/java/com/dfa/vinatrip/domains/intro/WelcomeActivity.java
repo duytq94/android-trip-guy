@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +19,7 @@ import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.login.SignUpActivity_;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
+import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -30,7 +31,7 @@ import org.androidannotations.annotations.ViewById;
 import javax.inject.Inject;
 
 @EActivity(R.layout.activity_welcome)
-public class WelcomeActivity extends AppCompatActivity {
+public class WelcomeActivity extends MvpActivity<WelcomeView, WelcomePresenter> implements WelcomeView {
 
     private ViewPagerAdapter viewPagerAdapter;
     private TextView[] tvDots;
@@ -41,14 +42,6 @@ public class WelcomeActivity extends AppCompatActivity {
     MainApplication application;
     @Inject
     WelcomePresenter presenter;
-
-    @AfterInject
-    protected void inject() {
-        DaggerWelcomeComponent.builder()
-                              .applicationComponent(application.getApplicationComponent())
-                              .build()
-                              .inject(this);
-    }
 
     // Catch event when page change, dots color will change
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -90,31 +83,12 @@ public class WelcomeActivity extends AppCompatActivity {
     @ViewById(R.id.activity_welcome_btn_back)
     Button btnBack;
 
-    @Click
-    void activity_welcome_btn_back() {
-        int current = vpSlideIntro.getCurrentItem() - 1;
-        if (current >= 0) {
-            vpSlideIntro.setCurrentItem(current);
-        }
-    }
-
-    @Click
-    void activity_welcome_btn_next() {
-        int current = vpSlideIntro.getCurrentItem() + 1;
-        if (current < layouts.length) {
-            vpSlideIntro.setCurrentItem(current);
-        }
-    }
-
-    @Click
-    void activity_welcome_btn_launch_now() {
-        launchHomeScreen();
-    }
-
-    @Click
-    void activity_welcome_btn_sign_up() {
-        prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(WelcomeActivity.this, SignUpActivity_.class));
+    @AfterInject
+    protected void inject() {
+        DaggerWelcomeComponent.builder()
+                              .applicationComponent(application.getApplicationComponent())
+                              .build()
+                              .inject(this);
     }
 
     @AfterViews
@@ -170,11 +144,38 @@ public class WelcomeActivity extends AppCompatActivity {
         finish();
     }
 
-//    @NonNull
-//    @Override
-//    public WelcomePresenter createPresenter() {
-//        return null;
-//    }
+    @Click(R.id.activity_welcome_btn_back)
+    void onBtnBackClick() {
+        int current = vpSlideIntro.getCurrentItem() - 1;
+        if (current >= 0) {
+            vpSlideIntro.setCurrentItem(current);
+        }
+    }
+
+    @Click(R.id.activity_welcome_btn_next)
+    void onBtnNextClick() {
+        int current = vpSlideIntro.getCurrentItem() + 1;
+        if (current < layouts.length) {
+            vpSlideIntro.setCurrentItem(current);
+        }
+    }
+
+    @Click(R.id.activity_welcome_btn_launch_now)
+    void onBtnLaunchNowClick() {
+        launchHomeScreen();
+    }
+
+    @Click(R.id.activity_welcome_btn_sign_up)
+    void onBtnSignUpClick() {
+        prefManager.setFirstTimeLaunch(false);
+        startActivity(new Intent(WelcomeActivity.this, SignUpActivity_.class));
+    }
+
+    @NonNull
+    @Override
+    public WelcomePresenter createPresenter() {
+        return presenter;
+    }
 
     public class ViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
@@ -194,7 +195,6 @@ public class WelcomeActivity extends AppCompatActivity {
         }
 
         @Override
-        // Count views available
         public int getCount() {
             return layouts.length;
         }

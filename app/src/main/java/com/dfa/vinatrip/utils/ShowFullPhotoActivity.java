@@ -13,12 +13,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.province.Province;
 import com.dfa.vinatrip.domains.main.province.detail_province.province_destination.ProvinceDestination;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
@@ -86,14 +86,13 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View itemView = layoutInflater.inflate(R.layout.item_photo_slide_show, container, false);
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.pvPhotoSlideShow);
+            PhotoView photoView = (PhotoView) layoutInflater.inflate(R.layout.item_full_photo, container, false);
             Picasso.with(ShowFullPhotoActivity.this)
                    .load(listUrlPhotos.get(position))
                    .placeholder(R.drawable.ic_loading)
-                   .into(imageView);
-            container.addView(itemView);
-            return itemView;
+                   .into(photoView);
+            container.addView(photoView);
+            return photoView;
         }
 
         @Override

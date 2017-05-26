@@ -125,22 +125,22 @@ public class ProvinceFragment extends Fragment {
 
         // Catch event when click on item RecyclerView
         rvProvinces.addOnItemTouchListener(
-                new RecyclerItemClickListener(getActivity(), rvProvinces,
-                                              new RecyclerItemClickListener.OnItemClickListener() {
-                                                  @Override
-                                                  public void onItemClick(View view, int position) {
-                                                      // Send Province to ProvinceDetailActivity
-                                                      ProvinceDetailActivity_
-                                                              .intent(getActivity())
-                                                              .province(provinceList.get(position))
-                                                              .start();
-                                                  }
+                new RecyclerItemClickListener(
+                        getActivity(), rvProvinces, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        // Send Province to ProvinceDetailActivity
+                        ProvinceDetailActivity_
+                                .intent(getActivity())
+                                .province(provinceList.get(position))
+                                .start();
+                    }
 
-                                                  @Override
-                                                  public void onLongItemClick(View view, int position) {
+                    @Override
+                    public void onLongItemClick(View view, int position) {
 
-                                                  }
-                                              }));
+                    }
+                }));
 
     }
 
@@ -299,16 +299,15 @@ public class ProvinceFragment extends Fragment {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View itemView = layoutInflater.inflate(R.layout.item_photo_slide_show, container, false);
-            ImageView imageView = (ImageView) itemView.findViewById(R.id.pvPhotoSlideShow);
+            ImageView imageView = (ImageView) layoutInflater.inflate(R.layout.item_photo_slide_show, container, false);
             imageView.setImageResource(mResources[position]);
-            container.addView(itemView);
-            return itemView;
+            container.addView(imageView);
+            return imageView;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((LinearLayout) object);
+            container.removeView((ImageView) object);
         }
     }
 

@@ -9,20 +9,26 @@ import android.widget.ImageView;
 
 import com.dfa.vinatrip.R;
 
-import java.util.List;
-
 /**
  * Created by DFA on 5/21/2017.
  */
 
 public class ChooseBackgroundPlanAdapter
         extends RecyclerView.Adapter<ChooseBackgroundPlanAdapter.BackgroundViewHolder> {
-    private LayoutInflater layoutInflater;
-    List<Integer> backgroundList;
 
-    public ChooseBackgroundPlanAdapter(Context context, List<Integer> backgroundList) {
+    private LayoutInflater layoutInflater;
+    private OnItemClick onItemClick;
+    //    private List<Integer> listBackground;
+//    private List<Boolean> listIsPhotoChoose;
+    private int[] listBackground;
+    private boolean[] listIsPhotoChoose;
+    private Context context;
+
+    public ChooseBackgroundPlanAdapter(Context context, int[] listBackground, boolean[] listIsPhotoChoose) {
         this.layoutInflater = LayoutInflater.from(context);
-        this.backgroundList = backgroundList;
+        this.listBackground = listBackground;
+        this.listIsPhotoChoose = listIsPhotoChoose;
+        this.context = context;
     }
 
     @Override
@@ -32,23 +38,48 @@ public class ChooseBackgroundPlanAdapter
     }
 
     @Override
-    public void onBindViewHolder(BackgroundViewHolder holder, int position) {
-        Integer backgroundId = backgroundList.get(position);
+    public void onBindViewHolder(BackgroundViewHolder holder, final int position) {
+        int backgroundId = listBackground[position];
         holder.ivBackground.setImageResource(backgroundId);
+//        Picasso.with(context).load(backgroundId).into(holder.ivBackground);
+
+        if (listIsPhotoChoose[position]) {
+            holder.ivBorder.setVisibility(View.VISIBLE);
+            holder.ivCover.setVisibility(View.GONE);
+        } else {
+            holder.ivBorder.setVisibility(View.GONE);
+            holder.ivCover.setVisibility(View.VISIBLE);
+        }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClick.onItemClick(position);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return backgroundList.size();
+        return listBackground.length;
     }
 
     public static class BackgroundViewHolder extends RecyclerView.ViewHolder {
-        private ImageView ivBackground;
+        private ImageView ivBackground, ivCover, ivBorder;
 
         public BackgroundViewHolder(View itemView) {
             super(itemView);
             ivBackground = (ImageView) itemView.findViewById(R.id.item_background_plan_iv);
+            ivBorder = (ImageView) itemView.findViewById(R.id.item_background_plan_iv_border);
+            ivCover = (ImageView) itemView.findViewById(R.id.item_background_plan_iv_cover);
         }
     }
 
+    public void setOnItemClick(OnItemClick onItemClick) {
+        this.onItemClick = onItemClick;
+    }
+
+    public interface OnItemClick {
+        void onItemClick(int position);
+    }
 }
