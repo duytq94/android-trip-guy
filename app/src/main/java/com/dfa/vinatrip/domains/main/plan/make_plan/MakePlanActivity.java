@@ -3,6 +3,7 @@ package com.dfa.vinatrip.domains.main.plan.make_plan;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -46,10 +47,13 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
 @EActivity(R.layout.activity_make_plan)
 public class MakePlanActivity extends AppCompatActivity implements Validator.ValidationListener {
+
+    public static final int REQUEST_BACKGROUND = 1;
 
     @Bean
     DataService dataService;
@@ -91,6 +95,9 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     @ViewById(R.id.activity_make_plan_ll_background)
     LinearLayout llBackground;
 
+    @ViewById(R.id.activity_make_plan_civ_background)
+    CircleImageView civBackground;
+
     private List<UserFriend> userFriendList;
     private InviteFriendAdapter inviteFriendAdapter;
     private Plan plan;
@@ -105,6 +112,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     private List<PlanSchedule> planScheduleList;
     private String planId;
     private Plan currentPlan;
+    private int idBackground;
 
     @AfterViews
     void onCreate() {
@@ -117,6 +125,8 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
             etDestination.setText(currentPlan.getDestination());
             tvDateGo.setText(currentPlan.getDateGo());
             tvDateBack.setText(currentPlan.getDateBack());
+            idBackground = currentPlan.getIdBackground();
+            civBackground.setImageResource(idBackground);
 
             for (int i = 0; i < currentPlan.getPlanScheduleList().size(); i++) {
                 if (i == 0) {
@@ -137,6 +147,9 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     }
 
     public void initViewForNewPlan() {
+        idBackground = R.drawable.bg_test3;
+        civBackground.setImageResource(idBackground);
+
         countDaySchedule = 1;
         planScheduleList = new ArrayList<>();
 
@@ -338,7 +351,17 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
     @Click(R.id.activity_make_plan_ll_background)
     void onLlBackgroundClick() {
-        ChooseBackgroundPlanActivity_.intent(this).start();
+        Intent intent = new Intent(this, ChooseBackgroundPlanActivity_.class);
+        startActivityForResult(intent, REQUEST_BACKGROUND);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_BACKGROUND && resultCode == RESULT_OK) {
+            idBackground = data.getIntExtra("idBackground", R.drawable.bg_test3);
+            civBackground.setImageResource(idBackground);
+        }
     }
 
     @Override
@@ -392,6 +415,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         plan.setDateBack(tvDateBack.getText().toString());
         plan.setUserMakePlan(dataService.getCurrentUser());
         plan.setFriendInvitedList(invitedFriendIdList);
+        plan.setIdBackground(idBackground);
 
         // Send data to storage of current user (the user create this trip plan)
         databaseReference.child("Plan").child(currentUser.getUid()).child(planId)

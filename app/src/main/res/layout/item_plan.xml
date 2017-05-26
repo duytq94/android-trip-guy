@@ -14,10 +14,12 @@
         android:layout_marginTop="@dimen/card_view_margin"
         >
 
-        <View
+        <ImageView
+            android:id="@+id/item_plan_iv_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bg_test1"
+            android:scaleType="fitXY"
             />
 
         <ImageView

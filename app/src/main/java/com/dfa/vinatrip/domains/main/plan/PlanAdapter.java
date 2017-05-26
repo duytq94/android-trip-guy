@@ -86,6 +86,8 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
                .placeholder(R.drawable.ic_loading)
                .error(R.drawable.photo_not_available)
                .into(holder.ivAvatar);
+
+        holder.ivBackground.setImageResource(plan.getIdBackground());
     }
 
     @Override
@@ -95,7 +97,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
 
     public static class PlanViewHolder extends RecyclerView.ViewHolder {
         private TextView tvName, tvDestination, tvDate, tvUserName, tvUpdate, tvRemove;
-        private ImageView ivAvatar;
+        private ImageView ivAvatar, ivBackground;
         private LinearLayout llDetail;
         private View viewFooter;
 
@@ -110,6 +112,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
             ivAvatar = (ImageView) itemView.findViewById(R.id.item_plan_iv_avatar);
             llDetail = (LinearLayout) itemView.findViewById(R.id.item_plan_ll_detail);
             viewFooter = itemView.findViewById(R.id.item_plan_view_footer);
+            ivBackground = (ImageView) itemView.findViewById(R.id.item_plan_iv_background);
         }
     }
 

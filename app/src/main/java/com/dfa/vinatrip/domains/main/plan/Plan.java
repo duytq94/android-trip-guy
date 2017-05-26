@@ -6,29 +6,70 @@ import android.os.Parcelable;
 import com.dfa.vinatrip.domains.main.me.UserProfile;
 import com.dfa.vinatrip.domains.main.plan.make_plan.PlanSchedule;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Plan implements Parcelable {
-    String id, name, destination, dateGo, dateBack;
-    List<String> friendInvitedList;
-    List<PlanSchedule> planScheduleList;
-    UserProfile userMakePlan;
+    private String id, name, destination, dateGo, dateBack;
+    private int idBackground;
+    private List<String> friendInvitedList;
+    private List<PlanSchedule> planScheduleList;
+    private UserProfile userMakePlan;
 
-    public Plan(String id, String name, String destination, String dateGo, String dateBack,
-                List<String> friendInvitedList, List<PlanSchedule> planScheduleList, UserProfile userMakePlan) {
+    public Plan(String id, String name, String destination, String dateGo, String dateBack, int idBackground,
+                List<String> friendInvitedList,
+                List<PlanSchedule> planScheduleList, UserProfile userMakePlan) {
         this.id = id;
         this.name = name;
         this.destination = destination;
         this.dateGo = dateGo;
         this.dateBack = dateBack;
+        this.idBackground = idBackground;
         this.friendInvitedList = friendInvitedList;
         this.planScheduleList = planScheduleList;
         this.userMakePlan = userMakePlan;
     }
 
-    public Plan() {
+    protected Plan(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        destination = in.readString();
+        dateGo = in.readString();
+        dateBack = in.readString();
+        idBackground = in.readInt();
+        friendInvitedList = in.createStringArrayList();
+        planScheduleList = in.createTypedArrayList(PlanSchedule.CREATOR);
+        userMakePlan = in.readParcelable(UserProfile.class.getClassLoader());
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(destination);
+        dest.writeString(dateGo);
+        dest.writeString(dateBack);
+        dest.writeInt(idBackground);
+        dest.writeStringList(friendInvitedList);
+        dest.writeTypedList(planScheduleList);
+        dest.writeParcelable(userMakePlan, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Plan> CREATOR = new Creator<Plan>() {
+        @Override
+        public Plan createFromParcel(Parcel in) {
+            return new Plan(in);
+        }
+
+        @Override
+        public Plan[] newArray(int size) {
+            return new Plan[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -70,6 +111,14 @@ public class Plan implements Parcelable {
         this.dateBack = dateBack;
     }
 
+    public int getIdBackground() {
+        return idBackground;
+    }
+
+    public void setIdBackground(int idBackground) {
+        this.idBackground = idBackground;
+    }
+
     public List<String> getFriendInvitedList() {
         return friendInvitedList;
     }
@@ -94,44 +143,7 @@ public class Plan implements Parcelable {
         this.userMakePlan = userMakePlan;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public Plan() {
+
     }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.id);
-        dest.writeString(this.name);
-        dest.writeString(this.destination);
-        dest.writeString(this.dateGo);
-        dest.writeString(this.dateBack);
-        dest.writeStringList(this.friendInvitedList);
-        dest.writeList(this.planScheduleList);
-        dest.writeParcelable(this.userMakePlan, flags);
-    }
-
-    protected Plan(Parcel in) {
-        this.id = in.readString();
-        this.name = in.readString();
-        this.destination = in.readString();
-        this.dateGo = in.readString();
-        this.dateBack = in.readString();
-        this.friendInvitedList = in.createStringArrayList();
-        this.planScheduleList = new ArrayList<PlanSchedule>();
-        in.readList(this.planScheduleList, PlanSchedule.class.getClassLoader());
-        this.userMakePlan = in.readParcelable(UserProfile.class.getClassLoader());
-    }
-
-    public static final Parcelable.Creator<Plan> CREATOR = new Parcelable.Creator<Plan>() {
-        @Override
-        public Plan createFromParcel(Parcel source) {
-            return new Plan(source);
-        }
-
-        @Override
-        public Plan[] newArray(int size) {
-            return new Plan[size];
-        }
-    };
 }

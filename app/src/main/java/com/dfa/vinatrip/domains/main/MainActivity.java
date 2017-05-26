@@ -75,11 +75,10 @@ public class MainActivity extends AppCompatActivity {
         selectFragment(bnvMenu.getMenu().getItem(0));
 
         if (!TripGuyUtils.isNetworkConnected(MainActivity.this)) {
-            snackbar = Snackbar.make(findViewById(R.id.activity_main),
-                                     "Không có kết nối Internet", Snackbar.LENGTH_LONG);
+            snackbar = Snackbar
+                    .make(findViewById(R.id.activity_main), "Không có kết nối Internet", Snackbar.LENGTH_LONG);
             View viewSnackbar = snackbar.getView();
-            TextView tvSnackbar =
-                    (TextView) viewSnackbar.findViewById(android.support.design.R.id.snackbar_text);
+            TextView tvSnackbar = (TextView) viewSnackbar.findViewById(android.support.design.R.id.snackbar_text);
             tvSnackbar.setTextColor(Color.YELLOW);
             snackbar.show();
         }
@@ -120,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 //                getSupportFragmentManager().beginTransaction()
 //                                           .replace(R.id.activity_main_fl_container, shareFragment).commit();
                 break;
-            case R.id.iconMemory:
+            case R.id.iconMyFriend:
                 getSupportFragmentManager().beginTransaction().hide(provinceFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(planFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(shareFragment).commit();

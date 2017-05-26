@@ -4,8 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.dfa.vinatrip.domains.main.plan.make_plan.ChooseBackgroundPlanActivity"
     >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorMain"
+        >
+
+        <TextView
+            android:id="@+id/activity_choose_background_plan_tv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="Hủy"
+            android:textColor="@color/btn_press_state_white"
+            android:textSize="@dimen/text_large"
+            />
+
+        <TextView
+            android:id="@+id/activity_choose_background_plan_tv_choose"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="Chọn"
+            android:textColor="@color/btn_press_state_white"
+            android:textSize="@dimen/text_large"
+            />
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/activity_choose_background_plan_rv_item"

@@ -80,6 +80,7 @@
                 />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/activity_make_plan_civ_background"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="8dp"
