@@ -69,7 +69,9 @@ public class MyRatingFragment extends Fragment {
                         EachItemProvinceDetailActivity_.intent(getActivity()).start();
                         break;
                     case "destination":
-                        EachItemProvinceDetailActivity_.intent(getActivity()).start();
+                        ProvinceDestination destination = new ProvinceDestination
+                                (myRating.getLocationName(), null, null, null, myRating.getLocationProvince());
+                        EachItemProvinceDetailActivity_.intent(getActivity()).destination(destination).start();
                         break;
                     case "food":
                         EachItemProvinceDetailActivity_.intent(getActivity()).start();

@@ -8,10 +8,11 @@ import android.os.Parcelable;
  */
 
 public class ProvinceDestinationDetail implements Parcelable {
-    private String address, description, name, province, scheduleAndFee;
+    private String avatar, address, description, name, province, scheduleAndFee;
     long latitude, longitude;
 
     protected ProvinceDestinationDetail(Parcel in) {
+        avatar = in.readString();
         address = in.readString();
         description = in.readString();
         name = in.readString();
@@ -19,6 +20,23 @@ public class ProvinceDestinationDetail implements Parcelable {
         scheduleAndFee = in.readString();
         latitude = in.readLong();
         longitude = in.readLong();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(avatar);
+        dest.writeString(address);
+        dest.writeString(description);
+        dest.writeString(name);
+        dest.writeString(province);
+        dest.writeString(scheduleAndFee);
+        dest.writeLong(latitude);
+        dest.writeLong(longitude);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<ProvinceDestinationDetail> CREATOR = new Creator<ProvinceDestinationDetail>() {
@@ -32,6 +50,10 @@ public class ProvinceDestinationDetail implements Parcelable {
             return new ProvinceDestinationDetail[size];
         }
     };
+
+    public String getAvatar() {
+        return avatar;
+    }
 
     public String getAddress() {
         return address;
@@ -65,9 +87,10 @@ public class ProvinceDestinationDetail implements Parcelable {
 
     }
 
-    public ProvinceDestinationDetail(String address, String description, String name, String province,
-                                     String scheduleAndFee, long latitude, long longitude) {
+    public ProvinceDestinationDetail(String avatar, String address, String description, String name,
+                                     String province, String scheduleAndFee, long latitude, long longitude) {
 
+        this.avatar = avatar;
         this.address = address;
         this.description = description;
         this.name = name;
@@ -75,21 +98,5 @@ public class ProvinceDestinationDetail implements Parcelable {
         this.scheduleAndFee = scheduleAndFee;
         this.latitude = latitude;
         this.longitude = longitude;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(address);
-        parcel.writeString(description);
-        parcel.writeString(name);
-        parcel.writeString(province);
-        parcel.writeString(scheduleAndFee);
-        parcel.writeLong(latitude);
-        parcel.writeLong(longitude);
     }
 }

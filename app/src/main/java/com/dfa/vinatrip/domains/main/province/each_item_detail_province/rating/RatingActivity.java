@@ -18,11 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.dfa.vinatrip.domains.main.me.UserProfile;
-import com.dfa.vinatrip.domains.main.province.detail_province.province_destination.ProvinceDestination;
-import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.login.SignInActivity_;
+import com.dfa.vinatrip.domains.main.me.UserProfile;
+import com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_destination.ProvinceDestinationDetail;
+import com.dfa.vinatrip.services.DataService;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -68,7 +68,7 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
     private Validator validator;
     private ActionBar actionBar;
     private DatabaseReference databaseReference;
-    private ProvinceDestination detailDestination;
+    private ProvinceDestinationDetail destinationDetail;
     private List<UserRating> listUserRatings;
     private UserProfile currentUser;
     private boolean isNewOrUpdate;
@@ -125,7 +125,7 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
         if (currentUser != null) {
             llMain.setVisibility(View.VISIBLE);
 
-            detailDestination = getIntent().getParcelableExtra("DetailDestination");
+            destinationDetail = getIntent().getParcelableExtra("DetailDestination");
 
             databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -225,19 +225,20 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
                                              etContent.getText().toString(),
                                              (int) ratingBar.getRating() + "",
                                              date,
-                                             detailDestination.getName(),
-                                             detailDestination.getAvatar(),
+                                             destinationDetail.getName(),
+                                             destinationDetail.getProvince(),
+                                             destinationDetail.getAvatar(),
                                              "destination");
 
         databaseReference.child("ProvinceDestinationRating")
-                         .child(detailDestination.getProvince())
-                         .child(detailDestination.getName())
+                         .child(destinationDetail.getProvince())
+                         .child(destinationDetail.getName())
                          .child(currentUser.getUid())
                          .setValue(myRating);
 
         databaseReference.child("UserRating")
                          .child(currentUser.getUid())
-                         .child(detailDestination.getName())
+                         .child(destinationDetail.getName())
                          .setValue(myRating);
 
         if (isNewOrUpdate) {

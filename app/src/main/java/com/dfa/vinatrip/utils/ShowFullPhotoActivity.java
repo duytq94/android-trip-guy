@@ -32,7 +32,6 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
 
     @ViewById(R.id.activity_full_photo_vp_show_full)
     ViewPager vpShowFull;
-
     @ViewById(R.id.my_toolbar)
     Toolbar toolbar;
 
@@ -40,17 +39,20 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
     ArrayList<String> listUrlPhotos;
     @Extra
     int position;
+
+    // Get intent from detail destination
     @Extra
     ProvinceDestination destination;
 
+    // Get intent from detail province
+    @Extra
+    Province province;
+
     private CustomPagerAdapter customPagerAdapter;
     private android.support.v7.app.ActionBar actionBar;
-    private Province detailProvince;
 
     @AfterViews
     void onCreate() {
-        detailProvince = getIntent().getParcelableExtra("DetailProvince");
-
         changeColorStatusBar();
         setupActionBar();
 
@@ -108,7 +110,7 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
             if (destination != null) {
                 actionBar.setTitle(destination.getName());
             } else {
-                actionBar.setTitle(detailProvince.getName());
+                actionBar.setTitle(province.getName());
             }
             actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
 

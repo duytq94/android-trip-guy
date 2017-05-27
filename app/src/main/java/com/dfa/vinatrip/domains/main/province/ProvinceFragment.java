@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.domains.main.province;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -65,17 +64,22 @@ public class ProvinceFragment extends Fragment {
     private List<Province> provinceList;
 
     // 4 photo in slide show
-    private int[] mResources = {R.drawable.bg_test1, R.drawable.bg_test2, R.drawable.bg_test3, R.drawable.bg_test4};
-
+    private int[] mResources;
     private CustomPagerAdapter customPagerAdapter;
-    private int i = 0;
+    private int i;
     private TextView[] tvDots;
     private DatabaseReference databaseReference;
     private Handler handler;
     private Runnable update;
+    private ChildEventListener childEventListener;
+    private ValueEventListener valueEventListener;
 
     @AfterViews
     void onCreateView() {
+        i = 0;
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        mResources = new int[]{R.drawable.bg_test1, R.drawable.bg_test2, R.drawable.bg_test3, R.drawable.bg_test4};
+
         customPagerAdapter = new CustomPagerAdapter(getActivity());
         vpSlideShow.setAdapter(customPagerAdapter);
 
@@ -98,8 +102,6 @@ public class ProvinceFragment extends Fragment {
         });
 
         addBottomDots();
-
-        autoScrollSlideShow();
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -142,12 +144,52 @@ public class ProvinceFragment extends Fragment {
                     }
                 }));
 
+        childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Province province = dataSnapshot.getValue(Province.class);
+                provinceList.add(province);
+                provinceAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // update provinceList again
+                dataService.setProvinceList(provinceList);
+                srlReload.setRefreshing(false);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
     }
 
     @Click(R.id.fragment_province_rl_search)
     void onRlSearchClick() {
-        Intent intent = new Intent(getActivity(), SearchActivity_.class);
-        startActivity(intent);
+        SearchActivity_.intent(this).start();
     }
 
     public void autoScrollSlideShow() {
@@ -200,53 +242,10 @@ public class ProvinceFragment extends Fragment {
 
     public void loadProvince() {
         srlReload.setRefreshing(true);
-        databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        // If no Internet, this method will not run
-        databaseReference.child("Province").addChildEventListener(
-                new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        Province province = dataSnapshot.getValue(Province.class);
-                        provinceList.add(province);
-                        provinceAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
+        databaseReference.child("Province").addChildEventListener(childEventListener);
         // This method to be called after all the onChildAdded() calls have happened
-        databaseReference.child("Province").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // update provinceList again
-                dataService.setProvinceList(provinceList);
-                srlReload.setRefreshing(false);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        databaseReference.child("Province").addListenerForSingleValueEvent(valueEventListener);
     }
 
     public class FixedSpeedScroller extends Scroller {
@@ -283,8 +282,7 @@ public class ProvinceFragment extends Fragment {
         private LayoutInflater layoutInflater;
 
         public CustomPagerAdapter(Context context) {
-            this.layoutInflater =
-                    (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
         @Override
@@ -318,8 +316,16 @@ public class ProvinceFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        autoScrollSlideShow();
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         handler.removeCallbacks(update);
+        databaseReference.removeEventListener(childEventListener);
+        databaseReference.removeEventListener(valueEventListener);
     }
 }

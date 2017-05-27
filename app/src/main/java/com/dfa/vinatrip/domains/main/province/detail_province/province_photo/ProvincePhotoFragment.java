@@ -1,6 +1,5 @@
 package com.dfa.vinatrip.domains.main.province.detail_province.province_photo;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -121,16 +120,8 @@ public class ProvincePhotoFragment extends Fragment {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(getActivity(), ShowFullPhotoActivity_.class);
-
-                        // Send ListUrlPhotos to ShowFullPhotoActivity
-                        intent.putStringArrayListExtra("ListUrlPhotos", (ArrayList<String>) provincePhotoList);
-                        // Send the Position photo user click
-                        intent.putExtra("Position", position);
-                        // Send DetailProvince to ShowFullPhotoActivity
-                        intent.putExtra("DetailProvince", province);
-
-                        startActivity(intent);
+                        ShowFullPhotoActivity_.intent(getActivity()).listUrlPhotos(
+                                (ArrayList<String>) provincePhotoList).position(position).province(province).start();
                     }
 
                     @Override

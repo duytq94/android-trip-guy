@@ -8,38 +8,46 @@
     tools:context="com.dfa.vinatrip.domains.main.plan.make_plan.ChooseBackgroundPlanActivity"
     >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorMain"
+        android:orientation="horizontal"
         >
 
         <TextView
             android:id="@+id/activity_choose_background_plan_tv_cancel"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
             android:gravity="center"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:text="Hủy"
             android:textColor="@color/btn_press_state_white"
             android:textSize="@dimen/text_large"
             />
 
         <TextView
-            android:id="@+id/activity_choose_background_plan_tv_choose"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
+            android:layout_weight="2"
             android:gravity="center"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:text="Chọn hình nền"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_large"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/activity_choose_background_plan_tv_choose"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
             android:text="Chọn"
             android:textColor="@color/btn_press_state_white"
             android:textSize="@dimen/text_large"
             />
-    </RelativeLayout>
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/activity_choose_background_plan_rv_item"

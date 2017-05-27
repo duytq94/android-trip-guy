@@ -11,22 +11,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
+import com.dfa.vinatrip.domains.main.me.UserProfile;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class RatingAdapter extends
-        RecyclerView.Adapter<RatingAdapter.RatingViewHolder> {
+public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.RatingViewHolder> {
     private LayoutInflater layoutInflater;
     private Context context;
     private List<UserRating> listUserRatings;
+    private UserProfile currentUser;
 
-    public RatingAdapter(Context context,
-                         List<UserRating> listUserRatings) {
+    public RatingAdapter(Context context, List<UserRating> listUserRatings, UserProfile currentUser) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.listUserRatings = listUserRatings;
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -39,7 +39,12 @@ public class RatingAdapter extends
     public void onBindViewHolder(RatingViewHolder holder, int position) {
         UserRating userRating = listUserRatings.get(position);
 
-        holder.tvNickname.setText(userRating.getNickname());
+        if (currentUser.getUid().equals(userRating.getUid())) {
+            holder.tvNickname.setText("Tôi");
+        } else {
+            holder.tvNickname.setText(userRating.getNickname());
+        }
+
         holder.tvEmail.setText(userRating.getEmail());
         holder.tvContent.setText(userRating.getContent());
         holder.tvDate.setText(userRating.getDate());
@@ -66,9 +71,9 @@ public class RatingAdapter extends
         holder.tvNumStars.setText(Html.fromHtml(rate));
 
         Picasso.with(context).load(listUserRatings.get(position).getAvatar())
-                .placeholder(R.drawable.ic_loading)
-                .error(R.drawable.photo_not_available)
-                .into(holder.ivAvatar);
+               .placeholder(R.drawable.ic_loading)
+               .error(R.drawable.photo_not_available)
+               .into(holder.ivAvatar);
     }
 
     @Override

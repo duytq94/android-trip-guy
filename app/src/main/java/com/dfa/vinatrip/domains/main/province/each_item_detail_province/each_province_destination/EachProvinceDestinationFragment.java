@@ -16,12 +16,11 @@ import com.dfa.vinatrip.domains.main.province.detail_province.province_destinati
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.RatingActivity_;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.RatingAdapter;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
+import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.MapActivity_;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 import com.dfa.vinatrip.utils.ShowFullPhotoActivity_;
 import com.dfa.vinatrip.utils.TripGuyUtils;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +31,7 @@ import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
@@ -41,6 +41,9 @@ import java.util.List;
 
 @EFragment(R.layout.fragment_each_province_destination)
 public class EachProvinceDestinationFragment extends Fragment {
+
+    @Bean
+    DataService dataService;
 
     @ViewById(R.id.fragment_each_province_destination_tv_address)
     TextView tvAddress;
@@ -75,7 +78,6 @@ public class EachProvinceDestinationFragment extends Fragment {
     private List<UserRating> listUserRatings;
     private ProvinceDestinationPhotoAdapter provinceDestinationPhotoAdapter;
     private RatingAdapter ratingAdapter;
-    private FirebaseUser firebaseUser;
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     static final int NOTIFY_UPDATE_REQUEST = 2;
 
@@ -162,7 +164,7 @@ public class EachProvinceDestinationFragment extends Fragment {
         Intent intentRate = new Intent(getActivity(), RatingActivity_.class);
 
         // Send DetailDestination to RatingActivity
-        intentRate.putExtra("DetailDestination", destination);
+        intentRate.putExtra("DetailDestination", destinationDetail);
         // Send ListUserRatings to know user has comment yet?
         intentRate.putParcelableArrayListExtra("ListUserRatings", (ArrayList<? extends Parcelable>) listUserRatings);
         // Make RateActivity notify when it finish
@@ -170,8 +172,6 @@ public class EachProvinceDestinationFragment extends Fragment {
     }
 
     public void setContentViews() {
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
         // tvRate be disabled until listUserRatings load done
         tvRate.setVisibility(View.GONE);
 
@@ -180,7 +180,7 @@ public class EachProvinceDestinationFragment extends Fragment {
         rvProvinceDestinationPhotos.setAdapter(provinceDestinationPhotoAdapter);
 
         listUserRatings = new ArrayList<>();
-        ratingAdapter = new RatingAdapter(getActivity(), listUserRatings);
+        ratingAdapter = new RatingAdapter(getActivity(), listUserRatings, dataService.getCurrentUser());
         rvUserRatings.setAdapter(ratingAdapter);
     }
 
@@ -326,19 +326,21 @@ public class EachProvinceDestinationFragment extends Fragment {
                        .addListenerForSingleValueEvent(new ValueEventListener() {
                            @Override
                            public void onDataChange(DataSnapshot dataSnapshot) {
-                               tvRate.setVisibility(View.VISIBLE);
+                               if (isAdded()) {
+                                   tvRate.setVisibility(View.VISIBLE);
 
-                               // If user has comment, change text of tvRate
-                               for (int i = 0; i < listUserRatings.size(); i++) {
-                                   UserRating userRating = listUserRatings.get(i);
-                                   if (firebaseUser != null) {
-                                       if (userRating.getUid().equals(firebaseUser.getUid())) {
-                                           tvRate.setText(R.string.update_rating);
-                                           return;
+                                   // If user has comment, change text of tvRate
+                                   for (int i = 0; i < listUserRatings.size(); i++) {
+                                       UserRating userRating = listUserRatings.get(i);
+                                       if (dataService.getCurrentUser() != null) {
+                                           if (userRating.getUid().equals(dataService.getCurrentUser().getUid())) {
+                                               tvRate.setText(R.string.update_rating);
+                                               return;
+                                           }
                                        }
                                    }
+                                   tvRate.setText(R.string.rating);
                                }
-                               tvRate.setText(R.string.rating);
                            }
 
                            @Override
