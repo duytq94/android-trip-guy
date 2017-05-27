@@ -8,8 +8,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,12 +58,59 @@ public class EachProvinceFoodFragment extends Fragment {
     private ProvinceFood detailFood;
     private List<String> listUrlPhotos;
     private ProvinceFoodPhotoAdapter provinceFoodPhotoAdapter;
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference;
+    private ChildEventListener childEventListener;
+    private ValueEventListener valueEventListener;
 
     @AfterViews
     void onCreateView() {
         // Get the Food be chosen from EachItemProvinceDetailActivity
         detailFood = getArguments().getParcelable("DetailFood");
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String url;
+                url = dataSnapshot.getValue().toString();
+
+                listUrlPhotos.add(url);
+                provinceFoodPhotoAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (isAdded()) {
+                    srlReload.setRefreshing(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         if (TripGuyUtils.isNetworkConnected(getActivity())) {
@@ -86,20 +133,17 @@ public class EachProvinceFoodFragment extends Fragment {
         // set content for views
         setContentViews();
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
-        rvProvinceFoodPhotos.setLayoutManager(staggeredGridLayoutManager);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        rvProvinceFoodPhotos.setLayoutManager(manager);
     }
 
     @Click(R.id.fragment_each_province_food_ll_phone)
     void onLlPhoneClick() {
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                                              Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(),
-                                              new String[]{Manifest.permission.CALL_PHONE}, 1);
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) !=
+            PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, 1);
         } else {
-            Intent intentCall =
-                    new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + detailFood.getPhone()));
+            Intent intentCall = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + detailFood.getPhone()));
             startActivity(intentCall);
         }
     }
@@ -143,54 +187,19 @@ public class EachProvinceFoodFragment extends Fragment {
     }
 
     public void loadProvinceFoodPhoto() {
-        DatabaseReference databaseReference = firebaseDatabase.getReference();
-
         // if no Internet, this method will not run
         databaseReference.child("ProvinceFoodPhoto").child(detailFood.getProvince()).child(detailFood.getName())
-                         .addChildEventListener(new ChildEventListener() {
-                             @Override
-                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                 String url;
-                                 url = dataSnapshot.getValue().toString();
-
-                                 listUrlPhotos.add(url);
-                                 provinceFoodPhotoAdapter.notifyDataSetChanged();
-                             }
-
-                             @Override
-                             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                             }
-
-                             @Override
-                             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                             }
-
-                             @Override
-                             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                             }
-
-                             @Override
-                             public void onCancelled(DatabaseError databaseError) {
-
-                             }
-                         });
+                         .addChildEventListener(childEventListener);
 
         databaseReference.child("ProvinceFoodPhoto").child(detailFood.getProvince()).child(detailFood.getName())
-                         .addListenerForSingleValueEvent(new ValueEventListener() {
-                             @Override
-                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                 if (isAdded()) {
-                                     srlReload.setRefreshing(false);
-                                 }
-                             }
+                         .addListenerForSingleValueEvent(valueEventListener);
+    }
 
-                             @Override
-                             public void onCancelled(DatabaseError databaseError) {
 
-                             }
-                         });
+    @Override
+    public void onPause() {
+        super.onPause();
+        databaseReference.removeEventListener(childEventListener);
+        databaseReference.removeEventListener(valueEventListener);
     }
 }

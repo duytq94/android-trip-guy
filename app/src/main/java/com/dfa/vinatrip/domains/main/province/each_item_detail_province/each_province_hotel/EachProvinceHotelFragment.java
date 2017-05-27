@@ -8,8 +8,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -64,12 +64,59 @@ public class EachProvinceHotelFragment extends Fragment {
     private ProvinceHotel detailHotel;
     private List<String> listUrlPhotos;
     private ProvinceHotelPhotoAdapter provinceHotelPhotoAdapter;
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference;
+    private ChildEventListener childEventListener;
+    private ValueEventListener valueEventListener;
 
     @AfterViews
     void onCreateView() {
         // Get the Hotel be chosen from EachItemProvinceDetailActivity
         detailHotel = getArguments().getParcelable("DetailHotel");
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String url;
+                url = dataSnapshot.getValue().toString();
+
+                listUrlPhotos.add(url);
+                provinceHotelPhotoAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (isAdded()) {
+                    srlReload.setRefreshing(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         if (TripGuyUtils.isNetworkConnected(getActivity())) {
@@ -92,9 +139,8 @@ public class EachProvinceHotelFragment extends Fragment {
         // set content for views
         setContentViews();
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
-        rvProvinceHotelPhotos.setLayoutManager(staggeredGridLayoutManager);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        rvProvinceHotelPhotos.setLayoutManager(manager);
     }
 
     @Click(R.id.fragment_each_province_hotel_ll_phone)
@@ -159,54 +205,11 @@ public class EachProvinceHotelFragment extends Fragment {
     }
 
     public void loadProvinceHotelPhoto() {
-        DatabaseReference databaseReference = firebaseDatabase.getReference();
-
         // if no Internet, this method will not run
         databaseReference.child("ProvinceHotelPhoto").child(detailHotel.getProvince()).child(detailHotel.getName())
-                         .addChildEventListener(new ChildEventListener() {
-                             @Override
-                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                 String url;
-                                 url = dataSnapshot.getValue().toString();
-
-                                 listUrlPhotos.add(url);
-                                 provinceHotelPhotoAdapter.notifyDataSetChanged();
-                             }
-
-                             @Override
-                             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                             }
-
-                             @Override
-                             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                             }
-
-                             @Override
-                             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                             }
-
-                             @Override
-                             public void onCancelled(DatabaseError databaseError) {
-
-                             }
-                         });
+                         .addChildEventListener(childEventListener);
 
         databaseReference.child("ProvinceHotelPhoto").child(detailHotel.getProvince()).child(detailHotel.getName())
-                         .addListenerForSingleValueEvent(new ValueEventListener() {
-                             @Override
-                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                 if (isAdded()) {
-                                     srlReload.setRefreshing(false);
-                                 }
-                             }
-
-                             @Override
-                             public void onCancelled(DatabaseError databaseError) {
-
-                             }
-                         });
+                         .addListenerForSingleValueEvent(valueEventListener);
     }
 }

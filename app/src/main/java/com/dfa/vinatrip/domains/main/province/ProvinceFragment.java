@@ -68,9 +68,9 @@ public class ProvinceFragment extends Fragment {
     private CustomPagerAdapter customPagerAdapter;
     private int i;
     private TextView[] tvDots;
-    private DatabaseReference databaseReference;
     private Handler handler;
     private Runnable update;
+    private DatabaseReference databaseReference;
     private ChildEventListener childEventListener;
     private ValueEventListener valueEventListener;
 

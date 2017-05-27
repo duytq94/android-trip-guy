@@ -42,6 +42,8 @@ import java.util.List;
 @EFragment(R.layout.fragment_each_province_destination)
 public class EachProvinceDestinationFragment extends Fragment {
 
+    static final int NOTIFY_UPDATE_REQUEST = 2;
+
     @Bean
     DataService dataService;
 
@@ -78,13 +80,21 @@ public class EachProvinceDestinationFragment extends Fragment {
     private List<UserRating> listUserRatings;
     private ProvinceDestinationPhotoAdapter provinceDestinationPhotoAdapter;
     private RatingAdapter ratingAdapter;
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    static final int NOTIFY_UPDATE_REQUEST = 2;
+    private DatabaseReference databaseReference;
+    private ChildEventListener childEventListenerPhoto;
+    private ChildEventListener childEventListenerDetail;
+    private ChildEventListener childEventListenerRating;
+    private ValueEventListener valueEventListenerPhoto;
+    private ValueEventListener valueEventListenerRating;
 
     @AfterViews
     void onCreateView() {
         // Get the Destination be chosen from EachItemProvinceDetailActivity
         destination = getArguments().getParcelable("Destination");
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        setContentViews();
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         if (TripGuyUtils.isNetworkConnected(getActivity())) {
@@ -109,7 +119,6 @@ public class EachProvinceDestinationFragment extends Fragment {
             }
         });
 
-        setContentViews();
         setOnClickListener();
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -182,172 +191,182 @@ public class EachProvinceDestinationFragment extends Fragment {
         listUserRatings = new ArrayList<>();
         ratingAdapter = new RatingAdapter(getActivity(), listUserRatings, dataService.getCurrentUser());
         rvUserRatings.setAdapter(ratingAdapter);
+
+        childEventListenerPhoto = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String url;
+                url = dataSnapshot.getValue().toString();
+
+                listUrlPhotos.add(url);
+                provinceDestinationPhotoAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        childEventListenerDetail = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                destinationDetail = dataSnapshot.getValue(ProvinceDestinationDetail.class);
+                if (isAdded()) {
+                    expTvDescription.setText(Html.fromHtml(destinationDetail.getDescription()));
+                    expTvScheduleAndFee.setText(Html.fromHtml(destinationDetail.getScheduleAndFee()));
+                    tvAddress.setText(destinationDetail.getAddress());
+
+                    // Load static map
+                    String url = "http://maps.google.com/maps/api/staticmap?center="
+                                 + destinationDetail.getLatitude()
+                                 + "," + destinationDetail.getLongitude()
+                                 + "&zoom=15&size=100x120&sensor=false";
+                    Picasso.with(getActivity()).load(url).into(ivMap);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        childEventListenerRating = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                UserRating userRating = dataSnapshot.getValue(UserRating.class);
+
+                if (isAdded()) {
+                    rvUserRatings.setVisibility(View.VISIBLE);
+                    tvCommentNotAvailable.setVisibility(View.GONE);
+                }
+                listUserRatings.add(userRating);
+                ratingAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        valueEventListenerPhoto = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (isAdded()) {
+                    srlReload.setRefreshing(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        valueEventListenerRating = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (isAdded()) {
+                    tvRate.setVisibility(View.VISIBLE);
+
+                    // If user has comment, change text of tvRate
+                    for (int i = 0; i < listUserRatings.size(); i++) {
+                        UserRating userRating = listUserRatings.get(i);
+                        if (dataService.getCurrentUser() != null) {
+                            if (userRating.getUid().equals(dataService.getCurrentUser().getUid())) {
+                                tvRate.setText(R.string.update_rating);
+                                return;
+                            }
+                        }
+                    }
+                    tvRate.setText(R.string.rating);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
     }
 
     public void loadProvinceDestinationPhoto() {
-        DatabaseReference referencePhoto = firebaseDatabase.getReference();
         // if no Internet, this method will not run
-        referencePhoto.child("ProvinceDestinationPhoto").child(destination.getProvince())
-                      .child(destination.getName())
-                      .addChildEventListener(new ChildEventListener() {
-                          @Override
-                          public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                              String url;
-                              url = dataSnapshot.getValue().toString();
+        databaseReference.child("ProvinceDestinationPhoto").child(destination.getProvince())
+                         .child(destination.getName())
+                         .addChildEventListener(childEventListenerPhoto);
 
-                              listUrlPhotos.add(url);
-                              provinceDestinationPhotoAdapter.notifyDataSetChanged();
-                          }
-
-                          @Override
-                          public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                          }
-
-                          @Override
-                          public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                          }
-
-                          @Override
-                          public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                          }
-
-                          @Override
-                          public void onCancelled(DatabaseError databaseError) {
-
-                          }
-                      });
-
-        referencePhoto.child("ProvinceDestinationPhoto").child(destination.getProvince())
-                      .child(destination.getName())
-                      .addListenerForSingleValueEvent(new ValueEventListener() {
-                          @Override
-                          public void onDataChange(DataSnapshot dataSnapshot) {
-                              if (isAdded()) {
-                                  srlReload.setRefreshing(false);
-                              }
-                          }
-
-                          @Override
-                          public void onCancelled(DatabaseError databaseError) {
-
-                          }
-                      });
+        databaseReference.child("ProvinceDestinationPhoto").child(destination.getProvince())
+                         .child(destination.getName())
+                         .addListenerForSingleValueEvent(valueEventListenerPhoto);
     }
 
     public void loadProvinceDestinationDetail() {
-        DatabaseReference referenceDetail = firebaseDatabase.getReference();
-
-        referenceDetail.child("ProvinceDestinationDetail").child(destination.getProvince())
-                       .addChildEventListener(new ChildEventListener() {
-                           @Override
-                           public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                               destinationDetail = dataSnapshot.getValue(ProvinceDestinationDetail.class);
-                               if (isAdded()) {
-                                   expTvDescription.setText(Html.fromHtml(destinationDetail.getDescription()));
-                                   expTvScheduleAndFee.setText(Html.fromHtml(destinationDetail.getScheduleAndFee()));
-                                   tvAddress.setText(destinationDetail.getAddress());
-
-                                   // Load static map
-                                   String url = "http://maps.google.com/maps/api/staticmap?center="
-                                                + destinationDetail.getLatitude()
-                                                + "," + destinationDetail.getLongitude()
-                                                + "&zoom=15&size=100x120&sensor=false";
-                                   Picasso.with(getActivity()).load(url).into(ivMap);
-                               }
-                           }
-
-                           @Override
-                           public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                           }
-
-                           @Override
-                           public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                           }
-
-                           @Override
-                           public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                           }
-
-                           @Override
-                           public void onCancelled(DatabaseError databaseError) {
-
-                           }
-                       });
+        databaseReference.child("ProvinceDestinationDetail").child(destination.getProvince())
+                         .addChildEventListener(childEventListenerDetail);
     }
 
     public void loadProvinceDestinationRating() {
-        DatabaseReference referenceRating = firebaseDatabase.getReference();
-
         // if no Internet, this method will not run
-        referenceRating.child("ProvinceDestinationRating").child(destination.getProvince())
-                       .child(destination.getName())
-                       .addChildEventListener(new ChildEventListener() {
-                           @Override
-                           public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                               UserRating userRating = dataSnapshot.getValue(UserRating.class);
-
-                               if (isAdded()) {
-                                   rvUserRatings.setVisibility(View.VISIBLE);
-                                   tvCommentNotAvailable.setVisibility(View.GONE);
-                               }
-                               listUserRatings.add(userRating);
-                               ratingAdapter.notifyDataSetChanged();
-                           }
-
-                           @Override
-                           public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                           }
-
-                           @Override
-                           public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                           }
-
-                           @Override
-                           public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                           }
-
-                           @Override
-                           public void onCancelled(DatabaseError databaseError) {
-
-                           }
-                       });
+        databaseReference.child("ProvinceDestinationRating").child(destination.getProvince())
+                         .child(destination.getName())
+                         .addChildEventListener(childEventListenerRating);
 
         // This method to be called after all the onChildAdded() calls have happened
-        referenceRating.child("ProvinceDestinationRating")
-                       .addListenerForSingleValueEvent(new ValueEventListener() {
-                           @Override
-                           public void onDataChange(DataSnapshot dataSnapshot) {
-                               if (isAdded()) {
-                                   tvRate.setVisibility(View.VISIBLE);
-
-                                   // If user has comment, change text of tvRate
-                                   for (int i = 0; i < listUserRatings.size(); i++) {
-                                       UserRating userRating = listUserRatings.get(i);
-                                       if (dataService.getCurrentUser() != null) {
-                                           if (userRating.getUid().equals(dataService.getCurrentUser().getUid())) {
-                                               tvRate.setText(R.string.update_rating);
-                                               return;
-                                           }
-                                       }
-                                   }
-                                   tvRate.setText(R.string.rating);
-                               }
-                           }
-
-                           @Override
-                           public void onCancelled(DatabaseError databaseError) {
-
-                           }
-                       });
+        databaseReference.child("ProvinceDestinationRating")
+                         .addListenerForSingleValueEvent(valueEventListenerRating);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        databaseReference.removeEventListener(childEventListenerDetail);
+        databaseReference.removeEventListener(childEventListenerPhoto);
+        databaseReference.removeEventListener(childEventListenerRating);
+        databaseReference.removeEventListener(valueEventListenerRating);
+        databaseReference.removeEventListener(valueEventListenerPhoto);
+    }
 }
