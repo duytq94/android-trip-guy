@@ -40,7 +40,7 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
     @Extra
     ProvinceHotel detailHotel;
     @Extra
-    ProvinceDestination detailDestination;
+    ProvinceDestination destination;
     @Extra
     ProvinceFood detailFood;
 
@@ -68,11 +68,11 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
         }
 
         // Get the Destination be chosen from ProvinceDestinationFragment
-        if (detailDestination != null) {
-            titleActionBar = detailDestination.getName();
+        if (destination != null) {
+            titleActionBar = destination.getName();
 
             Bundle bundleDestination = new Bundle();
-            bundleDestination.putParcelable("DetailDestination", detailDestination);
+            bundleDestination.putParcelable("Destination", destination);
             eachProvinceDestinationFragment = new EachProvinceDestinationFragment_();
             // Send the Hotel be chosen to EachProvinceHotelFragment
             eachProvinceDestinationFragment.setArguments(bundleDestination);

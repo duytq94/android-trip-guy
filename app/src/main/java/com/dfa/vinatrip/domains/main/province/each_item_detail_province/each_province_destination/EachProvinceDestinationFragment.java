@@ -69,28 +69,8 @@ public class EachProvinceDestinationFragment extends Fragment {
     @ViewById(R.id.fragment_each_province_destination_exptv_description)
     ExpandableTextView expTvDescription;
 
-    @Click(R.id.fragment_each_province_destination_ll_address)
-    void onLlAddressClick() {
-        Intent intentMap = new Intent(getActivity(), MapActivity_.class);
-
-        // Send DetailDestination to MapActivity
-        intentMap.putExtra("DetailDestination", detailDestination);
-        startActivity(intentMap);
-    }
-
-    @Click(R.id.fragment_each_province_destination_tv_rate)
-    void onTvRateClick() {
-        Intent intentRate = new Intent(getActivity(), RatingActivity_.class);
-
-        // Send DetailDestination to RatingActivity
-        intentRate.putExtra("DetailDestination", detailDestination);
-        // Send ListUserRatings to know user has comment yet?
-        intentRate.putParcelableArrayListExtra("ListUserRatings", (ArrayList<? extends Parcelable>) listUserRatings);
-        // Make RateActivity notify when it finish
-        startActivityForResult(intentRate, NOTIFY_UPDATE_REQUEST);
-    }
-
-    private ProvinceDestination detailDestination;
+    private ProvinceDestinationDetail destinationDetail;
+    private ProvinceDestination destination;
     private List<String> listUrlPhotos;
     private List<UserRating> listUserRatings;
     private ProvinceDestinationPhotoAdapter provinceDestinationPhotoAdapter;
@@ -101,14 +81,15 @@ public class EachProvinceDestinationFragment extends Fragment {
 
     @AfterViews
     void onCreateView() {
-        // Get the DetailDestination be chosen from EachItemProvinceDetailActivity
-        detailDestination = getArguments().getParcelable("DetailDestination");
+        // Get the Destination be chosen from EachItemProvinceDetailActivity
+        destination = getArguments().getParcelable("Destination");
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         if (TripGuyUtils.isNetworkConnected(getActivity())) {
             srlReload.setRefreshing(true);
             loadProvinceDestinationPhoto();
             loadProvinceDestinationRating();
+            loadProvinceDestinationDetail();
         }
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -119,6 +100,7 @@ public class EachProvinceDestinationFragment extends Fragment {
                     srlReload.setRefreshing(true);
                     loadProvinceDestinationPhoto();
                     loadProvinceDestinationRating();
+                    loadProvinceDestinationDetail();
                 } else {
                     srlReload.setRefreshing(false);
                 }
@@ -126,7 +108,6 @@ public class EachProvinceDestinationFragment extends Fragment {
         });
 
         setContentViews();
-
         setOnClickListener();
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -144,16 +125,8 @@ public class EachProvinceDestinationFragment extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Intent intent = new Intent(getActivity(), ShowFullPhotoActivity_.class);
-
-                                // Send ListUrlPhotos to ShowFullPhotoActivity
-                                intent.putStringArrayListExtra("ListUrlPhotos", (ArrayList<String>) listUrlPhotos);
-                                // Send the Position photo user click
-                                intent.putExtra("Position", position);
-                                // Send DetailDestination to ShowFullPhotoActivity
-                                intent.putExtra("DetailDestination", detailDestination);
-
-                                startActivity(intent);
+                                ShowFullPhotoActivity_.intent(getActivity()).destination(destination).position(position)
+                                                      .listUrlPhotos((ArrayList<String>) listUrlPhotos).start();
                             }
 
                             @Override
@@ -175,39 +148,47 @@ public class EachProvinceDestinationFragment extends Fragment {
         }
     }
 
+    @Click(R.id.fragment_each_province_destination_ll_address)
+    void onLlAddressClick() {
+        Intent intentMap = new Intent(getActivity(), MapActivity_.class);
+
+        // Send DetailDestination to MapActivity
+        intentMap.putExtra("DetailDestination", destinationDetail);
+        startActivity(intentMap);
+    }
+
+    @Click(R.id.fragment_each_province_destination_tv_rate)
+    void onTvRateClick() {
+        Intent intentRate = new Intent(getActivity(), RatingActivity_.class);
+
+        // Send DetailDestination to RatingActivity
+        intentRate.putExtra("DetailDestination", destination);
+        // Send ListUserRatings to know user has comment yet?
+        intentRate.putParcelableArrayListExtra("ListUserRatings", (ArrayList<? extends Parcelable>) listUserRatings);
+        // Make RateActivity notify when it finish
+        startActivityForResult(intentRate, NOTIFY_UPDATE_REQUEST);
+    }
+
     public void setContentViews() {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         // tvRate be disabled until listUserRatings load done
         tvRate.setVisibility(View.GONE);
 
-        expTvDescription.setText(Html.fromHtml(detailDestination.getDescription()));
-        expTvScheduleAndFee.setText(Html.fromHtml(detailDestination.getScheduleAndFee()));
-        tvAddress.setText(detailDestination.getAddress());
-
         listUrlPhotos = new ArrayList<>();
-        provinceDestinationPhotoAdapter
-                = new ProvinceDestinationPhotoAdapter(getActivity(), listUrlPhotos);
+        provinceDestinationPhotoAdapter = new ProvinceDestinationPhotoAdapter(getActivity(), listUrlPhotos);
         rvProvinceDestinationPhotos.setAdapter(provinceDestinationPhotoAdapter);
 
         listUserRatings = new ArrayList<>();
         ratingAdapter = new RatingAdapter(getActivity(), listUserRatings);
         rvUserRatings.setAdapter(ratingAdapter);
-
-        // Load static map
-        String url = "http://maps.google.com/maps/api/staticmap?center="
-                     + detailDestination.getLatitude()
-                     + "," + detailDestination.getLongitude()
-                     + "&zoom=15&size=100x120&sensor=false";
-        Picasso.with(getActivity()).load(url)
-               .into(ivMap);
     }
 
     public void loadProvinceDestinationPhoto() {
         DatabaseReference referencePhoto = firebaseDatabase.getReference();
         // if no Internet, this method will not run
-        referencePhoto.child("ProvinceDestinationPhoto").child(detailDestination.getProvince())
-                      .child(detailDestination.getName())
+        referencePhoto.child("ProvinceDestinationPhoto").child(destination.getProvince())
+                      .child(destination.getName())
                       .addChildEventListener(new ChildEventListener() {
                           @Override
                           public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -239,8 +220,8 @@ public class EachProvinceDestinationFragment extends Fragment {
                           }
                       });
 
-        referencePhoto.child("ProvinceDestinationPhoto").child(detailDestination.getProvince())
-                      .child(detailDestination.getName())
+        referencePhoto.child("ProvinceDestinationPhoto").child(destination.getProvince())
+                      .child(destination.getName())
                       .addListenerForSingleValueEvent(new ValueEventListener() {
                           @Override
                           public void onDataChange(DataSnapshot dataSnapshot) {
@@ -256,12 +237,56 @@ public class EachProvinceDestinationFragment extends Fragment {
                       });
     }
 
+    public void loadProvinceDestinationDetail() {
+        DatabaseReference referenceDetail = firebaseDatabase.getReference();
+
+        referenceDetail.child("ProvinceDestinationDetail").child(destination.getProvince())
+                       .addChildEventListener(new ChildEventListener() {
+                           @Override
+                           public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                               destinationDetail = dataSnapshot.getValue(ProvinceDestinationDetail.class);
+                               if (isAdded()) {
+                                   expTvDescription.setText(Html.fromHtml(destinationDetail.getDescription()));
+                                   expTvScheduleAndFee.setText(Html.fromHtml(destinationDetail.getScheduleAndFee()));
+                                   tvAddress.setText(destinationDetail.getAddress());
+
+                                   // Load static map
+                                   String url = "http://maps.google.com/maps/api/staticmap?center="
+                                                + destinationDetail.getLatitude()
+                                                + "," + destinationDetail.getLongitude()
+                                                + "&zoom=15&size=100x120&sensor=false";
+                                   Picasso.with(getActivity()).load(url).into(ivMap);
+                               }
+                           }
+
+                           @Override
+                           public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                           }
+
+                           @Override
+                           public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                           }
+
+                           @Override
+                           public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                           }
+
+                           @Override
+                           public void onCancelled(DatabaseError databaseError) {
+
+                           }
+                       });
+    }
+
     public void loadProvinceDestinationRating() {
         DatabaseReference referenceRating = firebaseDatabase.getReference();
 
         // if no Internet, this method will not run
-        referenceRating.child("ProvinceDestinationRating").child(detailDestination.getProvince())
-                       .child(detailDestination.getName())
+        referenceRating.child("ProvinceDestinationRating").child(destination.getProvince())
+                       .child(destination.getName())
                        .addChildEventListener(new ChildEventListener() {
                            @Override
                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -303,7 +328,7 @@ public class EachProvinceDestinationFragment extends Fragment {
                            public void onDataChange(DataSnapshot dataSnapshot) {
                                tvRate.setVisibility(View.VISIBLE);
 
-                               // If user has comment, chnage text of tvRate
+                               // If user has comment, change text of tvRate
                                for (int i = 0; i < listUserRatings.size(); i++) {
                                    UserRating userRating = listUserRatings.get(i);
                                    if (firebaseUser != null) {

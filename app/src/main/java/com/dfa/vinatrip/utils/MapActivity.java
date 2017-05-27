@@ -7,9 +7,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.province.detail_province.province_destination.ProvinceDestination;
 import com.dfa.vinatrip.domains.main.province.detail_province.province_food.ProvinceFood;
 import com.dfa.vinatrip.domains.main.province.detail_province.province_hotel.ProvinceHotel;
+import com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_destination.ProvinceDestinationDetail;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -37,7 +37,7 @@ public class MapActivity extends AppCompatActivity {
     private android.support.v7.app.ActionBar actionBar;
     private ProvinceHotel detailHotel;
     private ProvinceFood detailFood;
-    private ProvinceDestination detailDestination;
+    private ProvinceDestinationDetail DestinationDetail;
     private String titleActionBar;
     private LatLng latLng;
 
@@ -57,31 +57,30 @@ public class MapActivity extends AppCompatActivity {
                     // For dropping a marker at a point on the Map
                     latLng = new LatLng(detailHotel.getLatitude(), detailHotel.getLongitude());
                     googleMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .title(detailHotel.getName())
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_hotel)))
-                            .showInfoWindow();
+                                                .position(latLng)
+                                                .title(detailHotel.getName())
+                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_hotel)))
+                             .showInfoWindow();
                 }
 
                 if (detailFood != null) {
                     // For dropping a marker at a point on the Map
                     latLng = new LatLng(detailFood.getLatitude(), detailFood.getLongitude());
                     googleMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .title(detailFood.getName())
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_food)))
-                            .showInfoWindow();
+                                                .position(latLng)
+                                                .title(detailFood.getName())
+                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_food)))
+                             .showInfoWindow();
                 }
 
-                if (detailDestination != null) {
+                if (DestinationDetail != null) {
                     // For dropping a marker at a point on the Map
-                    latLng = new LatLng(detailDestination.getLatitude(),
-                            detailDestination.getLongitude());
+                    latLng = new LatLng(DestinationDetail.getLatitude(), DestinationDetail.getLongitude());
                     googleMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .title(detailDestination.getName())
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination)))
-                            .showInfoWindow();
+                                                .position(latLng)
+                                                .title(DestinationDetail.getName())
+                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination)))
+                             .showInfoWindow();
                 }
 
                 // For zooming automatically to the location of the marker
@@ -114,8 +113,8 @@ public class MapActivity extends AppCompatActivity {
         }
         if (getIntent().getParcelableExtra("DetailDestination") != null) {
             // Get ProvinceDestination from EachProvinceDestinationFragment
-            detailDestination = getIntent().getParcelableExtra("DetailDestination");
-            titleActionBar = detailDestination.getName();
+            DestinationDetail = getIntent().getParcelableExtra("DetailDestination");
+            titleActionBar = DestinationDetail.getName();
         }
 
         setSupportActionBar(toolbar);

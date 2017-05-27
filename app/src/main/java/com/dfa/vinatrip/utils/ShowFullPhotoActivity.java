@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.province.Province;
@@ -23,9 +22,10 @@ import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.List;
+import java.util.ArrayList;
 
 @EActivity(R.layout.activity_show_full_photo)
 public class ShowFullPhotoActivity extends AppCompatActivity {
@@ -36,19 +36,19 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
     @ViewById(R.id.my_toolbar)
     Toolbar toolbar;
 
-    private CustomPagerAdapter customPagerAdapter;
-    private List<String> listUrlPhotos;
-    private int position;
+    @Extra
+    ArrayList<String> listUrlPhotos;
+    @Extra
+    int position;
+    @Extra
+    ProvinceDestination destination;
 
+    private CustomPagerAdapter customPagerAdapter;
     private android.support.v7.app.ActionBar actionBar;
-    private ProvinceDestination detailDestination;
     private Province detailProvince;
 
     @AfterViews
     void onCreate() {
-        listUrlPhotos = getIntent().getStringArrayListExtra("ListUrlPhotos");
-        position = getIntent().getIntExtra("Position", 0);
-        detailDestination = getIntent().getParcelableExtra("DetailDestination");
         detailProvince = getIntent().getParcelableExtra("DetailProvince");
 
         changeColorStatusBar();
@@ -97,7 +97,7 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((LinearLayout) object);
+            container.removeView((PhotoView) object);
         }
     }
 
@@ -105,8 +105,8 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         if (actionBar != null) {
-            if (detailDestination != null) {
-                actionBar.setTitle(detailDestination.getName());
+            if (destination != null) {
+                actionBar.setTitle(destination.getName());
             } else {
                 actionBar.setTitle(detailProvince.getName());
             }

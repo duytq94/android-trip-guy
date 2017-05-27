@@ -55,28 +55,7 @@ public class ProvinceDestinationFragment extends Fragment {
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String name, avatar, address, description,
-                        typeOfTourism, scheduleAndFee, timeSpend, province;
-                float latitude, longitude;
-
-                name = dataSnapshot.child("name").getValue().toString();
-                avatar = dataSnapshot.child("avatar").getValue().toString();
-                address = dataSnapshot.child("address").getValue().toString();
-                description = dataSnapshot.child("description").getValue().toString();
-                typeOfTourism = dataSnapshot.child("typeOfTourism").getValue().toString();
-                scheduleAndFee = dataSnapshot.child("scheduleAndFee").getValue().toString();
-                timeSpend = dataSnapshot.child("timeSpend").getValue().toString();
-                latitude = Float.parseFloat(dataSnapshot.child("latitude").getValue()
-                                                        .toString());
-                longitude = Float.parseFloat(dataSnapshot.child("longitude").getValue()
-                                                         .toString());
-                province = dataSnapshot.child("province").getValue().toString();
-
-                ProvinceDestination provinceDestination = new
-                        ProvinceDestination(name, avatar, address, description,
-                                            typeOfTourism, scheduleAndFee, timeSpend, province, latitude,
-                                            longitude);
-
+                ProvinceDestination provinceDestination = dataSnapshot.getValue(ProvinceDestination.class);
                 provinceDestinationList.add(provinceDestination);
                 provinceDestinationAdapter.notifyDataSetChanged();
             }
@@ -143,7 +122,7 @@ public class ProvinceDestinationFragment extends Fragment {
             public void onItemClick(View view, int position) {
                 // Send the Destination be chosen to EachItemProvinceDetailActivity
                 EachItemProvinceDetailActivity_.intent(getActivity())
-                                               .detailDestination(provinceDestinationList.get(position)).start();
+                                               .destination(provinceDestinationList.get(position)).start();
             }
 
             @Override
