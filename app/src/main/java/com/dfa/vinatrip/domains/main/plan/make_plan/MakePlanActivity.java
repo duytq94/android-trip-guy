@@ -27,6 +27,11 @@ import com.dfa.vinatrip.domains.main.me.UserProfile;
 import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.plan.Plan;
 import com.dfa.vinatrip.services.DataService;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -50,6 +55,8 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
+import static com.dfa.vinatrip.domains.main.me.detail_me.update_profile.UpdateUserProfileFragment.REQUEST_PLACE_AUTO_COMPLETE;
+
 @EActivity(R.layout.activity_make_plan)
 public class MakePlanActivity extends AppCompatActivity implements Validator.ValidationListener {
 
@@ -70,8 +77,8 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     EditText etTripName;
 
     @NotEmpty
-    @ViewById(R.id.activity_make_plan_et_destination)
-    EditText etDestination;
+    @ViewById(R.id.activity_make_plan_tv_destination)
+    TextView tvDestination;
 
     @NotEmpty
     @ViewById(R.id.item_day_schedule_tiet)
@@ -122,7 +129,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         if (getIntent().getParcelableExtra("Plan") != null) {
             currentPlan = getIntent().getParcelableExtra("Plan");
             etTripName.setText(currentPlan.getName());
-            etDestination.setText(currentPlan.getDestination());
+            tvDestination.setText(currentPlan.getDestination());
             tvDateGo.setText(currentPlan.getDateGo());
             tvDateBack.setText(currentPlan.getDateBack());
             idBackground = currentPlan.getIdBackground();
@@ -355,12 +362,28 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         startActivityForResult(intent, REQUEST_BACKGROUND);
     }
 
+    @Click(R.id.activity_make_plan_ll_destination)
+    void onLlDestinationClick() {
+        try {
+            AutocompleteFilter typeFilter = new AutocompleteFilter.Builder().setCountry("VN").build();
+            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                    .setFilter(typeFilter).build(this);
+            startActivityForResult(intent, REQUEST_PLACE_AUTO_COMPLETE);
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_BACKGROUND && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_BACKGROUND && resultCode == RESULT_OK && data != null) {
             idBackground = data.getIntExtra("idBackground", R.drawable.bg_test3);
             civBackground.setImageResource(idBackground);
+        }
+        if (requestCode == REQUEST_PLACE_AUTO_COMPLETE && resultCode == Activity.RESULT_OK && data != null) {
+            Place place = PlaceAutocomplete.getPlace(this, data);
+            tvDestination.setText(place.getAddress());
         }
     }
 
@@ -409,7 +432,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         }
         plan.setId(planId);
         plan.setName(etTripName.getText().toString());
-        plan.setDestination(etDestination.getText().toString());
+        plan.setDestination(tvDestination.getText().toString());
         plan.setPlanScheduleList(planScheduleList);
         plan.setDateGo(tvDateGo.getText().toString());
         plan.setDateBack(tvDateBack.getText().toString());
@@ -447,7 +470,11 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
                     message = "Không được để trống";
                     break;
             }
-            ((EditText) view).setError(message);
+            if (view instanceof TextView) {
+                ((TextView) view).setError(message);
+            } else {
+                ((EditText) view).setError(message);
+            }
         }
     }
 }

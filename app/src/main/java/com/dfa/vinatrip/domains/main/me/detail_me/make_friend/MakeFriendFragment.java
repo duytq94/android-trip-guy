@@ -78,8 +78,9 @@ public class MakeFriendFragment extends Fragment {
                                if (!userFriend.getFriendId().equals(currentUser.getUid())) {
                                    for (int i = 0; i < userFriendList.size(); i++) {
                                        if (userFriendList.get(i).getFriendId().equals(userFriend.getFriendId())) {
-                                           userFriendList.remove(i);
-                                           userFriendList.add(userFriend);
+//                                           userFriendList.remove(i);
+//                                           userFriendList.add(userFriend);
+                                           userFriendList.set(i, userFriend);
                                            if (userFriend.getState().equals("friend")) {
                                                dataService.addToUserFriendList(userFriend);
                                            }

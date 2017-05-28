@@ -14,14 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.BuildConfig;
+import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.login.SignInActivity_;
 import com.dfa.vinatrip.domains.main.me.detail_me.UserProfileDetailActivity_;
 import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.utils.TripGuyUtils;
-import com.dfa.vinatrip.domains.login.SignInActivity_;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -142,20 +142,18 @@ public class MeFragment extends Fragment {
     @ViewById(R.id.fragment_me_tv_friend_email2)
     TextView tvEmail2;
 
-    private UserProfile currentUser;
-    private List<UserProfile> listUserProfiles;
     private List<UserFriend> listUserFriends;
     private List<UserRating> myRatingList;
 
     @AfterViews
     void onCreateView() {
-        currentUser = dataService.getCurrentUser();
+        dataService.getCurrentUser();
 
         showAppInfo();
         srlReload.setColorSchemeResources(R.color.colorMain);
 
         if (TripGuyUtils.isNetworkConnected(getActivity())) {
-            if (currentUser != null) {
+            if (dataService.getCurrentUser() != null) {
                 initView();
             } else {
                 llLogin.setVisibility(View.GONE);
@@ -167,7 +165,7 @@ public class MeFragment extends Fragment {
             @Override
             public void onRefresh() {
                 if (TripGuyUtils.isNetworkConnected(getActivity())) {
-                    if (currentUser != null) {
+                    if (dataService.getCurrentUser() != null) {
                         initView();
                     }
                     srlReload.setRefreshing(false);
@@ -198,7 +196,6 @@ public class MeFragment extends Fragment {
         tvAppInfo.append("Version name: " + versionName + "\n");
         tvAppInfo.append("Version code: " + versionCode + "\n");
 
-        listUserProfiles = new ArrayList<>();
         listUserFriends = new ArrayList<>();
         myRatingList = new ArrayList<>();
 
@@ -228,23 +225,18 @@ public class MeFragment extends Fragment {
             }
         });
 
-        listUserProfiles.addAll(dataService.getUserProfileList());
-        if (!currentUser.getNickname().equals("")) {
-            tvNickname.setText(currentUser.getNickname());
-        }
-        if (!currentUser.getCity().equals("")) {
-            tvCity.setText(currentUser.getCity());
-        }
-        if (!currentUser.getAvatar().isEmpty()) {
-            Picasso.with(getActivity())
-                   .load(currentUser.getAvatar())
-                   .into(target);
-        }
-        tvIntroduceYourSelf.setText(currentUser.getIntroduceYourSelf());
-        tvBirthday.setText(currentUser.getBirthday());
-        tvEmail.setText(currentUser.getEmail());
-        tvSex.setText(currentUser.getSex());
+        initFlInfor();
+        dataService.setOnChangeCurrentUser(new DataService.OnChangeCurrentUser() {
+            @Override
+            public void onUpdateInfor() {
+                initFlInfor();
+            }
+        });
 
+        tvIntroduceYourSelf.setText(dataService.getCurrentUser().getIntroduceYourSelf());
+        tvBirthday.setText(dataService.getCurrentUser().getBirthday());
+        tvEmail.setText(dataService.getCurrentUser().getEmail());
+        tvSex.setText(dataService.getCurrentUser().getSex());
     }
 
     public void initLlMyFriend() {
@@ -322,6 +314,20 @@ public class MeFragment extends Fragment {
                 tvContent2.setText(myRating.getContent());
 
                 break;
+        }
+    }
+
+    public void initFlInfor() {
+        if (!dataService.getCurrentUser().getNickname().equals("")) {
+            tvNickname.setText(dataService.getCurrentUser().getNickname());
+        }
+        if (!dataService.getCurrentUser().getCity().equals("")) {
+            tvCity.setText(dataService.getCurrentUser().getCity());
+        }
+        if (!dataService.getCurrentUser().getAvatar().isEmpty()) {
+            Picasso.with(getActivity())
+                   .load(dataService.getCurrentUser().getAvatar())
+                   .into(target);
         }
     }
 

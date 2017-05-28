@@ -85,23 +85,43 @@
                     />
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
+                android:id="@+id/fragment_update_user_profile_ll_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="25dp"
+                android:paddingTop="5dp"
                 >
 
-                <EditText
-                    android:id="@+id/fragment_update_user_profile_et_city"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:hint="@string/city"
-                    android:inputType="textCapSentences"
+                    android:layout_marginBottom="5dp"
                     android:paddingLeft="10dp"
+                    android:text="Nơi ở"
+                    android:textColor="@color/colorMain"
+                    />
+
+                <TextView
+                    android:id="@+id/fragment_update_user_profile_tv_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_medium"
                     />
-            </android.support.design.widget.TextInputLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="#686767"
+                    />
+            </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"

@@ -165,8 +165,7 @@ public class PlanFragment extends Fragment {
                 Plan plan = dataSnapshot.getValue(Plan.class);
                 for (int i = 0; i < planList.size(); i++) {
                     if (planList.get(i).getId().equals(plan.getId())) {
-                        planList.remove(i);
-                        planList.add(plan);
+                        planList.set(i, plan);
                         break;
                     }
                 }

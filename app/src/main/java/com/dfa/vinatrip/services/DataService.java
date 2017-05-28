@@ -25,6 +25,7 @@ public class DataService {
 
     private OnChangeUserFriendList onChangeUserFriendList;
     private OnChangeMyRatingList onChangeMyRatingList;
+    private OnChangeCurrentUser onChangeCurrentUser;
 
     public void clearData() {
         userProfileList.clear();
@@ -36,6 +37,11 @@ public class DataService {
 
     public void setCurrentUser(UserProfile currentUser) {
         this.currentUser = currentUser;
+    }
+
+    public void updateInforCurrentUser(UserProfile currentUser) {
+        this.currentUser = currentUser;
+        onChangeCurrentUser.onUpdateInfor();
     }
 
     public UserProfile getCurrentUser() {
@@ -132,6 +138,10 @@ public class DataService {
         this.onChangeMyRatingList = onChangeMyRatingList;
     }
 
+    public void setOnChangeCurrentUser(OnChangeCurrentUser onChangeCurrentUser) {
+        this.onChangeCurrentUser = onChangeCurrentUser;
+    }
+
     public interface OnChangeUserFriendList {
         void onAddFriend();
 
@@ -142,5 +152,9 @@ public class DataService {
         void onUpdateRating();
 
         void onAddRating();
+    }
+
+    public interface OnChangeCurrentUser {
+        void onUpdateInfor();
     }
 }
