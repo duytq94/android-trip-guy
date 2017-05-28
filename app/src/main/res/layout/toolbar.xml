@@ -4,6 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:background="@color/colorMain"
-    android:elevation="5dp"
+    android:elevation="4dp"
     android:theme="@style/Toolbar"
     />

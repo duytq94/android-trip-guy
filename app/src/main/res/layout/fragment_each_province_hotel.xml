@@ -66,6 +66,7 @@
                             android:id="@+id/fragment_each_province_hotel_iv_map"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_margin="5dp"
                             android:layout_weight="1"
                             />
                     </LinearLayout>

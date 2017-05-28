@@ -118,7 +118,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="150dp"
+                            android:layout_marginTop="160dp"
                             android:text="@string/city"
                             android:textColor="@android:color/white"
                             android:textStyle="bold"
@@ -128,7 +128,9 @@
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/card_view_margin"
+                        android:layout_marginLeft="@dimen/card_view_margin"
+                        android:layout_marginRight="@dimen/card_view_margin"
+                        android:layout_marginTop="@dimen/card_view_margin"
                         >
 
                         <LinearLayout
@@ -245,7 +247,9 @@
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/card_view_margin"
+                        android:layout_marginLeft="@dimen/card_view_margin"
+                        android:layout_marginRight="@dimen/card_view_margin"
+                        android:layout_marginTop="@dimen/card_view_margin"
                         >
 
                         <LinearLayout
@@ -388,7 +392,9 @@
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/card_view_margin"
+                        android:layout_marginLeft="@dimen/card_view_margin"
+                        android:layout_marginRight="@dimen/card_view_margin"
+                        android:layout_marginTop="@dimen/card_view_margin"
                         >
 
                         <LinearLayout
@@ -521,7 +527,9 @@
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/card_view_margin"
+                        android:layout_marginLeft="@dimen/card_view_margin"
+                        android:layout_marginRight="@dimen/card_view_margin"
+                        android:layout_marginTop="@dimen/card_view_margin"
                         >
 
                         <LinearLayout
@@ -551,7 +559,9 @@
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/card_view_margin"
+                        android:layout_marginLeft="@dimen/card_view_margin"
+                        android:layout_marginRight="@dimen/card_view_margin"
+                        android:layout_marginTop="@dimen/card_view_margin"
                         >
 
                         <LinearLayout
@@ -672,7 +682,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="4dp"
                 android:layout_below="@+id/fragment_me_rl_toolbar"
                 android:background="@drawable/bg_shadow_toolbar"
                 />
@@ -749,7 +759,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="4dp"
                 android:layout_below="@+id/fragment_me_rl_not_login_toolbar"
                 android:background="@drawable/bg_shadow_toolbar"
                 />

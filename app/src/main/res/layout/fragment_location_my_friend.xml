@@ -64,7 +64,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="5dp"
+        android:layout_height="4dp"
         android:layout_below="@+id/fragment_location_my_friend_rl_toolbar"
         android:background="@drawable/bg_shadow_toolbar"
         />

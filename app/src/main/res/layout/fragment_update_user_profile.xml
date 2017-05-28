@@ -243,6 +243,7 @@
                     android:background="@drawable/custom_button_positive"
                     android:text="@string/done"
                     android:textColor="@android:color/white"
+                    style="?android:attr/borderlessButtonStyle"
                     />
 
                 <TextView

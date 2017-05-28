@@ -170,7 +170,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         invitedFriendIdList = new ArrayList<>();
 
         userFriendList = new ArrayList<>();
-        if (dataService.getUserFriendList() != null) {
+        if (dataService.getUserFriendList().size() != 0) {
             tvFriendNotAvailable.setVisibility(View.GONE);
             userFriendList.addAll(dataService.getUserFriendList());
         }
@@ -200,7 +200,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         }
 
         userFriendList = new ArrayList<>();
-        if (dataService.getUserFriendList() != null) {
+        if (dataService.getUserFriendList().size() != 0) {
             tvFriendNotAvailable.setVisibility(View.GONE);
             userFriendList.addAll(dataService.getUserFriendList());
         }

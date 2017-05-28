@@ -66,9 +66,11 @@
                 android:id="@+id/activity_make_plan_tv_destination"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="Nhấn để chọn nơi đến"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
                 android:textSize="@dimen/text_medium"
                 />
 
@@ -281,6 +283,7 @@
                 android:text="@string/btn_remove"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
+                style="?android:attr/borderlessButtonStyle"
                 />
 
             <Button
@@ -293,6 +296,7 @@
                 android:text="@string/btn_add"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
+                style="?android:attr/borderlessButtonStyle"
                 />
         </RelativeLayout>
 
@@ -343,6 +347,7 @@
                 android:background="@drawable/custom_button_positive"
                 android:text="@string/done"
                 android:textColor="@android:color/white"
+                style="?android:attr/borderlessButtonStyle"
                 />
 
             <TextView

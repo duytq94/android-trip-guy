@@ -66,6 +66,7 @@
         android:background="@drawable/custom_button_positive"
         android:text="@string/sign_up"
         android:textColor="@android:color/white"
+        style="?android:attr/borderlessButtonStyle"
         />
 
     <Button

@@ -52,5 +52,6 @@
         android:background="@android:color/darker_gray"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
+        style="?android:attr/borderlessButtonStyle"
         />
 </LinearLayout>
