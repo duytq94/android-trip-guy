@@ -13,15 +13,15 @@
         android:orientation="vertical"
         >
 
-        <LinearLayout
-            android:id="@+id/fragment_plan_ll_login"
+        <RelativeLayout
+            android:id="@+id/fragment_plan_rl_login"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone"
+            android:visibility="visible"
             >
 
             <RelativeLayout
+                android:id="@+id/fragment_plan_rl_toolbar_login"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorMain"
@@ -61,6 +61,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/fragment_plan_rl_toolbar_login"
                 >
 
                 <LinearLayout
@@ -105,21 +106,27 @@
                     app:fabSize="normal"
                     />
             </FrameLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/fragment_plan_ll_not_login"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_below="@+id/fragment_plan_rl_toolbar_login"
+                android:background="@drawable/bg_shadow_toolbar"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fragment_plan_rl_not_login"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             >
 
             <RelativeLayout
+                android:id="@+id/fragment_plan_rl_toolbar_not_login"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_marginBottom="180dp"
                 android:background="@color/colorMain"
                 >
 
@@ -145,16 +152,30 @@
                     />
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_below="@+id/fragment_plan_rl_toolbar_not_login"
+                android:background="@drawable/bg_shadow_toolbar"
+                />
+
             <ImageView
+                android:id="@+id/fragment_plan_iv_ic_plan"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_below="@+id/fragment_plan_rl_toolbar_not_login"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="180dp"
                 android:src="@drawable/ic_plan_gray"
                 />
 
             <TextView
+                android:id="@+id/fragment_plan_tv_not_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_plan_iv_ic_plan"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:text="@string/not_login"
                 android:textSize="@dimen/text_large"
@@ -164,9 +185,11 @@
                 android:id="@+id/fragment_plan_btn_sign_in"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_plan_tv_not_login"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dip"
                 android:text="@string/btn_login"
                 />
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

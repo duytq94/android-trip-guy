@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.login.SignInActivity_;
@@ -48,11 +49,11 @@ public class PlanFragment extends Fragment {
     @ViewById(R.id.fragment_plan_ll_plan_list_not_available)
     LinearLayout llPlanListNotAvailable;
 
-    @ViewById(R.id.fragment_plan_ll_login)
-    LinearLayout llLogin;
+    @ViewById(R.id.fragment_plan_rl_login)
+    RelativeLayout rlLogin;
 
-    @ViewById(R.id.fragment_plan_ll_not_login)
-    LinearLayout llNotLogin;
+    @ViewById(R.id.fragment_plan_rl_not_login)
+    RelativeLayout rlNotLogin;
 
     private List<Plan> planList;
     private PlanAdapter planAdapter;
@@ -71,8 +72,8 @@ public class PlanFragment extends Fragment {
             if (currentUser != null) {
                 initView();
             } else {
-                llLogin.setVisibility(View.GONE);
-                llNotLogin.setVisibility(View.VISIBLE);
+                rlLogin.setVisibility(View.GONE);
+                rlNotLogin.setVisibility(View.VISIBLE);
             }
         }
 
@@ -94,8 +95,8 @@ public class PlanFragment extends Fragment {
     }
 
     public void initView() {
-        llLogin.setVisibility(View.VISIBLE);
-        llNotLogin.setVisibility(View.GONE);
+        rlLogin.setVisibility(View.VISIBLE);
+        rlNotLogin.setVisibility(View.GONE);
         planAdapter = new PlanAdapter(getActivity(), planList, currentUser);
 
         planAdapter.setOnUpdateOrRemoveClick(new PlanAdapter.OnUpdateOrRemoveClick() {

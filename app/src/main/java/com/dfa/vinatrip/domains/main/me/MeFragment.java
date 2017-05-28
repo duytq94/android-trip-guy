@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.BuildConfig;
@@ -97,11 +98,11 @@ public class MeFragment extends Fragment {
     @ViewById(R.id.fragment_me_srlReload)
     SwipeRefreshLayout srlReload;
 
-    @ViewById(R.id.fragment_me_ll_login)
-    LinearLayout llLogin;
+    @ViewById(R.id.fragment_me_rl_login)
+    RelativeLayout rlLogin;
 
-    @ViewById(R.id.fragment_me_ll_not_login)
-    LinearLayout llNotLogin;
+    @ViewById(R.id.fragment_me_rl_not_login)
+    RelativeLayout rlNotLogin;
 
     @ViewById(R.id.fragment_me_tv_rating_not_available)
     TextView tvRatingNotAvailable;
@@ -156,8 +157,8 @@ public class MeFragment extends Fragment {
             if (dataService.getCurrentUser() != null) {
                 initView();
             } else {
-                llLogin.setVisibility(View.GONE);
-                llNotLogin.setVisibility(View.VISIBLE);
+                rlLogin.setVisibility(View.GONE);
+                rlNotLogin.setVisibility(View.VISIBLE);
             }
         }
 
@@ -186,8 +187,8 @@ public class MeFragment extends Fragment {
     }
 
     public void initView() {
-        llLogin.setVisibility(View.VISIBLE);
-        llNotLogin.setVisibility(View.GONE);
+        rlLogin.setVisibility(View.VISIBLE);
+        rlNotLogin.setVisibility(View.GONE);
 
         String versionName = BuildConfig.VERSION_NAME;
         int versionCode = BuildConfig.VERSION_CODE;

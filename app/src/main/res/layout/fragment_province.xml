@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         >
 
         <RelativeLayout
+            android:id="@+id/fragment_my_friend_rl_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorMain"
@@ -59,6 +59,7 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/fragment_my_friend_rl_toolbar"
             >
 
             <LinearLayout
@@ -98,5 +99,12 @@
                     />
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
-    </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_below="@+id/fragment_my_friend_rl_toolbar"
+            android:background="@drawable/bg_shadow_toolbar"
+            />
+    </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>
