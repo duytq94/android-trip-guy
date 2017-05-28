@@ -2,7 +2,6 @@ package com.dfa.vinatrip.domains.login;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -115,7 +114,8 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
 
     @Click(R.id.activity_reset_password_btn_back)
     void btnBackClicked() {
-        startActivity(new Intent(ResetPasswordActivity.this, SignInActivity_.class));
+        SignInActivity_.intent(this).start();
+        finish();
     }
 
     @Click(R.id.activity_reset_password_btn_reset_password)
@@ -129,9 +129,9 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
         View v = getCurrentFocus();
 
         if (v != null &&
-                (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_MOVE) &&
-                v instanceof EditText &&
-                !v.getClass().getName().startsWith("android.webkit.")) {
+            (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_MOVE) &&
+            v instanceof EditText &&
+            !v.getClass().getName().startsWith("android.webkit.")) {
             int scrcoords[] = new int[2];
             v.getLocationOnScreen(scrcoords);
             float x = ev.getRawX() + v.getLeft() - scrcoords[0];
@@ -159,21 +159,21 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
         }
         progressBar.setVisibility(View.VISIBLE);
         firebaseAuth.sendPasswordResetEmail(email)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toasty.success(ResetPasswordActivity.this,
-                                    "Chúng tôi đã gửi mật khẩu đến email của bạn!",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toasty.error(ResetPasswordActivity.this,
-                                    "Reset mật khẩu không thành công!",
-                                    Toast.LENGTH_SHORT).show();
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toasty.success(ResetPasswordActivity.this,
+                                               "Chúng tôi đã gửi mật khẩu đến email của bạn!",
+                                               Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toasty.error(ResetPasswordActivity.this,
+                                             "Reset mật khẩu không thành công!",
+                                             Toast.LENGTH_SHORT).show();
+                            }
+                            progressBar.setVisibility(View.GONE);
                         }
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
+                    });
     }
 
     @Override

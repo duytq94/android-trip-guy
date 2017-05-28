@@ -154,7 +154,8 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
 
     @Click(R.id.activity_sign_in_btn_sign_up)
     void btnSignUpClicked() {
-        startActivity(new Intent(SignInActivity.this, SignUpActivity_.class));
+        SignInActivity_.intent(this).start();
+        finish();
     }
 
     @Click(R.id.activity_sign_in_btn_sign_in)
@@ -165,7 +166,8 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
 
     @Click(R.id.activity_sign_in_btn_reset_password)
     void btnResetPassword() {
-        startActivity(new Intent(SignInActivity.this, ResetPasswordActivity_.class));
+        ResetPasswordActivity_.intent(this).start();
+        finish();
     }
 
     public void changeColorStatusBar() {

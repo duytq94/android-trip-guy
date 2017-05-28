@@ -126,12 +126,14 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 
     @Click(R.id.activity_sign_up_btn_sign_in)
     void btnSignInClicked() {
-        startActivity(new Intent(SignUpActivity.this, SignInActivity_.class));
+        SignInActivity_.intent(this).start();
+        finish();
     }
 
     @Click(R.id.activity_sign_up_btn_reset_password)
     void btnResetPasswordClicked() {
-        startActivity(new Intent(SignUpActivity.this, ResetPasswordActivity_.class));
+        ResetPasswordActivity_.intent(this).start();
+        finish();
     }
 
     @Override
@@ -186,8 +188,8 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
                                                  Toast.LENGTH_SHORT).show();
                                 } catch (FirebaseAuthUserCollisionException e) {
                                     Toasty.error(SignUpActivity.this,
-                                                   "Email đã được đăng ký!",
-                                                   Toast.LENGTH_SHORT).show();
+                                                 "Email đã được đăng ký!",
+                                                 Toast.LENGTH_SHORT).show();
                                 } catch (Exception e) {
                                 }
                             } else {
