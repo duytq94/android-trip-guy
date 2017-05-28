@@ -51,6 +51,7 @@ public class DataService {
     public void addToUserFriendList(UserFriend newUserFriend) {
         for (UserFriend userFriend : userFriendList) {
             if (userFriend.getFriendId().equals(newUserFriend.getFriendId())) {
+                onChangeUserFriendList.onAddFriend();
                 return;
             }
         }

@@ -39,10 +39,8 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.RatingView
     public void onBindViewHolder(RatingViewHolder holder, int position) {
         UserRating userRating = listUserRatings.get(position);
 
-        if (currentUser != null) {
-            if (currentUser.getUid().equals(userRating.getUid())) {
-                holder.tvNickname.setText("Tôi");
-            }
+        if (currentUser != null && currentUser.getUid().equals(userRating.getUid())) {
+            holder.tvNickname.setText("Tôi");
         } else {
             holder.tvNickname.setText(userRating.getNickname());
         }

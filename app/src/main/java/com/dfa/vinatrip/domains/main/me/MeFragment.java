@@ -42,7 +42,8 @@ import jp.wasabeef.blurry.Blurry;
 @EFragment(R.layout.fragment_me)
 public class MeFragment extends Fragment {
 
-    static final int NOTIFY_UPDATE_REQUEST = 1;
+    // To notify update fragment me when user back from UserProfileDetailActivity
+    static final int REQUEST_UPDATE_INFO = 1;
 
     @Bean
     DataService dataService;
@@ -364,7 +365,7 @@ public class MeFragment extends Fragment {
         intentUpdate.putExtra("FromView", fromView);
 
         // Make UserProfileDetailActivity notify when it finish
-        startActivityForResult(intentUpdate, NOTIFY_UPDATE_REQUEST);
+        startActivityForResult(intentUpdate, REQUEST_UPDATE_INFO);
     }
 
     @Click(R.id.fragment_me_tv_make_friend)
@@ -376,7 +377,7 @@ public class MeFragment extends Fragment {
         intentUpdate.putExtra("FromView", fromView);
 
         // Make UserProfileDetailActivity notify when it finish
-        startActivityForResult(intentUpdate, NOTIFY_UPDATE_REQUEST);
+        startActivityForResult(intentUpdate, REQUEST_UPDATE_INFO);
     }
 
     @Click(R.id.fragment_me_tv_view_more_my_friend)
@@ -386,7 +387,7 @@ public class MeFragment extends Fragment {
         // Send notify to inform that tvViewMore be clicked
         String fromView = "tvViewMoreMyFriend";
         intentUpdate.putExtra("FromView", fromView);
-        startActivity(intentUpdate);
+        startActivityForResult(intentUpdate, REQUEST_UPDATE_INFO);
     }
 
     @Click(R.id.fragment_me_tv_view_more_my_rating)
@@ -396,20 +397,19 @@ public class MeFragment extends Fragment {
         // Send notify to inform that tvViewMore be clicked
         String fromView = "tvViewMoreMyRating";
         intentUpdate.putExtra("FromView", fromView);
-        startActivity(intentUpdate);
+        startActivityForResult(intentUpdate, REQUEST_UPDATE_INFO);
     }
 
     @Click(R.id.fragment_me_btn_sign_in)
     void onBtnSignInClick() {
-        Intent intent = new Intent(getActivity(), SignInActivity_.class);
-        startActivity(intent);
+        SignInActivity_.intent(this).start();
     }
 
     @Override
     public void onActivityResult(int requestCode, int currentUserCode, Intent data) {
         super.onActivityResult(requestCode, currentUserCode, data);
-        // Reload data
-        if (requestCode == NOTIFY_UPDATE_REQUEST) {
+        // Reload view
+        if (requestCode == REQUEST_UPDATE_INFO) {
             if (TripGuyUtils.isNetworkConnected(getActivity())) {
                 initView();
             }
