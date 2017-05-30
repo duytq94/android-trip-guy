@@ -2,6 +2,7 @@
 <!-- Pull down page, data will load again -->
 <android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_each_province_hotel_srlReload"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,6 +20,7 @@
             >
 
             <android.support.v7.widget.CardView
+                app:cardElevation="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/recycler_view_padding"
@@ -151,6 +153,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                app:cardElevation="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/recycler_view_padding"
@@ -184,6 +187,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                app:cardElevation="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/recycler_view_padding"

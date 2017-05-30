@@ -53,19 +53,13 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
 
     @AfterViews
     void onCreate() {
-        changeColorStatusBar();
+        TripGuyUtils.changeColorStatusBar(this);
         setupActionBar();
 
         customPagerAdapter = new CustomPagerAdapter(ShowFullPhotoActivity.this);
         vpShowFull.setAdapter(customPagerAdapter);
 
         vpShowFull.setCurrentItem(position);
-    }
-
-    public void changeColorStatusBar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, android.R.color.black));
-        }
     }
 
     public class CustomPagerAdapter extends PagerAdapter {

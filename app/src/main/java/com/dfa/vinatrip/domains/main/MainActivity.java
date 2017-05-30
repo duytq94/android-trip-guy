@@ -28,6 +28,7 @@ import com.dfa.vinatrip.domains.main.plan.PlanFragment_;
 import com.dfa.vinatrip.domains.main.province.ProvinceFragment;
 import com.dfa.vinatrip.domains.main.province.ProvinceFragment_;
 import com.dfa.vinatrip.domains.main.share.ShareFragment;
+import com.dfa.vinatrip.domains.main.share.ShareFragment_;
 import com.dfa.vinatrip.utils.StopShiftModeBottomNavView;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     @AfterViews
     void onCreate() {
-        changeColorStatusBar();
+        TripGuyUtils.changeColorStatusBar(this);
 
         // When more than 3 icons, ShiftMode happen, use this to back to normal
         StopShiftModeBottomNavView.disableShiftMode(bnvMenu);
@@ -81,12 +82,6 @@ public class MainActivity extends AppCompatActivity {
             TextView tvSnackbar = (TextView) viewSnackbar.findViewById(android.support.design.R.id.snackbar_text);
             tvSnackbar.setTextColor(Color.YELLOW);
             snackbar.show();
-        }
-    }
-
-    public void changeColorStatusBar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
         }
     }
 
@@ -144,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
     public void addNewFragments() {
         provinceFragment = new ProvinceFragment_();
         planFragment = new PlanFragment_();
-        shareFragment = new ShareFragment();
+        shareFragment = new ShareFragment_();
         locationMyFriendFragment = new LocationMyFriendFragment_();
         meFragment = new MeFragment_();
 

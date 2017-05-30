@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.utils;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,9 +12,11 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 
 import java.util.List;
@@ -23,6 +26,12 @@ public class TripGuyUtils {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return connectivityManager.getActiveNetworkInfo() != null;
+    }
+
+    public static void changeColorStatusBar(Activity activity) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.colorStatusBar));
+        }
     }
 
     public static void setEnableAllViews(View view, boolean enabled) {

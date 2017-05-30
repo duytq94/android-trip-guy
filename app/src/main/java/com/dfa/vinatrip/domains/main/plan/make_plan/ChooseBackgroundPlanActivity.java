@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.utils.TripGuyUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -51,13 +52,7 @@ public class ChooseBackgroundPlanActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvItem.setLayoutManager(manager);
 
-        changeColorStatusBar();
-    }
-
-    public void changeColorStatusBar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
-        }
+        TripGuyUtils.changeColorStatusBar(this);
     }
 
     @Click(R.id.activity_choose_background_plan_tv_cancel)

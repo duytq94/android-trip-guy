@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -103,13 +104,7 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
         validator.setValidationListener(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        changeColorStatusBar();
-    }
-
-    public void changeColorStatusBar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
-        }
+        TripGuyUtils.changeColorStatusBar(this);
     }
 
     @Click(R.id.activity_reset_password_btn_back)

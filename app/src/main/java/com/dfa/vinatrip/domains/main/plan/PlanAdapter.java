@@ -95,6 +95,18 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
         return planList.size();
     }
 
+    public void setOnUpdateOrRemoveClick(OnUpdateOrRemoveClick onUpdateOrRemoveClick) {
+        this.onUpdateOrRemoveClick = onUpdateOrRemoveClick;
+    }
+
+    public interface OnUpdateOrRemoveClick {
+        void onUpdate(int position);
+
+        void onRemove(int position);
+
+        void onClick(int position);
+    }
+
     public static class PlanViewHolder extends RecyclerView.ViewHolder {
         private TextView tvName, tvDestination, tvDate, tvUserName, tvUpdate, tvRemove;
         private ImageView ivAvatar, ivBackground;
@@ -114,17 +126,5 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
             viewFooter = itemView.findViewById(R.id.item_plan_view_footer);
             ivBackground = (ImageView) itemView.findViewById(R.id.item_plan_iv_background);
         }
-    }
-
-    public void setOnUpdateOrRemoveClick(OnUpdateOrRemoveClick onUpdateOrRemoveClick) {
-        this.onUpdateOrRemoveClick = onUpdateOrRemoveClick;
-    }
-
-    public interface OnUpdateOrRemoveClick {
-        void onUpdate(int position);
-
-        void onRemove(int position);
-
-        void onClick(int position);
     }
 }

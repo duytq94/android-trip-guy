@@ -18,6 +18,7 @@ import com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_pro
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_food.EachProvinceFoodFragment_;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_hotel.EachProvinceHotelFragment;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_hotel.EachProvinceHotelFragment_;
+import com.dfa.vinatrip.utils.TripGuyUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -47,7 +48,7 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
     @AfterViews()
     void onCreate() {
         selectFragment();
-        changeColorStatusBar();
+        TripGuyUtils.changeColorStatusBar(this);
         setupActionBar();
     }
 
@@ -106,12 +107,6 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
             return true;
         }
         return false;
-    }
-
-    public void changeColorStatusBar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
-        }
     }
 
     public void setupActionBar() {

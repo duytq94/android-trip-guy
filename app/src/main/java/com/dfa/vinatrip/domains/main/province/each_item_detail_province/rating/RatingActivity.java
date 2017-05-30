@@ -23,6 +23,7 @@ import com.dfa.vinatrip.domains.login.SignInActivity_;
 import com.dfa.vinatrip.domains.main.me.UserProfile;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_destination.ProvinceDestinationDetail;
 import com.dfa.vinatrip.services.DataService;
+import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -76,14 +77,8 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
     @AfterViews()
     void onCreate() {
         setupActionBar();
-        changeColorStatusBar();
+        TripGuyUtils.changeColorStatusBar(this);
         initView();
-    }
-
-    public void changeColorStatusBar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
-        }
     }
 
     public void setupActionBar() {

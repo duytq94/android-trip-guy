@@ -20,6 +20,7 @@ import android.widget.EditText;
 
 import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.utils.TripGuyUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -40,8 +41,7 @@ public class UserProfileDetailActivity extends AppCompatActivity {
 
     @AfterViews
     void onCreate() {
-
-        changeColorStatusBar();
+        TripGuyUtils.changeColorStatusBar(this);
 
         // Get FromView from MeFragment to know which view user clicked
         fromView = getIntent().getStringExtra("FromView");
@@ -58,12 +58,6 @@ public class UserProfileDetailActivity extends AppCompatActivity {
         startFragment(userProfileDetailFragment);
 
         setupActionBar();
-    }
-
-    public void changeColorStatusBar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
-        }
     }
 
     public void startFragment(Fragment fragment) {

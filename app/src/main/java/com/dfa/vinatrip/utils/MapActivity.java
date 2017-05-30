@@ -91,13 +91,7 @@ public class MapActivity extends AppCompatActivity {
         });
 
 
-        changeColorStatusBar();
-    }
-
-    public void changeColorStatusBar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
-        }
+        TripGuyUtils.changeColorStatusBar(this);
     }
 
     public void setupActionBar() {

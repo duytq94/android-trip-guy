@@ -15,6 +15,7 @@ import com.dfa.vinatrip.domains.main.plan.Plan;
 import com.dfa.vinatrip.domains.main.plan.make_plan.PlanSchedule;
 import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
@@ -77,7 +78,7 @@ public class DetailPlanActivity extends AppCompatActivity {
         // Get Plan from FragmentPlan
         plan = getIntent().getParcelableExtra("Plan");
 
-        changeColorStatusBar();
+        TripGuyUtils.changeColorStatusBar(this);
         setupAppBar();
         initView();
     }
@@ -121,12 +122,6 @@ public class DetailPlanActivity extends AppCompatActivity {
         tvDateBack.setText(plan.getDateBack());
         for (PlanSchedule planSchedule : plan.getPlanScheduleList()) {
             tvSchedule.append("Ngày " + planSchedule.getDayOrder() + ": " + planSchedule.getContent() + "\n");
-        }
-    }
-
-    public void changeColorStatusBar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
         }
     }
 

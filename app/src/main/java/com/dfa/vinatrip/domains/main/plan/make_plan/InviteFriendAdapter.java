@@ -94,9 +94,9 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
             Picasso.with(context).load(R.drawable.ic_avatar).into(holder.ivAvatar);
         } else {
             Picasso.with(context).load(userFriend.getAvatar())
-                    .placeholder(R.drawable.ic_loading)
-                    .error(R.drawable.photo_not_available)
-                    .into(holder.ivAvatar);
+                   .placeholder(R.drawable.ic_loading)
+                   .error(R.drawable.photo_not_available)
+                   .into(holder.ivAvatar);
         }
     }
 

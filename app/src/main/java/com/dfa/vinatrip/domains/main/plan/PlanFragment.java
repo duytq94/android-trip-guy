@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.login.SignInActivity_;
-import com.dfa.vinatrip.domains.main.me.UserProfile;
 import com.dfa.vinatrip.domains.main.plan.detail_plan.DetailPlanActivity_;
 import com.dfa.vinatrip.domains.main.plan.make_plan.MakePlanActivity_;
 import com.dfa.vinatrip.services.DataService;
@@ -58,18 +57,15 @@ public class PlanFragment extends Fragment {
     private List<Plan> planList;
     private PlanAdapter planAdapter;
     private DatabaseReference databaseReference;
-    private UserProfile currentUser;
     private ChildEventListener childEventListener;
     private ValueEventListener valueEventListener;
 
     @AfterViews
     void onCreateView() {
-        currentUser = dataService.getCurrentUser();
-
         planList = new ArrayList<>();
 
         if (TripGuyUtils.isNetworkConnected(getActivity())) {
-            if (currentUser != null) {
+            if (dataService.getCurrentUser() != null) {
                 initView();
             } else {
                 rlLogin.setVisibility(View.GONE);
@@ -82,7 +78,7 @@ public class PlanFragment extends Fragment {
             @Override
             public void onRefresh() {
                 if (TripGuyUtils.isNetworkConnected(getActivity())) {
-                    if (currentUser != null) {
+                    if (dataService.getCurrentUser() != null) {
                         planList.clear();
                         initView();
                     }
@@ -97,7 +93,7 @@ public class PlanFragment extends Fragment {
     public void initView() {
         rlLogin.setVisibility(View.VISIBLE);
         rlNotLogin.setVisibility(View.GONE);
-        planAdapter = new PlanAdapter(getActivity(), planList, currentUser);
+        planAdapter = new PlanAdapter(getActivity(), planList, dataService.getCurrentUser());
 
         planAdapter.setOnUpdateOrRemoveClick(new PlanAdapter.OnUpdateOrRemoveClick() {
             @Override
@@ -119,7 +115,8 @@ public class PlanFragment extends Fragment {
                                       new DialogInterface.OnClickListener() {
                                           @Override
                                           public void onClick(DialogInterface dialogInterface, int i) {
-                                              databaseReference.child("Plan").child(currentUser.getUid())
+                                              databaseReference.child("Plan")
+                                                               .child(dataService.getCurrentUser().getUid())
                                                                .child(planList.get(position).getId())
                                                                .removeValue();
                                               planList.remove(position);
@@ -221,8 +218,7 @@ public class PlanFragment extends Fragment {
 
     @Click(R.id.fragment_plan_fab_make_new_plan)
     void onFabMakeNewPlanClick() {
-        Intent intent = new Intent(getActivity(), MakePlanActivity_.class);
-        startActivity(intent);
+        MakePlanActivity_.intent(getActivity()).start();
     }
 
     @Click(R.id.fragment_plan_iv_info)
@@ -242,8 +238,7 @@ public class PlanFragment extends Fragment {
 
     @Click(R.id.fragment_plan_btn_sign_in)
     void onBtnSignInClick() {
-        Intent intent = new Intent(getActivity(), SignInActivity_.class);
-        startActivity(intent);
+        SignInActivity_.intent(getActivity()).start();
     }
 
     public void loadPlan() {
@@ -251,11 +246,11 @@ public class PlanFragment extends Fragment {
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         // If no Internet, this method will not run
-        databaseReference.child("Plan").child(currentUser.getUid())
+        databaseReference.child("Plan").child(dataService.getCurrentUser().getUid())
                          .addChildEventListener(childEventListener);
 
         // This method to be called after all the onChildAdded() calls have happened
-        databaseReference.child("Plan").child(currentUser.getUid())
+        databaseReference.child("Plan").child(dataService.getCurrentUser().getUid())
                          .addListenerForSingleValueEvent(valueEventListener);
     }
 

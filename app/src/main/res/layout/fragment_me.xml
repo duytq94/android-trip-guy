@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_me_srlReload"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -126,6 +127,7 @@
                     </FrameLayout>
 
                     <android.support.v7.widget.CardView
+                        app:cardElevation="0dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/card_view_margin"
@@ -245,6 +247,7 @@
                     </android.support.v7.widget.CardView>
 
                     <android.support.v7.widget.CardView
+                        app:cardElevation="0dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/card_view_margin"
@@ -374,7 +377,7 @@
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="0.5dp"
-                                android:background="@color/light_gray"
+                                android:background="@color/colorLightGray"
                                 />
 
                             <TextView
@@ -390,6 +393,7 @@
                     </android.support.v7.widget.CardView>
 
                     <android.support.v7.widget.CardView
+                        app:cardElevation="0dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/card_view_margin"
@@ -509,7 +513,7 @@
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="0.5dp"
-                                android:background="@color/light_gray"
+                                android:background="@color/colorLightGray"
                                 />
 
                             <TextView
@@ -525,6 +529,7 @@
                     </android.support.v7.widget.CardView>
 
                     <android.support.v7.widget.CardView
+                        app:cardElevation="0dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/card_view_margin"
@@ -557,6 +562,7 @@
                     </android.support.v7.widget.CardView>
 
                     <android.support.v7.widget.CardView
+                        app:cardElevation="0dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/card_view_margin"

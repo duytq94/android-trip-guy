@@ -15,6 +15,7 @@ import com.dfa.vinatrip.domains.main.province.Province;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
 import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.services.FirebaseApi;
+import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -56,7 +57,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     @AfterViews
     void onCreate() {
-        changeColorStatusBar();
+        TripGuyUtils.changeColorStatusBar(this);
 
         zoomOut = AnimationUtils.loadAnimation(this, R.anim.anim_zoom_out);
         ivLogo.startAnimation(zoomOut);
@@ -93,12 +94,6 @@ public class SplashScreenActivity extends AppCompatActivity {
             loadUserRating();
         } else {
             loadOnlyProvince();
-        }
-    }
-
-    public void changeColorStatusBar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
         }
     }
 

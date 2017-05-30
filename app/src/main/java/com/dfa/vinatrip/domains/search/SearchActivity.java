@@ -17,6 +17,7 @@ import com.dfa.vinatrip.domains.main.province.detail_province.ProvinceDetailActi
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.services.DataService;
+import com.dfa.vinatrip.utils.TripGuyUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -45,7 +46,7 @@ public class SearchActivity extends AppCompatActivity {
     @AfterViews
     void onCreate() {
         setupActionBar();
-        changeColorStatusBar();
+        TripGuyUtils.changeColorStatusBar(this);
 
         provinceList = dataService.getProvinceList();
         searchProvinceAdapter = new SearchProvinceAdapter(this, provinceList);
@@ -89,12 +90,6 @@ public class SearchActivity extends AppCompatActivity {
             return true;
         }
         return false;
-    }
-
-    public void changeColorStatusBar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
-        }
     }
 
     @Override

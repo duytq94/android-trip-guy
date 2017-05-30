@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -104,7 +102,7 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
         validator.setValidationListener(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        changeColorStatusBar();
+        TripGuyUtils.changeColorStatusBar(this);
     }
 
     @Override
@@ -168,12 +166,6 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
     void btnResetPassword() {
         ResetPasswordActivity_.intent(this).start();
         finish();
-    }
-
-    public void changeColorStatusBar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
-        }
     }
 
     @Override

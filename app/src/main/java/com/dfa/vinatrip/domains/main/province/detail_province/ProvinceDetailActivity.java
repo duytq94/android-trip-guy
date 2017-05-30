@@ -21,6 +21,7 @@ import android.widget.ImageView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.province.Province;
+import com.dfa.vinatrip.utils.TripGuyUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -54,7 +55,7 @@ public class ProvinceDetailActivity extends AppCompatActivity {
         bundle.putParcelable("Province", province);
         provinceDetailFragment.setArguments(bundle);
 
-        changeColorStatusBar();
+        TripGuyUtils.changeColorStatusBar(this);
         setupAppBar();
         startFragment(provinceDetailFragment);
         initBroadcastReceiver();
@@ -86,12 +87,6 @@ public class ProvinceDetailActivity extends AppCompatActivity {
             ft.replace(R.id.activity_province_detail_fl_container, fragment, fragmentTag);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             ft.commit();
-        }
-    }
-
-    public void changeColorStatusBar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
         }
     }
 

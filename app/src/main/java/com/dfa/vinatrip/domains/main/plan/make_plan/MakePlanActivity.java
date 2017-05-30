@@ -27,6 +27,7 @@ import com.dfa.vinatrip.domains.main.me.UserProfile;
 import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.plan.Plan;
 import com.dfa.vinatrip.services.DataService;
+import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.AutocompleteFilter;
@@ -123,7 +124,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
     @AfterViews
     void onCreate() {
-        changeColorStatusBar();
+        TripGuyUtils.changeColorStatusBar(this);
 
         // Get the current plan when user click to update plan on item recycler
         if (getIntent().getParcelableExtra("Plan") != null) {
@@ -218,12 +219,6 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         String strDate = simpleDateFormat.format(calendar.getTime());
         tvDateGo.setText(strDate);
         tvDateBack.setText(strDate);
-    }
-
-    public void changeColorStatusBar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorStatusBar));
-        }
     }
 
     public void sendTripPlanToFriends() {
