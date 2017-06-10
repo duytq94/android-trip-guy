@@ -20,7 +20,7 @@ public class ProvinceDescriptionFragment extends Fragment {
     private Province province;
 
     @AfterViews
-    void onCreateView() {
+    void init() {
         // Get Province from ProvinceDetailFragment
         province = getArguments().getParcelable("Province");
 

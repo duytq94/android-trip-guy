@@ -47,7 +47,7 @@ public class SearchActivity extends AppCompatActivity {
     private SearchView searchView;
 
     @AfterViews
-    void onCreate() {
+    void init() {
         setupActionBar();
         TripGuyUtils.changeColorStatusBar(this);
 

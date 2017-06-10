@@ -42,7 +42,7 @@ public class ProvinceFoodFragment extends Fragment {
     private ValueEventListener valueEventListener;
 
     @AfterViews
-    void onCreateView() {
+    void init() {
         // Get Province from ProvinceDetailFragment
         province = getArguments().getParcelable("Province");
 

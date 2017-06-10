@@ -75,7 +75,7 @@ public class ProvinceFragment extends Fragment {
     private ValueEventListener valueEventListener;
 
     @AfterViews
-    void onCreateView() {
+    void init() {
         i = 0;
         databaseReference = FirebaseDatabase.getInstance().getReference();
         mResources = new int[]{R.drawable.bg_test1, R.drawable.bg_test2, R.drawable.bg_test3, R.drawable.bg_test4};

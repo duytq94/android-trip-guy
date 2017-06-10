@@ -46,7 +46,7 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
     ProvinceFood detailFood;
 
     @AfterViews()
-    void onCreate() {
+    void init() {
         selectFragment();
         TripGuyUtils.changeColorStatusBar(this);
         setupActionBar();

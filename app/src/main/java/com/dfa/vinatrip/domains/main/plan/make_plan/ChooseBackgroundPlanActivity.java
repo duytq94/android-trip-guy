@@ -27,7 +27,7 @@ public class ChooseBackgroundPlanActivity extends AppCompatActivity {
     private int idBackgroundChosen;
 
     @AfterViews
-    void onCreate() {
+    void init() {
         listBackground = new int[]{R.drawable.bg_test1, R.drawable.bg_test2, R.drawable.bg_test3,
                                    R.drawable.bg_test4, R.drawable.bg_test5, R.drawable.bg_test6};
         listIsPhotoChoose = new boolean[]{false, false, true, false, false, false};

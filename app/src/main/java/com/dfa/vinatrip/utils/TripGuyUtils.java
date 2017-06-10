@@ -22,6 +22,17 @@ import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 import java.util.List;
 
 public class TripGuyUtils {
+    public static final int REQUEST_PICK_IMAGE = 1;
+    public static final int REQUEST_PLACE_AUTO_COMPLETE = 2;
+    public static final int REQUEST_PROVINCE = 3;
+    public static final int NOTIFY_UPDATE_REQUEST = 4;
+    // To notify update fragment me when user back from UserProfileDetailActivity
+    public static final int REQUEST_UPDATE_INFO = 5;
+    public static final int REQUEST_PICK_IMAGE1 = 6;
+    public static final int REQUEST_PICK_IMAGE2 = 7;
+    public static final int REQUEST_PICK_IMAGE3 = 8;
+    public static final int REQUEST_PICK_IMAGE4 = 9;
+
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

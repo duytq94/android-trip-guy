@@ -39,11 +39,10 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.blurry.Blurry;
 
+import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_UPDATE_INFO;
+
 @EFragment(R.layout.fragment_me)
 public class MeFragment extends Fragment {
-
-    // To notify update fragment me when user back from UserProfileDetailActivity
-    static final int REQUEST_UPDATE_INFO = 1;
 
     @Bean
     DataService dataService;
@@ -148,7 +147,7 @@ public class MeFragment extends Fragment {
     private List<UserRating> myRatingList;
 
     @AfterViews
-    void onCreateView() {
+    void init() {
         dataService.getCurrentUser();
 
         showAppInfo();

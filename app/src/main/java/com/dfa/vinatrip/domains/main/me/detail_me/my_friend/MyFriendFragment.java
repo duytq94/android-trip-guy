@@ -37,7 +37,7 @@ public class MyFriendFragment extends Fragment {
     private ListFriendVerticalAdapter listFriendVerticalAdapter;
 
     @AfterViews
-    void onCreateView() {
+    void init() {
         listUserFriends = new ArrayList<>();
 
         dataService.setOnChangeUserFriendList(new DataService.OnChangeUserFriendList() {

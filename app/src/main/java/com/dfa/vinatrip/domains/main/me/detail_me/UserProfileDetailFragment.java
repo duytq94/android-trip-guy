@@ -42,7 +42,7 @@ public class UserProfileDetailFragment extends Fragment {
     private MyRatingFragment myRatingFragment;
 
     @AfterViews
-    void onCreateView() {
+    void init() {
         // Get the FromView from UserProfileDetailActivity
         fromView = getArguments().getBundle("bdFromView").getString("FromView");
 

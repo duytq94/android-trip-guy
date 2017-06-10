@@ -63,7 +63,7 @@ public class EachProvinceFoodFragment extends Fragment {
     private ValueEventListener valueEventListener;
 
     @AfterViews
-    void onCreateView() {
+    void init() {
         // Get the Food be chosen from EachItemProvinceDetailActivity
         detailFood = getArguments().getParcelable("DetailFood");
 

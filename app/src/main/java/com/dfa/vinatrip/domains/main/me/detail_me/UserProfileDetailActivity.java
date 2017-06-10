@@ -40,7 +40,7 @@ public class UserProfileDetailActivity extends AppCompatActivity {
     Toolbar toolbar;
 
     @AfterViews
-    void onCreate() {
+    void init() {
         TripGuyUtils.changeColorStatusBar(this);
 
         // Get FromView from MeFragment to know which view user clicked

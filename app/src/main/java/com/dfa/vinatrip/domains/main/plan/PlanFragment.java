@@ -61,7 +61,7 @@ public class PlanFragment extends Fragment {
     private ValueEventListener valueEventListener;
 
     @AfterViews
-    void onCreateView() {
+    void init() {
         planList = new ArrayList<>();
 
         if (TripGuyUtils.isNetworkConnected(getActivity())) {

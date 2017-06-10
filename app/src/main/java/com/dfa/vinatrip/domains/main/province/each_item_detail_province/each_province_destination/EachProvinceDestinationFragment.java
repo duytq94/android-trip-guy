@@ -44,11 +44,10 @@ import java.util.List;
 import es.dmoral.toasty.Toasty;
 
 import static android.app.Activity.RESULT_OK;
+import static com.dfa.vinatrip.utils.TripGuyUtils.NOTIFY_UPDATE_REQUEST;
 
 @EFragment(R.layout.fragment_each_province_destination)
 public class EachProvinceDestinationFragment extends Fragment {
-
-    static final int NOTIFY_UPDATE_REQUEST = 2;
 
     @Bean
     DataService dataService;
@@ -94,7 +93,7 @@ public class EachProvinceDestinationFragment extends Fragment {
     private ValueEventListener valueEventListenerRating;
 
     @AfterViews
-    void onCreateView() {
+    void init() {
         // Get the Destination be chosen from EachItemProvinceDetailActivity
         destination = getArguments().getParcelable("Destination");
 

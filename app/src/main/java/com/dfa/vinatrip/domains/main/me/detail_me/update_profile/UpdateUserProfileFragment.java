@@ -62,12 +62,11 @@ import es.dmoral.toasty.Toasty;
 import jp.wasabeef.blurry.Blurry;
 
 import static android.app.Activity.RESULT_OK;
+import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PICK_IMAGE;
+import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PLACE_AUTO_COMPLETE;
 
 @EFragment(R.layout.fragment_update_user_profile)
 public class UpdateUserProfileFragment extends Fragment {
-
-    public static final int REQUEST_PICK_IMAGE = 1;
-    public static final int REQUEST_PLACE_AUTO_COMPLETE = 2;
 
     @Bean
     DataService dataService;
@@ -110,7 +109,7 @@ public class UpdateUserProfileFragment extends Fragment {
     private Bitmap adjustedBitmap;
 
     @AfterViews
-    void onCreateView() {
+    void init() {
         setContentViews();
     }
 
@@ -286,7 +285,6 @@ public class UpdateUserProfileFragment extends Fragment {
             intentToLibrary.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(intentToLibrary, REQUEST_PICK_IMAGE);
         }
-
     }
 
     @Click

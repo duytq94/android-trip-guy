@@ -69,7 +69,7 @@ public class EachProvinceHotelFragment extends Fragment {
     private ValueEventListener valueEventListener;
 
     @AfterViews
-    void onCreateView() {
+    void init() {
         // Get the Hotel be chosen from EachItemProvinceDetailActivity
         detailHotel = getArguments().getParcelable("DetailHotel");
 

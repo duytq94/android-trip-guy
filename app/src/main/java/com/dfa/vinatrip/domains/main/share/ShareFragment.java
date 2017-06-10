@@ -41,7 +41,7 @@ public class ShareFragment extends Fragment {
     RelativeLayout rlNotLogin;
 
     @AfterViews
-    void onCreateView() {
+    void init() {
 
     }
 

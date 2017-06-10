@@ -42,7 +42,7 @@ public class MapActivity extends AppCompatActivity {
     private LatLng latLng;
 
     @AfterViews
-    void onCreate() {
+    void init() {
         setupActionBar();
 
         mapFragment.onCreate(null);

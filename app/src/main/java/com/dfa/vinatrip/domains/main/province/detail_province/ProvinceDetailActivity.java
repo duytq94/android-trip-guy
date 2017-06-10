@@ -49,7 +49,7 @@ public class ProvinceDetailActivity extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver;
 
     @AfterViews
-    void onCreate() {
+    void init() {
         ProvinceDetailFragment provinceDetailFragment = new ProvinceDetailFragment_();
         Bundle bundle = new Bundle();
         bundle.putParcelable("Province", province);

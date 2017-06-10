@@ -72,7 +72,7 @@ public class DetailPlanActivity extends AppCompatActivity {
     private UserProfile currentUser;
 
     @AfterViews
-    void onCreate() {
+    void init() {
         currentUser = dataService.getCurrentUser();
 
         // Get Plan from FragmentPlan

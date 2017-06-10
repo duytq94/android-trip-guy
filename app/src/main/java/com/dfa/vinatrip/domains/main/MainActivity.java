@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bnvMenu;
 
     @AfterViews
-    void onCreate() {
+    void init() {
         TripGuyUtils.changeColorStatusBar(this);
 
         // When more than 3 icons, ShiftMode happen, use this to back to normal

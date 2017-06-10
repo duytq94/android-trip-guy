@@ -73,7 +73,7 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
     private boolean isNewOrUpdate;
 
     @AfterViews()
-    void onCreate() {
+    void init() {
         setupActionBar();
         TripGuyUtils.changeColorStatusBar(this);
         initView();

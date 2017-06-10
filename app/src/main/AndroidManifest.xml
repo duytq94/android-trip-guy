@@ -64,9 +64,10 @@
         <activity android:name=".domains.main.plan.make_plan.MakePlanActivity_" />
         <activity android:name=".domains.main.plan.detail_plan.DetailPlanActivity_" />
         <activity android:name=".domains.search.SearchActivity_" />
-        <activity android:name=".domains.main.plan.make_plan.ChooseBackgroundPlanActivity_">
-        </activity>
-        <activity android:name=".domains.main.share.make_share.MakeShareActivity_">
-        </activity>
+        <activity android:name=".domains.main.plan.make_plan.ChooseBackgroundPlanActivity_" />
+        <activity
+            android:name=".domains.main.share.make_share.MakeShareActivity_"
+            android:windowSoftInputMode="adjustResize"
+            />
     </application>
 </manifest>

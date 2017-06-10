@@ -2,7 +2,6 @@ package com.dfa.vinatrip.domains.main.plan.make_plan;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -10,9 +9,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -55,7 +52,7 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
-import static com.dfa.vinatrip.domains.main.me.detail_me.update_profile.UpdateUserProfileFragment.REQUEST_PLACE_AUTO_COMPLETE;
+import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PLACE_AUTO_COMPLETE;
 
 @EActivity(R.layout.activity_make_plan)
 public class MakePlanActivity extends AppCompatActivity implements Validator.ValidationListener {
@@ -122,7 +119,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     private int idBackground;
 
     @AfterViews
-    void onCreate() {
+    void init() {
         TripGuyUtils.changeColorStatusBar(this);
 
         // Get the current plan when user click to update plan on item recycler
@@ -246,7 +243,6 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
                 message = "Kế hoạch của bạn đã được tạo";
             }
             Toasty.success(MakePlanActivity.this, message, Toast.LENGTH_SHORT).show();
-
             finish();
         }
 
@@ -383,32 +379,6 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
             tvDestination.setText(place.getAddress());
         } else if (data == null) {
             Toasty.error(this, "Không chọn được địa điểm, bạn hãy thử lại", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        View v = getCurrentFocus();
-
-        if (v != null &&
-            (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_MOVE) &&
-            v instanceof EditText &&
-            !v.getClass().getName().startsWith("android.webkit.")) {
-            int scrcoords[] = new int[2];
-            v.getLocationOnScreen(scrcoords);
-            float x = ev.getRawX() + v.getLeft() - scrcoords[0];
-            float y = ev.getRawY() + v.getTop() - scrcoords[1];
-
-            if (x < v.getLeft() || x > v.getRight() || y < v.getTop() || y > v.getBottom())
-                hideKeyboard(this);
-        }
-        return super.dispatchTouchEvent(ev);
-    }
-
-    public static void hideKeyboard(Activity activity) {
-        if (activity != null && activity.getWindow() != null && activity.getWindow().getDecorView() != null) {
-            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
         }
     }
 

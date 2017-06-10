@@ -52,7 +52,7 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
     private android.support.v7.app.ActionBar actionBar;
 
     @AfterViews
-    void onCreate() {
+    void init() {
         TripGuyUtils.changeColorStatusBar(this);
         setupActionBar();
 
