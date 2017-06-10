@@ -54,6 +54,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentById;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -433,11 +434,9 @@ public class LocationMyFriendFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_TURN_GPS) {
-            changeIconLocation();
-        }
+    @OnActivityResult(REQUEST_TURN_GPS)
+    void onResult(int resultCode, Intent data) {
+        // Don't check the result code
+        changeIconLocation();
     }
 }

@@ -189,7 +189,7 @@ public class ProvinceFragment extends Fragment {
 
     @Click(R.id.fragment_province_rl_search)
     void onRlSearchClick() {
-        SearchActivity_.intent(this).start();
+        SearchActivity_.intent(this).fromView("ProvinceFragment").start();
     }
 
     public void autoScrollSlideShow() {

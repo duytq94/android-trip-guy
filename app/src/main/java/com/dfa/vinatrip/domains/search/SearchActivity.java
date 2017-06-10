@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.domains.search;
 
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,16 +11,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.province.Province;
 import com.dfa.vinatrip.domains.main.province.detail_province.ProvinceDetailActivity_;
-import com.dfa.vinatrip.utils.RecyclerItemClickListener;
-import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.services.DataService;
+import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 import com.dfa.vinatrip.utils.TripGuyUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
@@ -37,6 +37,9 @@ public class SearchActivity extends AppCompatActivity {
 
     @ViewById(R.id.activity_search_rv_result)
     RecyclerView rvResult;
+
+    @Extra
+    String fromView;
 
     private List<Province> provinceList;
     private SearchProvinceAdapter searchProvinceAdapter;
@@ -61,9 +64,25 @@ public class SearchActivity extends AppCompatActivity {
                 new RecyclerItemClickListener(this, rvResult, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        // Send Province to ProvinceDetailActivity
-                        ProvinceDetailActivity_.intent(SearchActivity.this).province(provinceList.get(position))
-                                               .start();
+                        switch (fromView) {
+                            case "ProvinceFragment":
+                                // Send Province to ProvinceDetailActivity
+                                ProvinceDetailActivity_.intent(SearchActivity.this).province(provinceList.get(position))
+                                                       .start();
+                                finish();
+                                break;
+
+                            case "MakeShareActivity":
+                                Intent returnIntent = new Intent();
+                                returnIntent.putExtra("nameProvince", provinceList.get(position).getName());
+                                setResult(RESULT_OK, returnIntent);
+                                finish();
+                                break;
+
+                            default:
+                                SearchActivity.super.onBackPressed();
+                        }
+
                     }
 
                     @Override

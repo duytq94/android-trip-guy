@@ -3,8 +3,6 @@ package com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -242,6 +240,8 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
             dataService.updateToMyRatingList(myRating);
         }
 
+        Intent returnIntent = new Intent();
+        setResult(RESULT_OK, returnIntent);
         finish();
     }
 

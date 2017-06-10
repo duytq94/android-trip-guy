@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.domains.main.me.detail_me.update_profile;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -51,6 +50,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.ByteArrayOutputStream;
@@ -60,6 +60,8 @@ import java.util.Locale;
 
 import es.dmoral.toasty.Toasty;
 import jp.wasabeef.blurry.Blurry;
+
+import static android.app.Activity.RESULT_OK;
 
 @EFragment(R.layout.fragment_update_user_profile)
 public class UpdateUserProfileFragment extends Fragment {
@@ -228,8 +230,8 @@ public class UpdateUserProfileFragment extends Fragment {
                             progressBar.setVisibility(View.GONE);
                             TripGuyUtils.setEnableAllViews(svRoot, true);
                             tvPercent.setVisibility(View.GONE);
-                            Toasty.success(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT)
-                                  .show();
+                            Toasty.success(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                            getActivity().finish();
                         }
                     }
                 });
@@ -259,8 +261,9 @@ public class UpdateUserProfileFragment extends Fragment {
                                                       Toast.LENGTH_SHORT).show();
                                      } else {
                                          dataService.updateInforCurrentUser(newUserProfile);
-                                         Toasty.success(getActivity(), "Cập nhật thành công!",
-                                                        Toast.LENGTH_SHORT).show();
+                                         Toasty.success(getActivity(), "Cập nhật thành công!", Toast.LENGTH_SHORT)
+                                               .show();
+                                         getActivity().finish();
                                      }
                                  }
                              });
@@ -319,20 +322,27 @@ public class UpdateUserProfileFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_PICK_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+    @OnActivityResult(REQUEST_PICK_IMAGE)
+    void onResultImage(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && data != null) {
             uri = data.getData();
 
             // Show avatar be chosen for user first, not upload yet
             Picasso.with(getActivity())
                    .load(uri)
                    .into(target);
+        } else {
+            Toasty.error(getActivity(), "Không thể chọn được hình, bạn hãy thử lại", Toast.LENGTH_SHORT).show();
         }
-        if (requestCode == REQUEST_PLACE_AUTO_COMPLETE && resultCode == Activity.RESULT_OK && data != null) {
+    }
+
+    @OnActivityResult(REQUEST_PLACE_AUTO_COMPLETE)
+    void onResultPlace(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && data != null) {
             Place place = PlaceAutocomplete.getPlace(getActivity(), data);
             tvCity.setText(place.getAddress());
+        } else if (data == null) {
+            Toasty.error(getActivity(), "Không chọn được địa điểm, bạn hãy thử lại", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -352,6 +362,8 @@ public class UpdateUserProfileFragment extends Fragment {
                     adjustedBitmap = Bitmap
                             .createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                     adjustedBitmap = TripGuyUtils.scaleDown(adjustedBitmap, 300, true);
+                } else {
+                    adjustedBitmap = bitmap;
                 }
             } catch (Exception e) {
             }

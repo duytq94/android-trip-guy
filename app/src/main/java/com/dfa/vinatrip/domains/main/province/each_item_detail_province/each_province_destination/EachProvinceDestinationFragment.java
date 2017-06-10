@@ -10,6 +10,7 @@ import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.province.detail_province.province_destination.ProvinceDestination;
@@ -34,10 +35,15 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
+
+import static android.app.Activity.RESULT_OK;
 
 @EFragment(R.layout.fragment_each_province_destination)
 public class EachProvinceDestinationFragment extends Fragment {
@@ -147,15 +153,15 @@ public class EachProvinceDestinationFragment extends Fragment {
                         }));
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // Reload data
-        if (requestCode == NOTIFY_UPDATE_REQUEST) {
+    @OnActivityResult(NOTIFY_UPDATE_REQUEST)
+    void onResult(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && data != null) {
             if (TripGuyUtils.isNetworkConnected(getActivity())) {
                 listUserRatings.clear();
                 loadProvinceDestinationRating();
             }
+        } else {
+            Toasty.error(getActivity(), "Không thể cập nhật đánh giá, bạn hãy thử lại", Toast.LENGTH_SHORT).show();
         }
     }
 

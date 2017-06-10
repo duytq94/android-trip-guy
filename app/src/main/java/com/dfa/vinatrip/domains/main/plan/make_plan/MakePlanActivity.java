@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -45,6 +43,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.text.SimpleDateFormat;
@@ -369,16 +368,21 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_BACKGROUND && resultCode == RESULT_OK && data != null) {
+    @OnActivityResult(REQUEST_BACKGROUND)
+    void onResultBackground(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && data != null) {
             idBackground = data.getIntExtra("idBackground", R.drawable.bg_test3);
             civBackground.setImageResource(idBackground);
         }
-        if (requestCode == REQUEST_PLACE_AUTO_COMPLETE && resultCode == Activity.RESULT_OK && data != null) {
+    }
+
+    @OnActivityResult(REQUEST_PLACE_AUTO_COMPLETE)
+    void onResultPlace(int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK && data != null) {
             Place place = PlaceAutocomplete.getPlace(this, data);
             tvDestination.setText(place.getAddress());
+        } else if (data == null) {
+            Toasty.error(this, "Không chọn được địa điểm, bạn hãy thử lại", Toast.LENGTH_SHORT).show();
         }
     }
 
