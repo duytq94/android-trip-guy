@@ -6,6 +6,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -43,6 +44,17 @@ public class TripGuyUtils {
         if (Build.VERSION.SDK_INT >= 21) {
             activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.colorStatusBar));
         }
+    }
+
+    public static int exifToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        }
+        return 0;
     }
 
     public static void setEnableAllViews(View view, boolean enabled) {

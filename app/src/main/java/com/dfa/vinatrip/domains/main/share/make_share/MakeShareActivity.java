@@ -3,6 +3,10 @@ package com.dfa.vinatrip.domains.main.share.make_share;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -10,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -26,6 +31,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -44,6 +51,7 @@ import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PICK_IMAGE2;
 import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PICK_IMAGE3;
 import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PICK_IMAGE4;
 import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PROVINCE;
+import static com.dfa.vinatrip.utils.TripGuyUtils.exifToDegrees;
 
 @EActivity(R.layout.activity_make_share)
 public class MakeShareActivity extends AppCompatActivity implements Validator.ValidationListener {
@@ -73,15 +81,27 @@ public class MakeShareActivity extends AppCompatActivity implements Validator.Va
     @ViewById(R.id.activity_make_share_progressBar)
     ProgressBar progressBar;
 
+    @ViewById(R.id.activity_make_share_iv_photo1)
+    ImageView ivPhoto1;
+
+    @ViewById(R.id.activity_make_share_iv_photo2)
+    ImageView ivPhoto2;
+
+    @ViewById(R.id.activity_make_share_iv_photo3)
+    ImageView ivPhoto3;
+
+    @ViewById(R.id.activity_make_share_iv_photo4)
+    ImageView ivPhoto4;
 
     private DatabaseReference databaseReference;
     private Validator validator;
     private Share share;
-    private List<Uri> uriPhotoList;
+    private List<Bitmap> adjustedBitmapList;
+    private Uri uri;
+    private Bitmap adjustedBitmap;
 
     @AfterViews
     void init() {
-        TripGuyUtils.changeColorStatusBar(this);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter
                 .createFromResource(this, R.array.type_array, R.layout.item_spinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -91,7 +111,7 @@ public class MakeShareActivity extends AppCompatActivity implements Validator.Va
         validator = new Validator(this);
         validator.setValidationListener(this);
         share = new Share();
-        uriPhotoList = new ArrayList<>();
+        adjustedBitmapList = new ArrayList<>();
     }
 
     @Click(R.id.activity_make_share_ll_province)
@@ -124,6 +144,8 @@ public class MakeShareActivity extends AppCompatActivity implements Validator.Va
             intentToLibrary.setType("image/*");
             intentToLibrary.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(intentToLibrary, REQUEST_PICK_IMAGE1);
+
+
         }
     }
 
@@ -163,31 +185,7 @@ public class MakeShareActivity extends AppCompatActivity implements Validator.Va
     @OnActivityResult(REQUEST_PICK_IMAGE1)
     void onResultImage1(int resultCode, Intent data) {
         if (resultCode == RESULT_OK && data != null) {
-            uriPhotoList.set(0, data.getData());
-        }
-    }
-
-    @OnActivityResult(REQUEST_PICK_IMAGE2)
-    void onResultImage2(int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && data != null) {
-            uriPhotoList.set(1, data.getData());
-
-        }
-    }
-
-    @OnActivityResult(REQUEST_PICK_IMAGE3)
-    void onResultImage3(int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && data != null) {
-            uriPhotoList.set(2, data.getData());
-
-        }
-    }
-
-    @OnActivityResult(REQUEST_PICK_IMAGE4)
-    void onResultImage4(int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && data != null) {
-            uriPhotoList.set(3, data.getData());
-
+            uri = data.getData();
         }
     }
 

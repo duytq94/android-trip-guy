@@ -55,7 +55,6 @@ public class ProvinceDetailActivity extends AppCompatActivity {
         bundle.putParcelable("Province", province);
         provinceDetailFragment.setArguments(bundle);
 
-        TripGuyUtils.changeColorStatusBar(this);
         setupAppBar();
         startFragment(provinceDetailFragment);
         initBroadcastReceiver();

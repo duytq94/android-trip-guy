@@ -48,7 +48,6 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
     @AfterViews()
     void init() {
         selectFragment();
-        TripGuyUtils.changeColorStatusBar(this);
         setupActionBar();
     }
 

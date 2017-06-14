@@ -1,7 +1,5 @@
 package com.dfa.vinatrip.utils;
 
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -89,9 +87,6 @@ public class MapActivity extends AppCompatActivity {
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
-
-
-        TripGuyUtils.changeColorStatusBar(this);
     }
 
     public void setupActionBar() {

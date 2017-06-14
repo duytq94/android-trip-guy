@@ -51,8 +51,6 @@ public class ChooseBackgroundPlanActivity extends AppCompatActivity {
         rvItem.setAdapter(adapter);
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvItem.setLayoutManager(manager);
-
-        TripGuyUtils.changeColorStatusBar(this);
     }
 
     @Click(R.id.activity_choose_background_plan_tv_cancel)

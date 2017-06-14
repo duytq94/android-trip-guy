@@ -57,8 +57,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     @AfterViews
     void onCreate() {
-        TripGuyUtils.changeColorStatusBar(this);
-
         zoomOut = AnimationUtils.loadAnimation(this, R.anim.anim_zoom_out);
         ivLogo.startAnimation(zoomOut);
         zoomOut.setAnimationListener(new Animation.AnimationListener() {

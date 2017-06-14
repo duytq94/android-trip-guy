@@ -49,7 +49,6 @@ public class SearchActivity extends AppCompatActivity {
     @AfterViews
     void init() {
         setupActionBar();
-        TripGuyUtils.changeColorStatusBar(this);
 
         provinceList = dataService.getProvinceList();
         searchProvinceAdapter = new SearchProvinceAdapter(this, provinceList);

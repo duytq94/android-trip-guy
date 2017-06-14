@@ -75,7 +75,6 @@ public class RatingActivity extends AppCompatActivity implements Validator.Valid
     @AfterViews()
     void init() {
         setupActionBar();
-        TripGuyUtils.changeColorStatusBar(this);
         initView();
     }
 

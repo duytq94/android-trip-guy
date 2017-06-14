@@ -120,8 +120,6 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
     @AfterViews
     void init() {
-        TripGuyUtils.changeColorStatusBar(this);
-
         // Get the current plan when user click to update plan on item recycler
         if (getIntent().getParcelableExtra("Plan") != null) {
             currentPlan = getIntent().getParcelableExtra("Plan");

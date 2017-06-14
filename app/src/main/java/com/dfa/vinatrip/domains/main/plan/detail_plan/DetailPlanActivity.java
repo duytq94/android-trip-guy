@@ -78,7 +78,6 @@ public class DetailPlanActivity extends AppCompatActivity {
         // Get Plan from FragmentPlan
         plan = getIntent().getParcelableExtra("Plan");
 
-        TripGuyUtils.changeColorStatusBar(this);
         setupAppBar();
         initView();
     }

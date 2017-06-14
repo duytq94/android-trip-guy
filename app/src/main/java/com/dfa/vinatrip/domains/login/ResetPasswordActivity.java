@@ -104,7 +104,6 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
         validator.setValidationListener(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        TripGuyUtils.changeColorStatusBar(this);
     }
 
     @Click(R.id.activity_reset_password_btn_back)

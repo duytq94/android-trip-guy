@@ -41,8 +41,6 @@ public class UserProfileDetailActivity extends AppCompatActivity {
 
     @AfterViews
     void init() {
-        TripGuyUtils.changeColorStatusBar(this);
-
         // Get FromView from MeFragment to know which view user clicked
         fromView = getIntent().getStringExtra("FromView");
 

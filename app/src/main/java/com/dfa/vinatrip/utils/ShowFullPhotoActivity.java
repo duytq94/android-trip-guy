@@ -53,7 +53,6 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
 
     @AfterViews
     void init() {
-        TripGuyUtils.changeColorStatusBar(this);
         setupActionBar();
 
         customPagerAdapter = new CustomPagerAdapter(ShowFullPhotoActivity.this);

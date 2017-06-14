@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme. -->
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -7,15 +8,7 @@
         <item name="colorAccent">@color/colorMain</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/colorStatusBar</item>
         <item name="android:textColorHint">@color/colorMain</item>
-    </style>
-
-    <style name="RatingBar" parent="Theme.AppCompat">
-        <item name="colorControlNormal">@android:color/darker_gray</item>
-        <item name="colorControlActivated">@color/colorRatingStar</item>
-    </style>
-
-    <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark">
-        <item name="android:textCursorDrawable">@drawable/cursor</item>
     </style>
 </resources>

@@ -46,7 +46,7 @@
                     android:id="@+id/activity_make_share_iv_photo1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="center"
+                    android:scaleType="fitXY"
                     android:src="@drawable/ic_add_photo_gray"
                     />
             </android.support.v7.widget.CardView>
@@ -64,7 +64,7 @@
                     android:id="@+id/activity_make_share_iv_photo2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="center"
+                    android:scaleType="fitXY"
                     android:src="@drawable/ic_add_photo_gray"
                     />
             </android.support.v7.widget.CardView>
@@ -82,7 +82,7 @@
                     android:id="@+id/activity_make_share_iv_photo3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="center"
+                    android:scaleType="fitXY"
                     android:src="@drawable/ic_add_photo_gray"
                     />
             </android.support.v7.widget.CardView>
@@ -100,7 +100,7 @@
                     android:id="@+id/activity_make_share_iv_photo4"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="center"
+                    android:scaleType="fitXY"
                     android:src="@drawable/ic_add_photo_gray"
                     />
             </android.support.v7.widget.CardView>

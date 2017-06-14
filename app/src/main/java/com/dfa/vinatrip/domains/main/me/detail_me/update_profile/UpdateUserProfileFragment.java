@@ -64,6 +64,7 @@ import jp.wasabeef.blurry.Blurry;
 import static android.app.Activity.RESULT_OK;
 import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PICK_IMAGE;
 import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PLACE_AUTO_COMPLETE;
+import static com.dfa.vinatrip.utils.TripGuyUtils.exifToDegrees;
 
 @EFragment(R.layout.fragment_update_user_profile)
 public class UpdateUserProfileFragment extends Fragment {
@@ -407,14 +408,5 @@ public class UpdateUserProfileFragment extends Fragment {
                PackageManager.PERMISSION_GRANTED;
     }
 
-    public static int exifToDegrees(int exifOrientation) {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            return 90;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
-            return 180;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
-            return 270;
-        }
-        return 0;
-    }
+
 }

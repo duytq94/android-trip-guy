@@ -102,7 +102,6 @@ public class SignInActivity extends AppCompatActivity implements Validator.Valid
         validator.setValidationListener(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        TripGuyUtils.changeColorStatusBar(this);
     }
 
     @Override

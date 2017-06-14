@@ -110,7 +110,6 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
         validator.setValidationListener(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        TripGuyUtils.changeColorStatusBar(this);
     }
 
     @Click(R.id.activity_sign_up_btn_sign_up)
