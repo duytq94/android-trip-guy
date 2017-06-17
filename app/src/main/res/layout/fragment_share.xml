@@ -86,7 +86,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Hiện bạn chưa có chia sẻ nào"
+                        android:text="Hiện ứng dụng chưa có chia sẻ nào"
                         android:textSize="@dimen/text_large"
                         />
                 </LinearLayout>
@@ -95,6 +95,7 @@
                     android:id="@+id/fragment_share_rv_share"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:padding="@dimen/recycler_view_padding"
                     />
 
                 <android.support.design.widget.FloatingActionButton

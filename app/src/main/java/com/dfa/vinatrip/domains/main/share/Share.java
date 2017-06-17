@@ -5,10 +5,41 @@ package com.dfa.vinatrip.domains.main.share;
  */
 
 public class Share {
-    String id, uid, nickname, avatar, email, name, type, destination, content, photo1, photo2, photo3, photo4;
+    String id;
+    String uid;
+    String nickname;
+    String avatar;
+    String email;
+    String name;
+    String type;
+    String destination;
+    String content;
+    String photo1;
+    String photo2;
+    String photo3;
+    String photo4;
+    String address;
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    String province;
 
     public String getId() {
         return id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getUid() {

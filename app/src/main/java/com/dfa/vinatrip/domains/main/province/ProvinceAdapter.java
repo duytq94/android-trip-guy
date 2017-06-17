@@ -35,15 +35,13 @@ public class ProvinceAdapter extends RecyclerView.Adapter<ProvinceAdapter.Provin
     public void onBindViewHolder(ProvinceAdapter.ProvinceViewHolder holder, int position) {
         Province province = provinceList.get(position);
 
-        //bind data to viewholder
         holder.tvName.setText(province.getName());
         holder.tvTitle.setText(province.getTitle());
-        // all photo will the same scale
-        holder.ivAvatar.setScaleType(ImageView.ScaleType.FIT_XY);
+
         Picasso.with(context).load(province.getAvatar())
-                .placeholder(R.drawable.ic_loading)
-                .error(R.drawable.photo_not_available)
-                .into(holder.ivAvatar);
+               .placeholder(R.drawable.ic_loading)
+               .error(R.drawable.photo_not_available)
+               .into(holder.ivAvatar);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.plan.Plan;
 import com.dfa.vinatrip.domains.main.province.Province;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
+import com.dfa.vinatrip.domains.main.share.Share;
 
 import org.androidannotations.annotations.EBean;
 
@@ -20,6 +21,7 @@ public class DataService {
     private List<UserFriend> userFriendList = new ArrayList<>();
     private List<Province> provinceList = new ArrayList<>();
     private List<UserRating> myRatingList = new ArrayList<>();
+    private List<Share> shareList = new ArrayList<>();
     private List<Plan> planList = new ArrayList<>();
     private UserProfile currentUser;
 
@@ -86,6 +88,8 @@ public class DataService {
         onChangeMyRatingList.onUpdateRating();
     }
 
+    // Set list
+
     public void setUserProfileList(List<UserProfile> userProfileList) {
         this.userProfileList.clear();
         this.userProfileList.addAll(userProfileList);
@@ -111,6 +115,13 @@ public class DataService {
         this.planList.addAll(planList);
     }
 
+    public void setShareList(List<Share> shareList) {
+        this.shareList.clear();
+        this.shareList.addAll(shareList);
+    }
+
+    // Get list
+
     public List<UserProfile> getUserProfileList() {
         return userProfileList;
     }
@@ -129,6 +140,10 @@ public class DataService {
 
     public List<Plan> getPlanList() {
         return planList;
+    }
+
+    public List<Share> getShareList() {
+        return shareList;
     }
 
     public void setOnChangeUserFriendList(OnChangeUserFriendList onChangeUserFriendList) {

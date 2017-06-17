@@ -4,9 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -24,15 +21,12 @@ import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.share.Share;
 import com.dfa.vinatrip.domains.search.SearchActivity_;
 import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -51,7 +45,6 @@ import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PICK_IMAGE2;
 import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PICK_IMAGE3;
 import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PICK_IMAGE4;
 import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PROVINCE;
-import static com.dfa.vinatrip.utils.TripGuyUtils.exifToDegrees;
 
 @EActivity(R.layout.activity_make_share)
 public class MakeShareActivity extends AppCompatActivity implements Validator.ValidationListener {
@@ -77,6 +70,10 @@ public class MakeShareActivity extends AppCompatActivity implements Validator.Va
     @NotEmpty
     @ViewById(R.id.activity_make_share_et_name)
     EditText etName;
+
+    @NotEmpty
+    @ViewById(R.id.activity_make_share_et_address)
+    EditText etAddress;
 
     @ViewById(R.id.activity_make_share_progressBar)
     ProgressBar progressBar;
@@ -196,12 +193,14 @@ public class MakeShareActivity extends AppCompatActivity implements Validator.Va
         share.setContent(etContent.getText().toString());
         share.setDestination(etDestination.getText().toString());
         share.setName(etName.getText().toString());
+        share.setAddress(etAddress.getText().toString());
+        share.setProvince(tvProvince.getText().toString());
         share.setUid(dataService.getCurrentUser().getUid());
         share.setAvatar(dataService.getCurrentUser().getAvatar());
         share.setEmail(dataService.getCurrentUser().getEmail());
         share.setNickname(dataService.getCurrentUser().getNickname());
 
-        databaseReference.child("Share").child(tvProvince.getText().toString()).child(share.getId())
+        databaseReference.child("Share").child(share.getId())
                          .setValue(share, new DatabaseReference.CompletionListener() {
                              @Override
                              public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {

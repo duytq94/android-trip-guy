@@ -121,9 +121,9 @@ public class ProvinceFragment extends Fragment {
         provinceAdapter = new ProvinceAdapter(getActivity(), provinceList);
         rvProvinces.setAdapter(provinceAdapter);
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager =
+        StaggeredGridLayoutManager layoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        rvProvinces.setLayoutManager(staggeredGridLayoutManager);
+        rvProvinces.setLayoutManager(layoutManager);
 
         // Catch event when click on item RecyclerView
         rvProvinces.addOnItemTouchListener(

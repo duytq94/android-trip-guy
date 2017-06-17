@@ -167,7 +167,10 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="15dp"
                 android:background="@android:color/transparent"
+                android:hint="Mùa hè cùng bạn thân"
+                android:inputType="textCapSentences"
                 android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
                 android:textSize="@dimen/text_medium"
                 />
 
@@ -202,7 +205,7 @@
                 android:id="@+id/activity_make_share_spn_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="25dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
                 />
@@ -242,7 +245,52 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="15dp"
                 android:background="@android:color/transparent"
+                android:hint="Động Phong Nha"
+                android:inputType="textCapSentences"
                 android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="@dimen/text_medium"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_make_share_ll_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Địa chỉ"
+                />
+
+            <EditText
+                android:id="@+id/activity_make_share_et_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="15dp"
+                android:background="@android:color/transparent"
+                android:hint="141/15, Đường Trường Sơn"
+                android:inputType="textCapSentences"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
                 android:textSize="@dimen/text_medium"
                 />
 
@@ -281,6 +329,7 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="15dp"
                 android:background="@android:color/transparent"
+                android:inputType="textCapSentences|textMultiLine"
                 android:text="Ban đầu mình không tính review gì hết vì thấy trên mạng quá trời chia sẻ rồi nhưng nhiều bạn hỏi, mình tổng hợp lại trong post này nhé..."
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_medium"
