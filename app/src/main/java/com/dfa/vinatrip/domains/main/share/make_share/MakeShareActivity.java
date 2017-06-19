@@ -195,6 +195,7 @@ public class MakeShareActivity extends AppCompatActivity implements Validator.Va
         share.setName(etName.getText().toString());
         share.setAddress(etAddress.getText().toString());
         share.setProvince(tvProvince.getText().toString());
+        share.setType(spnType.getSelectedItem().toString());
         share.setUid(dataService.getCurrentUser().getUid());
         share.setAvatar(dataService.getCurrentUser().getAvatar());
         share.setEmail(dataService.getCurrentUser().getEmail());

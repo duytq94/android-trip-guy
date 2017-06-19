@@ -4,12 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -18,9 +17,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.utils.TripGuyUtils;
+import com.dfa.vinatrip.services.DataService;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -34,7 +32,7 @@ public class UserProfileDetailActivity extends AppCompatActivity {
     DataService dataService;
 
     private String fromView;
-    private android.support.v7.app.ActionBar actionBar;
+    private ActionBar actionBar;
 
     @ViewById(R.id.my_toolbar)
     Toolbar toolbar;
@@ -100,9 +98,9 @@ public class UserProfileDetailActivity extends AppCompatActivity {
         View v = getCurrentFocus();
 
         if (v != null &&
-                (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_MOVE) &&
-                v instanceof EditText &&
-                !v.getClass().getName().startsWith("android.webkit.")) {
+            (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_MOVE) &&
+            v instanceof EditText &&
+            !v.getClass().getName().startsWith("android.webkit.")) {
             int scrcoords[] = new int[2];
             v.getLocationOnScreen(scrcoords);
             float x = ev.getRawX() + v.getLeft() - scrcoords[0];

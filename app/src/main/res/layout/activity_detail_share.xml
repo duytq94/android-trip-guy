@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.dfa.vinatrip.domains.main.share.detail_share.DetailShareActivity"
+    >
+
+    <include layout="@layout/toolbar" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        >
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/activity_detail_share_vp_slide_show"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            />
+
+        <LinearLayout
+            android:id="@+id/activity_detail_share_ll_dots"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dots_height"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:orientation="horizontal"
+            />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/activity_detail_share_tv_destination"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="Vịnh Nha Trang"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_large"
+        android:textStyle="bold"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loại hình: "
+            android:textSize="@dimen/text_medium"
+            />
+
+        <TextView
+            android:id="@+id/activity_detail_share_tv_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tham quan"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_medium"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên chuyến đi: "
+            android:textSize="@dimen/text_medium"
+            />
+
+        <TextView
+            android:id="@+id/activity_detail_share_tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đi chơi mùa hè"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_medium"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Địa chỉ: "
+            android:textSize="@dimen/text_medium"
+            />
+
+        <TextView
+            android:id="@+id/activity_detail_share_tv_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="132/89 Đường số 1"
+            android:textColor="#00BFFF"
+            android:textSize="@dimen/text_medium"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_vertical"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/activity_detail_share_civ_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_avatar"
+            />
+
+        <TextView
+            android:id="@+id/activity_detail_share_tv_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Long Lol"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_medium"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trải nghiệm: "
+            android:textSize="@dimen/text_medium"
+            />
+
+        <TextView
+            android:id="@+id/activity_detail_share_tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Ban đầu mình không tính review gì hết vì thấy trên mạng quá trời chia sẻ rồi nhưng nhiều bạn hỏi, mình tổng hợp lại trong post này nhé..."
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_medium"
+            />
+    </LinearLayout>
+</LinearLayout>

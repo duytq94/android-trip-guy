@@ -166,11 +166,8 @@ public class EachProvinceDestinationFragment extends Fragment {
 
     @Click(R.id.fragment_each_province_destination_ll_address)
     void onLlAddressClick() {
-        Intent intentMap = new Intent(getActivity(), MapActivity_.class);
-
         // Send DetailDestination to MapActivity
-        intentMap.putExtra("DetailDestination", destinationDetail);
-        startActivity(intentMap);
+        MapActivity_.intent(getActivity()).detailDestination(destinationDetail).start();
     }
 
     @Click(R.id.fragment_each_province_destination_tv_rate)

@@ -150,11 +150,8 @@ public class EachProvinceFoodFragment extends Fragment {
 
     @Click(R.id.fragment_each_province_food_ll_address)
     void onLlAddressClick() {
-        Intent intentMap = new Intent(getActivity(), MapActivity_.class);
-
         // Send ProvinceFood to MapActivity
-        intentMap.putExtra("DetailFood", detailFood);
-        getActivity().startActivity(intentMap);
+        MapActivity_.intent(getActivity()).detailFood(detailFood).start();
     }
 
     public void setContentViews() {

@@ -165,11 +165,8 @@ public class EachProvinceHotelFragment extends Fragment {
 
     @Click(R.id.fragment_each_province_hotel_ll_address)
     void onLlAddressClick() {
-        Intent intentMap = new Intent(getActivity(), MapActivity_.class);
-
         // Send ProvinceHotel to MapActivity
-        intentMap.putExtra("DetailHotel", detailHotel);
-        getActivity().startActivity(intentMap);
+        MapActivity_.intent(getActivity()).detailHotel(detailHotel).start();
     }
 
     public void setContentViews() {

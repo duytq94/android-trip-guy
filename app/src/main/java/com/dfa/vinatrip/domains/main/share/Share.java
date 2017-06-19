@@ -1,24 +1,58 @@
 package com.dfa.vinatrip.domains.main.share;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by DFA on 6/10/2017.
  */
 
-public class Share {
-    String id;
-    String uid;
-    String nickname;
-    String avatar;
-    String email;
-    String name;
-    String type;
-    String destination;
-    String content;
-    String photo1;
-    String photo2;
-    String photo3;
-    String photo4;
-    String address;
+public class Share implements Parcelable {
+    private String id;
+    private String uid;
+    private String nickname;
+    private String avatar;
+    private String email;
+    private String name;
+    private String type;
+    private String destination;
+    private String content;
+    private String photo1;
+    private String photo2;
+    private String photo3;
+    private String photo4;
+    private String address;
+    private String province;
+
+    protected Share(Parcel in) {
+        id = in.readString();
+        uid = in.readString();
+        nickname = in.readString();
+        avatar = in.readString();
+        email = in.readString();
+        name = in.readString();
+        type = in.readString();
+        destination = in.readString();
+        content = in.readString();
+        photo1 = in.readString();
+        photo2 = in.readString();
+        photo3 = in.readString();
+        photo4 = in.readString();
+        address = in.readString();
+        province = in.readString();
+    }
+
+    public static final Creator<Share> CREATOR = new Creator<Share>() {
+        @Override
+        public Share createFromParcel(Parcel in) {
+            return new Share(in);
+        }
+
+        @Override
+        public Share[] newArray(int size) {
+            return new Share[size];
+        }
+    };
 
     public String getProvince() {
         return province;
@@ -27,8 +61,6 @@ public class Share {
     public void setProvince(String province) {
         this.province = province;
     }
-
-    String province;
 
     public String getId() {
         return id;
@@ -144,5 +176,29 @@ public class Share {
 
     public Share() {
 
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(uid);
+        parcel.writeString(nickname);
+        parcel.writeString(avatar);
+        parcel.writeString(email);
+        parcel.writeString(name);
+        parcel.writeString(type);
+        parcel.writeString(destination);
+        parcel.writeString(content);
+        parcel.writeString(photo1);
+        parcel.writeString(photo2);
+        parcel.writeString(photo3);
+        parcel.writeString(photo4);
+        parcel.writeString(address);
+        parcel.writeString(province);
     }
 }

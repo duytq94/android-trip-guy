@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.ViewById;
 
@@ -33,11 +34,15 @@ public class MapActivity extends AppCompatActivity {
 
     private GoogleMap googleMap;
     private android.support.v7.app.ActionBar actionBar;
-    private ProvinceHotel detailHotel;
-    private ProvinceFood detailFood;
-    private ProvinceDestinationDetail DestinationDetail;
     private String titleActionBar;
     private LatLng latLng;
+
+    @Extra
+    ProvinceHotel detailHotel;
+    @Extra
+    ProvinceFood detailFood;
+    @Extra
+    ProvinceDestinationDetail detailDestination;
 
     @AfterViews
     void init() {
@@ -71,12 +76,12 @@ public class MapActivity extends AppCompatActivity {
                              .showInfoWindow();
                 }
 
-                if (DestinationDetail != null) {
+                if (detailDestination != null) {
                     // For dropping a marker at a point on the Map
-                    latLng = new LatLng(DestinationDetail.getLatitude(), DestinationDetail.getLongitude());
+                    latLng = new LatLng(detailDestination.getLatitude(), detailDestination.getLongitude());
                     googleMap.addMarker(new MarkerOptions()
                                                 .position(latLng)
-                                                .title(DestinationDetail.getName())
+                                                .title(detailDestination.getName())
                                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination)))
                              .showInfoWindow();
                 }
@@ -90,20 +95,17 @@ public class MapActivity extends AppCompatActivity {
     }
 
     public void setupActionBar() {
-        if (getIntent().getParcelableExtra("DetailHotel") != null) {
+        if (detailHotel != null) {
             // Get ProvinceHotel form EachProvinceHotelFragment
-            detailHotel = (ProvinceHotel) getIntent().getParcelableExtra("DetailHotel");
             titleActionBar = detailHotel.getName();
         }
-        if (getIntent().getParcelableExtra("DetailFood") != null) {
+        if (detailFood != null) {
             // Get ProvinceFood from EachProvinceFoodFragment
-            detailFood = (ProvinceFood) getIntent().getParcelableExtra("DetailFood");
             titleActionBar = detailFood.getName();
         }
-        if (getIntent().getParcelableExtra("DetailDestination") != null) {
+        if (detailDestination != null) {
             // Get ProvinceDestination from EachProvinceDestinationFragment
-            DestinationDetail = getIntent().getParcelableExtra("DetailDestination");
-            titleActionBar = DestinationDetail.getName();
+            titleActionBar = detailDestination.getName();
         }
 
         setSupportActionBar(toolbar);

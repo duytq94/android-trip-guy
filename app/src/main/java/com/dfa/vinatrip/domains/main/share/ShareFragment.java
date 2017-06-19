@@ -7,12 +7,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.login.SignInActivity_;
+import com.dfa.vinatrip.domains.main.share.detail_share.DetailShareActivity_;
 import com.dfa.vinatrip.domains.main.share.make_share.MakeShareActivity_;
 import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
@@ -46,9 +46,6 @@ public class ShareFragment extends Fragment {
 
     @ViewById(R.id.fragment_share_srl_reload)
     SwipeRefreshLayout srlReload;
-
-    @ViewById(R.id.fragment_share_ll_share_list_not_available)
-    LinearLayout llPlanListNotAvailable;
 
     @ViewById(R.id.fragment_share_rl_login)
     RelativeLayout rlLogin;
@@ -91,7 +88,7 @@ public class ShareFragment extends Fragment {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-
+                        DetailShareActivity_.intent(getActivity()).share(shareList.get(position)).start();
                     }
 
                     @Override
@@ -133,7 +130,6 @@ public class ShareFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // update shareList again
                 if (shareList.size() != 0) {
-                    llPlanListNotAvailable.setVisibility(View.GONE);
                     dataService.setShareList(shareList);
                     shareAdapter.notifyDataSetChanged();
                 }

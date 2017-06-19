@@ -26,6 +26,7 @@ import com.dfa.vinatrip.domains.search.SearchActivity_;
 import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 import com.dfa.vinatrip.utils.TripGuyUtils;
+import com.dfa.vinatrip.utils.ViewPagerAdapter;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -64,8 +65,8 @@ public class ProvinceFragment extends Fragment {
     private List<Province> provinceList;
 
     // 4 photo in slide show
-    private int[] mResources;
-    private CustomPagerAdapter customPagerAdapter;
+    private List<Integer> photoList;
+    private ViewPagerAdapter viewPagerAdapter;
     private int i;
     private TextView[] tvDots;
     private Handler handler;
@@ -78,10 +79,15 @@ public class ProvinceFragment extends Fragment {
     void init() {
         i = 0;
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        mResources = new int[]{R.drawable.bg_test1, R.drawable.bg_test2, R.drawable.bg_test3, R.drawable.bg_test4};
+        photoList = new ArrayList<>();
+        photoList.add(R.drawable.bg_test1);
+        photoList.add(R.drawable.bg_test2);
+        photoList.add(R.drawable.bg_test3);
+        photoList.add(R.drawable.bg_test4);
 
-        customPagerAdapter = new CustomPagerAdapter(getActivity());
-        vpSlideShow.setAdapter(customPagerAdapter);
+        viewPagerAdapter = new ViewPagerAdapter(getActivity(), photoList);
+
+        vpSlideShow.setAdapter(viewPagerAdapter);
 
         // Catch event when page change, dots color will change
         vpSlideShow.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -275,37 +281,6 @@ public class ProvinceFragment extends Fragment {
         public void startScroll(int startX, int startY, int dx, int dy) {
             // Ignore received duration, use fixed one instead
             super.startScroll(startX, startY, dx, dy, mDuration);
-        }
-    }
-
-    public class CustomPagerAdapter extends PagerAdapter {
-        private LayoutInflater layoutInflater;
-
-        public CustomPagerAdapter(Context context) {
-            this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        @Override
-        public int getCount() {
-            return mResources.length;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            ImageView imageView = (ImageView) layoutInflater.inflate(R.layout.item_photo_slide_show, container, false);
-            imageView.setImageResource(mResources[position]);
-            container.addView(imageView);
-            return imageView;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((ImageView) object);
         }
     }
 

@@ -69,5 +69,6 @@
             android:name=".domains.main.share.make_share.MakeShareActivity_"
             android:windowSoftInputMode="adjustResize"
             />
+        <activity android:name=".domains.main.share.detail_share.DetailShareActivity_" />
     </application>
 </manifest>

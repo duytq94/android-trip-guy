@@ -65,32 +65,6 @@
                 android:layout_below="@+id/fragment_share_rl_toolbar_login"
                 >
 
-                <LinearLayout
-                    android:id="@+id/fragment_share_ll_share_list_not_available"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical"
-                    android:padding="@dimen/activity_vertical_margin"
-                    android:visibility="visible"
-                    >
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_share_gray"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Hiện ứng dụng chưa có chia sẻ nào"
-                        android:textSize="@dimen/text_large"
-                        />
-                </LinearLayout>
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/fragment_share_rv_share"
                     android:layout_width="match_parent"
