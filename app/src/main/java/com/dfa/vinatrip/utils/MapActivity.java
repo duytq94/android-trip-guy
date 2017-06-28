@@ -8,6 +8,7 @@ import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.province.detail_province.province_food.ProvinceFood;
 import com.dfa.vinatrip.domains.main.province.detail_province.province_hotel.ProvinceHotel;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_destination.ProvinceDestinationDetail;
+import com.dfa.vinatrip.domains.main.share.Share;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -35,7 +36,6 @@ public class MapActivity extends AppCompatActivity {
     private GoogleMap googleMap;
     private android.support.v7.app.ActionBar actionBar;
     private String titleActionBar;
-    private LatLng latLng;
 
     @Extra
     ProvinceHotel detailHotel;
@@ -43,6 +43,10 @@ public class MapActivity extends AppCompatActivity {
     ProvinceFood detailFood;
     @Extra
     ProvinceDestinationDetail detailDestination;
+    @Extra
+    Share detailShare;
+    @Extra
+    LatLng latLng;
 
     @AfterViews
     void init() {
@@ -55,7 +59,6 @@ public class MapActivity extends AppCompatActivity {
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
 
-                // This method run after, so detailHotel, detailFood... can be assigned
                 if (detailHotel != null) {
                     // For dropping a marker at a point on the Map
                     latLng = new LatLng(detailHotel.getLatitude(), detailHotel.getLongitude());
@@ -85,6 +88,14 @@ public class MapActivity extends AppCompatActivity {
                                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination)))
                              .showInfoWindow();
                 }
+                if (detailShare != null) {
+                    googleMap.addMarker(new MarkerOptions()
+                                                .position(latLng)
+                                                .title(detailShare.getDestination())
+                                                .icon(BitmapDescriptorFactory
+                                                              .fromResource(R.drawable.ic_location2)))
+                             .showInfoWindow();
+                }
 
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition =
@@ -106,6 +117,9 @@ public class MapActivity extends AppCompatActivity {
         if (detailDestination != null) {
             // Get ProvinceDestination from EachProvinceDestinationFragment
             titleActionBar = detailDestination.getName();
+        }
+        if (detailShare != null) {
+            titleActionBar = detailShare.getDestination();
         }
 
         setSupportActionBar(toolbar);

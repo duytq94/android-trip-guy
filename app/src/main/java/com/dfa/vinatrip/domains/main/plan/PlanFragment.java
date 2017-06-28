@@ -111,18 +111,44 @@ public class PlanFragment extends Fragment {
                 alertDialog.setTitle("Xóa kế hoạch");
                 alertDialog.setMessage("Bạn có chắc chắn muốn xóa kế hoạch này?");
                 alertDialog.setIcon(R.drawable.ic_notification);
-                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ĐỒNG Ý",
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialogInterface, int i) {
-                                              databaseReference.child("Plan")
-                                                               .child(dataService.getCurrentUser().getUid())
-                                                               .child(planList.get(position).getId())
-                                                               .removeValue();
-                                              planList.remove(position);
-                                              planAdapter.notifyDataSetChanged();
-                                          }
-                                      });
+                alertDialog.setButton(
+                        DialogInterface.BUTTON_POSITIVE,
+                        "ĐỒNG Ý",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                databaseReference.child("Plan").child(dataService.getCurrentUser().getUid())
+                                                 .child(planList.get(position).getId())
+                                                 .removeValue();
+
+                                // Remove id user in friendInvitedList
+                                Plan updatePlan = planList.get(position);
+                                for (int j = 0; j < updatePlan.getFriendInvitedList().size(); j++) {
+                                    if (updatePlan.getFriendInvitedList().get(j)
+                                                  .equals(dataService.getCurrentUser().getUid())) {
+                                        updatePlan.getFriendInvitedList().remove(j);
+                                        break;
+                                    }
+                                }
+
+                                // Update this plan to another user
+                                for (int k = 0; k < updatePlan.getFriendInvitedList().size(); k++) {
+                                    databaseReference.child("Plan")
+                                                     .child(updatePlan.getFriendInvitedList().get(k))
+                                                     .child(updatePlan.getId())
+                                                     .setValue(updatePlan);
+                                }
+
+                                // Update this plan to the user create it
+                                databaseReference.child("Plan")
+                                                 .child(updatePlan.getUserMakePlan().getUid())
+                                                 .child(updatePlan.getId())
+                                                 .setValue(updatePlan);
+
+                                planList.remove(position);
+                                planAdapter.notifyDataSetChanged();
+                            }
+                        });
                 alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "HỦY",
                                       new DialogInterface.OnClickListener() {
                                           @Override

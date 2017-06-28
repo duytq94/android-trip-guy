@@ -69,18 +69,18 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
                     onUpdateOrRemoveClick.onUpdate(position);
                 }
             });
-
-            holder.tvRemove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onUpdateOrRemoveClick.onRemove(position);
-                }
-            });
         } else {
             holder.tvUpdate.setVisibility(View.GONE);
             holder.tvUpdate.setTextColor(android.R.color.darker_gray);
             holder.tvUserName.setText(plan.getUserMakePlan().getNickname());
         }
+
+        holder.tvRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onUpdateOrRemoveClick.onRemove(position);
+            }
+        });
 
         Picasso.with(context).load(plan.getUserMakePlan().getAvatar())
                .placeholder(R.drawable.ic_loading)
