@@ -6,12 +6,14 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -19,11 +21,19 @@ import android.widget.Toast;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.share.Share;
+import com.dfa.vinatrip.domains.main.share.make_share.image_multi_select.BitmapHelper;
+import com.dfa.vinatrip.domains.main.share.make_share.image_multi_select.SelectImageActivity_;
 import com.dfa.vinatrip.domains.search.SearchActivity_;
 import com.dfa.vinatrip.services.DataService;
+import com.dfa.vinatrip.utils.TripGuyUtils;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
@@ -35,19 +45,19 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;
 
-import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PICK_IMAGE1;
-import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PICK_IMAGE2;
-import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PICK_IMAGE3;
-import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PICK_IMAGE4;
 import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PROVINCE;
 
 @EActivity(R.layout.activity_make_share)
-public class MakeShareActivity extends AppCompatActivity implements Validator.ValidationListener {
+public class MakeShareActivity extends AppCompatActivity
+        implements Validator.ValidationListener, BitmapHelper.callBackBmHelper {
+
+    public static final int SELECT_IMAGE_REQUEST = 989;
 
     @Bean
     DataService dataService;
@@ -90,12 +100,16 @@ public class MakeShareActivity extends AppCompatActivity implements Validator.Va
     @ViewById(R.id.activity_make_share_iv_photo4)
     ImageView ivPhoto4;
 
+    @ViewById(R.id.activity_make_share_ll_root)
+    LinearLayout llRoot;
+
     private DatabaseReference databaseReference;
+    private StorageReference storageReference;
     private Validator validator;
     private Share share;
     private List<Bitmap> adjustedBitmapList;
-    private Uri uri;
     private Bitmap adjustedBitmap;
+    private int count;
 
     @AfterViews
     void init() {
@@ -135,60 +149,78 @@ public class MakeShareActivity extends AppCompatActivity implements Validator.Va
 
     @Click(R.id.activity_make_share_iv_photo1)
     void onIvPhoto1Click() {
-        askPermission();
-        if (checkPermission()) {
-            Intent intentToLibrary = new Intent();
-            intentToLibrary.setType("image/*");
-            intentToLibrary.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(intentToLibrary, REQUEST_PICK_IMAGE1);
-
-
-        }
+        imageClick();
     }
 
     @Click(R.id.activity_make_share_iv_photo2)
     void onIvPhoto2Click() {
-        askPermission();
-        if (checkPermission()) {
-            Intent intentToLibrary = new Intent();
-            intentToLibrary.setType("image/*");
-            intentToLibrary.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(intentToLibrary, REQUEST_PICK_IMAGE2);
-        }
+        imageClick();
     }
 
     @Click(R.id.activity_make_share_iv_photo3)
     void onIvPhoto3Click() {
-        askPermission();
-        if (checkPermission()) {
-            Intent intentToLibrary = new Intent();
-            intentToLibrary.setType("image/*");
-            intentToLibrary.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(intentToLibrary, REQUEST_PICK_IMAGE3);
-        }
+        imageClick();
     }
 
     @Click(R.id.activity_make_share_iv_photo4)
     void onIvPhoto4Click() {
+        imageClick();
+    }
+
+    public void imageClick() {
         askPermission();
         if (checkPermission()) {
-            Intent intentToLibrary = new Intent();
-            intentToLibrary.setType("image/*");
-            intentToLibrary.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(intentToLibrary, REQUEST_PICK_IMAGE4);
+            SelectImageActivity_.intent(this).startForResult(SELECT_IMAGE_REQUEST);
         }
     }
 
-    @OnActivityResult(REQUEST_PICK_IMAGE1)
-    void onResultImage1(int resultCode, Intent data) {
+    @OnActivityResult(SELECT_IMAGE_REQUEST)
+    void selected(int resultCode, Intent data) {
         if (resultCode == RESULT_OK && data != null) {
-            uri = data.getData();
+            String[] imageSelect = data.getStringArrayExtra("imageSelectURL");
+            BitmapHelper.getArrayBitmap(this, imageSelect);
+        }
+    }
+
+    @Override
+    public void getBitmapSuccess(Bitmap[] arrayBitmap) {
+        switch (arrayBitmap.length) {
+            case 1:
+                ivPhoto1.setImageBitmap(arrayBitmap[0]);
+                adjustedBitmapList.add(arrayBitmap[0]);
+                break;
+            case 2:
+                ivPhoto1.setImageBitmap(arrayBitmap[0]);
+                ivPhoto2.setImageBitmap(arrayBitmap[1]);
+                adjustedBitmapList.add(arrayBitmap[0]);
+                adjustedBitmapList.add(arrayBitmap[1]);
+                break;
+            case 3:
+                ivPhoto1.setImageBitmap(arrayBitmap[0]);
+                ivPhoto2.setImageBitmap(arrayBitmap[1]);
+                ivPhoto3.setImageBitmap(arrayBitmap[2]);
+                adjustedBitmapList.add(arrayBitmap[0]);
+                adjustedBitmapList.add(arrayBitmap[1]);
+                adjustedBitmapList.add(arrayBitmap[2]);
+                break;
+            case 4:
+                ivPhoto1.setImageBitmap(arrayBitmap[0]);
+                ivPhoto2.setImageBitmap(arrayBitmap[1]);
+                ivPhoto3.setImageBitmap(arrayBitmap[2]);
+                ivPhoto4.setImageBitmap(arrayBitmap[3]);
+                adjustedBitmapList.add(arrayBitmap[0]);
+                adjustedBitmapList.add(arrayBitmap[1]);
+                adjustedBitmapList.add(arrayBitmap[2]);
+                adjustedBitmapList.add(arrayBitmap[3]);
+                break;
         }
     }
 
     @Override
     public void onValidationSucceeded() {
         progressBar.setVisibility(View.VISIBLE);
+        TripGuyUtils.setEnableAllViews(llRoot, false);
+
         share.setId(String.valueOf(System.currentTimeMillis()));
         share.setContent(etContent.getText().toString());
         share.setDestination(etDestination.getText().toString());
@@ -201,21 +233,110 @@ public class MakeShareActivity extends AppCompatActivity implements Validator.Va
         share.setEmail(dataService.getCurrentUser().getEmail());
         share.setNickname(dataService.getCurrentUser().getNickname());
 
-        databaseReference.child("Share").child(share.getId())
-                         .setValue(share, new DatabaseReference.CompletionListener() {
-                             @Override
-                             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                 if (databaseError != null) {
-                                     Toasty.error(MakeShareActivity.this,
-                                                  "Lỗi đường truyền, bạn hãy gửi lại!", Toast.LENGTH_SHORT).show();
-                                     progressBar.setVisibility(View.GONE);
-                                 } else {
-                                     Toasty.success(MakeShareActivity.this, "Chia sẻ của bạn đã được tạo",
-                                                    Toast.LENGTH_SHORT).show();
-                                     finish();
-                                 }
-                             }
-                         });
+        count = 0;
+
+        if (adjustedBitmapList.size() > 0) {
+            // Resize bitmap
+            for (int i = 0; i < adjustedBitmapList.size(); i++) {
+                adjustedBitmapList.set(i, TripGuyUtils.scaleDown(adjustedBitmapList.get(i), 500, true));
+            }
+
+            for (int i = 0; i < adjustedBitmapList.size(); i++) {
+                adjustedBitmap = adjustedBitmapList.get(i);
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+                adjustedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] byteArrayPhoto = baos.toByteArray();
+
+                // Set the path and name photo be upload
+                storageReference = FirebaseStorage
+                        .getInstance()
+                        .getReferenceFromUrl("gs://tripguy-10864.appspot.com")
+                        .child("PhotoUserShare")
+                        .child(dataService.getCurrentUser().getUid() + i + ".jpg");
+
+                UploadTask uploadTask = storageReference.putBytes(byteArrayPhoto);
+                final int finalI = i;
+                uploadTask
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                TripGuyUtils.setEnableAllViews(llRoot, true);
+                                Toasty.error(MakeShareActivity.this,
+                                             "Upload hinh" + finalI + "không thành công\nBạn vui lòng thử lại",
+                                             Toast.LENGTH_SHORT).show();
+                                count++;
+                            }
+                        })
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                if (downloadUrl != null) {
+                                    switch (finalI) {
+                                        case 0:
+                                            share.setPhoto1(downloadUrl.toString());
+                                            break;
+                                        case 1:
+                                            share.setPhoto2(downloadUrl.toString());
+                                            break;
+                                        case 2:
+                                            share.setPhoto3(downloadUrl.toString());
+                                            break;
+                                        case 3:
+                                            share.setPhoto4(downloadUrl.toString());
+                                            break;
+                                    }
+                                    count++;
+                                    if (count == 4) {
+                                        databaseReference
+                                                .child("Share")
+                                                .child(share.getId())
+                                                .setValue(share, new DatabaseReference.CompletionListener() {
+                                                    @Override
+                                                    public void onComplete(DatabaseError databaseError,
+                                                                           DatabaseReference databaseReference) {
+                                                        if (databaseError != null) {
+                                                            Toasty.error(MakeShareActivity.this,
+                                                                         "Lỗi đường truyền, bạn hãy gửi lại!",
+                                                                         Toast.LENGTH_SHORT).show();
+                                                            progressBar.setVisibility(View.GONE);
+                                                        } else {
+                                                            Toasty.success(MakeShareActivity.this,
+                                                                           "Chia sẻ của bạn đã được tạo",
+                                                                           Toast.LENGTH_SHORT).show();
+                                                            finish();
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                }
+                            }
+                        });
+            }
+        } else {
+            databaseReference
+                    .child("Share")
+                    .child(share.getId())
+                    .setValue(share, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError,
+                                               DatabaseReference databaseReference) {
+                            if (databaseError != null) {
+                                Toasty.error(MakeShareActivity.this,
+                                             "Lỗi đường truyền, bạn hãy gửi lại!",
+                                             Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+                            } else {
+                                Toasty.success(MakeShareActivity.this,
+                                               "Chia sẻ của bạn đã được tạo",
+                                               Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        }
+                    });
+        }
     }
 
     @Override
@@ -242,11 +363,11 @@ public class MakeShareActivity extends AppCompatActivity implements Validator.Va
     }
 
     public boolean checkPermission() {
-        return ActivityCompat.checkSelfPermission(this,
-                                                  Manifest.permission.ACCESS_FINE_LOCATION) ==
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
                PackageManager.PERMISSION_GRANTED &&
-               ActivityCompat.checkSelfPermission(this,
-                                                  Manifest.permission.ACCESS_COARSE_LOCATION) ==
+               ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) ==
+               PackageManager.PERMISSION_GRANTED &&
+               ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) ==
                PackageManager.PERMISSION_GRANTED;
     }
 }

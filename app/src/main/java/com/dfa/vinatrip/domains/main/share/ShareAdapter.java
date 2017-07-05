@@ -45,7 +45,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
         holder.tvName.setText(share.getNickname());
 
         Picasso.with(context).load(share.getPhoto1())
-               .placeholder(R.drawable.bg_test1)
+               .placeholder(R.drawable.ic_loading)
                .error(R.drawable.photo_not_available)
                .into(holder.ivBackground);
 

@@ -70,5 +70,6 @@
             android:windowSoftInputMode="adjustResize"
             />
         <activity android:name=".domains.main.share.detail_share.DetailShareActivity_" />
+        <activity android:name=".domains.main.share.make_share.image_multi_select.SelectImageActivity_" />
     </application>
 </manifest>

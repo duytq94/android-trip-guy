@@ -1,14 +1,20 @@
 package com.dfa.vinatrip.domains.main.share.detail_share;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
@@ -60,6 +66,7 @@ public class DetailShareActivity extends AppCompatActivity {
     Share share;
 
     private ActionBar actionBar;
+    private ViewPagerAdapter viewPagerAdapter;
 
     @AfterViews
     void init() {
@@ -74,6 +81,28 @@ public class DetailShareActivity extends AppCompatActivity {
                .into(civAvatar);
         tvNickname.setText(share.getNickname());
         tvContent.setText(share.getContent());
+
+        viewPagerAdapter = new ViewPagerAdapter(this);
+
+        vpSlideShow.setAdapter(viewPagerAdapter);
+
+        // Catch event when page change, dots color will change
+        vpSlideShow.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     public void setupActionBar() {
@@ -109,5 +138,56 @@ public class DetailShareActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    public class ViewPagerAdapter extends PagerAdapter {
+        private LayoutInflater layoutInflater;
+        private Context context;
+
+        public ViewPagerAdapter(Context context) {
+            this.context = context;
+            this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            ImageView imageView = (ImageView) layoutInflater.inflate(R.layout.item_photo_slide_show, container, false);
+            switch (position) {
+                case 0:
+                    Picasso.with(context).load(share.getPhoto1()).placeholder(R.drawable.ic_loading)
+                           .error(R.drawable.photo_not_available).into(imageView);
+                    break;
+                case 1:
+                    Picasso.with(context).load(share.getPhoto2()).placeholder(R.drawable.ic_loading)
+                           .error(R.drawable.photo_not_available).into(imageView);
+                    break;
+                case 2:
+                    Picasso.with(context).load(share.getPhoto3()).placeholder(R.drawable.ic_loading)
+                           .error(R.drawable.photo_not_available).into(imageView);
+                    break;
+                case 3:
+                    Picasso.with(context).load(share.getPhoto4()).placeholder(R.drawable.ic_loading)
+                           .error(R.drawable.photo_not_available).into(imageView);
+                    break;
+            }
+
+            container.addView(imageView);
+            return imageView;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((ImageView) object);
+        }
     }
 }

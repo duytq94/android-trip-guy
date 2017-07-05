@@ -19,7 +19,7 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/activity_detail_share_vp_slide_show"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="250dp"
             />
 
         <LinearLayout
