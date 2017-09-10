@@ -44,6 +44,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.relex.circleindicator.CircleIndicator;
+
 @EFragment(R.layout.fragment_province)
 public class ProvinceFragment extends Fragment {
     @Bean
@@ -58,8 +60,8 @@ public class ProvinceFragment extends Fragment {
     @ViewById(R.id.fragment_province_vp_slide_show)
     ViewPager vpSlideShow;
 
-    @ViewById(R.id.fragment_province_ll_dots)
-    LinearLayout llDots;
+    @ViewById(R.id.fragment_province_indicator)
+    CircleIndicator indicator;
 
     private ProvinceAdapter provinceAdapter;
     private List<Province> provinceList;
@@ -88,26 +90,7 @@ public class ProvinceFragment extends Fragment {
         viewPagerAdapter = new ViewPagerAdapter(getActivity(), photoList);
 
         vpSlideShow.setAdapter(viewPagerAdapter);
-
-        // Catch event when page change, dots color will change
-        vpSlideShow.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                makeColorDot(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-        addBottomDots();
+        indicator.setViewPager(vpSlideShow);
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -224,26 +207,6 @@ public class ProvinceFragment extends Fragment {
             }
         };
         handler.post(update);
-    }
-
-    public void addBottomDots() {
-        tvDots = new TextView[4];
-        for (int i = 0; i < 4; i++) {
-            tvDots[i] = new TextView(getActivity());
-            // bullet char
-            tvDots[i].setText("\u2022");
-            tvDots[i].setTextSize(50);
-            tvDots[i].setTextColor(Color.GRAY);
-            llDots.addView(tvDots[i]);
-        }
-        tvDots[0].setTextColor(Color.WHITE);
-    }
-
-    public void makeColorDot(int position) {
-        for (int i = 0; i < 4; i++) {
-            tvDots[i].setTextColor(Color.GRAY);
-        }
-        tvDots[position].setTextColor(Color.WHITE);
     }
 
     public void loadProvince() {

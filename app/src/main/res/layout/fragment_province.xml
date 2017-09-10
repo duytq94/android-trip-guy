@@ -80,14 +80,11 @@
                         android:layout_height="150dp"
                         />
 
-                    <LinearLayout
-                        android:id="@+id/fragment_province_ll_dots"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dots_height"
+                    <me.relex.circleindicator.CircleIndicator
+                        android:id="@+id/fragment_province_indicator"
                         android:layout_gravity="bottom"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        />
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"/>
                 </FrameLayout>
 
                 <android.support.v7.widget.RecyclerView
