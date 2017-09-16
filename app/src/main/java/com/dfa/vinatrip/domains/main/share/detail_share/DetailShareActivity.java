@@ -34,6 +34,7 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
+import me.relex.circleindicator.CircleIndicator;
 
 @EActivity(R.layout.activity_detail_share)
 public class DetailShareActivity extends AppCompatActivity {
@@ -62,6 +63,9 @@ public class DetailShareActivity extends AppCompatActivity {
     @ViewById(R.id.activity_detail_share_tv_destination)
     TextView tvDestination;
 
+    @ViewById(R.id.activity_detail_share_indicator)
+    CircleIndicator indicator;
+
     @Extra
     Share share;
 
@@ -85,24 +89,7 @@ public class DetailShareActivity extends AppCompatActivity {
         viewPagerAdapter = new ViewPagerAdapter(this);
 
         vpSlideShow.setAdapter(viewPagerAdapter);
-
-        // Catch event when page change, dots color will change
-        vpSlideShow.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        indicator.setViewPager(vpSlideShow);
     }
 
     public void setupActionBar() {
