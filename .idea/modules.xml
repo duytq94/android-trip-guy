@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libs/caf_android/caf/caf.iml" filepath="$PROJECT_DIR$/libs/caf_android/caf/caf.iml" />
       <module fileurl="file://$PROJECT_DIR$/tripguy.iml" filepath="$PROJECT_DIR$/tripguy.iml" />
     </modules>
   </component>

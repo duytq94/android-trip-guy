@@ -1,0 +1,3 @@
+[submodule "libs/caf_android"]
+	path = libs/caf_android
+	url = https://duyfa@bitbucket.org/duyfa/caf_android.git
