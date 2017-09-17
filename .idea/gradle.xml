@@ -9,7 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/libs/caf_android/caf" />
+            <option value="$PROJECT_DIR$/caf_android/caf" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

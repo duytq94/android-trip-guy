@@ -1,3 +1,2 @@
-include ':app'
-include ':caf'
-project(':caf').projectDir = new File('libs/caf_android/caf')
+include ':app', ':caf'
+project(':caf').projectDir = new File('caf_android/caf')
