@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.login.SignUpActivity_;
+import com.dfa.vinatrip.domains.auth.SignUpActivity_;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 
@@ -86,9 +86,9 @@ public class WelcomeActivity extends MvpActivity<WelcomeView, WelcomePresenter> 
     @AfterInject
     protected void inject() {
         DaggerWelcomeComponent.builder()
-                              .applicationComponent(application.getApplicationComponent())
-                              .build()
-                              .inject(this);
+                .applicationComponent(application.getApplicationComponent())
+                .build()
+                .inject(this);
     }
 
     @AfterViews

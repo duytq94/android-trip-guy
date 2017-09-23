@@ -1,19 +1,18 @@
-package com.dfa.vinatrip.domains.login;
+package com.dfa.vinatrip.domains.auth;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Rect;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,23 +20,13 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.me.UserProfile;
-import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
-import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
-import com.mobsandgeeks.saripaar.annotation.Password;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -48,25 +37,27 @@ import java.util.List;
 
 import es.dmoral.toasty.Toasty;
 
-@EActivity(R.layout.activity_sign_up)
-public class SignUpActivity extends AppCompatActivity implements Validator.ValidationListener {
+@EActivity(R.layout.activity_reset_password)
+public class ResetPasswordActivity extends AppCompatActivity implements Validator.ValidationListener {
 
     @NotEmpty
     @Email
-    @ViewById(R.id.activity_sign_up_et_email)
+    @ViewById(R.id.activity_reset_password_et_email)
     EditText etEmail;
 
-    @Password
-    @ViewById(R.id.activity_sign_up_et_password)
-    EditText etPassword;
+    @ViewById(R.id.activity_reset_password_btn_reset_password)
+    Button btnResetPassword;
 
-    @ViewById(R.id.activity_sign_up_progressBar)
+    @ViewById(R.id.activity_reset_password_btn_back)
+    Button btnBack;
+
+    @ViewById(R.id.activity_reset_password_progressBar)
     ProgressBar progressBar;
 
-    @ViewById(R.id.activity_sign_up_ll_root)
+    @ViewById(R.id.activity_reset_password_ll_root)
     LinearLayout llRoot;
 
-    @ViewById(R.id.activity_sign_up_iv_symbol)
+    @ViewById(R.id.activity_reset_password_iv_symbol)
     ImageView ivSymbol;
 
     private Validator validator;
@@ -112,28 +103,16 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
-    @Click(R.id.activity_sign_up_btn_sign_up)
-    void btnSignUpClicked() {
-        isBtnSignInClick = true;
-        validator.validate();
-    }
-
-    @Click(R.id.activity_sign_up_btn_sign_in)
-    void btnSignInClicked() {
+    @Click(R.id.activity_reset_password_btn_back)
+    void btnBackClicked() {
         SignInActivity_.intent(this).start();
         finish();
     }
 
-    @Click(R.id.activity_sign_up_btn_reset_password)
+    @Click(R.id.activity_reset_password_btn_reset_password)
     void btnResetPasswordClicked() {
-        ResetPasswordActivity_.intent(this).start();
-        finish();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        progressBar.setVisibility(View.GONE);
+        isBtnSignInClick = true;
+        validator.validate();
     }
 
     @Override
@@ -165,45 +144,25 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
     @Override
     public void onValidationSucceeded() {
         String email = etEmail.getText().toString();
-        String password = etPassword.getText().toString();
-
+        if (TextUtils.isEmpty(email)) {
+            Toasty.warning(ResetPasswordActivity.this, "Nhập email của bạn!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         progressBar.setVisibility(View.VISIBLE);
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+        firebaseAuth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressBar.setVisibility(View.GONE);
-                            if (!task.isSuccessful()) {
-                                try {
-                                    throw task.getException();
-                                } catch (FirebaseAuthInvalidCredentialsException e) {
-                                    Toasty.error(SignUpActivity.this,
-                                                 "Email không hợp lệ!",
-                                                 Toast.LENGTH_SHORT).show();
-                                } catch (FirebaseAuthUserCollisionException e) {
-                                    Toasty.error(SignUpActivity.this,
-                                                 "Email đã được đăng ký!",
-                                                 Toast.LENGTH_SHORT).show();
-                                } catch (Exception e) {
-                                }
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toasty.success(ResetPasswordActivity.this,
+                                               "Chúng tôi đã gửi mật khẩu đến email của bạn!",
+                                               Toast.LENGTH_SHORT).show();
                             } else {
-                                // Create first database for user with empty data
-                                FirebaseUser firebaseUser =
-                                        FirebaseAuth.getInstance().getCurrentUser();
-                                if (firebaseUser != null) {
-                                    // Add empty profile for user
-                                    UserProfile userProfile
-                                            = new UserProfile("", "", "", "", "", "", "",
-                                                              firebaseUser.getEmail());
-                                    DatabaseReference databaseReference =
-                                            FirebaseDatabase.getInstance().getReference();
-                                    databaseReference.child("UserProfile")
-                                                     .child(firebaseUser.getUid())
-                                                     .setValue(userProfile);
-                                }
-                                startActivity(new Intent(SignUpActivity.this, SplashScreenActivity_.class));
-                                finish();
+                                Toasty.error(ResetPasswordActivity.this,
+                                             "Reset mật khẩu không thành công!",
+                                             Toast.LENGTH_SHORT).show();
                             }
+                            progressBar.setVisibility(View.GONE);
                         }
                     });
     }
@@ -221,9 +180,6 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
                     break;
                 case "Invalid email":
                     message = "Email không hợp lệ";
-                    break;
-                case "Invalid password":
-                    message = "Mật khẩu phải từ 6 ký tự trở lên";
                     break;
             }
             ((EditText) view).setError(message);

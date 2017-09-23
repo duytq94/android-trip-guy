@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.BuildConfig;
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.login.SignInActivity_;
+import com.dfa.vinatrip.domains.auth.SignInActivity_;
 import com.dfa.vinatrip.domains.main.me.detail_me.UserProfileDetailActivity_;
 import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;

@@ -43,15 +43,15 @@
         <activity android:name=".domains.main.province.each_item_detail_province.EachItemProvinceDetailActivity_" />
         <activity android:name=".utils.MapActivity_" />
         <activity
-            android:name=".domains.login.SignUpActivity_"
+            android:name=".domains.auth.SignUpActivity_"
             android:windowSoftInputMode="adjustResize"
             />
         <activity
-            android:name=".domains.login.SignInActivity_"
+            android:name=".domains.auth.SignInActivity_"
             android:windowSoftInputMode="adjustResize"
             />
         <activity
-            android:name=".domains.login.ResetPasswordActivity_"
+            android:name=".domains.auth.ResetPasswordActivity_"
             android:windowSoftInputMode="adjustResize"
             />
         <activity

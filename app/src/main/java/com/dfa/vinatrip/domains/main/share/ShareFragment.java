@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.login.SignInActivity_;
+import com.dfa.vinatrip.domains.auth.SignInActivity_;
 import com.dfa.vinatrip.domains.main.share.detail_share.DetailShareActivity_;
 import com.dfa.vinatrip.domains.main.share.make_share.MakeShareActivity_;
 import com.dfa.vinatrip.services.DataService;

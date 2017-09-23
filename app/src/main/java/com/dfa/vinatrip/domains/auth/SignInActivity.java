@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.login;
+package com.dfa.vinatrip.domains.auth;
 
 import android.app.Activity;
 import android.content.Context;
