@@ -4,15 +4,16 @@ import android.app.Application;
 
 import com.beesightsoft.caf.BuildConfig;
 import com.beesightsoft.caf.infrastructures.scope.ApplicationScope;
+import com.beesightsoft.caf.services.authentication.AuthenticationManagerConfiguration;
 import com.beesightsoft.caf.services.log.DefaultLogService;
 import com.beesightsoft.caf.services.log.LogService;
 import com.beesightsoft.caf.services.network.DefaultNetworkProvider;
-import com.beesightsoft.caf.services.network.HttpLoggingInterceptor;
 import com.beesightsoft.caf.services.network.NetworkProvider;
 import com.dfa.vinatrip.ApiUrls;
 import com.dfa.vinatrip.services.account.AccountService;
 import com.dfa.vinatrip.services.account.DefaultAccountService;
 import com.dfa.vinatrip.services.account.RestAccountService;
+import com.dfa.vinatrip.services.filter.ApiErrorFilter;
 import com.dfa.vinatrip.utils.Constants;
 
 import org.greenrobot.eventbus.EventBus;
@@ -49,17 +50,6 @@ public class ApplicationModule {
     
     @Provides
     @ApplicationScope
-    public NetworkProvider provideNetworkProvider() {
-        return new DefaultNetworkProvider(application, BuildConfig.DEBUG) {
-            @Override
-            public HttpLoggingInterceptor.Level getLevel() {
-                return HttpLoggingInterceptor.Level.BODY;
-            }
-        };
-    }
-    
-    @Provides
-    @ApplicationScope
     public LogService provideLogService() {
         DefaultLogService defaultLogService = new DefaultLogService();
         try {
@@ -72,11 +62,20 @@ public class ApplicationModule {
     
     @Provides
     @ApplicationScope
+    public NetworkProvider provideNetworkProvider(LogService logService) {
+        NetworkProvider networkProvider = new DefaultNetworkProvider(application, true);
+        networkProvider.enableFilter(true).addFilter(new ApiErrorFilter(networkProvider, logService));
+        return networkProvider;
+    }
+    
+    @Provides
+    @ApplicationScope
     public AccountService provideAccountService(NetworkProvider rxNetworkProvider) {
         RestAccountService restService =
-                provideNetworkProvider().addDefaultHeader()
+                rxNetworkProvider.addDefaultHeader()
                         .provideApi(ApiUrls.SERVER_URL, RestAccountService.class);
         
-        return new DefaultAccountService(rxNetworkProvider, restService);
+        return new DefaultAccountService(AuthenticationManagerConfiguration.init()
+                .useStorage(Constants.KEY_USER_AUTH), rxNetworkProvider, restService);
     }
 }

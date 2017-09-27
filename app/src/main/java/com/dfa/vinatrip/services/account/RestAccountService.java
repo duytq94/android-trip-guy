@@ -1,6 +1,8 @@
 package com.dfa.vinatrip.services.account;
 
+import com.beesightsoft.caf.services.common.RestMessageResponse;
 import com.dfa.vinatrip.models.request.AuthRequest;
+import com.dfa.vinatrip.models.response.User;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -12,5 +14,5 @@ import rx.Observable;
 
 public interface RestAccountService {
     @POST("api/auth/sign-in")
-    Observable<Object> signIn(@Body AuthRequest authRequest);
+    Observable<RestMessageResponse<User>> signIn(@Body AuthRequest authRequest);
 }

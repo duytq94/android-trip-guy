@@ -32,15 +32,18 @@ public class SignInPresenter extends BasePresenter<SignInView> {
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription = accountService.signUp(authRequest)
+        subscription = accountService.login(authRequest)
                 .compose(RxHelper.applyIOSchedulers())
-                .subscribe(o -> {
+                .subscribe(user -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
                         Log.e("login", "success");
                     }
                 }, throwable -> {
-                    Log.e("login", "fail" + throwable);
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                        Log.e("login", "fail | " + throwable);
+                    }
                 });
     }
 }
