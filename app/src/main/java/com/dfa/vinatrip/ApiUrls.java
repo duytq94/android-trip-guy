@@ -5,5 +5,9 @@ package com.dfa.vinatrip;
  */
 
 public class ApiUrls {
-    public static final String SERVER_URL = "http://172.16.2.10:8080/api/";
+    /*Duy test*/
+    //public static final String SERVER_URL = "http://172.16.2.10:8080/api/";
+    
+    /*Duong test*/
+    public static final String SERVER_URL = "http://172.16.0.7:8090/";
 }

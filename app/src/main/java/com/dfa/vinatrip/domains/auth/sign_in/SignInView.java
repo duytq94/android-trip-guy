@@ -1,13 +1,13 @@
 package com.dfa.vinatrip.domains.auth.sign_in;
 
-import com.hannesdorfmann.mosby3.mvp.MvpView;
+import com.dfa.vinatrip.base.BaseMvpView;
+
+import rx.Observable;
 
 /**
- * Created by duytq on 9/17/2017.
+ * Created by duonghd on 9/27/2017.
  */
 
-public interface SignInView extends MvpView {
-    void showLoading();
-
-    void hideLoading();
+public interface SignInView extends BaseMvpView {
+    
 }

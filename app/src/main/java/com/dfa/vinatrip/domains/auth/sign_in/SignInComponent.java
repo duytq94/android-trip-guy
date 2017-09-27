@@ -2,9 +2,8 @@ package com.dfa.vinatrip.domains.auth.sign_in;
 
 import android.app.Activity;
 
-import com.dfa.vinatrip.domains.auth.SignInActivity;
+import com.beesightsoft.caf.infrastructures.scope.ActivityScope;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
-import com.dfa.vinatrip.infrastructures.ActivityScope;
 import com.dfa.vinatrip.infrastructures.ApplicationComponent;
 
 import dagger.Component;
@@ -14,10 +13,9 @@ import dagger.Component;
  */
 
 @ActivityScope
-@Component(modules = {ActivityModule.class},
-        dependencies = ApplicationComponent.class)
+@Component(modules = ActivityModule.class, dependencies = ApplicationComponent.class)
 public interface SignInComponent {
     Activity activity();
-
+    
     void inject(SignInActivity activity);
 }

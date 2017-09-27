@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.auth.SignInActivity_;
+import com.dfa.vinatrip.domains.auth.sign_in.SignInActivity_;
 import com.dfa.vinatrip.domains.main.plan.detail_plan.DetailPlanActivity_;
 import com.dfa.vinatrip.domains.main.plan.make_plan.MakePlanActivity_;
 import com.dfa.vinatrip.services.DataService;

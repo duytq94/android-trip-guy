@@ -4,16 +4,16 @@
     package="com.dfa.vinatrip"
     >
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
-        android:name=".MainApplication_"
+        android:name="com.dfa.vinatrip.MainApplication_"
         android:allowBackup="true"
         android:icon="@drawable/ic_symbol"
         android:label="@string/app_name"
@@ -31,45 +31,45 @@
 
         <activity android:name=".domains.intro.WelcomeActivity_">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".domains.main.MainActivity_"
             android:windowSoftInputMode="adjustNothing"
             />
-        <activity android:name=".domains.main.province.detail_province.ProvinceDetailActivity_" />
-        <activity android:name=".domains.main.province.each_item_detail_province.EachItemProvinceDetailActivity_" />
-        <activity android:name=".utils.MapActivity_" />
+        <activity android:name=".domains.main.province.detail_province.ProvinceDetailActivity_"/>
+        <activity android:name=".domains.main.province.each_item_detail_province.EachItemProvinceDetailActivity_"/>
+        <activity android:name=".utils.MapActivity_"/>
         <activity
-            android:name=".domains.auth.SignUpActivity_"
+            android:name=".domains.auth.sign_up.SignUpActivity_"
             android:windowSoftInputMode="adjustResize"
             />
         <activity
-            android:name=".domains.auth.SignInActivity_"
+            android:name=".domains.auth.sign_in.SignInActivity_"
             android:windowSoftInputMode="adjustResize"
             />
         <activity
-            android:name=".domains.auth.ResetPasswordActivity_"
+            android:name=".domains.auth.reset_password.ResetPasswordActivity_"
             android:windowSoftInputMode="adjustResize"
             />
         <activity
             android:name=".domains.main.me.detail_me.UserProfileDetailActivity_"
             android:windowSoftInputMode="adjustResize"
             />
-        <activity android:name=".domains.main.province.each_item_detail_province.rating.RatingActivity_" />
-        <activity android:name=".utils.ShowFullPhotoActivity_" />
-        <activity android:name=".domains.main.splash.SplashScreenActivity_" />
-        <activity android:name=".domains.main.plan.make_plan.MakePlanActivity_" />
-        <activity android:name=".domains.main.plan.detail_plan.DetailPlanActivity_" />
-        <activity android:name=".domains.search.SearchActivity_" />
-        <activity android:name=".domains.main.plan.make_plan.ChooseBackgroundPlanActivity_" />
+        <activity android:name=".domains.main.province.each_item_detail_province.rating.RatingActivity_"/>
+        <activity android:name=".utils.ShowFullPhotoActivity_"/>
+        <activity android:name=".domains.main.splash.SplashScreenActivity_"/>
+        <activity android:name=".domains.main.plan.make_plan.MakePlanActivity_"/>
+        <activity android:name=".domains.main.plan.detail_plan.DetailPlanActivity_"/>
+        <activity android:name=".domains.search.SearchActivity_"/>
+        <activity android:name=".domains.main.plan.make_plan.ChooseBackgroundPlanActivity_"/>
         <activity
             android:name=".domains.main.share.make_share.MakeShareActivity_"
             android:windowSoftInputMode="adjustResize"
             />
-        <activity android:name=".domains.main.share.detail_share.DetailShareActivity_" />
-        <activity android:name=".domains.main.share.make_share.image_multi_select.SelectImageActivity_" />
+        <activity android:name=".domains.main.share.detail_share.DetailShareActivity_"/>
+        <activity android:name=".domains.main.share.make_share.image_multi_select.SelectImageActivity_"/>
     </application>
 </manifest>

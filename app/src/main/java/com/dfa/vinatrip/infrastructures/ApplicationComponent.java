@@ -1,5 +1,10 @@
 package com.dfa.vinatrip.infrastructures;
 
+import com.beesightsoft.caf.infrastructures.scope.ApplicationScope;
+import com.dfa.vinatrip.services.account.AccountService;
+
+import org.greenrobot.eventbus.EventBus;
+
 import dagger.Component;
 
 /**
@@ -9,5 +14,7 @@ import dagger.Component;
 @ApplicationScope
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
-
+    EventBus eventBusProvider();
+    
+    AccountService accountService();
 }

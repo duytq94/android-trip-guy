@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.auth.SignUpActivity_;
+import com.dfa.vinatrip.domains.auth.sign_up.SignUpActivity_;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 

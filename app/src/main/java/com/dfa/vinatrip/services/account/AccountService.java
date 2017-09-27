@@ -1,6 +1,6 @@
 package com.dfa.vinatrip.services.account;
 
-import com.dfa.vinatrip.models.request.SignUpRequest;
+import com.dfa.vinatrip.models.request.AuthRequest;
 import com.dfa.vinatrip.models.response.UserResponse;
 
 import rx.Observable;
@@ -11,5 +11,5 @@ import rx.Observable;
  */
 
 public interface AccountService {
-    Observable<UserResponse> signUp(SignUpRequest signUpRequest);
+    Observable<Object> signUp(AuthRequest signUpRequest);
 }

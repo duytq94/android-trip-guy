@@ -1,6 +1,6 @@
 package com.dfa.vinatrip.domains.intro;
 
-import com.dfa.vinatrip.infrastructures.ActivityScope;
+import com.beesightsoft.caf.infrastructures.scope.ActivityScope;
 import com.dfa.vinatrip.infrastructures.ApplicationComponent;
 
 import dagger.Component;

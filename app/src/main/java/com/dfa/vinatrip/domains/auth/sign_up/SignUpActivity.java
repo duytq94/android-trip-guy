@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.auth;
+package com.dfa.vinatrip.domains.auth.sign_up;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,6 +19,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.auth.reset_password.ResetPasswordActivity_;
+import com.dfa.vinatrip.domains.auth.sign_in.SignInActivity_;
 import com.dfa.vinatrip.domains.main.me.UserProfile;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.google.android.gms.tasks.OnCompleteListener;
