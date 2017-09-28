@@ -15,7 +15,7 @@ import com.dfa.vinatrip.domains.main.me.detail_me.my_rating.MyRatingFragment_;
 import com.dfa.vinatrip.domains.main.me.detail_me.update_profile.UpdateUserProfileFragment;
 import com.dfa.vinatrip.domains.main.me.detail_me.update_profile.UpdateUserProfileFragment_;
 import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.utils.ViewPagerSwipeFragmentAdapter;
+import com.dfa.vinatrip.widgets.ViewPagerSwipeFragmentAdapter;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;

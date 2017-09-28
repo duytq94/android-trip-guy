@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.domains.main.plan.detail_plan;
 
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -9,17 +8,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.me.UserProfile;
 import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.plan.Plan;
 import com.dfa.vinatrip.domains.main.plan.make_plan.PlanSchedule;
 import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
@@ -35,36 +34,36 @@ public class DetailPlanActivity extends AppCompatActivity {
     DataService dataService;
 
     @ViewById(R.id.my_toolbar)
-    Toolbar toolbar;
+    protected Toolbar toolbar;
 
     @ViewById(R.id.activity_detail_plan_civ_avatar)
-    CircleImageView civAvatar;
+    protected CircleImageView civAvatar;
 
     @ViewById(R.id.activity_detail_plan_tv_nickname)
-    TextView tvNickname;
+    protected TextView tvNickname;
 
     @ViewById(R.id.activity_detail_plan_tv_email)
-    TextView tvEmail;
+    protected TextView tvEmail;
 
     @ViewById(R.id.activity_detail_plan_rv_friend_join)
-    RecyclerView rvFriendJoin;
+    protected RecyclerView rvFriendJoin;
 
     @ViewById(R.id.activity_detail_plan_tv_destination)
-    TextView tvDestination;
+    protected TextView tvDestination;
 
     @ViewById(R.id.activity_detail_plan_tv_date_go)
-    TextView tvDateGo;
+    protected TextView tvDateGo;
 
     @ViewById(R.id.activity_detail_plan_tv_date_back)
-    TextView tvDateBack;
+    protected TextView tvDateBack;
 
     @ViewById(R.id.activity_detail_plan_tv_schedule)
-    TextView tvSchedule;
+    protected TextView tvSchedule;
 
     @ViewById(R.id.activity_detail_plan_tv_friend_not_available)
-    TextView tvFriendNotAvailable;
+    protected TextView tvFriendNotAvailable;
 
-    private android.support.v7.app.ActionBar actionBar;
+    private ActionBar actionBar;
     private Plan plan;
     private List<UserFriend> userFriendList;
     private List<UserFriend> friendInvitedList;
@@ -142,5 +141,10 @@ public class DetailPlanActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    @Click(R.id.activity_detail_plan_btn_chat_group)
+    public void onBtnChatGroupClick() {
+        
     }
 }

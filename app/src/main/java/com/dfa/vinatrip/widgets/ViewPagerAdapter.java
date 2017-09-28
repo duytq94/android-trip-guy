@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.utils;
+package com.dfa.vinatrip.widgets;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;

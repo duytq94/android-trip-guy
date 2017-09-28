@@ -62,7 +62,7 @@ public class ListUserProfileAdapter extends RecyclerView.Adapter<ListUserProfile
 
         holder.btnMakeFriend.setText("Kết bạn");
         holder.btnMakeFriend.setTag("Kết bạn");
-        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_neutral);
+        holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_neutral);
 
         // If one userProfile is in userFriendList of current user login
         for (int j = 0; j < userFriendList.size(); j++) {
@@ -79,7 +79,7 @@ public class ListUserProfileAdapter extends RecyclerView.Adapter<ListUserProfile
                     case "friend":
                         holder.btnMakeFriend.setText(R.string.friend);
                         holder.btnMakeFriend.setTag("Bạn bè");
-                        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_positive);
+                        holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_positive);
                         break;
                 }
             }
@@ -91,7 +91,7 @@ public class ListUserProfileAdapter extends RecyclerView.Adapter<ListUserProfile
                     case "Đã gửi":
                         holder.btnMakeFriend.setText("Kết bạn");
                         holder.btnMakeFriend.setTag("Kết bạn");
-                        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_neutral);
+                        holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_neutral);
                         // Delete data from the current user login
                         referenceFriend.child("UserFriend")
                                        .child(currentUser.getUid())
@@ -107,7 +107,7 @@ public class ListUserProfileAdapter extends RecyclerView.Adapter<ListUserProfile
                     case "Đồng ý":
                         holder.btnMakeFriend.setText(R.string.friend);
                         holder.btnMakeFriend.setTag("Bạn bè");
-                        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_positive);
+                        holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_positive);
                         // Add profile user request to the current user login
                         UserFriend userFriendBeRequested2
                                 = new UserFriend(
@@ -143,7 +143,7 @@ public class ListUserProfileAdapter extends RecyclerView.Adapter<ListUserProfile
                                                       holder.btnMakeFriend.setText("Kết bạn");
                                                       holder.btnMakeFriend.setTag("Kết bạn");
                                                       holder.btnMakeFriend
-                                                              .setBackgroundResource(R.drawable.custom_button_neutral);
+                                                              .setBackgroundResource(R.drawable.btn_neutral);
                                                       // Delete data to the current user login
                                                       referenceFriend.child("UserFriend")
                                                                      .child(currentUser.getUid())

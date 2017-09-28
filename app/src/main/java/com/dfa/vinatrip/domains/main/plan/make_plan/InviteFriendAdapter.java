@@ -48,20 +48,20 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
         if (currentPlan != null && currentPlan.getFriendInvitedList() != null) {
             holder.btnMakeFriend.setText("Mời");
             holder.btnMakeFriend.setTag("Mời");
-            holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_neutral);
+            holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_neutral);
 
             for (int i = 0; i < currentPlan.getFriendInvitedList().size(); i++) {
                 if (currentPlan.getFriendInvitedList().get(i).equals(userFriend.getFriendId())) {
                     holder.btnMakeFriend.setText(R.string.invited);
                     holder.btnMakeFriend.setTag("Đã mời");
-                    holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_positive);
+                    holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_positive);
                     break;
                 }
             }
         } else {
             holder.btnMakeFriend.setText("Mời");
             holder.btnMakeFriend.setTag("Mời");
-            holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_neutral);
+            holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_neutral);
         }
 
         holder.btnMakeFriend.setOnClickListener(new View.OnClickListener() {
@@ -71,14 +71,14 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
                     case "Mời":
                         holder.btnMakeFriend.setText(R.string.invited);
                         holder.btnMakeFriend.setTag("Đã mời");
-                        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_positive);
+                        holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_positive);
                         invitedFriendIdList.add(userFriend.getFriendId());
                         break;
 
                     case "Đã mời":
                         holder.btnMakeFriend.setText("Mời");
                         holder.btnMakeFriend.setTag("Mời");
-                        holder.btnMakeFriend.setBackgroundResource(R.drawable.custom_button_neutral);
+                        holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_neutral);
                         for (int i = 0; i < invitedFriendIdList.size(); i++) {
                             if (invitedFriendIdList.get(i).equals(userFriend.getFriendId())) {
                                 invitedFriendIdList.remove(i);

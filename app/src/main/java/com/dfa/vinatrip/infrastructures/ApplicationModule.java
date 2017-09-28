@@ -2,7 +2,6 @@ package com.dfa.vinatrip.infrastructures;
 
 import android.app.Application;
 
-import com.beesightsoft.caf.BuildConfig;
 import com.beesightsoft.caf.infrastructures.scope.ApplicationScope;
 import com.beesightsoft.caf.services.authentication.AuthenticationManagerConfiguration;
 import com.beesightsoft.caf.services.log.DefaultLogService;
@@ -13,6 +12,9 @@ import com.dfa.vinatrip.ApiUrls;
 import com.dfa.vinatrip.services.account.AccountService;
 import com.dfa.vinatrip.services.account.DefaultAccountService;
 import com.dfa.vinatrip.services.account.RestAccountService;
+import com.dfa.vinatrip.services.chat.ChatService;
+import com.dfa.vinatrip.services.chat.DefaultChatService;
+import com.dfa.vinatrip.services.chat.RestChatService;
 import com.dfa.vinatrip.services.filter.ApiErrorFilter;
 import com.dfa.vinatrip.utils.Constants;
 
@@ -31,23 +33,23 @@ import dagger.Provides;
 @Module
 public class ApplicationModule {
     private Application application;
-    
+
     public ApplicationModule(Application application) {
         this.application = application;
     }
-    
+
     @Provides
     @ApplicationScope
     public Application provideApplication() {
         return application;
     }
-    
+
     @Provides
     @ApplicationScope
     public EventBus providesEventBus() {
         return EventBus.getDefault();
     }
-    
+
     @Provides
     @ApplicationScope
     public LogService provideLogService() {
@@ -59,7 +61,7 @@ public class ApplicationModule {
         }
         return defaultLogService;
     }
-    
+
     @Provides
     @ApplicationScope
     public NetworkProvider provideNetworkProvider(LogService logService) {
@@ -67,15 +69,31 @@ public class ApplicationModule {
         networkProvider.enableFilter(true).addFilter(new ApiErrorFilter(networkProvider, logService));
         return networkProvider;
     }
-    
+
+    @Provides
+    @ApplicationScope
+    public ApiErrorFilter provideApiErrorFilter(NetworkProvider networkProvider, LogService logService) {
+        return new ApiErrorFilter(networkProvider, logService);
+    }
+
     @Provides
     @ApplicationScope
     public AccountService provideAccountService(NetworkProvider rxNetworkProvider) {
         RestAccountService restService =
                 rxNetworkProvider.addDefaultHeader()
-                        .provideApi(ApiUrls.SERVER_URL, RestAccountService.class);
-        
+                        .provideApi(ApiUrls.SERVER_API, RestAccountService.class);
+
         return new DefaultAccountService(AuthenticationManagerConfiguration.init()
                 .useStorage(Constants.KEY_USER_AUTH), rxNetworkProvider, restService);
+    }
+
+    @Provides
+    @ApplicationScope
+    public ChatService provideChatService(NetworkProvider rxNetworkProvider, ApiErrorFilter apiErrorFilter) {
+        RestChatService restService =
+                rxNetworkProvider.addDefaultHeader()
+                        .provideApi(ApiUrls.SERVER_API_CHAT, RestChatService.class);
+
+        return new DefaultChatService(restService, rxNetworkProvider, apiErrorFilter);
     }
 }

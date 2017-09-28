@@ -18,7 +18,7 @@ import com.dfa.vinatrip.domains.main.province.detail_province.province_hotel.Pro
 import com.dfa.vinatrip.domains.main.province.detail_province.province_hotel.ProvinceHotelFragment_;
 import com.dfa.vinatrip.domains.main.province.detail_province.province_photo.ProvincePhotoFragment;
 import com.dfa.vinatrip.domains.main.province.detail_province.province_photo.ProvincePhotoFragment_;
-import com.dfa.vinatrip.utils.ViewPagerSwipeFragmentAdapter;
+import com.dfa.vinatrip.widgets.ViewPagerSwipeFragmentAdapter;
 import com.dfa.vinatrip.R;
 
 import org.androidannotations.annotations.AfterViews;
