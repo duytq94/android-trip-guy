@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -16,6 +17,8 @@ import rx.Observable;
 public interface RestChatService {
     @GET("history/{groupId}")
     Observable<RestMessageResponse<List<BaseMessage>>> getHistory(
-            @Path("groupId") long groupId
+            @Path("groupId") long groupId,
+            @Query("page") int page,
+            @Query("pageSize") int pageSize
     );
 }

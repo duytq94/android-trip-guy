@@ -25,19 +25,21 @@ public class ChatGroupPresenter extends BasePresenter<ChatGroupView> {
         this.chatService = chatService;
     }
 
-    public void getHistory(long groupId) {
+    public void getHistory(long groupId, int page, int pageSize) {
         RxScheduler.onStop(subscriptionGetHistory);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscriptionGetHistory = chatService.getHistory(groupId)
+        subscriptionGetHistory = chatService.getHistory(groupId, page, pageSize)
                 .compose(RxScheduler.applyIoSchedulers())
                 .subscribe(baseMessageList -> {
                     if (isViewAttached()) {
+                        getView().hideLoading();
                         getView().getHistorySuccess(baseMessageList);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {
+                        getView().hideLoading();
                         getView().getDataFail(throwable);
                     }
                 });

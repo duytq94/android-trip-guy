@@ -11,5 +11,5 @@ import rx.Observable;
  */
 
 public interface ChatService {
-    Observable<List<BaseMessage>> getHistory(long groupId);
+    Observable<List<BaseMessage>> getHistory(long groupId, int page, int pageSize);
 }

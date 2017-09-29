@@ -55,7 +55,7 @@
                 android:visibility="gone"
                 app:siShape="@drawable/bg_item_chat_left"/>
 
-            <com.dfa.testsocketio.RotateLoading
+            <com.dfa.vinatrip.widgets.RotateLoading
                 android:id="@+id/item_chat_rotate_loading_left"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -95,7 +95,7 @@
             android:visibility="gone"
             app:siShape="@drawable/bg_item_chat_right"/>
 
-        <com.dfa.testsocketio.RotateLoading
+        <com.dfa.vinatrip.widgets.RotateLoading
             android:id="@+id/item_chat_rotate_loading_right"
             android:layout_width="50dp"
             android:layout_height="50dp"

@@ -35,7 +35,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private ImageLoader imageLoader;
     private DisplayImageOptions imageOptions;
 
-    public ChatGroupAdapter(String currentUser) {
+    public ChatGroupAdapter(String currentUser, List<BaseMessage> baseMessageList) {
         setHasStableIds(true);
         this.currentUser = currentUser;
         this.imageLoader = ImageLoader.getInstance();
@@ -44,6 +44,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 //                .showImageForEmptyUri(R.drawable.bg_orange)
 //                .showImageOnFail(R.drawable.bg_orange)
                 .build();
+        this.baseMessageList = baseMessageList;
     }
 
     @Override
