@@ -11,7 +11,7 @@ public class ApiUrls {
     /*Duong test*/
     public static final String SERVER_API = "http://172.16.0.7:8090/";
 
-    public static final String SERVER_API_CHAT = "http://192.168.149.128:3001";
+    public static final String SERVER_API_CHAT = "http://192.168.149.129:3001";
 
-    public static final String SERVER_SOCKET_CHAT = "http://192.168.149.128:3000";
+    public static final String SERVER_SOCKET_CHAT = "http://192.168.149.129:3000";
 }

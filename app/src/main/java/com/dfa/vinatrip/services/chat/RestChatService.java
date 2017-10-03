@@ -17,7 +17,7 @@ import rx.Observable;
 public interface RestChatService {
     @GET("history/{groupId}")
     Observable<RestMessageResponse<List<BaseMessage>>> getHistory(
-            @Path("groupId") long groupId,
+            @Path("groupId") String groupId,
             @Query("page") int page,
             @Query("pageSize") int pageSize
     );

@@ -21,6 +21,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -33,6 +34,9 @@ public class DetailPlanActivity extends AppCompatActivity {
 
     @Bean
     DataService dataService;
+
+    @Extra
+    protected Plan plan;
 
     @ViewById(R.id.my_toolbar)
     protected Toolbar toolbar;
@@ -65,7 +69,6 @@ public class DetailPlanActivity extends AppCompatActivity {
     protected TextView tvFriendNotAvailable;
 
     private ActionBar actionBar;
-    private Plan plan;
     private List<UserFriend> userFriendList;
     private List<UserFriend> friendInvitedList;
     private ListFriendHorizontalAdapter listFriendHorizontalAdapter;
@@ -74,10 +77,6 @@ public class DetailPlanActivity extends AppCompatActivity {
     @AfterViews
     void init() {
         currentUser = dataService.getCurrentUser();
-
-        // Get Plan from FragmentPlan
-        plan = getIntent().getParcelableExtra("Plan");
-
         setupAppBar();
         initView();
     }
@@ -146,6 +145,6 @@ public class DetailPlanActivity extends AppCompatActivity {
 
     @Click(R.id.activity_detail_plan_btn_chat_group)
     public void onBtnChatGroupClick() {
-        ChatGroupActivity_.intent(this).start();
+        ChatGroupActivity_.intent(this).plan(plan).start();
     }
 }

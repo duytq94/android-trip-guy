@@ -150,6 +150,13 @@ dependencies {
 
     compile 'com.github.nhancv:nc-android-nutc:1.2'
 
+    compile('com.sangcomz:FishBun:0.7.2') {
+        transitive = true
+    }
+
+    compile 'com.joanzapata.android:base-adapter-helper:1.1.11'
+
+    compile 'org.lucasr.twowayview:twowayview:0.1.4'
 }
 // this line has to put out of dependencies so app can run Google Map
 apply plugin: 'com.google.gms.google-services'

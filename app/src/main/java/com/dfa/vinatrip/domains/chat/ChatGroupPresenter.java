@@ -25,7 +25,7 @@ public class ChatGroupPresenter extends BasePresenter<ChatGroupView> {
         this.chatService = chatService;
     }
 
-    public void getHistory(long groupId, int page, int pageSize) {
+    public void getHistory(String groupId, int page, int pageSize) {
         RxScheduler.onStop(subscriptionGetHistory);
         if (isViewAttached()) {
             getView().showLoading();
@@ -35,7 +35,7 @@ public class ChatGroupPresenter extends BasePresenter<ChatGroupView> {
                 .subscribe(baseMessageList -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().getHistorySuccess(baseMessageList);
+                        getView().getHistorySuccess(baseMessageList, page);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {

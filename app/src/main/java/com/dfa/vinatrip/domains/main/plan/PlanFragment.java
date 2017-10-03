@@ -118,14 +118,14 @@ public class PlanFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 databaseReference.child("Plan").child(dataService.getCurrentUser().getUid())
-                                                 .child(planList.get(position).getId())
-                                                 .removeValue();
+                                        .child(planList.get(position).getId())
+                                        .removeValue();
 
                                 // Remove id user in friendInvitedList
                                 Plan updatePlan = planList.get(position);
                                 for (int j = 0; j < updatePlan.getFriendInvitedList().size(); j++) {
                                     if (updatePlan.getFriendInvitedList().get(j)
-                                                  .equals(dataService.getCurrentUser().getUid())) {
+                                            .equals(dataService.getCurrentUser().getUid())) {
                                         updatePlan.getFriendInvitedList().remove(j);
                                         break;
                                     }
@@ -134,38 +134,34 @@ public class PlanFragment extends Fragment {
                                 // Update this plan to another user
                                 for (int k = 0; k < updatePlan.getFriendInvitedList().size(); k++) {
                                     databaseReference.child("Plan")
-                                                     .child(updatePlan.getFriendInvitedList().get(k))
-                                                     .child(updatePlan.getId())
-                                                     .setValue(updatePlan);
+                                            .child(updatePlan.getFriendInvitedList().get(k))
+                                            .child(updatePlan.getId())
+                                            .setValue(updatePlan);
                                 }
 
                                 // Update this plan to the user create it
                                 databaseReference.child("Plan")
-                                                 .child(updatePlan.getUserMakePlan().getUid())
-                                                 .child(updatePlan.getId())
-                                                 .setValue(updatePlan);
+                                        .child(updatePlan.getUserMakePlan().getUid())
+                                        .child(updatePlan.getId())
+                                        .setValue(updatePlan);
 
                                 planList.remove(position);
                                 planAdapter.notifyDataSetChanged();
                             }
                         });
                 alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "HỦY",
-                                      new DialogInterface.OnClickListener() {
-                                          @Override
-                                          public void onClick(DialogInterface dialogInterface, int i) {
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
 
-                                          }
-                                      });
+                            }
+                        });
                 alertDialog.show();
             }
 
             @Override
             public void onClick(int position) {
-                Intent intent = new Intent(getActivity(), DetailPlanActivity_.class);
-
-                // Send Plan to DetailPlanActivity
-                intent.putExtra("Plan", planList.get(position));
-                startActivity(intent);
+                DetailPlanActivity_.intent(getActivity()).plan(planList.get(position)).start();
             }
         });
 
@@ -273,11 +269,11 @@ public class PlanFragment extends Fragment {
 
         // If no Internet, this method will not run
         databaseReference.child("Plan").child(dataService.getCurrentUser().getUid())
-                         .addChildEventListener(childEventListener);
+                .addChildEventListener(childEventListener);
 
         // This method to be called after all the onChildAdded() calls have happened
         databaseReference.child("Plan").child(dataService.getCurrentUser().getUid())
-                         .addListenerForSingleValueEvent(valueEventListener);
+                .addListenerForSingleValueEvent(valueEventListener);
     }
 
     @Override
