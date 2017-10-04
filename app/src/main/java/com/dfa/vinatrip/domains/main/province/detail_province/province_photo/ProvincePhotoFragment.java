@@ -8,9 +8,9 @@ import android.view.View;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.province.Province;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
-import com.dfa.vinatrip.utils.ShowFullPhotoActivity_;
-import com.dfa.vinatrip.utils.TripGuyUtils;
+import com.dfa.vinatrip.utils.ShowFullPhotoLocalActivity_;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -94,7 +94,7 @@ public class ProvincePhotoFragment extends Fragment {
             }
         };
 
-        if (TripGuyUtils.isNetworkConnected(getActivity())) {
+        if (AppUtil.isNetworkConnected(getActivity())) {
             srlReload.setRefreshing(true);
             loadProvincePhoto();
         }
@@ -102,7 +102,7 @@ public class ProvincePhotoFragment extends Fragment {
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (TripGuyUtils.isNetworkConnected(getActivity())) {
+                if (AppUtil.isNetworkConnected(getActivity())) {
                     provincePhotoList.clear();
                     srlReload.setRefreshing(true);
                     loadProvincePhoto();
@@ -120,7 +120,7 @@ public class ProvincePhotoFragment extends Fragment {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        ShowFullPhotoActivity_.intent(getActivity()).listUrlPhotos(
+                        ShowFullPhotoLocalActivity_.intent(getActivity()).listUrlPhotos(
                                 (ArrayList<String>) provincePhotoList).position(position).province(province).start();
                     }
 

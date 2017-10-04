@@ -11,9 +11,9 @@ import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.province.detail_province.ProvinceDetailActivity_;
 import com.dfa.vinatrip.domains.search.SearchActivity_;
 import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.widgets.AutoScrollViewPager;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
-import com.dfa.vinatrip.utils.TripGuyUtils;
+import com.dfa.vinatrip.widgets.AutoScrollViewPager;
 import com.dfa.vinatrip.widgets.ViewPagerAdapter;
 import com.dfa.vinatrip.widgets.ZoomOutPageTransformer;
 import com.google.firebase.database.ChildEventListener;
@@ -82,7 +82,7 @@ public class ProvinceFragment extends Fragment {
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (TripGuyUtils.isNetworkConnected(getActivity())) {
+                if (AppUtil.isNetworkConnected(getActivity())) {
                     provinceList.clear();
                     loadProvince();
                 } else {

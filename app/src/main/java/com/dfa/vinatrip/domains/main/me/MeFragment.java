@@ -22,7 +22,7 @@ import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.utils.TripGuyUtils;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -39,7 +39,8 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.blurry.Blurry;
 
-import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_UPDATE_INFO;
+import static com.dfa.vinatrip.utils.AppUtil.REQUEST_UPDATE_INFO;
+
 
 @EFragment(R.layout.fragment_me)
 public class MeFragment extends Fragment {
@@ -153,7 +154,7 @@ public class MeFragment extends Fragment {
         showAppInfo();
         srlReload.setColorSchemeResources(R.color.colorMain);
 
-        if (TripGuyUtils.isNetworkConnected(getActivity())) {
+        if (AppUtil.isNetworkConnected(getActivity())) {
             if (dataService.getCurrentUser() != null) {
                 initView();
             } else {
@@ -165,7 +166,7 @@ public class MeFragment extends Fragment {
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (TripGuyUtils.isNetworkConnected(getActivity())) {
+                if (AppUtil.isNetworkConnected(getActivity())) {
                     if (dataService.getCurrentUser() != null) {
                         initView();
                     }
@@ -242,7 +243,7 @@ public class MeFragment extends Fragment {
 
     public void initLlMyFriend() {
         listUserFriends.clear();
-        listUserFriends.addAll(TripGuyUtils.filterListFriends(dataService.getUserFriendList()));
+        listUserFriends.addAll(AppUtil.filterListFriends(dataService.getUserFriendList()));
         UserFriend userFriend;
         switch (listUserFriends.size()) {
             case 0:
@@ -327,8 +328,8 @@ public class MeFragment extends Fragment {
         }
         if (!dataService.getCurrentUser().getAvatar().isEmpty()) {
             Picasso.with(getActivity())
-                   .load(dataService.getCurrentUser().getAvatar())
-                   .into(target);
+                    .load(dataService.getCurrentUser().getAvatar())
+                    .into(target);
         }
     }
 
@@ -409,7 +410,7 @@ public class MeFragment extends Fragment {
         super.onActivityResult(requestCode, currentUserCode, data);
         // Reload view
         if (requestCode == REQUEST_UPDATE_INFO) {
-            if (TripGuyUtils.isNetworkConnected(getActivity())) {
+            if (AppUtil.isNetworkConnected(getActivity())) {
                 initView();
             }
         }
@@ -421,7 +422,7 @@ public class MeFragment extends Fragment {
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             if (isAdded()) {
                 Blurry.with(getActivity()).color(Color.argb(70, 80, 80, 80)).radius(10)
-                      .from(bitmap).into(ivBlurAvatar);
+                        .from(bitmap).into(ivBlurAvatar);
                 ivAvatar.setImageBitmap(bitmap);
             }
         }

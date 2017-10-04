@@ -22,7 +22,7 @@ import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.domains.auth.reset_password.ResetPasswordActivity_;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
-import com.dfa.vinatrip.utils.TripGuyUtils;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -126,12 +126,12 @@ public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
 
-        TripGuyUtils.setEnableAllViews(llRoot, false);
+        AppUtil.setEnableAllViews(llRoot, false);
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        TripGuyUtils.setEnableAllViews(llRoot, true);
+                        AppUtil.setEnableAllViews(llRoot, true);
                         if (!task.isSuccessful()) {
                             Toasty.error(SignInActivity.this, "Email hoặc mật khẩu không đúng!",
                                     Toast.LENGTH_SHORT).show();

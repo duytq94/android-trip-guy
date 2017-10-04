@@ -25,7 +25,7 @@ import com.dfa.vinatrip.domains.main.share.make_share.image_multi_select.BitmapH
 import com.dfa.vinatrip.domains.main.share.make_share.image_multi_select.SelectImageActivity_;
 import com.dfa.vinatrip.domains.search.SearchActivity_;
 import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.utils.TripGuyUtils;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseError;
@@ -51,7 +51,7 @@ import java.util.List;
 
 import es.dmoral.toasty.Toasty;
 
-import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PROVINCE;
+import static com.dfa.vinatrip.utils.AppUtil.REQUEST_PROVINCE;
 
 @EActivity(R.layout.activity_make_share)
 public class MakeShareActivity extends AppCompatActivity
@@ -219,7 +219,7 @@ public class MakeShareActivity extends AppCompatActivity
     @Override
     public void onValidationSucceeded() {
         progressBar.setVisibility(View.VISIBLE);
-        TripGuyUtils.setEnableAllViews(llRoot, false);
+        AppUtil.setEnableAllViews(llRoot, false);
 
         share.setId(String.valueOf(System.currentTimeMillis()));
         share.setContent(etContent.getText().toString());
@@ -238,7 +238,7 @@ public class MakeShareActivity extends AppCompatActivity
         if (adjustedBitmapList.size() > 0) {
             // Resize bitmap
             for (int i = 0; i < adjustedBitmapList.size(); i++) {
-                adjustedBitmapList.set(i, TripGuyUtils.scaleDown(adjustedBitmapList.get(i), 500, true));
+                adjustedBitmapList.set(i, AppUtil.scaleDown(adjustedBitmapList.get(i), 500, true));
             }
 
             for (int i = 0; i < adjustedBitmapList.size(); i++) {
@@ -262,7 +262,7 @@ public class MakeShareActivity extends AppCompatActivity
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception exception) {
-                                TripGuyUtils.setEnableAllViews(llRoot, true);
+                                AppUtil.setEnableAllViews(llRoot, true);
                                 Toasty.error(MakeShareActivity.this,
                                              "Upload hinh" + finalI + "không thành công\nBạn vui lòng thử lại",
                                              Toast.LENGTH_SHORT).show();

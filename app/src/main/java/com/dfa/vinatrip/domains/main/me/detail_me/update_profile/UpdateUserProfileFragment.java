@@ -28,7 +28,7 @@ import android.widget.Toast;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.me.UserProfile;
 import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.utils.TripGuyUtils;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.AutocompleteFilter;
@@ -62,9 +62,9 @@ import es.dmoral.toasty.Toasty;
 import jp.wasabeef.blurry.Blurry;
 
 import static android.app.Activity.RESULT_OK;
-import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PICK_IMAGE;
-import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PLACE_AUTO_COMPLETE;
-import static com.dfa.vinatrip.utils.TripGuyUtils.exifToDegrees;
+import static com.dfa.vinatrip.utils.AppUtil.REQUEST_PICK_IMAGE;
+import static com.dfa.vinatrip.utils.AppUtil.REQUEST_PLACE_AUTO_COMPLETE;
+import static com.dfa.vinatrip.utils.AppUtil.exifToDegrees;
 
 @EFragment(R.layout.fragment_update_user_profile)
 public class UpdateUserProfileFragment extends Fragment {
@@ -130,8 +130,8 @@ public class UpdateUserProfileFragment extends Fragment {
         if (currentUser != null) {
             if (!currentUser.getAvatar().equals("")) {
                 Picasso.with(getActivity())
-                       .load(currentUser.getAvatar())
-                       .into(target);
+                        .load(currentUser.getAvatar())
+                        .into(target);
             }
             etNickname.setText(currentUser.getNickname());
             tvCity.setText(currentUser.getCity());
@@ -168,7 +168,7 @@ public class UpdateUserProfileFragment extends Fragment {
     public void uploadUserAvatar() {
         svRoot.scrollTo(0, svRoot.getBottom());
         progressBar.setVisibility(View.VISIBLE);
-        TripGuyUtils.setEnableAllViews(svRoot, false);
+        AppUtil.setEnableAllViews(svRoot, false);
         tvPercent.setVisibility(View.VISIBLE);
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -178,9 +178,9 @@ public class UpdateUserProfileFragment extends Fragment {
 
         // Get the path and name photo be upload
         storageReference = FirebaseStorage.getInstance()
-                                          .getReferenceFromUrl("gs://tripguy-10864.appspot.com")
-                                          .child("AvatarProfileUser")
-                                          .child(currentUser.getUid() + ".jpg");
+                .getReferenceFromUrl("gs://tripguy-10864.appspot.com")
+                .child("AvatarProfileUser")
+                .child(currentUser.getUid() + ".jpg");
 
         UploadTask uploadTask = storageReference.putBytes(byteArrayPhoto);
         uploadTask
@@ -197,11 +197,11 @@ public class UpdateUserProfileFragment extends Fragment {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         progressBar.setVisibility(View.GONE);
-                        TripGuyUtils.setEnableAllViews(svRoot, true);
+                        AppUtil.setEnableAllViews(svRoot, true);
                         tvPercent.setVisibility(View.GONE);
                         Toasty.error(getActivity(),
-                                     "Cập nhật không thành công\nBạn vui lòng thử lại",
-                                     Toast.LENGTH_SHORT).show();
+                                "Cập nhật không thành công\nBạn vui lòng thử lại",
+                                Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -217,18 +217,18 @@ public class UpdateUserProfileFragment extends Fragment {
                         if (isAdded()) {
                             UserProfile newUserProfile =
                                     new UserProfile(etNickname.getText().toString(),
-                                                    linkAvatar,
-                                                    etIntroduceYourSelf.getText().toString(),
-                                                    tvCity.getText().toString(),
-                                                    tvBirthday.getText().toString(),
-                                                    currentUser.getUid(),
-                                                    spnSex.getSelectedItem().toString(),
-                                                    currentUser.getEmail());
+                                            linkAvatar,
+                                            etIntroduceYourSelf.getText().toString(),
+                                            tvCity.getText().toString(),
+                                            tvBirthday.getText().toString(),
+                                            currentUser.getUid(),
+                                            spnSex.getSelectedItem().toString(),
+                                            currentUser.getEmail());
                             databaseReference.child("UserProfile").child(currentUser.getUid())
-                                             .setValue(newUserProfile);
+                                    .setValue(newUserProfile);
                             dataService.updateInforCurrentUser(newUserProfile);
                             progressBar.setVisibility(View.GONE);
-                            TripGuyUtils.setEnableAllViews(svRoot, true);
+                            AppUtil.setEnableAllViews(svRoot, true);
                             tvPercent.setVisibility(View.GONE);
                             Toasty.success(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                             getActivity().finish();
@@ -243,30 +243,30 @@ public class UpdateUserProfileFragment extends Fragment {
         if (uri == null) {
             final UserProfile newUserProfile =
                     new UserProfile(etNickname.getText().toString(),
-                                    currentUser.getAvatar(),
-                                    etIntroduceYourSelf.getText().toString(),
-                                    tvCity.getText().toString(),
-                                    tvBirthday.getText().toString(),
-                                    currentUser.getUid(),
-                                    spnSex.getSelectedItem().toString(),
-                                    currentUser.getEmail());
+                            currentUser.getAvatar(),
+                            etIntroduceYourSelf.getText().toString(),
+                            tvCity.getText().toString(),
+                            tvBirthday.getText().toString(),
+                            currentUser.getUid(),
+                            spnSex.getSelectedItem().toString(),
+                            currentUser.getEmail());
 
             databaseReference.child("UserProfile").child(currentUser.getUid())
-                             .setValue(newUserProfile, new DatabaseReference.CompletionListener() {
-                                 @Override
-                                 public void onComplete(DatabaseError databaseError,
-                                                        DatabaseReference databaseReference) {
-                                     if (databaseError != null) {
-                                         Toasty.error(getActivity(), "Lỗi đường truyền, bạn hãy gửi lại!",
-                                                      Toast.LENGTH_SHORT).show();
-                                     } else {
-                                         dataService.updateInforCurrentUser(newUserProfile);
-                                         Toasty.success(getActivity(), "Cập nhật thành công!", Toast.LENGTH_SHORT)
-                                               .show();
-                                         getActivity().finish();
-                                     }
-                                 }
-                             });
+                    .setValue(newUserProfile, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError,
+                                               DatabaseReference databaseReference) {
+                            if (databaseError != null) {
+                                Toasty.error(getActivity(), "Lỗi đường truyền, bạn hãy gửi lại!",
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                dataService.updateInforCurrentUser(newUserProfile);
+                                Toasty.success(getActivity(), "Cập nhật thành công!", Toast.LENGTH_SHORT)
+                                        .show();
+                                getActivity().finish();
+                            }
+                        }
+                    });
         } else {
             uploadUserAvatar();
         }
@@ -328,8 +328,8 @@ public class UpdateUserProfileFragment extends Fragment {
 
             // Show avatar be chosen for user first, not upload yet
             Picasso.with(getActivity())
-                   .load(uri)
-                   .into(target);
+                    .load(uri)
+                    .into(target);
         } else {
             Toasty.error(getActivity(), "Không thể chọn được hình, bạn hãy thử lại", Toast.LENGTH_SHORT).show();
         }
@@ -349,9 +349,9 @@ public class UpdateUserProfileFragment extends Fragment {
     private Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            bitmap = TripGuyUtils.scaleDown(bitmap, 300, true);
+            bitmap = AppUtil.scaleDown(bitmap, 300, true);
             try {
-                String realPath = TripGuyUtils.getRealPath(getActivity(), uri);
+                String realPath = AppUtil.getRealPath(getActivity(), uri);
                 ExifInterface exif = new ExifInterface(realPath);
                 int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
                 if (orientation != 0f) {
@@ -360,7 +360,7 @@ public class UpdateUserProfileFragment extends Fragment {
                     matrix.preRotate(rotationInDegrees);
                     adjustedBitmap = Bitmap
                             .createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-                    adjustedBitmap = TripGuyUtils.scaleDown(adjustedBitmap, 300, true);
+                    adjustedBitmap = AppUtil.scaleDown(adjustedBitmap, 300, true);
                 } else {
                     adjustedBitmap = bitmap;
                 }
@@ -369,11 +369,11 @@ public class UpdateUserProfileFragment extends Fragment {
 
             if (adjustedBitmap != null) {
                 Blurry.with(getActivity()).color(Color.argb(70, 80, 80, 80)).radius(10)
-                      .from(adjustedBitmap).into(ivBlurAvatar);
+                        .from(adjustedBitmap).into(ivBlurAvatar);
                 ivAvatar.setImageBitmap(adjustedBitmap);
             } else {
                 Blurry.with(getActivity()).color(Color.argb(70, 80, 80, 80)).radius(10)
-                      .from(bitmap).into(ivBlurAvatar);
+                        .from(bitmap).into(ivBlurAvatar);
                 ivAvatar.setImageBitmap(bitmap);
             }
         }
@@ -392,7 +392,7 @@ public class UpdateUserProfileFragment extends Fragment {
     public void askPermission() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) !=
-                PackageManager.PERMISSION_GRANTED) {
+                    PackageManager.PERMISSION_GRANTED) {
                 String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
                 ActivityCompat.requestPermissions(getActivity(), permissions, 10);
             }
@@ -401,11 +401,11 @@ public class UpdateUserProfileFragment extends Fragment {
 
     public boolean checkPermission() {
         return ActivityCompat.checkSelfPermission(getActivity(),
-                                                  Manifest.permission.ACCESS_FINE_LOCATION) ==
-               PackageManager.PERMISSION_GRANTED &&
-               ActivityCompat.checkSelfPermission(getActivity(),
-                                                  Manifest.permission.ACCESS_COARSE_LOCATION) ==
-               PackageManager.PERMISSION_GRANTED;
+                Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED;
     }
 
 

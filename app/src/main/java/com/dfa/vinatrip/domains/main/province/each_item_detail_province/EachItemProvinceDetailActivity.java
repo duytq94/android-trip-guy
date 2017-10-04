@@ -1,8 +1,6 @@
 package com.dfa.vinatrip.domains.main.province.each_item_detail_province;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +16,6 @@ import com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_pro
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_food.EachProvinceFoodFragment_;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_hotel.EachProvinceHotelFragment;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_hotel.EachProvinceHotelFragment_;
-import com.dfa.vinatrip.utils.TripGuyUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;

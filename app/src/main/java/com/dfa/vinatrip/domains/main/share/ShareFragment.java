@@ -15,8 +15,8 @@ import com.dfa.vinatrip.domains.auth.sign_in.SignInActivity_;
 import com.dfa.vinatrip.domains.main.share.detail_share.DetailShareActivity_;
 import com.dfa.vinatrip.domains.main.share.make_share.MakeShareActivity_;
 import com.dfa.vinatrip.services.DataService;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
-import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -67,7 +67,7 @@ public class ShareFragment extends Fragment {
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (TripGuyUtils.isNetworkConnected(getActivity())) {
+                if (AppUtil.isNetworkConnected(getActivity())) {
                     shareList.clear();
                     loadShare();
                 } else {

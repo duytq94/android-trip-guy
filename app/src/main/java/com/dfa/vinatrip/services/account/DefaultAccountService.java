@@ -1,15 +1,11 @@
 package com.dfa.vinatrip.services.account;
 
 import com.beesightsoft.caf.services.authentication.AbstractAccountManager;
-import com.beesightsoft.caf.services.authentication.AbstractAuthenticationManager;
 import com.beesightsoft.caf.services.authentication.AuthenticationManagerConfiguration;
-import com.beesightsoft.caf.services.filter.AuthenticationSuccessFilter;
-import com.beesightsoft.caf.services.log.DefaultLogService;
 import com.beesightsoft.caf.services.network.NetworkProvider;
 import com.dfa.vinatrip.models.request.AuthRequest;
 import com.dfa.vinatrip.models.request.SignInSocialRequest;
 import com.dfa.vinatrip.models.response.User;
-import com.dfa.vinatrip.services.filter.ApiErrorFilter;
 
 import rx.Observable;
 

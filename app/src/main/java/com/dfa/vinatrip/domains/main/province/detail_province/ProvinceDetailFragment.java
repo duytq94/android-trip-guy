@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 
+import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.province.Province;
 import com.dfa.vinatrip.domains.main.province.detail_province.province_description.ProvinceDescriptionFragment;
 import com.dfa.vinatrip.domains.main.province.detail_province.province_description.ProvinceDescriptionFragment_;
@@ -19,7 +20,6 @@ import com.dfa.vinatrip.domains.main.province.detail_province.province_hotel.Pro
 import com.dfa.vinatrip.domains.main.province.detail_province.province_photo.ProvincePhotoFragment;
 import com.dfa.vinatrip.domains.main.province.detail_province.province_photo.ProvincePhotoFragment_;
 import com.dfa.vinatrip.widgets.ViewPagerSwipeFragmentAdapter;
-import com.dfa.vinatrip.R;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;

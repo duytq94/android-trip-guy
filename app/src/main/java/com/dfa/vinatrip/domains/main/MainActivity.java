@@ -3,12 +3,10 @@ package com.dfa.vinatrip.domains.main;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -29,8 +27,8 @@ import com.dfa.vinatrip.domains.main.province.ProvinceFragment;
 import com.dfa.vinatrip.domains.main.province.ProvinceFragment_;
 import com.dfa.vinatrip.domains.main.share.ShareFragment;
 import com.dfa.vinatrip.domains.main.share.ShareFragment_;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.StopShiftModeBottomNavView;
-import com.dfa.vinatrip.utils.TripGuyUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -73,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         // load fragment_province first
         selectFragment(bnvMenu.getMenu().getItem(0));
 
-        if (!TripGuyUtils.isNetworkConnected(MainActivity.this)) {
+        if (!AppUtil.isNetworkConnected(MainActivity.this)) {
             snackbar = Snackbar
                     .make(findViewById(R.id.activity_main), "Không có kết nối Internet", Snackbar.LENGTH_LONG);
             View viewSnackbar = snackbar.getView();

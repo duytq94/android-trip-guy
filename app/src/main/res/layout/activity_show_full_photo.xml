@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_full_photo"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:background="#000000"
+    android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/activity_full_photo_vp_show_full"
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/activity_show_full_photo_photoview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/black"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
         />
-</LinearLayout>
+
+    <com.dfa.vinatrip.widgets.RotateLoading
+        android:id="@+id/activity_show_full_photo_rotate_loading_right"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:loading_width="3dp"/>
+
+</RelativeLayout>

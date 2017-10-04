@@ -22,7 +22,6 @@ import com.dfa.vinatrip.domains.main.me.UserProfile;
 import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.plan.Plan;
 import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.AutocompleteFilter;
@@ -52,7 +51,7 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
-import static com.dfa.vinatrip.utils.TripGuyUtils.REQUEST_PLACE_AUTO_COMPLETE;
+import static com.dfa.vinatrip.utils.AppUtil.REQUEST_PLACE_AUTO_COMPLETE;
 
 @EActivity(R.layout.activity_make_plan)
 public class MakePlanActivity extends AppCompatActivity implements Validator.ValidationListener {

@@ -3,10 +3,9 @@ package com.dfa.vinatrip.utils;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -17,6 +16,7 @@ import android.view.ViewGroup;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.province.Province;
 import com.dfa.vinatrip.domains.main.province.detail_province.province_destination.ProvinceDestination;
+import com.dfa.vinatrip.widgets.ZoomOutPageTransformer;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
 
@@ -27,36 +27,37 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 
-@EActivity(R.layout.activity_show_full_photo)
-public class ShowFullPhotoActivity extends AppCompatActivity {
+@EActivity(R.layout.activity_show_full_photo_local)
+public class ShowFullPhotoLocalActivity extends AppCompatActivity {
 
-    @ViewById(R.id.activity_full_photo_vp_show_full)
-    ViewPager vpShowFull;
+    @ViewById(R.id.activity_full_photo_local_vp_show_full)
+    protected ViewPager vpShowFull;
     @ViewById(R.id.my_toolbar)
-    Toolbar toolbar;
+    protected Toolbar toolbar;
 
     @Extra
-    ArrayList<String> listUrlPhotos;
+    protected ArrayList<String> listUrlPhotos;
     @Extra
-    int position;
+    protected int position;
 
     // Get intent from detail destination
     @Extra
-    ProvinceDestination destination;
+    protected ProvinceDestination destination;
 
     // Get intent from detail province
     @Extra
-    Province province;
+    protected Province province;
 
     private CustomPagerAdapter customPagerAdapter;
-    private android.support.v7.app.ActionBar actionBar;
+    private ActionBar actionBar;
 
     @AfterViews
-    void init() {
+    public void init() {
         setupActionBar();
 
-        customPagerAdapter = new CustomPagerAdapter(ShowFullPhotoActivity.this);
+        customPagerAdapter = new CustomPagerAdapter(ShowFullPhotoLocalActivity.this);
         vpShowFull.setAdapter(customPagerAdapter);
+        vpShowFull.setPageTransformer(true, new ZoomOutPageTransformer());
 
         vpShowFull.setCurrentItem(position);
     }
@@ -82,10 +83,10 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             PhotoView photoView = (PhotoView) layoutInflater.inflate(R.layout.item_full_photo, container, false);
-            Picasso.with(ShowFullPhotoActivity.this)
-                   .load(listUrlPhotos.get(position))
-                   .placeholder(R.drawable.ic_loading)
-                   .into(photoView);
+            Picasso.with(ShowFullPhotoLocalActivity.this)
+                    .load(listUrlPhotos.get(position))
+                    .placeholder(R.drawable.ic_loading)
+                    .into(photoView);
             container.addView(photoView);
             return photoView;
         }
@@ -111,7 +112,6 @@ public class ShowFullPhotoActivity extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
     }
 
     @Override

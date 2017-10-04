@@ -1,7 +1,5 @@
 package com.dfa.vinatrip.domains.main.splash;
 
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -15,7 +13,6 @@ import com.dfa.vinatrip.domains.main.province.Province;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
 import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.services.FirebaseApi;
-import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 

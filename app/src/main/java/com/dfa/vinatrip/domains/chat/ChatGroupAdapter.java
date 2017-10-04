@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.domains.chat;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.models.TypeMessage;
 import com.dfa.vinatrip.models.response.BaseMessage;
+import com.dfa.vinatrip.utils.AdapterChatListener;
 import com.dfa.vinatrip.widgets.RotateLoading;
 import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -34,17 +36,23 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private List<BaseMessage> baseMessageList;
     private ImageLoader imageLoader;
     private DisplayImageOptions imageOptions;
+    private AdapterChatListener adapterChatListener;
 
-    public ChatGroupAdapter(String currentUser, List<BaseMessage> baseMessageList) {
+    public ChatGroupAdapter(String currentUser, List<BaseMessage> baseMessageList, Context context) {
         setHasStableIds(true);
         this.currentUser = currentUser;
         this.imageLoader = ImageLoader.getInstance();
         this.imageOptions = new DisplayImageOptions.Builder()
-//                .showImageOnLoading(R.drawable.bg_orange)
-//                .showImageForEmptyUri(R.drawable.bg_orange)
-//                .showImageOnFail(R.drawable.bg_orange)
+                .showImageOnLoading(R.drawable.bg_green) // resource or drawable
+                .showImageForEmptyUri(R.drawable.photo_not_available) // resource or drawable
+                .showImageOnFail(R.drawable.photo_not_available)
+                .resetViewBeforeLoading(true)  // default
+                .cacheInMemory(true) // default
+                .cacheOnDisk(true) // default
+                .bitmapConfig(Bitmap.Config.ARGB_4444) // default
                 .build();
         this.baseMessageList = baseMessageList;
+        this.adapterChatListener = (AdapterChatListener) context;
     }
 
     @Override
@@ -99,6 +107,10 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                 messageHolder.rotateLoadingLeft.stop();
                             }
                         });
+
+                messageHolder.psivPhotoLeft.setOnClickListener(view -> {
+                    adapterChatListener.onPhotoClick(baseMessage.getContent());
+                });
             }
 
         } else {
@@ -140,6 +152,10 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                 messageHolder.rotateLoadingRight.stop();
                             }
                         });
+
+                messageHolder.psivPhotoRight.setOnClickListener(view -> {
+                    adapterChatListener.onPhotoClick(baseMessage.getContent());
+                });
             }
         }
     }

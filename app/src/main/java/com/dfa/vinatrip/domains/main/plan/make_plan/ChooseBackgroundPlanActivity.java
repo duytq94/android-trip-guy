@@ -1,14 +1,11 @@
 package com.dfa.vinatrip.domains.main.plan.make_plan;
 
 import android.content.Intent;
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.utils.TripGuyUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;

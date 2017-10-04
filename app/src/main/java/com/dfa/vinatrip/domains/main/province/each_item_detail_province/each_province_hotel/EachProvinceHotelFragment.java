@@ -15,8 +15,8 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.province.detail_province.province_hotel.ProvinceHotel;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.MapActivity_;
-import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -119,14 +119,14 @@ public class EachProvinceHotelFragment extends Fragment {
         };
 
         srlReload.setColorSchemeResources(R.color.colorMain);
-        if (TripGuyUtils.isNetworkConnected(getActivity())) {
+        if (AppUtil.isNetworkConnected(getActivity())) {
             srlReload.setRefreshing(true);
             loadProvinceHotelPhoto();
         }
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (TripGuyUtils.isNetworkConnected(getActivity())) {
+                if (AppUtil.isNetworkConnected(getActivity())) {
                     listUrlPhotos.clear();
                     srlReload.setRefreshing(true);
                     loadProvinceHotelPhoto();

@@ -16,7 +16,6 @@ import com.dfa.vinatrip.domains.main.province.Province;
 import com.dfa.vinatrip.domains.main.province.detail_province.ProvinceDetailActivity_;
 import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
-import com.dfa.vinatrip.utils.TripGuyUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;

@@ -6,11 +6,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.province.Province;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.EachItemProvinceDetailActivity_;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
-import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -113,7 +113,7 @@ public class ProvinceFoodFragment extends Fragment {
             }
         };
 
-        if (TripGuyUtils.isNetworkConnected(getActivity())) {
+        if (AppUtil.isNetworkConnected(getActivity())) {
             srlReload.setRefreshing(true);
             loadProvinceFood();
         }
@@ -121,7 +121,7 @@ public class ProvinceFoodFragment extends Fragment {
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (TripGuyUtils.isNetworkConnected(getActivity())) {
+                if (AppUtil.isNetworkConnected(getActivity())) {
                     provinceFoodList.clear();
                     srlReload.setRefreshing(true);
                     loadProvinceFood();

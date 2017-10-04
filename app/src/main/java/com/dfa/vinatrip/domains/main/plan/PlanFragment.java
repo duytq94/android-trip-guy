@@ -16,7 +16,7 @@ import com.dfa.vinatrip.domains.auth.sign_in.SignInActivity_;
 import com.dfa.vinatrip.domains.main.plan.detail_plan.DetailPlanActivity_;
 import com.dfa.vinatrip.domains.main.plan.make_plan.MakePlanActivity_;
 import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.utils.TripGuyUtils;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -64,7 +64,7 @@ public class PlanFragment extends Fragment {
     void init() {
         planList = new ArrayList<>();
 
-        if (TripGuyUtils.isNetworkConnected(getActivity())) {
+        if (AppUtil.isNetworkConnected(getActivity())) {
             if (dataService.getCurrentUser() != null) {
                 initView();
             } else {
@@ -77,7 +77,7 @@ public class PlanFragment extends Fragment {
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (TripGuyUtils.isNetworkConnected(getActivity())) {
+                if (AppUtil.isNetworkConnected(getActivity())) {
                     if (dataService.getCurrentUser() != null) {
                         planList.clear();
                         initView();

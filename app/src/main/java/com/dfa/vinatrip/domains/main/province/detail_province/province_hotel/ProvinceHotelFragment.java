@@ -9,8 +9,8 @@ import android.view.View;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.province.Province;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.EachItemProvinceDetailActivity_;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
-import com.dfa.vinatrip.utils.TripGuyUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -115,7 +115,7 @@ public class ProvinceHotelFragment extends Fragment {
             }
         };
 
-        if (TripGuyUtils.isNetworkConnected(getActivity())) {
+        if (AppUtil.isNetworkConnected(getActivity())) {
             srlReload.setRefreshing(true);
             loadProvinceHotel();
         }
@@ -123,7 +123,7 @@ public class ProvinceHotelFragment extends Fragment {
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (TripGuyUtils.isNetworkConnected(getActivity())) {
+                if (AppUtil.isNetworkConnected(getActivity())) {
                     provinceHotelList.clear();
                     srlReload.setRefreshing(true);
                     loadProvinceHotel();

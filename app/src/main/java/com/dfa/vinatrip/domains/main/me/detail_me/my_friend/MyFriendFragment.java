@@ -11,7 +11,7 @@ import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.me.ListFriendVerticalAdapter;
 import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.utils.TripGuyUtils;
+import com.dfa.vinatrip.utils.AppUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -44,14 +44,14 @@ public class MyFriendFragment extends Fragment {
             @Override
             public void onAddFriend() {
                 listUserFriends.clear();
-                listUserFriends.addAll(TripGuyUtils.filterListFriends(dataService.getUserFriendList()));
+                listUserFriends.addAll(AppUtil.filterListFriends(dataService.getUserFriendList()));
                 listFriendVerticalAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onRemoveFriend() {
                 listUserFriends.clear();
-                listUserFriends.addAll(TripGuyUtils.filterListFriends(dataService.getUserFriendList()));
+                listUserFriends.addAll(AppUtil.filterListFriends(dataService.getUserFriendList()));
                 listFriendVerticalAdapter.notifyDataSetChanged();
                 if (listUserFriends.size() == 0) {
                     llFriendNotAvailable.setVisibility(View.VISIBLE);
@@ -61,7 +61,7 @@ public class MyFriendFragment extends Fragment {
             }
         });
 
-        listUserFriends.addAll(TripGuyUtils.filterListFriends(dataService.getUserFriendList()));
+        listUserFriends.addAll(AppUtil.filterListFriends(dataService.getUserFriendList()));
         if (listUserFriends.size() == 0) {
             llFriendNotAvailable.setVisibility(View.VISIBLE);
         } else {

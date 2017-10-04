@@ -18,10 +18,10 @@ import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.R
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.RatingAdapter;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
 import com.dfa.vinatrip.services.DataService;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.MapActivity_;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
-import com.dfa.vinatrip.utils.ShowFullPhotoActivity_;
-import com.dfa.vinatrip.utils.TripGuyUtils;
+import com.dfa.vinatrip.utils.ShowFullPhotoLocalActivity_;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,7 +44,7 @@ import java.util.List;
 import es.dmoral.toasty.Toasty;
 
 import static android.app.Activity.RESULT_OK;
-import static com.dfa.vinatrip.utils.TripGuyUtils.NOTIFY_UPDATE_REQUEST;
+import static com.dfa.vinatrip.utils.AppUtil.NOTIFY_UPDATE_REQUEST;
 
 @EFragment(R.layout.fragment_each_province_destination)
 public class EachProvinceDestinationFragment extends Fragment {
@@ -102,7 +102,7 @@ public class EachProvinceDestinationFragment extends Fragment {
         setContentViews();
 
         srlReload.setColorSchemeResources(R.color.colorMain);
-        if (TripGuyUtils.isNetworkConnected(getActivity())) {
+        if (AppUtil.isNetworkConnected(getActivity())) {
             srlReload.setRefreshing(true);
             loadProvinceDestinationPhoto();
             loadProvinceDestinationRating();
@@ -111,7 +111,7 @@ public class EachProvinceDestinationFragment extends Fragment {
         srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (TripGuyUtils.isNetworkConnected(getActivity())) {
+                if (AppUtil.isNetworkConnected(getActivity())) {
                     listUrlPhotos.clear();
                     listUserRatings.clear();
                     srlReload.setRefreshing(true);
@@ -141,7 +141,7 @@ public class EachProvinceDestinationFragment extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                ShowFullPhotoActivity_.intent(getActivity()).destination(destination).position(position)
+                                ShowFullPhotoLocalActivity_.intent(getActivity()).destination(destination).position(position)
                                                       .listUrlPhotos((ArrayList<String>) listUrlPhotos).start();
                             }
 
@@ -155,7 +155,7 @@ public class EachProvinceDestinationFragment extends Fragment {
     @OnActivityResult(NOTIFY_UPDATE_REQUEST)
     void onResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK && data != null) {
-            if (TripGuyUtils.isNetworkConnected(getActivity())) {
+            if (AppUtil.isNetworkConnected(getActivity())) {
                 listUserRatings.clear();
                 loadProvinceDestinationRating();
             }
