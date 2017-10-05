@@ -1,7 +1,10 @@
 package com.dfa.vinatrip.domains.main.me.detail_me.make_friend;
 
-public class UserFriend {
-    String friendId, nickname, avatar, email, state;
+import java.io.Serializable;
+
+public class UserFriend implements Serializable {
+    private String friendId, nickname, avatar, email, state;
+    private boolean isOnline;
 
     public UserFriend() {
     }
@@ -12,6 +15,7 @@ public class UserFriend {
         this.avatar = avatar;
         this.email = email;
         this.state = state;
+        this.isOnline = false;
     }
 
     public String getFriendId() {
@@ -32,5 +36,13 @@ public class UserFriend {
 
     public String getState() {
         return state;
+    }
+
+    public boolean getIsOnline() {
+        return isOnline;
+    }
+
+    public void setIsOnline(boolean online) {
+        isOnline = online;
     }
 }

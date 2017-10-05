@@ -143,7 +143,7 @@ dependencies {
     // Circle indicator
     compile 'me.relex:circleindicator:1.2.2@aar'
 
-    compile ('io.socket:socket.io-client:1.0.0') {
+    compile('io.socket:socket.io-client:1.0.0') {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
@@ -159,4 +159,7 @@ dependencies {
     compile 'org.lucasr.twowayview:twowayview:0.1.4'
 }
 // this line has to put out of dependencies so app can run Google Map
+dependencies {
+    compile 'com.android.support.constraint:constraint-layout:+'
+}
 apply plugin: 'com.google.gms.google-services'

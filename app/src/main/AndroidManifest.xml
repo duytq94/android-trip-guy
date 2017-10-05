@@ -66,6 +66,8 @@
         <activity android:name=".domains.main.share.make_share.image_multi_select.SelectImageActivity_"/>
         <activity android:name=".domains.chat.ChatGroupActivity_">
         </activity>
+        <activity android:name=".domains.chat.ShowUserOnlineActivity_">
+        </activity>
     </application>
 
 </manifest>

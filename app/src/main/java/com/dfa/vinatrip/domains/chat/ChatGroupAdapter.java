@@ -23,6 +23,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -35,23 +36,36 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private String currentUser;
     private List<BaseMessage> baseMessageList;
     private ImageLoader imageLoader;
-    private DisplayImageOptions imageOptions;
+    private DisplayImageOptions displayImageOptionsPhoto;
+    private DisplayImageOptions displayImageOptionsAvatar;
     private AdapterChatListener adapterChatListener;
+    private Map<String, String> mapAvatar;
 
-    public ChatGroupAdapter(String currentUser, List<BaseMessage> baseMessageList, Context context) {
+    public ChatGroupAdapter(String currentUser, List<BaseMessage> baseMessageList,
+                            Map<String, String> mapAvatar, Context context) {
         setHasStableIds(true);
         this.currentUser = currentUser;
         this.imageLoader = ImageLoader.getInstance();
-        this.imageOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.bg_green) // resource or drawable
-                .showImageForEmptyUri(R.drawable.photo_not_available) // resource or drawable
+        this.displayImageOptionsPhoto = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.bg_green)
+                .showImageForEmptyUri(R.drawable.photo_not_available)
                 .showImageOnFail(R.drawable.photo_not_available)
-                .resetViewBeforeLoading(true)  // default
-                .cacheInMemory(true) // default
-                .cacheOnDisk(true) // default
-                .bitmapConfig(Bitmap.Config.ARGB_4444) // default
+                .resetViewBeforeLoading(true)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .bitmapConfig(Bitmap.Config.ARGB_4444)
+                .build();
+        this.displayImageOptionsAvatar = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.ic_avatar)
+                .showImageForEmptyUri(R.drawable.ic_avatar)
+                .showImageOnFail(R.drawable.ic_avatar)
+                .resetViewBeforeLoading(true)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .bitmapConfig(Bitmap.Config.ARGB_4444)
                 .build();
         this.baseMessageList = baseMessageList;
+        this.mapAvatar = mapAvatar;
         this.adapterChatListener = (AdapterChatListener) context;
     }
 
@@ -81,7 +95,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 messageHolder.tvMsgLeft.setVisibility(View.GONE);
                 messageHolder.psivPhotoLeft.setVisibility(View.VISIBLE);
 
-                imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoLeft, imageOptions,
+                imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoLeft, displayImageOptionsPhoto,
                         new ImageLoadingListener() {
                             @Override
                             public void onLoadingStarted(String s, View view) {
@@ -113,6 +127,21 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 });
             }
 
+            if (position + 1 < baseMessageList.size()) {
+                BaseMessage baseMessageNext = baseMessageList.get(position + 1);
+                if (checkLeft(baseMessageNext) && baseMessageNext.getFrom().equals(baseMessage.getFrom())) {
+                    messageHolder.civLeft.setVisibility(View.INVISIBLE);
+                } else {
+                    messageHolder.civLeft.setVisibility(View.VISIBLE);
+                    imageLoader.displayImage(mapAvatar.get(baseMessage.getFrom()),
+                            messageHolder.civLeft, displayImageOptionsAvatar);
+                }
+            } else {
+                messageHolder.civLeft.setVisibility(View.VISIBLE);
+                imageLoader.displayImage(mapAvatar.get(baseMessage.getFrom()),
+                        messageHolder.civLeft, displayImageOptionsAvatar);
+            }
+
         } else {
             messageHolder.llGroupLeft.setVisibility(View.GONE);
             messageHolder.flGroupRight.setVisibility(View.VISIBLE);
@@ -126,7 +155,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 messageHolder.tvMsgRight.setVisibility(View.GONE);
                 messageHolder.psivPhotoRight.setVisibility(View.VISIBLE);
 
-                imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoRight, imageOptions,
+                imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoRight, displayImageOptionsPhoto,
                         new ImageLoadingListener() {
                             @Override
                             public void onLoadingStarted(String s, View view) {

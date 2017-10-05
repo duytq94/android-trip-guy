@@ -145,6 +145,6 @@ public class DetailPlanActivity extends AppCompatActivity {
 
     @Click(R.id.activity_detail_plan_btn_chat_group)
     public void onBtnChatGroupClick() {
-        ChatGroupActivity_.intent(this).plan(plan).start();
+        ChatGroupActivity_.intent(this).userFriendList((ArrayList<UserFriend>) userFriendList).plan(plan).start();
     }
 }

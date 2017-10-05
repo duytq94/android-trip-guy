@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
+import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.plan.Plan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.TypeMessage;
@@ -55,7 +57,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -76,6 +80,9 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
 
     @Extra
     protected Plan plan;
+
+    @Extra
+    protected ArrayList<UserFriend> userFriendList;
 
     @ViewById(R.id.my_toolbar)
     protected Toolbar toolbar;
@@ -98,6 +105,8 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     private ChatGroupAdapter adapter;
     private List<BaseMessage> baseMessageList;
     private Socket socket;
+
+    private Map<String, String> mapAvatar;
 
     @App
     protected MainApplication application;
@@ -125,7 +134,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             socket = IO.socket(SERVER_SOCKET_CHAT);
             socket.connect();
 
-            socket.emit("join_room", dataService.getCurrentUser().getNickname(), plan.getId());
+            socket.emit("join_room", dataService.getCurrentUser().getEmail(), plan.getId());
 
             imageLoader = ImageLoader.getInstance();
 
@@ -133,22 +142,43 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             photoSelectedList = new ArrayList<>();
             isSendPhoto = false;
 
+            setupMapAvatarFriend();
             setupAppBar();
             setupChatAdapter();
             setupPhotoAdapter();
 
             presenter.getHistory(plan.getId(), 1, 10);
 
-            socket.on("receive_message", args -> runOnUiThread(() -> {
-                BaseMessage baseMessage =
-                        new Gson().fromJson(args[0].toString(), BaseMessage.class);
-                baseMessageList.add(baseMessage);
-                adapter.notifyDataSetChanged();
-                rvList.scrollToPosition(baseMessageList.size() - 1);
-            }));
+            socket.on("receive_message", args ->
+                    runOnUiThread(() -> {
+                        BaseMessage baseMessage =
+                                new Gson().fromJson(args[0].toString(), BaseMessage.class);
+                        baseMessageList.add(baseMessage);
+                        adapter.notifyDataSetChanged();
+                        rvList.scrollToPosition(baseMessageList.size() - 1);
+                    }));
+
+            socket.on("a_user_join_room", args -> {
+                runOnUiThread(() -> {
+                    for (int i = 0; i < userFriendList.size(); i++) {
+                        UserFriend userFriend = userFriendList.get(i);
+                        if (userFriend.getEmail().equals(args[0].toString())) {
+                            userFriend.setIsOnline(true);
+                            break;
+                        }
+                    }
+                });
+            });
 
         } catch (URISyntaxException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void setupMapAvatarFriend() {
+        mapAvatar = new HashMap<>();
+        for (int i = 0; i < userFriendList.size(); i++) {
+            mapAvatar.put(userFriendList.get(i).getEmail(), userFriendList.get(i).getAvatar());
         }
     }
 
@@ -164,7 +194,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     }
 
     public void setupChatAdapter() {
-        adapter = new ChatGroupAdapter(dataService.getCurrentUser().getNickname(), baseMessageList, this);
+        adapter = new ChatGroupAdapter(dataService.getCurrentUser().getEmail(), baseMessageList, mapAvatar, this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
@@ -265,7 +295,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 socket.emit("send_message", content, timestamp, text);
                 etInput.setText("");
                 baseMessage = new BaseMessage(content, timestamp,
-                        dataService.getCurrentUser().getNickname(), plan.getId(), text);
+                        dataService.getCurrentUser().getEmail(), plan.getId(), text);
                 baseMessageList.add(baseMessage);
                 adapter.notifyDataSetChanged();
                 rvList.scrollToPosition(baseMessageList.size() - 1);
@@ -275,7 +305,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 socket.emit("send_message", content, timestamp, image);
                 etInput.setText("");
                 baseMessage = new BaseMessage(content, timestamp,
-                        dataService.getCurrentUser().getNickname(), plan.getId(), image);
+                        dataService.getCurrentUser().getEmail(), plan.getId(), image);
                 baseMessageList.add(baseMessage);
                 adapter.notifyDataSetChanged();
                 rvList.scrollToPosition(baseMessageList.size() - 1);
@@ -342,9 +372,18 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.right_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             super.onBackPressed();
+            return true;
+        } else if (item.getItemId() == R.id.iconInfo) {
+            ShowUserOnlineActivity_.intent(this).userFriendList(userFriendList).start();
             return true;
         }
         return false;

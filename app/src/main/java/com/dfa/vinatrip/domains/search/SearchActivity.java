@@ -32,13 +32,13 @@ public class SearchActivity extends AppCompatActivity {
     DataService dataService;
 
     @ViewById(R.id.my_toolbar)
-    Toolbar toolbar;
+    protected Toolbar toolbar;
 
     @ViewById(R.id.activity_search_rv_result)
-    RecyclerView rvResult;
+    protected RecyclerView rvResult;
 
     @Extra
-    String fromView;
+    protected String fromView;
 
     private List<Province> provinceList;
     private SearchProvinceAdapter searchProvinceAdapter;

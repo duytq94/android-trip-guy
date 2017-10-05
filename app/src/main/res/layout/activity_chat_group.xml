@@ -25,7 +25,9 @@
             android:id="@+id/activity_chat_group_rv_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#e5e5e5"/>
+            android:background="#e5e5e5"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"/>
 
         <View
             android:layout_width="match_parent"
