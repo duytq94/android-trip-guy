@@ -17,6 +17,7 @@ import rx.Subscription;
 public class ChatGroupPresenter extends BasePresenter<ChatGroupView> {
 
     private Subscription subscriptionGetHistory;
+    private Subscription subscriptionGetStatus;
     private ChatService chatService;
 
     @Inject
@@ -40,6 +41,21 @@ public class ChatGroupPresenter extends BasePresenter<ChatGroupView> {
                 }, throwable -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
+                        getView().getDataFail(throwable);
+                    }
+                });
+    }
+
+    public void getStatus(String groupId) {
+        RxScheduler.onStop(subscriptionGetStatus);
+        subscriptionGetStatus = chatService.getStatus(groupId)
+                .compose(RxScheduler.applyIoSchedulers())
+                .subscribe(statusUserChats -> {
+                    if (isViewAttached()) {
+                        getView().getStatusSuccess(statusUserChats);
+                    }
+                }, throwable -> {
+                    if (isViewAttached()) {
                         getView().getDataFail(throwable);
                     }
                 });

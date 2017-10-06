@@ -2,6 +2,7 @@ package com.dfa.vinatrip.services.chat;
 
 import com.beesightsoft.caf.services.network.NetworkProvider;
 import com.dfa.vinatrip.models.response.BaseMessage;
+import com.dfa.vinatrip.models.response.StatusUserChat;
 import com.dfa.vinatrip.services.filter.ApiErrorFilter;
 
 import java.util.List;
@@ -29,6 +30,13 @@ public class DefaultChatService implements ChatService {
     public Observable<List<BaseMessage>> getHistory(String groupId, int page, int pageSize) {
         return networkProvider
                 .transformResponse(restChatService.getHistory(groupId, page, pageSize))
+                .compose(apiErrorFilter.execute());
+    }
+
+    @Override
+    public Observable<List<StatusUserChat>> getStatus(String groupId) {
+        return networkProvider
+                .transformResponse(restChatService.getStatus(groupId))
                 .compose(apiErrorFilter.execute());
     }
 }

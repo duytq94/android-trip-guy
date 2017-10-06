@@ -2,6 +2,7 @@ package com.dfa.vinatrip.services.chat;
 
 import com.beesightsoft.caf.services.common.RestMessageResponse;
 import com.dfa.vinatrip.models.response.BaseMessage;
+import com.dfa.vinatrip.models.response.StatusUserChat;
 
 import java.util.List;
 
@@ -20,5 +21,10 @@ public interface RestChatService {
             @Path("groupId") String groupId,
             @Query("page") int page,
             @Query("pageSize") int pageSize
+    );
+
+    @GET("status/{groupId}")
+    Observable<RestMessageResponse<List<StatusUserChat>>> getStatus(
+            @Path("groupId") String groupId
     );
 }

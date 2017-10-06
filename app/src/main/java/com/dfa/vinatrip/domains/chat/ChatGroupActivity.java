@@ -27,6 +27,7 @@ import com.dfa.vinatrip.domains.main.plan.Plan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.TypeMessage;
 import com.dfa.vinatrip.models.response.BaseMessage;
+import com.dfa.vinatrip.models.response.StatusUserChat;
 import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.AdapterChatListener;
 import com.dfa.vinatrip.utils.AppUtil;
@@ -51,6 +52,8 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.lucasr.twowayview.TwoWayView;
 
 import java.io.ByteArrayOutputStream;
@@ -148,26 +151,50 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             setupPhotoAdapter();
 
             presenter.getHistory(plan.getId(), 1, 10);
+            presenter.getStatus(plan.getId());
 
-            socket.on("receive_message", args ->
-                    runOnUiThread(() -> {
-                        BaseMessage baseMessage =
-                                new Gson().fromJson(args[0].toString(), BaseMessage.class);
-                        baseMessageList.add(baseMessage);
-                        adapter.notifyDataSetChanged();
-                        rvList.scrollToPosition(baseMessageList.size() - 1);
-                    }));
+            socket.on("receive_message", args -> {
+                BaseMessage baseMessage =
+                        new Gson().fromJson(args[0].toString(), BaseMessage.class);
+                baseMessageList.add(baseMessage);
+                runOnUiThread(() -> {
+                    adapter.notifyDataSetChanged();
+                    rvList.scrollToPosition(baseMessageList.size() - 1);
+                });
+            });
 
             socket.on("a_user_join_room", args -> {
-                runOnUiThread(() -> {
-                    for (int i = 0; i < userFriendList.size(); i++) {
-                        UserFriend userFriend = userFriendList.get(i);
-                        if (userFriend.getEmail().equals(args[0].toString())) {
-                            userFriend.setIsOnline(true);
-                            break;
-                        }
+                for (int i = 0; i < userFriendList.size(); i++) {
+                    UserFriend userFriend = userFriendList.get(i);
+                    JSONObject jsonObject = (JSONObject) args[0];
+                    String username = "";
+                    try {
+                        username = jsonObject.getString("username");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                });
+                    if (userFriend.getEmail().equals(username)) {
+                        userFriend.setIsOnline(true);
+                        break;
+                    }
+                }
+            });
+
+            socket.on("a_user_leave_room", args -> {
+                for (int i = 0; i < userFriendList.size(); i++) {
+                    UserFriend userFriend = userFriendList.get(i);
+                    JSONObject jsonObject = (JSONObject) args[0];
+                    String username = "";
+                    try {
+                        username = jsonObject.getString("username");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if (userFriend.getEmail().equals(username)) {
+                        userFriend.setIsOnline(false);
+                        break;
+                    }
+                }
             });
 
         } catch (URISyntaxException e) {
@@ -363,6 +390,20 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             this.baseMessageList.addAll(0, baseMessageList);
             adapter.notifyDataSetChanged();
             rvList.scrollToPosition(baseMessageList.size() - 1);
+        }
+    }
+
+    @Override
+    public void getStatusSuccess(List<StatusUserChat> statusUserChatList) {
+        for (int i = 0; i < statusUserChatList.size(); i++) {
+            StatusUserChat statusUserChat = statusUserChatList.get(i);
+            for (int j = 0; j < userFriendList.size(); j++) {
+                UserFriend userFriend = userFriendList.get(j);
+                if (userFriend.getEmail().equals(statusUserChat.getEmail())) {
+                    userFriend.setIsOnline(statusUserChat.getIsOnline());
+                    break;
+                }
+            }
         }
     }
 
