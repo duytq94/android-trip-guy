@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.chat.ChatGroupActivity_;
+import com.dfa.vinatrip.domains.location.LocationGroupActivity_;
 import com.dfa.vinatrip.domains.main.me.UserProfile;
 import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.plan.Plan;
@@ -146,5 +147,10 @@ public class DetailPlanActivity extends AppCompatActivity {
     @Click(R.id.activity_detail_plan_btn_chat_group)
     public void onBtnChatGroupClick() {
         ChatGroupActivity_.intent(this).userFriendList((ArrayList<UserFriend>) userFriendList).plan(plan).start();
+    }
+
+    @Click(R.id.activity_detail_plan_btn_location_group)
+    public void onBtnLocationGroup() {
+        LocationGroupActivity_.intent(this).plan(plan).start();
     }
 }

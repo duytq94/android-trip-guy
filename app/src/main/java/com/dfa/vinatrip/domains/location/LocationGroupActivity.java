@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.main.location_my_friend;
+package com.dfa.vinatrip.domains.location;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -16,8 +16,8 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +25,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.location_my_friend.UserFriendMarker;
+import com.dfa.vinatrip.domains.main.location_my_friend.UserLocation;
 import com.dfa.vinatrip.domains.main.me.UserProfile;
 import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.domains.main.plan.Plan;
 import com.dfa.vinatrip.services.DataService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -52,26 +55,35 @@ import com.squareup.picasso.Target;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.socket.client.IO;
+import io.socket.client.Socket;
 
-@EFragment(R.layout.fragment_location_my_friend)
-public class LocationMyFriendFragment extends Fragment {
+import static com.dfa.vinatrip.ApiUrls.SERVER_SOCKET_LOCATION;
+
+@EActivity(R.layout.activity_location_group)
+public class LocationGroupActivity extends AppCompatActivity {
 
     @Bean
     DataService dataService;
 
-    @FragmentById(value = R.id.fragment_location_my_friend_map_my_friend, childFragment = true)
+    @Extra
+    protected Plan plan;
+
+    @FragmentById(value = R.id.activity_location_group_map_my_friend)
     protected SupportMapFragment smfMyFriend;
 
-    @ViewById(R.id.fragment_location_my_friend_iv_turn_location)
+    @ViewById(R.id.activity_location_group_iv_turn_location)
     protected ImageView ivTurnLocation;
 
     private GoogleMap googleMap;
@@ -90,25 +102,33 @@ public class LocationMyFriendFragment extends Fragment {
     private IntentFilter filter;
     public static final int REQUEST_TURN_GPS = 1;
 
+    private Socket socket;
+
     @AfterViews
     public void init() {
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        currentUser = dataService.getCurrentUser();
-        if (currentUser != null) {
-            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        try {
+            socket = IO.socket(SERVER_SOCKET_LOCATION);
+            socket.connect();
+
+            databaseReference = FirebaseDatabase.getInstance().getReference();
+            currentUser = dataService.getCurrentUser();
+
+            socket.emit("join_room", dataService.getCurrentUser().getEmail(), plan.getId());
+
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             changeIconLocation();
             initBroadcastReceiver();
             locationListener();
             askPermission();
             setup();
-        } else {
-            ivTurnLocation.setVisibility(View.GONE);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
     }
 
-    @Click(R.id.fragment_plan_iv_info)
+    @Click(R.id.activity_location_group_iv_info)
     public void onIvInfoClick() {
-        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle("Xem vị trí bạn bè");
         alertDialog.setMessage(getString(R.string.message_my_friend));
         alertDialog.setIcon(R.drawable.ic_symbol);
@@ -121,10 +141,10 @@ public class LocationMyFriendFragment extends Fragment {
         alertDialog.show();
     }
 
-    @Click(R.id.fragment_location_my_friend_iv_turn_location)
+    @Click(R.id.activity_location_group_iv_turn_location)
     public void onIvTurnLocationClick() {
         if (ivTurnLocation.getTag().equals("gps_on")) {
-            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("GPS đang mở!");
             alertDialog.setMessage("Bạn bè sẽ nhìn thấy vị trí của bạn trên bản đồ.");
             alertDialog.setIcon(R.drawable.ic_symbol);
@@ -136,7 +156,7 @@ public class LocationMyFriendFragment extends Fragment {
             });
             alertDialog.show();
         } else {
-            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("GPS đang tắt");
             alertDialog.setMessage("Bạn bè sẽ không nhìn thấy bạn, bạn có muốn mở?");
             alertDialog.setIcon(R.drawable.ic_symbol);
@@ -159,24 +179,24 @@ public class LocationMyFriendFragment extends Fragment {
 
     public void askPermission() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                   PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                    PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                    PackageManager.PERMISSION_GRANTED) {
                 String[] permissions = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
-                                                    Manifest.permission.ACCESS_FINE_LOCATION};
-                ActivityCompat.requestPermissions(getActivity(), permissions, 10);
+                        Manifest.permission.ACCESS_FINE_LOCATION};
+                ActivityCompat.requestPermissions(this, permissions, 10);
             }
         }
     }
 
     public boolean checkPermission() {
-        return ActivityCompat.checkSelfPermission(getActivity(),
-                                                  Manifest.permission.ACCESS_FINE_LOCATION) ==
-               PackageManager.PERMISSION_GRANTED &&
-               ActivityCompat.checkSelfPermission(getActivity(),
-                                                  Manifest.permission.ACCESS_COARSE_LOCATION) ==
-               PackageManager.PERMISSION_GRANTED;
+        return ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED;
     }
 
     public void setup() {
@@ -186,7 +206,7 @@ public class LocationMyFriendFragment extends Fragment {
             smfMyFriend.getMapAsync(new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(GoogleMap mMap) {
-                    ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getActivity()).build();
+                    ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(LocationGroupActivity.this).build();
                     ImageLoader.getInstance().init(config);
                     imageLoader = ImageLoader.getInstance();
 
@@ -208,59 +228,59 @@ public class LocationMyFriendFragment extends Fragment {
     public void loadUserLocation() {
         // If no Internet, this method will not run
         databaseReference.child("UserLocation")
-                         .addChildEventListener(new ChildEventListener() {
-                             @Override
-                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                 UserLocation userLocation = dataSnapshot.getValue(UserLocation.class);
-                                 userLocationList.add(userLocation);
-                             }
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        UserLocation userLocation = dataSnapshot.getValue(UserLocation.class);
+                        userLocationList.add(userLocation);
+                    }
 
-                             @Override
-                             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                                 UserLocation userLocation = dataSnapshot.getValue(
-                                         UserLocation.class);
-                                 for (UserFriend userFriend : userFriendList) {
-                                     if (userLocation.getUid().equals(userFriend.getFriendId())) {
-                                         getUserFriendLocation(userLocation);
-                                     }
-                                 }
-                             }
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        UserLocation userLocation = dataSnapshot.getValue(
+                                UserLocation.class);
+                        for (UserFriend userFriend : userFriendList) {
+                            if (userLocation.getUid().equals(userFriend.getFriendId())) {
+                                getUserFriendLocation(userLocation);
+                            }
+                        }
+                    }
 
-                             @Override
-                             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                             }
+                    }
 
-                             @Override
-                             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                             }
+                    }
 
-                             @Override
-                             public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                             }
-                         });
+                    }
+                });
 
         // This method to be called after all the onChildAdded() calls have happened
         databaseReference.child("UserLocation")
-                         .addListenerForSingleValueEvent(new ValueEventListener() {
-                             @Override
-                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                 for (UserFriend userFriend : userFriendList) {
-                                     for (UserLocation userLocation : userLocationList) {
-                                         if (userFriend.getFriendId().equals(userLocation.getUid())) {
-                                             getUserFriendLocation(userLocation);
-                                         }
-                                     }
-                                 }
-                             }
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (UserFriend userFriend : userFriendList) {
+                            for (UserLocation userLocation : userLocationList) {
+                                if (userFriend.getFriendId().equals(userLocation.getUid())) {
+                                    getUserFriendLocation(userLocation);
+                                }
+                            }
+                        }
+                    }
 
-                             @Override
-                             public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                             }
-                         });
+                    }
+                });
     }
 
     public void locationListener() {
@@ -296,9 +316,9 @@ public class LocationMyFriendFragment extends Fragment {
                 if (markerCurrentUser != null) {
                     markerCurrentUser.remove();
                 }
-                Picasso.with(getActivity())
-                       .load(currentUser.getAvatar())
-                       .into(currentUserTarget);
+                Picasso.with(this)
+                        .load(currentUser.getAvatar())
+                        .into(currentUserTarget);
             }
         }
     }
@@ -312,23 +332,21 @@ public class LocationMyFriendFragment extends Fragment {
         imageLoader.loadImage(userLocation.getAvatar(), new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                if (isAdded()) {
-                    View viewMaker = LayoutInflater.from(getActivity()).inflate(R.layout.maker_avatar, null);
-                    CircleImageView civAvatar = (CircleImageView) viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
-                    civAvatar.setImageBitmap(loadedImage);
-                    Bitmap bmAvatar = createBitmapFromView(viewMaker);
+                View viewMaker = LayoutInflater.from(LocationGroupActivity.this).inflate(R.layout.maker_avatar, null);
+                CircleImageView civAvatar = viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
+                civAvatar.setImageBitmap(loadedImage);
+                Bitmap bmAvatar = createBitmapFromView(viewMaker);
 
-                    LatLng latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
+                LatLng latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
 
-                    Marker marker = googleMap.addMarker(new MarkerOptions()
-                                                                .position(latLng)
-                                                                .title(userLocation.getNickname())
-                                                                .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
-                    marker.showInfoWindow();
+                Marker marker = googleMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title(userLocation.getNickname())
+                        .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
+                marker.showInfoWindow();
 
-                    UserFriendMarker userFriendMarker = new UserFriendMarker(marker, userLocation.getUid());
-                    userFriendMarkerList.add(userFriendMarker);
-                }
+                UserFriendMarker userFriendMarker = new UserFriendMarker(marker, userLocation.getUid());
+                userFriendMarkerList.add(userFriendMarker);
             }
         });
     }
@@ -336,27 +354,25 @@ public class LocationMyFriendFragment extends Fragment {
     private Target currentUserTarget = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            if (isAdded()) {
-                View viewMaker = LayoutInflater.from(getActivity()).inflate(R.layout.maker_avatar, null);
-                CircleImageView civAvatar = (CircleImageView) viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
-                civAvatar.setImageBitmap(bitmap);
-                Bitmap bmAvatar = createBitmapFromView(viewMaker);
+            View viewMaker = LayoutInflater.from(LocationGroupActivity.this).inflate(R.layout.maker_avatar, null);
+            CircleImageView civAvatar = viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
+            civAvatar.setImageBitmap(bitmap);
+            Bitmap bmAvatar = createBitmapFromView(viewMaker);
 
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                try {
-                    markerCurrentUser = googleMap.addMarker(new MarkerOptions()
-                                                                    .position(latLng)
-                                                                    .title("Tôi")
-                                                                    .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
-                    markerCurrentUser.showInfoWindow();
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            try {
+                markerCurrentUser = googleMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title("Tôi")
+                        .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
+                markerCurrentUser.showInfoWindow();
 
-                    // For zooming automatically to the location of the markerCurrentUser
-                    CameraPosition cameraPosition =
-                            new CameraPosition.Builder().target(latLng).zoom(17).build();
-                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                // For zooming automatically to the location of the markerCurrentUser
+                CameraPosition cameraPosition =
+                        new CameraPosition.Builder().target(latLng).zoom(17).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
@@ -373,16 +389,16 @@ public class LocationMyFriendFragment extends Fragment {
 
     public void uploadCurrentUserLocation(Location location) {
         UserLocation userLocation = new UserLocation(currentUser.getUid(),
-                                                     currentUser.getAvatar(),
-                                                     currentUser.getNickname(),
-                                                     location.getLatitude(),
-                                                     location.getLongitude());
+                currentUser.getAvatar(),
+                currentUser.getNickname(),
+                location.getLatitude(),
+                location.getLongitude());
         databaseReference.child("UserLocation").child(currentUser.getUid()).setValue(userLocation);
     }
 
     public Bitmap createBitmapFromView(View view) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         view.setLayoutParams(
                 new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
@@ -425,7 +441,7 @@ public class LocationMyFriendFragment extends Fragment {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, locationListener);
             locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 1000, 5, locationListener);
             if (broadcastReceiver == null) initBroadcastReceiver();
-            getActivity().registerReceiver(broadcastReceiver, filter);
+            registerReceiver(broadcastReceiver, filter);
         }
     }
 
@@ -434,7 +450,7 @@ public class LocationMyFriendFragment extends Fragment {
         super.onStop();
         if (locationManager != null && checkPermission()) {
             locationManager.removeUpdates(locationListener);
-            getActivity().unregisterReceiver(broadcastReceiver);
+            unregisterReceiver(broadcastReceiver);
         }
     }
 

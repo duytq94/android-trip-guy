@@ -14,4 +14,6 @@ public class ApiUrls {
     public static final String SERVER_API_CHAT = "http://192.168.149.129:3001";
 
     public static final String SERVER_SOCKET_CHAT = "http://192.168.149.129:3000";
+
+    public static final String SERVER_SOCKET_LOCATION = "http://192.168.149.129:3002";
 }

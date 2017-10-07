@@ -68,6 +68,8 @@
         </activity>
         <activity android:name=".domains.chat.ShowUserOnlineActivity_">
         </activity>
+        <activity android:name=".domains.location.LocationGroupActivity_">
+        </activity>
     </application>
 
 </manifest>
