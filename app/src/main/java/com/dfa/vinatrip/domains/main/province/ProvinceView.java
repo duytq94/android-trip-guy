@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.domains.main.province;
 
 import com.dfa.vinatrip.base.BaseMvpView;
+import com.dfa.vinatrip.models.response.Province;
 
 import java.util.List;
 
@@ -9,6 +10,6 @@ import java.util.List;
  */
 
 public interface ProvinceView extends BaseMvpView {
-    
-    void getProvinceSuccess(List<com.dfa.vinatrip.models.response.Province> provinces);
+
+    void getProvinceSuccess(List<Province> provinces);
 }
