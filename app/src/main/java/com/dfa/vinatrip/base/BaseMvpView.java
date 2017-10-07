@@ -10,4 +10,6 @@ public interface BaseMvpView extends MvpView {
     void showLoading();
     
     void hideLoading();
+    
+    void apiError(Throwable throwable);
 }

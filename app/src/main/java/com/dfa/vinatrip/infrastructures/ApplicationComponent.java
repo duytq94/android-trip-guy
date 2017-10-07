@@ -3,6 +3,7 @@ package com.dfa.vinatrip.infrastructures;
 import com.beesightsoft.caf.infrastructures.scope.ApplicationScope;
 import com.dfa.vinatrip.services.account.AccountService;
 import com.dfa.vinatrip.services.chat.ChatService;
+import com.dfa.vinatrip.services.default_data.DataService;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -20,4 +21,6 @@ public interface ApplicationComponent {
     AccountService accountService();
 
     ChatService chatService();
+    
+    DataService dataService();
 }

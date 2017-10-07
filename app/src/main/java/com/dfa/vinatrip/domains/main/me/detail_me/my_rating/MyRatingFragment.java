@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.province.detail_province.province_destination.ProvinceDestination;
+//import com.dfa.vinatrip.domains.main.province.detail_province.province_destination.ProvinceDestination;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.EachItemProvinceDetailActivity_;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
 import com.dfa.vinatrip.services.DataService;
@@ -69,9 +69,9 @@ public class MyRatingFragment extends Fragment {
                         EachItemProvinceDetailActivity_.intent(getActivity()).start();
                         break;
                     case "destination":
-                        ProvinceDestination destination = new ProvinceDestination
-                                (myRating.getLocationName(), null, null, null, myRating.getLocationProvince());
-                        EachItemProvinceDetailActivity_.intent(getActivity()).destination(destination).start();
+//                        ProvinceDestination destination = new ProvinceDestination
+//                                (myRating.getLocationName(), null, null, null, myRating.getLocationProvince());
+//                        EachItemProvinceDetailActivity_.intent(getActivity()).destination(destination).start();
                         break;
                     case "food":
                         EachItemProvinceDetailActivity_.intent(getActivity()).start();
