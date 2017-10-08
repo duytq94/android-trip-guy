@@ -217,7 +217,12 @@ public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
     public void hideLoading() {
 
     }
-
+    
+    @Override
+    public void apiError(Throwable throwable) {
+        
+    }
+    
     @NonNull
     @Override
     public SignInPresenter createPresenter() {

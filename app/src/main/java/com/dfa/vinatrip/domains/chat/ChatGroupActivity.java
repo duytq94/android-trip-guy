@@ -380,7 +380,12 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     public void hideLoading() {
         hideHUD();
     }
-
+    
+    @Override
+    public void apiError(Throwable throwable) {
+        
+    }
+    
     @Override
     public void getHistorySuccess(List<BaseMessage> baseMessageList, int page) {
         if (page < 1) {

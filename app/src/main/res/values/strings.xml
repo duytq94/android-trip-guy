@@ -83,4 +83,12 @@
     theo dõi và đóng góp cho chuyến đi nhé.</string>
     <string name="message_share">Chia sẻ chuyến đi, trải nghiệm của bạn, cùng chia sẻ những kinh nghiệm khi đi
     du lịch của bạn với mọi người nhé.</string>
+
+    <string-array name="province_detail_tab_pager">
+        <item>"Giới thiệu"</item>
+        <item>"Khách sạn"</item>
+        <item>"Ẩm thực"</item>
+        <item>"Địa điểm"</item>
+        <item>"Ảnh đẹp"</item>
+    </string-array>
 </resources>
