@@ -41,6 +41,10 @@
             android:name=".domains.main.province.province_detail.ProvinceDetailActivity_"
             android:windowSoftInputMode="adjustNothing"/>
 
+        <activity
+            android:name=".domains.main.province.province_detail.fragment.hotel.hotel_detail.HotelDetailActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+
         <activity android:name=".domains.main.province.each_item_detail_province.EachItemProvinceDetailActivity_"/>
         <activity android:name=".utils.MapActivity_"/>
         <activity
