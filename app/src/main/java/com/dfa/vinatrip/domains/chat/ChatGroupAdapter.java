@@ -36,7 +36,8 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private String currentUser;
     private List<BaseMessage> baseMessageList;
     private ImageLoader imageLoader;
-    private DisplayImageOptions displayImageOptionsPhoto;
+    private DisplayImageOptions displayImageOptionsPhotoRight;
+    private DisplayImageOptions displayImageOptionsPhotoLeft;
     private DisplayImageOptions displayImageOptionsAvatar;
     private AdapterChatListener adapterChatListener;
     private Map<String, String> mapAvatar;
@@ -46,7 +47,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         setHasStableIds(true);
         this.currentUser = currentUser;
         this.imageLoader = ImageLoader.getInstance();
-        this.displayImageOptionsPhoto = new DisplayImageOptions.Builder()
+        this.displayImageOptionsPhotoRight = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.bg_green)
                 .showImageForEmptyUri(R.drawable.photo_not_available)
                 .showImageOnFail(R.drawable.photo_not_available)
@@ -95,7 +96,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 messageHolder.tvMsgLeft.setVisibility(View.GONE);
                 messageHolder.psivPhotoLeft.setVisibility(View.VISIBLE);
 
-                imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoLeft, displayImageOptionsPhoto,
+                imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoLeft, displayImageOptionsPhotoRight,
                         new ImageLoadingListener() {
                             @Override
                             public void onLoadingStarted(String s, View view) {
@@ -155,7 +156,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 messageHolder.tvMsgRight.setVisibility(View.GONE);
                 messageHolder.psivPhotoRight.setVisibility(View.VISIBLE);
 
-                imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoRight, displayImageOptionsPhoto,
+                imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoRight, displayImageOptionsPhotoRight,
                         new ImageLoadingListener() {
                             @Override
                             public void onLoadingStarted(String s, View view) {
