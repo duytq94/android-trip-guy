@@ -4,18 +4,26 @@ import com.google.android.gms.maps.model.Marker;
 
 public class UserFriendMarker {
     private Marker marker;
-    private String friendId;
+    private String email;
 
-    public UserFriendMarker(Marker marker, String friendId) {
+    public UserFriendMarker(Marker marker, String email) {
         this.marker = marker;
-        this.friendId = friendId;
+        this.email = email;
     }
 
     public Marker getMarker() {
         return marker;
     }
 
-    public String getFriendId() {
-        return friendId;
+    public void setMarker(Marker marker) {
+        this.marker = marker;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

@@ -4,6 +4,7 @@ import com.beesightsoft.caf.infrastructures.scope.ApplicationScope;
 import com.dfa.vinatrip.services.account.AccountService;
 import com.dfa.vinatrip.services.chat.ChatService;
 import com.dfa.vinatrip.services.default_data.DataService;
+import com.dfa.vinatrip.services.location.LocationService;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -21,6 +22,8 @@ public interface ApplicationComponent {
     AccountService accountService();
 
     ChatService chatService();
-    
+
+    LocationService locationService();
+
     DataService dataService();
 }

@@ -56,6 +56,15 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 .cacheOnDisk(true)
                 .bitmapConfig(Bitmap.Config.ARGB_4444)
                 .build();
+        this.displayImageOptionsPhotoLeft = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.bg_white)
+                .showImageForEmptyUri(R.drawable.photo_not_available)
+                .showImageOnFail(R.drawable.photo_not_available)
+                .resetViewBeforeLoading(true)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .bitmapConfig(Bitmap.Config.ARGB_4444)
+                .build();
         this.displayImageOptionsAvatar = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.ic_avatar)
                 .showImageForEmptyUri(R.drawable.ic_avatar)
@@ -96,7 +105,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 messageHolder.tvMsgLeft.setVisibility(View.GONE);
                 messageHolder.psivPhotoLeft.setVisibility(View.VISIBLE);
 
-                imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoLeft, displayImageOptionsPhotoRight,
+                imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoLeft, displayImageOptionsPhotoLeft,
                         new ImageLoadingListener() {
                             @Override
                             public void onLoadingStarted(String s, View view) {

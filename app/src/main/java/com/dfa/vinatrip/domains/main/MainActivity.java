@@ -49,10 +49,10 @@ public class MainActivity extends AppCompatActivity {
     private Snackbar snackbar;
 
     @ViewById(R.id.activity_main_bnv_menu)
-    BottomNavigationView bnvMenu;
+    protected BottomNavigationView bnvMenu;
 
     @AfterViews
-    void init() {
+    public void init() {
         // When more than 3 icons, ShiftMode happen, use this to back to normal
         StopShiftModeBottomNavView.disableShiftMode(bnvMenu);
 

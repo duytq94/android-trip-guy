@@ -15,21 +15,25 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.domains.main.location_my_friend.UserFriendMarker;
 import com.dfa.vinatrip.domains.main.location_my_friend.UserLocation;
 import com.dfa.vinatrip.domains.main.me.UserProfile;
 import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.plan.Plan;
+import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.services.DataService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -46,13 +50,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
@@ -65,6 +72,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -72,7 +81,8 @@ import io.socket.client.Socket;
 import static com.dfa.vinatrip.ApiUrls.SERVER_SOCKET_LOCATION;
 
 @EActivity(R.layout.activity_location_group)
-public class LocationGroupActivity extends AppCompatActivity {
+public class LocationGroupActivity extends BaseActivity<LocationGroupView, LocationGroupPresenter>
+        implements LocationGroupView {
 
     @Bean
     DataService dataService;
@@ -90,7 +100,6 @@ public class LocationGroupActivity extends AppCompatActivity {
     private LocationManager locationManager;
     private LocationListener locationListener;
     private Location location;
-    private DatabaseReference databaseReference;
     private UserProfile currentUser;
     private List<UserFriend> userFriendList;
     private List<UserLocation> userLocationList;
@@ -104,13 +113,32 @@ public class LocationGroupActivity extends AppCompatActivity {
 
     private Socket socket;
 
+    @App
+    protected MainApplication application;
+
+    @Inject
+    protected LocationGroupPresenter presenter;
+
+    @AfterInject
+    protected void initInject() {
+        DaggerLocationGroupComponent.builder()
+                .applicationComponent(application.getApplicationComponent())
+                .activityModule(new ActivityModule(this))
+                .build().inject(this);
+    }
+
+    @NonNull
+    @Override
+    public LocationGroupPresenter createPresenter() {
+        return presenter;
+    }
+
     @AfterViews
     public void init() {
         try {
             socket = IO.socket(SERVER_SOCKET_LOCATION);
             socket.connect();
 
-            databaseReference = FirebaseDatabase.getInstance().getReference();
             currentUser = dataService.getCurrentUser();
 
             socket.emit("join_room", dataService.getCurrentUser().getEmail(), plan.getId());
@@ -216,71 +244,11 @@ public class LocationGroupActivity extends AppCompatActivity {
 
                     userFriendList = dataService.getUserFriendList();
 
-                    userLocationList = new ArrayList<>();
-                    loadUserLocation();
+                    presenter.getLastLocation(plan.getId());
 
-                    getCurrentUserLocation();
                 }
             });
         }
-    }
-
-    public void loadUserLocation() {
-        // If no Internet, this method will not run
-        databaseReference.child("UserLocation")
-                .addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        UserLocation userLocation = dataSnapshot.getValue(UserLocation.class);
-                        userLocationList.add(userLocation);
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        UserLocation userLocation = dataSnapshot.getValue(
-                                UserLocation.class);
-                        for (UserFriend userFriend : userFriendList) {
-                            if (userLocation.getUid().equals(userFriend.getFriendId())) {
-                                getUserFriendLocation(userLocation);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-        // This method to be called after all the onChildAdded() calls have happened
-        databaseReference.child("UserLocation")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (UserFriend userFriend : userFriendList) {
-                            for (UserLocation userLocation : userLocationList) {
-                                if (userFriend.getFriendId().equals(userLocation.getUid())) {
-                                    getUserFriendLocation(userLocation);
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
     }
 
     public void locationListener() {
@@ -325,9 +293,7 @@ public class LocationGroupActivity extends AppCompatActivity {
 
     public void getUserFriendLocation(final UserLocation userLocation) {
         for (int i = 0; i < userFriendMarkerList.size(); i++) {
-            if (userLocation.getUid().equals(userFriendMarkerList.get(i).getFriendId())) {
-                userFriendMarkerList.get(i).getMarker().remove();
-            }
+            userFriendMarkerList.get(i).getMarker().remove();
         }
         imageLoader.loadImage(userLocation.getAvatar(), new SimpleImageLoadingListener() {
             @Override
@@ -341,11 +307,11 @@ public class LocationGroupActivity extends AppCompatActivity {
 
                 Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(latLng)
-                        .title(userLocation.getNickname())
+                        .title(userLocation.getFromUser())
                         .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
                 marker.showInfoWindow();
 
-                UserFriendMarker userFriendMarker = new UserFriendMarker(marker, userLocation.getUid());
+                UserFriendMarker userFriendMarker = new UserFriendMarker(marker, userLocation.getFromUser());
                 userFriendMarkerList.add(userFriendMarker);
             }
         });
@@ -388,12 +354,7 @@ public class LocationGroupActivity extends AppCompatActivity {
     };
 
     public void uploadCurrentUserLocation(Location location) {
-        UserLocation userLocation = new UserLocation(currentUser.getUid(),
-                currentUser.getAvatar(),
-                currentUser.getNickname(),
-                location.getLatitude(),
-                location.getLongitude());
-        databaseReference.child("UserLocation").child(currentUser.getUid()).setValue(userLocation);
+        socket.emit("send_location", location.getLatitude(), location.getLongitude());
     }
 
     public Bitmap createBitmapFromView(View view) {
@@ -458,5 +419,38 @@ public class LocationGroupActivity extends AppCompatActivity {
     public void onResult(int resultCode, Intent data) {
         // Don't check the result code
         changeIconLocation();
+    }
+
+    @Override
+    public void showLoading() {
+        showHUD();
+    }
+
+    @Override
+    public void hideLoading() {
+        hideHUD();
+    }
+
+    @Override
+    public void apiError(Throwable throwable) {
+
+    }
+
+    @Override
+    public void getLastLocationSuccess(List<UserLocation> userLocationList) {
+        this.userLocationList = userLocationList;
+        for (UserLocation userLocation : this.userLocationList) {
+            getUserFriendLocation(userLocation);
+        }
+        socket.on("receive_location", args -> {
+            UserLocation userLocation = new Gson().fromJson(args[0].toString(), UserLocation.class);
+            runOnUiThread(() -> getUserFriendLocation(userLocation));
+        });
+        getCurrentUserLocation();
+    }
+
+    @Override
+    public void getDataFail(Throwable throwable) {
+        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

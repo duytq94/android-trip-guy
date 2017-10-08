@@ -1,37 +1,65 @@
 package com.dfa.vinatrip.domains.main.location_my_friend;
 
+import com.google.gson.annotations.SerializedName;
+
 public class UserLocation {
-    String uid, avatar, nickname;
-    Double latitude, longitude;
 
-    public UserLocation() {
-    }
+    @SerializedName("from_user")
+    private String fromUser;
+    @SerializedName("to_group")
+    private String toGroup;
+    @SerializedName("latitude")
+    private double latitude;
+    @SerializedName("longitude")
+    private double longitude;
 
-    public UserLocation(String uid, String avatar, String nickname, Double latitude, Double longitude) {
-        this.uid = uid;
-        this.avatar = avatar;
-        this.nickname = nickname;
+    private String avatar = "";
+
+    public UserLocation(String fromUser, String toGroup, double latitude, double longitude, String avatar) {
+        this.fromUser = fromUser;
+        this.toGroup = toGroup;
         this.latitude = latitude;
         this.longitude = longitude;
-    }
-
-    public String getUid() {
-        return uid;
+        this.avatar = avatar;
     }
 
     public String getAvatar() {
         return avatar;
     }
 
-    public String getNickname() {
-        return nickname;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
-    public Double getLatitude() {
+    public String getFromUser() {
+        return fromUser;
+    }
+
+    public void setFromUser(String fromUser) {
+        this.fromUser = fromUser;
+    }
+
+    public String getToGroup() {
+        return toGroup;
+    }
+
+    public void setToGroup(String toGroup) {
+        this.toGroup = toGroup;
+    }
+
+    public double getLatitude() {
         return latitude;
     }
 
-    public Double getLongitude() {
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
         return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }
