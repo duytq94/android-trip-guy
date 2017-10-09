@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.main.province.province_detail.fragment.hotel.adapter;
+package com.dfa.vinatrip.domains.main.fragment.province.province_detail.fragment.hotel.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.province.province_detail.fragment.hotel.hotel_detail.HotelDetailActivity_;
+import com.dfa.vinatrip.domains.main.fragment.province.province_detail.fragment.hotel.hotel_detail.HotelDetailActivity_;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
 import com.squareup.picasso.Picasso;
 

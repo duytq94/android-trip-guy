@@ -1,10 +1,12 @@
-package com.dfa.vinatrip.domains.main.province.province_detail.fragment.hotel.hotel_detail;
+package com.dfa.vinatrip.domains.main.fragment.province.province_detail.fragment.hotel.hotel_detail;
 
 import android.support.annotation.NonNull;
 
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
+import com.dfa.vinatrip.domains.main.fragment.province.province_detail.fragment.hotel.hotel_detail
+        .DaggerHotelDetailComponent;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
 

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.custom_view.NToolbar;
 import com.dfa.vinatrip.custom_view.NonSwipeViewPager;
 import com.dfa.vinatrip.domains.main.adapter.MainPagerAdapter;
 import com.dfa.vinatrip.domains.main.fragment.me.MeFragment_;
@@ -23,6 +24,8 @@ import java.util.List;
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
     
+    @ViewById(R.id.activity_main_toolbar)
+    protected NToolbar nToolbar;
     @ViewById(R.id.activity_main_nsvp_viewpager)
     protected NonSwipeViewPager vpFragment;
     @ViewById(R.id.activity_main_bnv_menu)
@@ -30,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
     
     @AfterViews
     public void init() {
+        nToolbar.setup(this, "TripGuy");
+        nToolbar.showAppIcon();
+        nToolbar.showToolbarColor();
+        
         List<Fragment> arrayFragment = new ArrayList<>();
         arrayFragment.add(ProvinceFragment_.builder().build());
         arrayFragment.add(PlanFragment_.builder().build());

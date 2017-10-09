@@ -9,6 +9,11 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
+    <com.dfa.vinatrip.custom_view.NToolbar_
+        android:id="@+id/activity_main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"/>
+
     <com.dfa.vinatrip.custom_view.NonSwipeViewPager
         android:id="@+id/activity_main_nsvp_viewpager"
         android:layout_width="match_parent"

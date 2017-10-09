@@ -23,8 +23,8 @@ apply plugin: 'android-apt'
 apply plugin: 'com.neenbedankt.android-apt'
 
 dependencies {
-    apt "org.androidannotations:androidannotations:4.0.0"
-    compile "org.androidannotations:androidannotations-api:4.0.0"
+    apt "org.androidannotations:androidannotations:4.3.0"
+    compile "org.androidannotations:androidannotations-api:4.3.0"
 }
 
 android {
@@ -42,8 +42,8 @@ android {
             storePassword 'android'
         }
     }
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.dfa.vinatrip"
         minSdkVersion 16

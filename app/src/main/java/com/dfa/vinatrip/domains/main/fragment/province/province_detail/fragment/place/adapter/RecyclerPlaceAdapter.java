@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.main.province.province_detail.fragment.place.adapter;
+package com.dfa.vinatrip.domains.main.fragment.province.province_detail.fragment.place.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

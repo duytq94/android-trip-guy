@@ -272,6 +272,16 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
     public void getCurrentUserLocation() {
         List<String> listProviders = locationManager.getAllProviders();
         for (String provider : listProviders) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
             if (locationManager.getLastKnownLocation(provider) != null) {
                 location = locationManager.getLastKnownLocation(provider);
                 uploadCurrentUserLocation(location);
@@ -293,7 +303,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 View viewMaker = LayoutInflater.from(LocationGroupActivity.this).inflate(R.layout.maker_avatar, null);
-                CircleImageView civAvatar = viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
+                CircleImageView civAvatar = (CircleImageView) viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
                 civAvatar.setImageBitmap(loadedImage);
                 Bitmap bmAvatar = createBitmapFromView(viewMaker);
                 
@@ -315,7 +325,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             View viewMaker = LayoutInflater.from(LocationGroupActivity.this).inflate(R.layout.maker_avatar, null);
-            CircleImageView civAvatar = viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
+            CircleImageView civAvatar = (CircleImageView) viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
             civAvatar.setImageBitmap(bitmap);
             Bitmap bmAvatar = createBitmapFromView(viewMaker);
             

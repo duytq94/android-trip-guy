@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.main.province.province_detail.fragment.images;
+package com.dfa.vinatrip.domains.main.fragment.province.province_detail.fragment.images;
 
 import android.support.v4.app.Fragment;
 

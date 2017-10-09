@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.main.province.province_detail.fragment.place;
+package com.dfa.vinatrip.domains.main.fragment.province.province_detail.fragment.place;
 
 import com.dfa.vinatrip.base.BaseMvpView;
 import com.dfa.vinatrip.models.response.place.PlaceResponse;

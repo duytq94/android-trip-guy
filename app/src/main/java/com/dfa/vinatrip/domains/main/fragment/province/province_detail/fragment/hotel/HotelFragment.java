@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.main.province.province_detail.fragment.hotel;
+package com.dfa.vinatrip.domains.main.fragment.province.province_detail.fragment.hotel;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseFragment;
-import com.dfa.vinatrip.domains.main.province.province_detail.fragment.hotel.adapter.RecyclerHotelAdapter;
+import com.dfa.vinatrip.domains.main.fragment.province.province_detail.fragment.hotel.adapter.RecyclerHotelAdapter;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.Province;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;

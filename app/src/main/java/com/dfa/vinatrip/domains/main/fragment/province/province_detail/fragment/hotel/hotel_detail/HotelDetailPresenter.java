@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.main.province.province_detail.fragment.hotel.hotel_detail;
+package com.dfa.vinatrip.domains.main.fragment.province.province_detail.fragment.hotel.hotel_detail;
 
 import com.dfa.vinatrip.base.BasePresenter;
 
