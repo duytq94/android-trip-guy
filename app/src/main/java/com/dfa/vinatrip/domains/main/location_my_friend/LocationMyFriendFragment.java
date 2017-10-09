@@ -25,8 +25,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.me.UserProfile;
-import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.domains.main.fragment.me.UserProfile;
+import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.services.DataService;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

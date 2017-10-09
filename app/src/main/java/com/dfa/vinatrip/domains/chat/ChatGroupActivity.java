@@ -22,8 +22,8 @@ import android.widget.Toast;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
-import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
-import com.dfa.vinatrip.domains.main.plan.Plan;
+import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.TypeMessage;
 import com.dfa.vinatrip.models.response.BaseMessage;
@@ -77,16 +77,16 @@ import static com.sangcomz.fishbun.define.Define.ALBUM_REQUEST_CODE;
 @EActivity(R.layout.activity_chat_group)
 public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPresenter>
         implements ChatGroupView, AdapterChatListener {
-
+    
     @Bean
     DataService dataService;
-
+    
     @Extra
     protected Plan plan;
-
+    
     @Extra
     protected ArrayList<UserFriend> userFriendList;
-
+    
     @ViewById(R.id.my_toolbar)
     protected Toolbar toolbar;
     @ViewById(R.id.activity_chat_group_rv_list)
@@ -99,24 +99,24 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     protected LinearLayout llAddPhoto;
     @ViewById(R.id.activity_chat_group_lv_photo_selected)
     protected TwoWayView lvPhotoSelected;
-
+    
     private ArrayList<Uri> photoSelectedList;
     private QuickAdapter<Uri> photoSelectedAdapter;
     private ImageLoader imageLoader;
     private boolean isSendPhoto;
-
+    
     private ChatGroupAdapter adapter;
     private List<BaseMessage> baseMessageList;
     private Socket socket;
-
+    
     private Map<String, String> mapAvatar;
-
+    
     @App
     protected MainApplication application;
-
+    
     @Inject
     protected ChatGroupPresenter presenter;
-
+    
     @AfterInject
     protected void initInject() {
         DaggerChatGroupComponent.builder()
@@ -124,35 +124,35 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 .activityModule(new ActivityModule(this))
                 .build().inject(this);
     }
-
+    
     @NonNull
     @Override
     public ChatGroupPresenter createPresenter() {
         return presenter;
     }
-
+    
     @AfterViews
     public void init() {
         try {
             socket = IO.socket(SERVER_SOCKET_CHAT);
             socket.connect();
-
+            
             socket.emit("join_room", dataService.getCurrentUser().getEmail(), plan.getId());
-
+            
             imageLoader = ImageLoader.getInstance();
-
+            
             baseMessageList = new ArrayList<>();
             photoSelectedList = new ArrayList<>();
             isSendPhoto = false;
-
+            
             setupMapAvatarFriend();
             setupAppBar();
             setupChatAdapter();
             setupPhotoAdapter();
-
+            
             presenter.getHistory(plan.getId(), 1, 10);
             presenter.getStatus(plan.getId());
-
+            
             socket.on("receive_message", args -> {
                 BaseMessage baseMessage =
                         new Gson().fromJson(args[0].toString(), BaseMessage.class);
@@ -162,7 +162,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                     rvList.scrollToPosition(baseMessageList.size() - 1);
                 });
             });
-
+            
             socket.on("a_user_join_room", args -> {
                 for (int i = 0; i < userFriendList.size(); i++) {
                     UserFriend userFriend = userFriendList.get(i);
@@ -179,7 +179,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                     }
                 }
             });
-
+            
             socket.on("a_user_leave_room", args -> {
                 for (int i = 0; i < userFriendList.size(); i++) {
                     UserFriend userFriend = userFriendList.get(i);
@@ -196,59 +196,59 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                     }
                 }
             });
-
+            
         } catch (URISyntaxException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
+    
     public void setupMapAvatarFriend() {
         mapAvatar = new HashMap<>();
         for (int i = 0; i < userFriendList.size(); i++) {
             mapAvatar.put(userFriendList.get(i).getEmail(), userFriendList.get(i).getAvatar());
         }
     }
-
+    
     public void setupAppBar() {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(plan.getName());
-
+            
             // Set button back
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
-
+    
     public void setupChatAdapter() {
         adapter = new ChatGroupAdapter(dataService.getCurrentUser().getEmail(), baseMessageList, mapAvatar, this);
-
+        
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
-
+        
         rvList.setLayoutManager(layoutManager);
         rvList.setAdapter(adapter);
         rvList.setHasFixedSize(true);
-
+        
         ToplessRecyclerViewScrollListener scrollListener = new ToplessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 presenter.getHistory(plan.getId(), page, 10);
             }
         };
-
+        
         rvList.addOnScrollListener(scrollListener);
     }
-
+    
     public void setupPhotoAdapter() {
         photoSelectedAdapter = new QuickAdapter<Uri>(this, R.layout.item_photo_selected) {
             @Override
             protected void convert(BaseAdapterHelper helper, Uri uri) {
                 ImageView ivPhoto = helper.getView(R.id.item_photo_selected_iv_photo);
                 RotateLoading rotateLoading = helper.getView(R.id.item_photo_selected_rotate_loading);
-
+                
                 imageLoader.displayImage(uri.toString(), ivPhoto);
-
+                
                 if (helper.getPosition() == 0 && isSendPhoto) {
                     rotateLoading.setVisibility(View.VISIBLE);
                     rotateLoading.start();
@@ -260,7 +260,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
         };
         lvPhotoSelected.setAdapter(photoSelectedAdapter);
     }
-
+    
     @Click(R.id.activity_chat_group_ll_send)
     public void onLlSendClick() {
         if (!etInput.getText().toString().trim().isEmpty()) {
@@ -272,28 +272,28 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             photoSelectedAdapter.notifyDataSetChanged();
         }
     }
-
+    
     public void prepareUpload(Uri uriPhoto) {
         try {
             Bitmap originBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uriPhoto);
             Bitmap scaleBitmap = AppUtil.scaleDown(originBitmap, 1080, true);
-
+            
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             scaleBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] byteArrayPhoto = baos.toByteArray();
-
+            
             // Get the path and name photo be upload
             StorageReference storageReference = FirebaseStorage.getInstance()
                     .getReferenceFromUrl("gs://tripguy-10864.appspot.com")
                     .child("Chat")
                     .child(System.currentTimeMillis() + ".jpg");
-
+            
             UploadTask uploadTask = storageReference.putBytes(byteArrayPhoto);
             uploadTask.addOnSuccessListener(taskSnapshot -> {
                 @SuppressWarnings("VisibleForTests")
                 Uri linkDownload = taskSnapshot.getDownloadUrl();
                 sendMessage(String.valueOf(linkDownload), image);
-
+                
                 if (photoSelectedList.size() > 0) {
                     photoSelectedList.remove(0);
                     photoSelectedAdapter.clear();
@@ -307,16 +307,16 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                     isSendPhoto = false;
                 }
             });
-
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
+    
     public void sendMessage(String content, TypeMessage typeMessage) {
         long timestamp = NUtc.getUtcNow();
         BaseMessage baseMessage;
-
+        
         switch (typeMessage) {
             case text:
                 socket.emit("send_message", content, timestamp, text);
@@ -327,7 +327,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 adapter.notifyDataSetChanged();
                 rvList.scrollToPosition(baseMessageList.size() - 1);
                 break;
-
+            
             case image:
                 socket.emit("send_message", content, timestamp, image);
                 etInput.setText("");
@@ -337,13 +337,13 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 adapter.notifyDataSetChanged();
                 rvList.scrollToPosition(baseMessageList.size() - 1);
                 break;
-
+            
             default:
                 Toast.makeText(this, "Can not send message", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
-
+    
     @Click(R.id.activity_chat_group_ll_add_photo)
     public void onLlAddPhotoClick() {
         if (lvPhotoSelected.getVisibility() == View.GONE) {
@@ -370,12 +370,12 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                     .startAlbum();
         }
     }
-
+    
     @Override
     public void showLoading() {
         showHUD();
     }
-
+    
     @Override
     public void hideLoading() {
         hideHUD();
@@ -397,7 +397,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             rvList.scrollToPosition(baseMessageList.size() - 1);
         }
     }
-
+    
     @Override
     public void getStatusSuccess(List<StatusUserChat> statusUserChatList) {
         for (int i = 0; i < statusUserChatList.size(); i++) {
@@ -411,18 +411,18 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             }
         }
     }
-
+    
     @Override
     public void getDataFail(Throwable throwable) {
         Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
-
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.right_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -434,7 +434,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
         }
         return false;
     }
-
+    
     @Override
     public void onBackPressed() {
         if (lvPhotoSelected.getVisibility() == View.VISIBLE) {
@@ -447,7 +447,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             finish();
         }
     }
-
+    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -462,7 +462,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             }
         }
     }
-
+    
     @Override
     public void onPhotoClick(String url) {
         ShowFullPhotoActivity_.intent(this).url(url).start();

@@ -7,7 +7,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.joanzapata.android.BaseAdapterHelper;
 import com.joanzapata.android.QuickAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;

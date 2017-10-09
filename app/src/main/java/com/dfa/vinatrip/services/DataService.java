@@ -1,11 +1,11 @@
 package com.dfa.vinatrip.services;
 
-import com.dfa.vinatrip.domains.main.me.UserProfile;
-import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
-import com.dfa.vinatrip.domains.main.plan.Plan;
-import com.dfa.vinatrip.domains.main.province.Province;
-import com.dfa.vinatrip.domains.main.province.each_item_detail_province.rating.UserRating;
-import com.dfa.vinatrip.domains.main.share.Share;
+import com.dfa.vinatrip.domains.main.fragment.me.UserProfile;
+import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
+import com.dfa.vinatrip.domains.main.fragment.province.each_item_detail_province.rating.UserRating;
+import com.dfa.vinatrip.domains.main.fragment.province.Province;
+import com.dfa.vinatrip.domains.main.fragment.share.Share;
 
 import org.androidannotations.annotations.EBean;
 

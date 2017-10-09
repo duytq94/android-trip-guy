@@ -28,11 +28,11 @@ import android.widget.Toast;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
+import com.dfa.vinatrip.domains.main.fragment.me.UserProfile;
+import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.domains.main.location_my_friend.UserFriendMarker;
 import com.dfa.vinatrip.domains.main.location_my_friend.UserLocation;
-import com.dfa.vinatrip.domains.main.me.UserProfile;
-import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
-import com.dfa.vinatrip.domains.main.plan.Plan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.services.DataService;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -44,12 +44,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -83,19 +77,19 @@ import static com.dfa.vinatrip.ApiUrls.SERVER_SOCKET_LOCATION;
 @EActivity(R.layout.activity_location_group)
 public class LocationGroupActivity extends BaseActivity<LocationGroupView, LocationGroupPresenter>
         implements LocationGroupView {
-
+    
     @Bean
     DataService dataService;
-
+    
     @Extra
     protected Plan plan;
-
+    
     @FragmentById(value = R.id.activity_location_group_map_my_friend)
     protected SupportMapFragment smfMyFriend;
-
+    
     @ViewById(R.id.activity_location_group_iv_turn_location)
     protected ImageView ivTurnLocation;
-
+    
     private GoogleMap googleMap;
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -110,15 +104,15 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
     private BroadcastReceiver broadcastReceiver;
     private IntentFilter filter;
     public static final int REQUEST_TURN_GPS = 1;
-
+    
     private Socket socket;
-
+    
     @App
     protected MainApplication application;
-
+    
     @Inject
     protected LocationGroupPresenter presenter;
-
+    
     @AfterInject
     protected void initInject() {
         DaggerLocationGroupComponent.builder()
@@ -126,23 +120,23 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
                 .activityModule(new ActivityModule(this))
                 .build().inject(this);
     }
-
+    
     @NonNull
     @Override
     public LocationGroupPresenter createPresenter() {
         return presenter;
     }
-
+    
     @AfterViews
     public void init() {
         try {
             socket = IO.socket(SERVER_SOCKET_LOCATION);
             socket.connect();
-
+            
             currentUser = dataService.getCurrentUser();
-
+            
             socket.emit("join_room", dataService.getCurrentUser().getEmail(), plan.getId());
-
+            
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             changeIconLocation();
             initBroadcastReceiver();
@@ -153,7 +147,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             e.printStackTrace();
         }
     }
-
+    
     @Click(R.id.activity_location_group_iv_info)
     public void onIvInfoClick() {
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -163,12 +157,12 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "XONG", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                
             }
         });
         alertDialog.show();
     }
-
+    
     @Click(R.id.activity_location_group_iv_turn_location)
     public void onIvTurnLocationClick() {
         if (ivTurnLocation.getTag().equals("gps_on")) {
@@ -179,7 +173,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "XONG", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-
+                    
                 }
             });
             alertDialog.show();
@@ -198,13 +192,13 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "HỦY", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-
+                    
                 }
             });
             alertDialog.show();
         }
     }
-
+    
     public void askPermission() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
@@ -217,7 +211,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             }
         }
     }
-
+    
     public boolean checkPermission() {
         return ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) ==
@@ -226,7 +220,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
                         Manifest.permission.ACCESS_COARSE_LOCATION) ==
                         PackageManager.PERMISSION_GRANTED;
     }
-
+    
     public void setup() {
         if (checkPermission()) {
             smfMyFriend.onCreate(null);
@@ -237,44 +231,44 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
                     ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(LocationGroupActivity.this).build();
                     ImageLoader.getInstance().init(config);
                     imageLoader = ImageLoader.getInstance();
-
+                    
                     googleMap = mMap;
-
+                    
                     userFriendMarkerList = new ArrayList<>();
-
+                    
                     userFriendList = dataService.getUserFriendList();
-
+                    
                     presenter.getLastLocation(plan.getId());
-
+                    
                 }
             });
         }
     }
-
+    
     public void locationListener() {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 getCurrentUserLocation();
             }
-
+            
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-
+                
             }
-
+            
             @Override
             public void onProviderEnabled(String provider) {
-
+                
             }
-
+            
             @Override
             public void onProviderDisabled(String provider) {
-
+                
             }
         };
     }
-
+    
     public void getCurrentUserLocation() {
         List<String> listProviders = locationManager.getAllProviders();
         for (String provider : listProviders) {
@@ -290,7 +284,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             }
         }
     }
-
+    
     public void getUserFriendLocation(final UserLocation userLocation) {
         for (int i = 0; i < userFriendMarkerList.size(); i++) {
             userFriendMarkerList.get(i).getMarker().remove();
@@ -302,21 +296,21 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
                 CircleImageView civAvatar = viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
                 civAvatar.setImageBitmap(loadedImage);
                 Bitmap bmAvatar = createBitmapFromView(viewMaker);
-
+                
                 LatLng latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
-
+                
                 Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(latLng)
                         .title(userLocation.getFromUser())
                         .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
                 marker.showInfoWindow();
-
+                
                 UserFriendMarker userFriendMarker = new UserFriendMarker(marker, userLocation.getFromUser());
                 userFriendMarkerList.add(userFriendMarker);
             }
         });
     }
-
+    
     private Target currentUserTarget = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -324,7 +318,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             CircleImageView civAvatar = viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
             civAvatar.setImageBitmap(bitmap);
             Bitmap bmAvatar = createBitmapFromView(viewMaker);
-
+            
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             try {
                 markerCurrentUser = googleMap.addMarker(new MarkerOptions()
@@ -332,7 +326,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
                         .title("Tôi")
                         .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
                 markerCurrentUser.showInfoWindow();
-
+                
                 // For zooming automatically to the location of the markerCurrentUser
                 CameraPosition cameraPosition =
                         new CameraPosition.Builder().target(latLng).zoom(17).build();
@@ -341,22 +335,22 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
                 e.printStackTrace();
             }
         }
-
+        
         @Override
         public void onBitmapFailed(Drawable errorDrawable) {
-
+            
         }
-
+        
         @Override
         public void onPrepareLoad(Drawable placeHolderDrawable) {
-
+            
         }
     };
-
+    
     public void uploadCurrentUserLocation(Location location) {
         socket.emit("send_location", location.getLatitude(), location.getLongitude());
     }
-
+    
     public Bitmap createBitmapFromView(View view) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -366,13 +360,13 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
         view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
         view.buildDrawingCache();
         Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-
+        
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
-
+        
         return bitmap;
     }
-
+    
     public void initBroadcastReceiver() {
         filter = new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION);
         broadcastReceiver = new BroadcastReceiver() {
@@ -382,7 +376,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             }
         };
     }
-
+    
     public void changeIconLocation() {
         statusGPS = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (statusGPS) {
@@ -393,7 +387,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             ivTurnLocation.setTag("gps_off");
         }
     }
-
+    
     @Override
     public void onResume() {
         super.onResume();
@@ -405,7 +399,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             registerReceiver(broadcastReceiver, filter);
         }
     }
-
+    
     @Override
     public void onStop() {
         super.onStop();
@@ -414,28 +408,28 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             unregisterReceiver(broadcastReceiver);
         }
     }
-
+    
     @OnActivityResult(REQUEST_TURN_GPS)
     public void onResult(int resultCode, Intent data) {
         // Don't check the result code
         changeIconLocation();
     }
-
+    
     @Override
     public void showLoading() {
         showHUD();
     }
-
+    
     @Override
     public void hideLoading() {
         hideHUD();
     }
-
+    
     @Override
     public void apiError(Throwable throwable) {
-
+        
     }
-
+    
     @Override
     public void getLastLocationSuccess(List<UserLocation> userLocationList) {
         this.userLocationList = userLocationList;
@@ -448,7 +442,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
         });
         getCurrentUserLocation();
     }
-
+    
     @Override
     public void getDataFail(Throwable throwable) {
         Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();

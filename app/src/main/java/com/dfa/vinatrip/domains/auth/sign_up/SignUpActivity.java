@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.auth.reset_password.ResetPasswordActivity_;
 import com.dfa.vinatrip.domains.auth.sign_in.SignInActivity_;
-import com.dfa.vinatrip.domains.main.me.UserProfile;
+import com.dfa.vinatrip.domains.main.fragment.me.UserProfile;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

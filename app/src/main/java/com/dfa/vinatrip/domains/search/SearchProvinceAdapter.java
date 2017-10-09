@@ -11,7 +11,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.province.Province;
+import com.dfa.vinatrip.domains.main.fragment.province.Province;
 
 import java.util.ArrayList;
 import java.util.List;

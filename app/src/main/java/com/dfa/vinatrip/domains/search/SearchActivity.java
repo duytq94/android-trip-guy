@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.province.Province;
+import com.dfa.vinatrip.domains.main.fragment.province.Province;
 import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 
