@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.IntentSender;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ExifInterface;
@@ -19,6 +20,15 @@ import android.view.ViewGroup;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import java.util.List;
 
@@ -35,11 +45,11 @@ public class AppUtil {
     public static final int REQUEST_UPDATE_INFO = 5;
 
     private static Context context;
-    
+
     public static void init(Context context) {
         AppUtil.context = context;
     }
-    
+
     public Context getContext() {
         return context;
     }
@@ -164,9 +174,9 @@ public class AppUtil {
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
      *
-     * @param context The context.
-     * @param uri The Uri to query.
-     * @param selection (Optional) Filter used in the query.
+     * @param context       The context.
+     * @param uri           The Uri to query.
+     * @param selection     (Optional) Filter used in the query.
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */
@@ -215,5 +225,51 @@ public class AppUtil {
      */
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    public static void requestTurnOnGPS(Context context) {
+        GoogleApiClient googleApiClient;
+
+        googleApiClient = new GoogleApiClient.Builder(context)
+                .addApi(LocationServices.API)
+                .build();
+        googleApiClient.connect();
+
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(30 * 1000);
+        locationRequest.setFastestInterval(5 * 1000);
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+
+        builder.setAlwaysShow(true);
+
+        PendingResult<LocationSettingsResult> result =
+                LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+        result.setResultCallback(result1 -> {
+            final Status status = result1.getStatus();
+            final LocationSettingsStates state = result1.getLocationSettingsStates();
+            switch (status.getStatusCode()) {
+                case LocationSettingsStatusCodes.SUCCESS:
+                    // All location settings are satisfied. The client can initialize location
+                    // requests here.
+                    break;
+                case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                    // Location settings are not satisfied. But could be fixed by showing the user
+                    // a dialog.
+                    try {
+                        // Show the dialog by calling startResolutionForResult(),
+                        // and check the result in onActivityResult().
+                        status.startResolutionForResult((Activity) context, 1000);
+                    } catch (IntentSender.SendIntentException e) {
+                        // Ignore the error.
+                    }
+                    break;
+                case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                    // Location settings are not satisfied. However, we have no way to fix the
+                    // settings so we won't show the dialog.
+                    break;
+            }
+        });
     }
 }

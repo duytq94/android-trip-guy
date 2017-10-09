@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.main.location_my_friend;
+package com.dfa.vinatrip.domains.location;
 
 import com.google.gson.annotations.SerializedName;
 

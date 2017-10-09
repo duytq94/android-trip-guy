@@ -108,6 +108,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     private ChatGroupAdapter adapter;
     private List<BaseMessage> baseMessageList;
     private Socket socket;
+    private Gson gson;
 
     private Map<String, String> mapAvatar;
 
@@ -140,6 +141,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             socket.emit("join_room", dataService.getCurrentUser().getEmail(), plan.getId());
 
             imageLoader = ImageLoader.getInstance();
+            gson = new Gson();
 
             baseMessageList = new ArrayList<>();
             photoSelectedList = new ArrayList<>();
@@ -154,8 +156,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             presenter.getStatus(plan.getId());
 
             socket.on("receive_message", args -> {
-                BaseMessage baseMessage =
-                        new Gson().fromJson(args[0].toString(), BaseMessage.class);
+                BaseMessage baseMessage = gson.fromJson(args[0].toString(), BaseMessage.class);
                 baseMessageList.add(baseMessage);
                 runOnUiThread(() -> {
                     adapter.notifyDataSetChanged();
@@ -380,12 +381,12 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     public void hideLoading() {
         hideHUD();
     }
-    
+
     @Override
     public void apiError(Throwable throwable) {
-        
+
     }
-    
+
     @Override
     public void getHistorySuccess(List<BaseMessage> baseMessageList, int page) {
         if (page < 1) {

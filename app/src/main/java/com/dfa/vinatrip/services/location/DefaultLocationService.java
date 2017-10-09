@@ -1,7 +1,7 @@
 package com.dfa.vinatrip.services.location;
 
 import com.beesightsoft.caf.services.network.NetworkProvider;
-import com.dfa.vinatrip.domains.main.location_my_friend.UserLocation;
+import com.dfa.vinatrip.domains.location.UserLocation;
 import com.dfa.vinatrip.services.filter.ApiErrorFilter;
 
 import java.util.List;

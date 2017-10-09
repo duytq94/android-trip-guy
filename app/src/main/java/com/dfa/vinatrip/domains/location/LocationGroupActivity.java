@@ -9,12 +9,12 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -28,34 +28,24 @@ import android.widget.Toast;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
-import com.dfa.vinatrip.domains.main.location_my_friend.UserFriendMarker;
-import com.dfa.vinatrip.domains.main.location_my_friend.UserLocation;
 import com.dfa.vinatrip.domains.main.me.UserProfile;
 import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.plan.Plan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.services.DataService;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -65,20 +55,24 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.FragmentById;
-import org.androidannotations.annotations.OnActivityResult;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
 import static com.dfa.vinatrip.ApiUrls.SERVER_SOCKET_LOCATION;
+import static com.dfa.vinatrip.utils.Constants.REQUEST_PERMISSION_LOCATION;
 
 @EActivity(R.layout.activity_location_group)
 public class LocationGroupActivity extends BaseActivity<LocationGroupView, LocationGroupPresenter>
@@ -92,7 +86,6 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
 
     @FragmentById(value = R.id.activity_location_group_map_my_friend)
     protected SupportMapFragment smfMyFriend;
-
     @ViewById(R.id.activity_location_group_iv_turn_location)
     protected ImageView ivTurnLocation;
 
@@ -103,14 +96,14 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
     private UserProfile currentUser;
     private List<UserFriend> userFriendList;
     private List<UserLocation> userLocationList;
+    private Map<String, String> mapAvatar;
     private ImageLoader imageLoader;
     private Marker markerCurrentUser;
     private List<UserFriendMarker> userFriendMarkerList;
     private Boolean statusGPS;
     private BroadcastReceiver broadcastReceiver;
     private IntentFilter filter;
-    public static final int REQUEST_TURN_GPS = 1;
-
+    private Gson gson;
     private Socket socket;
 
     @App
@@ -147,8 +140,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             changeIconLocation();
             initBroadcastReceiver();
             locationListener();
-            askPermission();
-            setup();
+            requestPermission();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -188,65 +180,58 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             alertDialog.setTitle("GPS đang tắt");
             alertDialog.setMessage("Bạn bè sẽ không nhìn thấy bạn, bạn có muốn mở?");
             alertDialog.setIcon(R.drawable.ic_symbol);
-            alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "MỞ", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intentTurnGPS = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivityForResult(intentTurnGPS, REQUEST_TURN_GPS);
-                }
+            alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "MỞ", (dialogInterface, i) -> {
+                AppUtil.requestTurnOnGPS(this);
             });
-            alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "HỦY", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
 
-                }
+            alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "HỦY", (dialogInterface, i) -> {
+
             });
             alertDialog.show();
         }
     }
 
-    public void askPermission() {
+    public void requestPermission() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
-                    PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                    PackageManager.PERMISSION_GRANTED) {
-                String[] permissions = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION};
-                ActivityCompat.requestPermissions(this, permissions, 10);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                String[] permissions = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+                ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSION_LOCATION);
+            } else {
+                setup();
             }
+        } else {
+            setup();
         }
     }
 
-    public boolean checkPermission() {
-        return ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION) ==
-                        PackageManager.PERMISSION_GRANTED;
+    public boolean isPermissionGranted() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     public void setup() {
-        if (checkPermission()) {
+        if (isPermissionGranted()) {
+            gson = new Gson();
+            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+            ImageLoader.getInstance().init(config);
+            imageLoader = ImageLoader.getInstance();
+
+            userFriendList = dataService.getUserFriendList();
+            mapAvatar = new HashMap<>();
+            for (int i = 0; i < userFriendList.size(); i++) {
+                mapAvatar.put(userFriendList.get(i).getEmail(), userFriendList.get(i).getAvatar());
+            }
+
             smfMyFriend.onCreate(null);
             smfMyFriend.onResume();
-            smfMyFriend.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap mMap) {
-                    ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(LocationGroupActivity.this).build();
-                    ImageLoader.getInstance().init(config);
-                    imageLoader = ImageLoader.getInstance();
+            smfMyFriend.getMapAsync(mMap -> {
+                googleMap = mMap;
 
-                    googleMap = mMap;
+                userFriendMarkerList = new ArrayList<>();
 
-                    userFriendMarkerList = new ArrayList<>();
+                presenter.getLastLocation(plan.getId());
 
-                    userFriendList = dataService.getUserFriendList();
-
-                    presenter.getLastLocation(plan.getId());
-
-                }
             });
         }
     }
@@ -280,22 +265,48 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
         for (String provider : listProviders) {
             if (locationManager.getLastKnownLocation(provider) != null) {
                 location = locationManager.getLastKnownLocation(provider);
-                uploadCurrentUserLocation(location);
+                socket.emit("send_location", location.getLatitude(), location.getLongitude());
                 if (markerCurrentUser != null) {
                     markerCurrentUser.remove();
                 }
-                Picasso.with(this)
-                        .load(currentUser.getAvatar())
-                        .into(currentUserTarget);
+                imageLoader.loadImage(currentUser.getAvatar(), new SimpleImageLoadingListener() {
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        View viewMaker = LayoutInflater.from(LocationGroupActivity.this).inflate(R.layout.maker_avatar, null);
+                        CircleImageView civAvatar = viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
+                        civAvatar.setImageBitmap(loadedImage);
+                        Bitmap bmAvatar = createBitmapFromView(viewMaker);
+
+                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                        try {
+                            markerCurrentUser = googleMap.addMarker(new MarkerOptions()
+                                    .position(latLng)
+                                    .title("Tôi")
+                                    .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
+                            markerCurrentUser.showInfoWindow();
+
+                            // For zooming automatically to the location of the markerCurrentUser
+                            CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(17).build();
+                            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
+            // In case too fast, database query can't catch
+            SystemClock.sleep(100);
         }
     }
 
+    @UiThread
     public void getUserFriendLocation(final UserLocation userLocation) {
         for (int i = 0; i < userFriendMarkerList.size(); i++) {
-            userFriendMarkerList.get(i).getMarker().remove();
+            if (userLocation.getFromUser().equals(userFriendMarkerList.get(i).getFrom_user())) {
+                userFriendMarkerList.get(i).getMarker().remove();
+            }
         }
-        imageLoader.loadImage(userLocation.getAvatar(), new SimpleImageLoadingListener() {
+        imageLoader.loadImage(mapAvatar.get(userLocation.getFromUser()), new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 View viewMaker = LayoutInflater.from(LocationGroupActivity.this).inflate(R.layout.maker_avatar, null);
@@ -315,46 +326,6 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
                 userFriendMarkerList.add(userFriendMarker);
             }
         });
-    }
-
-    private Target currentUserTarget = new Target() {
-        @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            View viewMaker = LayoutInflater.from(LocationGroupActivity.this).inflate(R.layout.maker_avatar, null);
-            CircleImageView civAvatar = viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
-            civAvatar.setImageBitmap(bitmap);
-            Bitmap bmAvatar = createBitmapFromView(viewMaker);
-
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            try {
-                markerCurrentUser = googleMap.addMarker(new MarkerOptions()
-                        .position(latLng)
-                        .title("Tôi")
-                        .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
-                markerCurrentUser.showInfoWindow();
-
-                // For zooming automatically to the location of the markerCurrentUser
-                CameraPosition cameraPosition =
-                        new CameraPosition.Builder().target(latLng).zoom(17).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onBitmapFailed(Drawable errorDrawable) {
-
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-        }
-    };
-
-    public void uploadCurrentUserLocation(Location location) {
-        socket.emit("send_location", location.getLatitude(), location.getLongitude());
     }
 
     public Bitmap createBitmapFromView(View view) {
@@ -397,7 +368,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
     @Override
     public void onResume() {
         super.onResume();
-        if (locationManager != null && checkPermission()) {
+        if (locationManager != null && isPermissionGranted()) {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 5, locationListener);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, locationListener);
             locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 1000, 5, locationListener);
@@ -409,16 +380,29 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
     @Override
     public void onStop() {
         super.onStop();
-        if (locationManager != null && checkPermission()) {
+        if (locationManager != null && isPermissionGranted()) {
             locationManager.removeUpdates(locationListener);
             unregisterReceiver(broadcastReceiver);
         }
     }
 
-    @OnActivityResult(REQUEST_TURN_GPS)
-    public void onResult(int resultCode, Intent data) {
-        // Don't check the result code
-        changeIconLocation();
+    @Override
+    public void onBackPressed() {
+        socket.off(Socket.EVENT_DISCONNECT);
+        socket.disconnect();
+        finish();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_PERMISSION_LOCATION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                setup();
+            } else {
+                Toasty.warning(this, "Bạn đã không cấp quyền, chức năng có thể không hoạt động được", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
@@ -438,15 +422,15 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
 
     @Override
     public void getLastLocationSuccess(List<UserLocation> userLocationList) {
+        getCurrentUserLocation();
         this.userLocationList = userLocationList;
         for (UserLocation userLocation : this.userLocationList) {
             getUserFriendLocation(userLocation);
         }
         socket.on("receive_location", args -> {
-            UserLocation userLocation = new Gson().fromJson(args[0].toString(), UserLocation.class);
-            runOnUiThread(() -> getUserFriendLocation(userLocation));
+            UserLocation userLocation = gson.fromJson(args[0].toString(), UserLocation.class);
+            getUserFriendLocation(userLocation);
         });
-        getCurrentUserLocation();
     }
 
     @Override

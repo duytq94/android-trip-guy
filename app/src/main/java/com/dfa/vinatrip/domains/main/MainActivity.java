@@ -17,8 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.location_my_friend.LocationMyFriendFragment;
-import com.dfa.vinatrip.domains.main.location_my_friend.LocationMyFriendFragment_;
 import com.dfa.vinatrip.domains.main.me.MeFragment;
 import com.dfa.vinatrip.domains.main.me.MeFragment_;
 import com.dfa.vinatrip.domains.main.plan.PlanFragment;
@@ -42,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private ProvinceFragment provinceFragment;
     private PlanFragment planFragment;
     private ShareFragment shareFragment;
-    private LocationMyFriendFragment locationMyFriendFragment;
     private MeFragment meFragment;
     private boolean doubleBackPress = false;
     private int selectedItemId;
@@ -87,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().show(provinceFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(planFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(shareFragment).commit();
-                getSupportFragmentManager().beginTransaction().hide(locationMyFriendFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(meFragment).commit();
 //                getSupportFragmentManager().beginTransaction()
 //                                           .replace(R.id.activity_main_fl_container, provinceFragment).commit();
@@ -96,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().hide(provinceFragment).commit();
                 getSupportFragmentManager().beginTransaction().show(planFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(shareFragment).commit();
-                getSupportFragmentManager().beginTransaction().hide(locationMyFriendFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(meFragment).commit();
 //                getSupportFragmentManager().beginTransaction()
 //                                           .replace(R.id.activity_main_fl_container, planFragment).commit();
@@ -105,25 +100,14 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().hide(provinceFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(planFragment).commit();
                 getSupportFragmentManager().beginTransaction().show(shareFragment).commit();
-                getSupportFragmentManager().beginTransaction().hide(locationMyFriendFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(meFragment).commit();
 //                getSupportFragmentManager().beginTransaction()
 //                                           .replace(R.id.activity_main_fl_container, shareFragment).commit();
-                break;
-            case R.id.iconMyFriend:
-                getSupportFragmentManager().beginTransaction().hide(provinceFragment).commit();
-                getSupportFragmentManager().beginTransaction().hide(planFragment).commit();
-                getSupportFragmentManager().beginTransaction().hide(shareFragment).commit();
-                getSupportFragmentManager().beginTransaction().show(locationMyFriendFragment).commit();
-                getSupportFragmentManager().beginTransaction().hide(meFragment).commit();
-//                getSupportFragmentManager().beginTransaction()
-//                                           .replace(R.id.activity_main_fl_container, locationMyFriendFragment).commit();
                 break;
             case R.id.iconMe:
                 getSupportFragmentManager().beginTransaction().hide(provinceFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(planFragment).commit();
                 getSupportFragmentManager().beginTransaction().hide(shareFragment).commit();
-                getSupportFragmentManager().beginTransaction().hide(locationMyFriendFragment).commit();
                 getSupportFragmentManager().beginTransaction().show(meFragment).commit();
 //                getSupportFragmentManager().beginTransaction()
 //                                           .replace(R.id.activity_main_fl_container, meFragment).commit();
@@ -136,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
         provinceFragment = new ProvinceFragment_();
         planFragment = new PlanFragment_();
         shareFragment = new ShareFragment_();
-        locationMyFriendFragment = new LocationMyFriendFragment_();
         meFragment = new MeFragment_();
 
         getSupportFragmentManager()
@@ -144,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.activity_main_fl_container, provinceFragment, "provinceFragment")
                 .add(R.id.activity_main_fl_container, planFragment, "planFragment")
                 .add(R.id.activity_main_fl_container, shareFragment, "shareFragment")
-                .add(R.id.activity_main_fl_container, locationMyFriendFragment, "locationMyFriendFragment")
                 .add(R.id.activity_main_fl_container, meFragment, "meFragment")
                 .commit();
     }
@@ -181,9 +163,9 @@ public class MainActivity extends AppCompatActivity {
         View v = getCurrentFocus();
 
         if (v != null &&
-            (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_MOVE) &&
-            v instanceof EditText &&
-            !v.getClass().getName().startsWith("android.webkit.")) {
+                (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_MOVE) &&
+                v instanceof EditText &&
+                !v.getClass().getName().startsWith("android.webkit.")) {
             int scrcoords[] = new int[2];
             v.getLocationOnScreen(scrcoords);
             float x = ev.getRawX() + v.getLeft() - scrcoords[0];

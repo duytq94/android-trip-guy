@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.domains.location;
 
 import com.dfa.vinatrip.base.BaseMvpView;
-import com.dfa.vinatrip.domains.main.location_my_friend.UserLocation;
 
 import java.util.List;
 

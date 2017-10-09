@@ -1,7 +1,7 @@
 package com.dfa.vinatrip.services.location;
 
 import com.beesightsoft.caf.services.common.RestMessageResponse;
-import com.dfa.vinatrip.domains.main.location_my_friend.UserLocation;
+import com.dfa.vinatrip.domains.location.UserLocation;
 
 import java.util.List;
 

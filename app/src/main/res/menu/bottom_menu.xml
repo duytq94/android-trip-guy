@@ -17,11 +17,6 @@
         android:title="@string/menu_share"
         />
     <item
-        android:id="@+id/iconMyFriend"
-        android:icon="@drawable/ic_my_friend"
-        android:title="@string/menu_my_friend"
-        />
-    <item
         android:id="@+id/iconMe"
         android:icon="@drawable/ic_me"
         android:title="@string/menu_me"
