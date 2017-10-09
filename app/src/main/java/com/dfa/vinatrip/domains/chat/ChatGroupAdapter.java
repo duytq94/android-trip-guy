@@ -92,6 +92,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         BaseMessage baseMessage = baseMessageList.get(position);
         boolean isLeft = checkLeft(baseMessage);
 
+        // Left
         if (isLeft) {
             messageHolder.llGroupLeft.setVisibility(View.VISIBLE);
             messageHolder.flGroupRight.setVisibility(View.GONE);
@@ -152,6 +153,17 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         messageHolder.civLeft, displayImageOptionsAvatar);
             }
 
+            if (position - 1 >= 0) {
+                BaseMessage baseMessagePrevious = baseMessageList.get(position - 1);
+                if (!baseMessagePrevious.getFrom().equals(baseMessage.getFrom())) {
+                    messageHolder.tvNicknameLeft.setVisibility(View.VISIBLE);
+                    messageHolder.tvNicknameLeft.setText(baseMessage.getFrom());
+                } else {
+                    messageHolder.tvNicknameLeft.setVisibility(View.GONE);
+                }
+            }
+
+            // Right
         } else {
             messageHolder.llGroupLeft.setVisibility(View.GONE);
             messageHolder.flGroupRight.setVisibility(View.VISIBLE);
@@ -229,7 +241,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         private LinearLayout llGroupLeft;
         private FrameLayout flGroupRight;
         private ImageView civLeft;
-        private TextView tvMsgLeft, tvMsgRight;
+        private TextView tvMsgLeft, tvNicknameLeft, tvMsgRight;
         private PorterShapeImageView psivPhotoLeft, psivPhotoRight;
         private RotateLoading rotateLoadingRight, rotateLoadingLeft;
 
@@ -239,6 +251,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             llGroupLeft = itemView.findViewById(R.id.item_chat_ll_group_left);
             civLeft = (CircleImageView) itemView.findViewById(R.id.item_chat_civ_left);
             tvMsgLeft = itemView.findViewById(R.id.item_chat_tv_msg_left);
+            tvNicknameLeft = itemView.findViewById(R.id.item_chat_tv_nickname_left);
             psivPhotoLeft = itemView.findViewById(R.id.item_chat_psiv_photo_left);
             rotateLoadingLeft = itemView.findViewById(R.id.item_chat_rotate_loading_left);
 

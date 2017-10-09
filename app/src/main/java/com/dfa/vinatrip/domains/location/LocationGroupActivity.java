@@ -44,7 +44,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import org.androidannotations.annotations.AfterInject;
@@ -213,8 +212,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
     public void setup() {
         if (isPermissionGranted()) {
             gson = new Gson();
-            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
-            ImageLoader.getInstance().init(config);
+
             imageLoader = ImageLoader.getInstance();
 
             userFriendList = dataService.getUserFriendList();
