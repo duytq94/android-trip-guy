@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Created by duonghd on 10/6/2017.
  */
 
-public class Province implements Serializable{
+public class Province implements Serializable {
     @SerializedName("id")
     private int id;
     @SerializedName("name")

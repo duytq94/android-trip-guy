@@ -10,6 +10,7 @@ import java.util.List;
  */
 
 public interface ProvinceView extends BaseMvpView {
-
+    void getBannerSuccess(List<String> banners);
+    
     void getProvinceSuccess(List<Province> provinces);
 }

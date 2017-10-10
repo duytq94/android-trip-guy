@@ -156,9 +156,14 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         messageHolder.civLeft, displayImageOptionsAvatar);
             }
 
-            if (position - 1 >= 0) {
-                BaseMessage baseMessagePrevious = baseMessageList.get(position - 1);
-                if (!baseMessagePrevious.getFrom().equals(baseMessage.getFrom())) {
+            if (position - 1 >= -1) {
+                BaseMessage baseMessagePrevious;
+                if (position != 0) {
+                    baseMessagePrevious = baseMessageList.get(position - 1);
+                } else {
+                    baseMessagePrevious = baseMessageList.get(0);
+                }
+                if (!baseMessagePrevious.getFrom().equals(baseMessage.getFrom()) || position == 0) {
                     messageHolder.tvNicknameLeft.setVisibility(View.VISIBLE);
                     String strDate = AppUtil.formatTime("hh:mm a", baseMessage.getTimestamp());
                     int dateType = AppUtil.getDateType(baseMessage.getTimestamp());

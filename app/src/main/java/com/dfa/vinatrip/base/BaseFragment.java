@@ -31,21 +31,22 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
     }
     
     public void showHUD() {
-        if (progressDialogLoading != null)
-            progressDialogLoading.dismiss();
-        View view = getActivity().getLayoutInflater().inflate(R.layout.layout_progress_loading_ball_spin, null);
-        progressDialogLoading = new Dialog(getActivity());
-        progressDialogLoading.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        progressDialogLoading.setContentView(view);
-        progressDialogLoading.setCancelable(false);
-        progressDialogLoading.setCanceledOnTouchOutside(false);
+        if (progressDialogLoading != null && progressDialogLoading.isShowing()) {
         
-        Window window = progressDialogLoading.getWindow();
-        if (window != null) {
-            window.setBackgroundDrawableResource(R.drawable.bg_layout_loading);
+        } else {
+            View view = getActivity().getLayoutInflater().inflate(R.layout.layout_progress_loading_ball_spin, null);
+            progressDialogLoading = new Dialog(getContext());
+            progressDialogLoading.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            progressDialogLoading.setContentView(view);
+            progressDialogLoading.setCancelable(false);
+            progressDialogLoading.setCanceledOnTouchOutside(false);
+        
+            Window window = progressDialogLoading.getWindow();
+            if (window != null) {
+                window.setBackgroundDrawableResource(R.drawable.bg_layout_loading);
+            }
+            progressDialogLoading.show();
         }
-        
-        progressDialogLoading.show();
     }
     
     public void hideHUD() {

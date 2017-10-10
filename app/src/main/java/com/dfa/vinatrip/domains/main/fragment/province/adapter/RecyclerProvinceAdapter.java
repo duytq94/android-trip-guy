@@ -15,11 +15,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ProvinceAdapter extends RecyclerView.Adapter<ProvinceAdapter.ViewHolder> {
+public class RecyclerProvinceAdapter extends RecyclerView.Adapter<RecyclerProvinceAdapter.ViewHolder> {
     private List<Province> provinceList;
     private Context context;
     
-    public ProvinceAdapter(Context context, List<Province> provinceList) {
+    public RecyclerProvinceAdapter(Context context, List<Province> provinceList) {
         this.provinceList = provinceList;
         this.context = context;
     }

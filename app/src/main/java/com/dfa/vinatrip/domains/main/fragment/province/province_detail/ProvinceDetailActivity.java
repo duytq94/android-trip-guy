@@ -22,6 +22,7 @@ import com.dfa.vinatrip.models.response.Province;
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
@@ -39,7 +40,6 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
     protected MainApplication mainApplication;
     @Inject
     protected ProvinceDetailPresenter presenter;
-    
     @ViewById(R.id.activity_province_detail_vp_viewpager_banner)
     protected ViewPager vpBanner;
     @ViewById(R.id.activity_province_detail_tl_tab_layout)
@@ -101,5 +101,10 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
     @Override
     public void onBackPressed() {
         finish();
+    }
+    
+    @Click(R.id.activity_province_detail_iv_back)
+    void backClick() {
+        onBackPressed();
     }
 }

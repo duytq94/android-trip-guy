@@ -16,6 +16,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -294,5 +295,10 @@ public class AppUtil {
         DateFormat dateFormat = new SimpleDateFormat(pattern, Locale.US);
         Date date = new Date(timeStamp);
         return dateFormat.format(date);
+    }
+
+    public static int dpToPx(Context context, float dp) {
+        return (int) (TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics()));
     }
 }
