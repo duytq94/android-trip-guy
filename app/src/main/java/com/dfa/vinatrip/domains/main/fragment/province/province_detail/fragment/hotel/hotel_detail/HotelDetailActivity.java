@@ -5,8 +5,7 @@ import android.support.annotation.NonNull;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
-import com.dfa.vinatrip.domains.main.fragment.province.province_detail.fragment.hotel.hotel_detail
-        .DaggerHotelDetailComponent;
+import com.dfa.vinatrip.custom_view.NToolbar;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
 
@@ -15,6 +14,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ViewById;
 
 import javax.inject.Inject;
 
@@ -29,10 +29,13 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
     protected MainApplication mainApplication;
     @Inject
     protected HotelDetailPresenter presenter;
-
+    
+    @ViewById(R.id.activity_province_hotel_detail_tb_toolbar)
+    protected NToolbar nToolbar;
+    
     @Extra
     protected HotelResponse hotel;
-
+    
     @AfterInject
     void initInject() {
         DaggerHotelDetailComponent.builder()
@@ -40,33 +43,38 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
                 .activityModule(new ActivityModule(this))
                 .build().inject(this);
     }
-
+    
     @AfterViews
     void init() {
-
+        nToolbar.setup(this, "TripGuy");
+        nToolbar.showLeftIcon();
+        nToolbar.showToolbarColor();
+        nToolbar.setOnLeftClickListener(v -> {
+            onBackPressed();
+        });
     }
-
+    
     @Override
     public void showLoading() {
         showHUD();
     }
-
+    
     @Override
     public void hideLoading() {
         hideHUD();
     }
-
+    
     @Override
     public void apiError(Throwable throwable) {
-
+        
     }
-
+    
     @NonNull
     @Override
     public HotelDetailPresenter createPresenter() {
         return presenter;
     }
-
+    
     @Override
     public void onBackPressed() {
         finish();

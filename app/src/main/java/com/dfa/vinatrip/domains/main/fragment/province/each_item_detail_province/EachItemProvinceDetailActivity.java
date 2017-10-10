@@ -8,7 +8,8 @@ import android.view.MenuItem;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.fragment.province.each_item_detail_province.each_province_destination.EachProvinceDestinationFragment;
 import com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_food.EachProvinceFoodFragment;
-import com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_hotel.EachProvinceHotelFragment;
+//import com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_hotel
+// .EachProvinceHotelFragment;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -26,7 +27,7 @@ public class EachItemProvinceDetailActivity extends AppCompatActivity {
     
     private ActionBar actionBar;
     
-    private EachProvinceHotelFragment eachProvinceHotelFragment;
+    //private EachProvinceHotelFragment eachProvinceHotelFragment;
     private EachProvinceFoodFragment eachProvinceFoodFragment;
     private EachProvinceDestinationFragment eachProvinceDestinationFragment;
     private String titleActionBar;
