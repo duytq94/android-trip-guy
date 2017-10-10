@@ -43,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
                 android:text="thanh"
                 android:textColor="@color/colorDarkGray"/>
 
@@ -57,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/bg_item_chat_left"
+                    android:background="@drawable/item_chat_left"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:textColor="#343434"
@@ -69,7 +70,7 @@
                     android:layout_height="233dp"
                     android:scaleType="centerCrop"
                     android:visibility="gone"
-                    app:siShape="@drawable/bg_item_chat_left"/>
+                    app:siShape="@drawable/item_chat_left"/>
 
                 <com.dfa.vinatrip.widgets.RotateLoading
                     android:id="@+id/item_chat_rotate_loading_left"
@@ -101,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/bg_item_chat_right"
+            android:background="@drawable/item_chat_right"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:textColor="#ffffff"
@@ -113,7 +114,7 @@
             android:layout_height="233dp"
             android:scaleType="centerCrop"
             android:visibility="gone"
-            app:siShape="@drawable/bg_item_chat_right"/>
+            app:siShape="@drawable/item_chat_right"/>
 
         <com.dfa.vinatrip.widgets.RotateLoading
             android:id="@+id/item_chat_rotate_loading_right"

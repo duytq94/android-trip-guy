@@ -71,8 +71,10 @@
             android:background="@color/transparent"
             android:hint="Nhập nội dung..."
             android:inputType="textMultiLine"
+            android:paddingBottom="5dp"
             android:paddingLeft="20dp"
             android:paddingRight="10dp"
+            android:paddingTop="5dp"
             android:textColorHint="@color/colorDarkGray"
             android:textSize="15dp"/>
 
