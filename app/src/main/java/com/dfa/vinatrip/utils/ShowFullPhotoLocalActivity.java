@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.province.Province;
+import com.dfa.vinatrip.domains.main.fragment.province.Province;
 //import com.dfa.vinatrip.domains.main.province.detail_province.province_destination.ProvinceDestination;
 import com.dfa.vinatrip.widgets.ZoomOutPageTransformer;
 import com.github.chrisbanes.photoview.PhotoView;

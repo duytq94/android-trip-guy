@@ -38,46 +38,91 @@
             android:windowSoftInputMode="adjustNothing"/>
 
         <activity
-            android:name=".domains.main.province.province_detail.ProvinceDetailActivity_"
+            android:name=".domains.main.fragment.province.province_detail.ProvinceDetailActivity_"
             android:windowSoftInputMode="adjustNothing"/>
 
         <activity
-            android:name=".domains.main.province.province_detail.fragment.hotel.hotel_detail.HotelDetailActivity_"
+            android:name=".domains.main.fragment.province.province_detail.fragment.hotel.hotel_detail.HotelDetailActivity_"
             android:windowSoftInputMode="adjustNothing"/>
 
-        <activity android:name=".domains.main.province.each_item_detail_province.EachItemProvinceDetailActivity_"/>
-        <activity android:name=".utils.MapActivity_"/>
+        <activity
+            android:name=".domains.main.fragment.province.each_item_detail_province.EachItemProvinceDetailActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+
+        <activity
+            android:name=".utils.MapActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+
         <activity
             android:name=".domains.auth.sign_up.SignUpActivity_"
             android:windowSoftInputMode="adjustResize"/>
+
         <activity
             android:name=".domains.auth.sign_in.SignInActivity_"
             android:windowSoftInputMode="adjustResize"/>
+
         <activity
             android:name=".domains.auth.reset_password.ResetPasswordActivity_"
             android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".domains.main.me.detail_me.UserProfileDetailActivity_"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".domains.main.province.each_item_detail_province.rating.RatingActivity_"/>
-        <activity android:name=".utils.ShowFullPhotoLocalActivity_"/>
-        <activity android:name=".domains.chat.ShowFullPhotoActivity_"/>
-        <activity android:name=".domains.main.splash.SplashScreenActivity_"/>
-        <activity android:name=".domains.main.plan.make_plan.MakePlanActivity_"/>
-        <activity android:name=".domains.main.plan.detail_plan.DetailPlanActivity_"/>
-        <activity android:name=".domains.search.SearchActivity_"/>
-        <activity android:name=".domains.main.plan.make_plan.ChooseBackgroundPlanActivity_"/>
-        <activity
-            android:name=".domains.main.share.make_share.MakeShareActivity_"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".domains.main.share.detail_share.DetailShareActivity_"/>
-        <activity android:name=".domains.main.share.make_share.image_multi_select.SelectImageActivity_"/>
-        <activity android:name=".domains.chat.ChatGroupActivity_">
-        </activity>
-        <activity android:name=".domains.chat.ShowUserOnlineActivity_">
-        </activity>
-        <activity android:name=".domains.location.LocationGroupActivity_">
-        </activity>
-    </application>
 
+        <activity
+            android:name=".domains.main.fragment.me.detail_me.UserProfileDetailActivity_"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".domains.main.fragment.province.each_item_detail_province.rating.RatingActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+
+        <activity
+            android:name=".utils.ShowFullPhotoLocalActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+
+        <activity
+            android:name=".domains.chat.ShowFullPhotoActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+
+        <activity
+            android:name=".domains.main.splash.SplashScreenActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+
+        <activity
+            android:name=".domains.main.fragment.plan.make_plan.MakePlanActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+
+        <activity
+            android:name=".domains.main.fragment.plan.detail_plan.DetailPlanActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+
+        <activity
+            android:name=".domains.search.SearchActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+
+        <activity
+            android:name=".domains.main.plan.make_plan.ChooseBackgroundPlanActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+
+        <activity
+            android:name=".domains.main.fragment.share.make_share.MakeShareActivity_"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".domains.main.fragment.share.detail_share.DetailShareActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+
+        <activity
+            android:name=".domains.main.fragment.share.make_share.image_multi_select.SelectImageActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+
+        <activity
+            android:name=".domains.chat.ChatGroupActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+
+        <activity
+            android:name=".domains.chat.ShowUserOnlineActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+
+        <activity
+            android:name=".domains.location.LocationGroupActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+    </application>
 </manifest>

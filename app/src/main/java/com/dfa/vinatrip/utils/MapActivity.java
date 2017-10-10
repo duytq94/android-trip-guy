@@ -2,19 +2,13 @@ package com.dfa.vinatrip.utils;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_destination.ProvinceDestinationDetail;
-import com.dfa.vinatrip.domains.main.share.Share;
-import com.google.android.gms.maps.CameraUpdateFactory;
+import com.dfa.vinatrip.domains.main.fragment.province.each_item_detail_province.each_province_destination.ProvinceDestinationDetail;
+import com.dfa.vinatrip.domains.main.fragment.share.Share;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -24,18 +18,18 @@ import org.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.activity_map)
 public class MapActivity extends AppCompatActivity {
-
+    
     @ViewById(R.id.my_toolbar)
     Toolbar toolbar;
-
+    
     @FragmentById(R.id.activity_map_fragment_map)
     MapFragment mapFragment;
-
+    
     private GoogleMap googleMap;
     private android.support.v7.app.ActionBar actionBar;
     private String titleActionBar;
-
-//    @Extra
+    
+    //    @Extra
 //    ProvinceHotel detailHotel;
 //    @Extra
 //    ProvinceFood detailFood;
@@ -45,7 +39,7 @@ public class MapActivity extends AppCompatActivity {
     Share detailShare;
     @Extra
     LatLng latLng;
-
+    
     @AfterViews
     void init() {
         setupActionBar();
@@ -102,7 +96,7 @@ public class MapActivity extends AppCompatActivity {
 //            }
 //        });
     }
-
+    
     public void setupActionBar() {
 //        if (detailHotel != null) {
 //            // Get ProvinceHotel form EachProvinceHotelFragment

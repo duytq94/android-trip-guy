@@ -7,16 +7,18 @@
     android:layout_height="match_parent"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/activity_main_fl_container"
+    <com.dfa.vinatrip.custom_view.NToolbar_
+        android:id="@+id/activity_main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"/>
+
+    <com.dfa.vinatrip.custom_view.NonSwipeViewPager
+        android:id="@+id/activity_main_nsvp_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/colorBackground"
-        />
+        android:layout_weight="1"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/activity_main_bnv_menu"
@@ -25,6 +27,5 @@
         android:background="@android:color/white"
         app:itemIconTint="@color/bottom_icon_color"
         app:itemTextColor="@color/bottom_icon_color"
-        app:menu="@menu/bottom_menu"
-        />
+        app:menu="@menu/bottom_menu"/>
 </LinearLayout>

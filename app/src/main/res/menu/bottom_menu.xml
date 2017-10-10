@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- if more than 4 items, title of bottom bar will be hide -->
     <item
         android:id="@+id/iconLocation"
         android:icon="@drawable/ic_explore"
-        android:title="@string/menu_location"
-        />
+        android:title="@string/menu_location"/>
     <item
         android:id="@+id/iconPlan"
         android:icon="@drawable/ic_plan"
-        android:title="@string/menu_plan"
-        />
+        android:title="@string/menu_plan"/>
     <item
         android:id="@+id/iconShare"
         android:icon="@drawable/ic_share"
-        android:title="@string/menu_share"
-        />
+        android:title="@string/menu_share"/>
     <item
         android:id="@+id/iconMe"
         android:icon="@drawable/ic_me"
-        android:title="@string/menu_me"
-        />
+        android:title="@string/menu_me"/>
 </menu>

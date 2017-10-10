@@ -248,18 +248,18 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public MessageHolder(View itemView) {
             super(itemView);
             // Left content
-            llGroupLeft = itemView.findViewById(R.id.item_chat_ll_group_left);
+            llGroupLeft = (LinearLayout) itemView.findViewById(R.id.item_chat_ll_group_left);
             civLeft = (CircleImageView) itemView.findViewById(R.id.item_chat_civ_left);
-            tvMsgLeft = itemView.findViewById(R.id.item_chat_tv_msg_left);
-            tvNicknameLeft = itemView.findViewById(R.id.item_chat_tv_nickname_left);
-            psivPhotoLeft = itemView.findViewById(R.id.item_chat_psiv_photo_left);
-            rotateLoadingLeft = itemView.findViewById(R.id.item_chat_rotate_loading_left);
+            tvMsgLeft = (TextView) itemView.findViewById(R.id.item_chat_tv_msg_left);
+            tvNicknameLeft = (TextView) itemView.findViewById(R.id.item_chat_tv_nickname_left);
+            psivPhotoLeft = (PorterShapeImageView) itemView.findViewById(R.id.item_chat_psiv_photo_left);
+            rotateLoadingLeft = (RotateLoading) itemView.findViewById(R.id.item_chat_rotate_loading_left);
 
             // Right content
-            flGroupRight = itemView.findViewById(R.id.item_chat_ll_group_right);
-            tvMsgRight = itemView.findViewById(R.id.item_chat_tv_msg_right);
-            psivPhotoRight = itemView.findViewById(R.id.item_chat_psiv_photo_right);
-            rotateLoadingRight = itemView.findViewById(R.id.item_chat_rotate_loading_right);
+            flGroupRight = (FrameLayout) itemView.findViewById(R.id.item_chat_ll_group_right);
+            tvMsgRight = (TextView) itemView.findViewById(R.id.item_chat_tv_msg_right);
+            psivPhotoRight = (PorterShapeImageView) itemView.findViewById(R.id.item_chat_psiv_photo_right);
+            rotateLoadingRight = (RotateLoading) itemView.findViewById(R.id.item_chat_rotate_loading_right);
         }
     }
 

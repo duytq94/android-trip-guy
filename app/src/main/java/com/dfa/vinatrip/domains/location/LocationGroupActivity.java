@@ -28,9 +28,9 @@ import android.widget.Toast;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
-import com.dfa.vinatrip.domains.main.me.UserProfile;
-import com.dfa.vinatrip.domains.main.me.detail_me.make_friend.UserFriend;
-import com.dfa.vinatrip.domains.main.plan.Plan;
+import com.dfa.vinatrip.domains.main.fragment.me.UserProfile;
+import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.AppUtil;
@@ -271,7 +271,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
                     @Override
                     public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                         View viewMaker = LayoutInflater.from(LocationGroupActivity.this).inflate(R.layout.maker_avatar, null);
-                        CircleImageView civAvatar = viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
+                        CircleImageView civAvatar = (CircleImageView) viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
                         civAvatar.setImageBitmap(loadedImage);
                         Bitmap bmAvatar = createBitmapFromView(viewMaker);
 
@@ -308,7 +308,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 View viewMaker = LayoutInflater.from(LocationGroupActivity.this).inflate(R.layout.maker_avatar, null);
-                CircleImageView civAvatar = viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
+                CircleImageView civAvatar = (CircleImageView) viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
                 civAvatar.setImageBitmap(loadedImage);
                 Bitmap bmAvatar = createBitmapFromView(viewMaker);
 
