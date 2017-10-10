@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,7 +31,11 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by duonghd on 9/27/2017.
@@ -271,5 +276,23 @@ public class AppUtil {
                     break;
             }
         });
+    }
+
+    // 0 is today, 1 is yesterday, 2 is past
+    // It auto parse to current device zone
+    public static int getDateType(long timeStamp) {
+        if (DateUtils.isToday(timeStamp)) {
+            return 0;
+        }
+        if (DateUtils.isToday(timeStamp + 86400000)) {
+            return 1;
+        }
+        return 2;
+    }
+
+    public static String formatTime(String pattern, final long timeStamp) {
+        DateFormat dateFormat = new SimpleDateFormat(pattern, Locale.US);
+        Date date = new Date(timeStamp);
+        return dateFormat.format(date);
     }
 }

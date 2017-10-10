@@ -13,38 +13,6 @@
         >
 
         <ImageView
-            android:id="@+id/activity_location_group_iv_symbol"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
-            android:src="@drawable/ic_symbol"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/activity_location_group_iv_symbol"
-            android:text="Vị trí bạn bè"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/text_large"
-            android:textStyle="bold"
-            />
-
-        <ImageView
-            android:id="@+id/activity_location_group_iv_turn_location"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_toLeftOf="@+id/activity_location_group_iv_info"
-            android:paddingBottom="16dp"
-            android:paddingLeft="16dp"
-            android:paddingTop="16dp"
-            android:src="@drawable/ic_location"
-            />
-
-        <ImageView
             android:id="@+id/activity_location_group_iv_info"
             android:layout_width="56dp"
             android:layout_height="56dp"
@@ -52,6 +20,17 @@
             android:padding="16dp"
             android:src="@drawable/ic_info"
             />
+
+        <ImageView
+            android:id="@+id/activity_location_group_iv_turn_location"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_toLeftOf="@+id/activity_location_group_iv_info"
+            android:padding="16dp"
+            android:src="@drawable/ic_location"
+            />
+
+
     </RelativeLayout>
 
     <fragment

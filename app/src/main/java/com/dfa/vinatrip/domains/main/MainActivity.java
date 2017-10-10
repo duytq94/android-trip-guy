@@ -45,22 +45,22 @@ public class MainActivity extends AppCompatActivity {
         
         vpFragment.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), arrayFragment));
         vpFragment.setOffscreenPageLimit(arrayFragment.size());
-        
+
         StopShiftModeBottomNavView.disableShiftMode(bnvMenu);
         bnvMenu.setOnNavigationItemSelectedListener
                 (item -> {
                     switch (item.getItemId()) {
                         case R.id.iconLocation:
-                            vpFragment.setCurrentItem(0, true);
+                            vpFragment.setCurrentItem(0, false);
                             break;
                         case R.id.iconPlan:
-                            vpFragment.setCurrentItem(1, true);
+                            vpFragment.setCurrentItem(1, false);
                             break;
                         case R.id.iconShare:
-                            vpFragment.setCurrentItem(2, true);
+                            vpFragment.setCurrentItem(2, false);
                             break;
                         case R.id.iconMe:
-                            vpFragment.setCurrentItem(3, true);
+                            vpFragment.setCurrentItem(3, false);
                             break;
                     }
                     // Must true so item in bottom bar can transform

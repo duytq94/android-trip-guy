@@ -111,6 +111,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     private Gson gson;
 
     private Map<String, String> mapAvatar;
+    private Map<String, String> mapNickname;
 
     @App
     protected MainApplication application;
@@ -147,7 +148,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             photoSelectedList = new ArrayList<>();
             isSendPhoto = false;
 
-            setupMapAvatarFriend();
+            setupHashMap();
             setupAppBar();
             setupChatAdapter();
             setupPhotoAdapter();
@@ -203,10 +204,13 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
         }
     }
 
-    public void setupMapAvatarFriend() {
+    public void setupHashMap() {
         mapAvatar = new HashMap<>();
+        mapNickname = new HashMap<>();
+
         for (int i = 0; i < userFriendList.size(); i++) {
             mapAvatar.put(userFriendList.get(i).getEmail(), userFriendList.get(i).getAvatar());
+            mapNickname.put(userFriendList.get(i).getEmail(), userFriendList.get(i).getNickname());
         }
     }
 
@@ -214,7 +218,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(plan.getName());
+            actionBar.setTitle("Thảo luận");
 
             // Set button back
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -222,7 +226,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     }
 
     public void setupChatAdapter() {
-        adapter = new ChatGroupAdapter(dataService.getCurrentUser().getEmail(), baseMessageList, mapAvatar, this);
+        adapter = new ChatGroupAdapter(dataService.getCurrentUser().getEmail(), baseMessageList, mapAvatar, mapNickname, this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);

@@ -15,6 +15,7 @@ import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.models.TypeMessage;
 import com.dfa.vinatrip.models.response.BaseMessage;
 import com.dfa.vinatrip.utils.AdapterChatListener;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.widgets.RotateLoading;
 import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -41,9 +42,10 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private DisplayImageOptions displayImageOptionsAvatar;
     private AdapterChatListener adapterChatListener;
     private Map<String, String> mapAvatar;
+    private Map<String, String> mapNickname;
 
     public ChatGroupAdapter(String currentUser, List<BaseMessage> baseMessageList,
-                            Map<String, String> mapAvatar, Context context) {
+                            Map<String, String> mapAvatar, Map<String, String> mapNickname, Context context) {
         setHasStableIds(true);
         this.currentUser = currentUser;
         this.imageLoader = ImageLoader.getInstance();
@@ -76,6 +78,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 .build();
         this.baseMessageList = baseMessageList;
         this.mapAvatar = mapAvatar;
+        this.mapNickname = mapNickname;
         this.adapterChatListener = (AdapterChatListener) context;
     }
 
@@ -157,7 +160,17 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 BaseMessage baseMessagePrevious = baseMessageList.get(position - 1);
                 if (!baseMessagePrevious.getFrom().equals(baseMessage.getFrom())) {
                     messageHolder.tvNicknameLeft.setVisibility(View.VISIBLE);
-                    messageHolder.tvNicknameLeft.setText(baseMessage.getFrom());
+                    String strDate = AppUtil.formatTime("hh:mm a", baseMessage.getTimestamp());
+                    int dateType = AppUtil.getDateType(baseMessage.getTimestamp());
+                    if (dateType == 0) {
+                        strDate = String.format(", hôm nay, %s", strDate);
+                    } else if (dateType == 1) {
+                        strDate = String.format(", hôm qua, %s", strDate);
+                    } else {
+                        strDate = String.format(", %s, %s", AppUtil.formatTime("dd MMM", baseMessage.getTimestamp()), strDate);
+                    }
+                    messageHolder.tvNicknameLeft.setText(mapNickname.get(baseMessage.getFrom()));
+                    messageHolder.tvNicknameLeft.append(strDate);
                 } else {
                     messageHolder.tvNicknameLeft.setVisibility(View.GONE);
                 }

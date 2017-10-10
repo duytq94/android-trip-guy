@@ -4,7 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.dfa.vinatrip.domains.chat.ShowUserOnlineActivity">
+
+    <include layout="@layout/toolbar"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Thành viên"
+        android:textColor="@color/colorMain"
+        android:textSize="15dp"
+        android:textStyle="bold"/>
 
     <ListView
         android:id="@+id/activity_show_user_online_lv_user"

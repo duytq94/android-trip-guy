@@ -26,6 +26,7 @@
     <color name="colorBackground">#F5F5F5</color>
 
     <color name="colorBlackTransparent">#60000000</color>
+    <color name="grayTransparentMarker">#97000000</color>
 
 
     <color name="colorDarkGray">#787878</color>

@@ -261,6 +261,9 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
     public void getCurrentUserLocation() {
         List<String> listProviders = locationManager.getAllProviders();
         for (String provider : listProviders) {
+            // In case too fast, database query can't catch
+            SystemClock.sleep(100);
+
             if (locationManager.getLastKnownLocation(provider) != null) {
                 location = locationManager.getLastKnownLocation(provider);
                 socket.emit("send_location", location.getLatitude(), location.getLongitude());
@@ -292,8 +295,6 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
                     }
                 });
             }
-            // In case too fast, database query can't catch
-            SystemClock.sleep(100);
         }
     }
 
@@ -309,6 +310,14 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 View viewMaker = LayoutInflater.from(LocationGroupActivity.this).inflate(R.layout.maker_avatar, null);
                 CircleImageView civAvatar = (CircleImageView) viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
+                CircleImageView civOverLay = (CircleImageView) viewMaker.findViewById(R.id.maker_avatar_civ_overlay);
+
+                if (userLocation.getIsOnline()) {
+                    civOverLay.setVisibility(View.VISIBLE);
+                } else {
+                    civOverLay.setVisibility(View.GONE);
+                }
+
                 civAvatar.setImageBitmap(loadedImage);
                 Bitmap bmAvatar = createBitmapFromView(viewMaker);
 

@@ -1,6 +1,9 @@
 package com.dfa.vinatrip.domains.chat;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -27,6 +30,8 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
     @Extra
     protected ArrayList<UserFriend> userFriendList;
 
+    @ViewById(R.id.my_toolbar)
+    protected Toolbar toolbar;
     @ViewById(R.id.activity_show_user_online_lv_user)
     protected ListView lvUser;
 
@@ -35,6 +40,8 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
 
     @AfterViews
     public void init() {
+        setupAppBar();
+
         imageLoader = ImageLoader.getInstance();
 
         adapter = new QuickAdapter<UserFriend>(this, R.layout.item_user_online) {
@@ -59,5 +66,25 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
 
         adapter.addAll(userFriendList);
         adapter.notifyDataSetChanged();
+    }
+
+    public void setupAppBar() {
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Thông tin nhóm");
+
+            // Set button back
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+        return false;
     }
 }
