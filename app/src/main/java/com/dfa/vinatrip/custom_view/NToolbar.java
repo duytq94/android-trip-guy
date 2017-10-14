@@ -44,15 +44,15 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
     private boolean showAppIcon = false;
     private boolean showToolbarColor = false;
     private boolean checkSetup = true;
-
+    
     public NToolbar(Context context) {
         super(context);
     }
-
+    
     public NToolbar(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-
+    
     private boolean defaultSetup(AppCompatActivity activity) {
         this.activity = activity;
         activity.setSupportActionBar(toolbar);
@@ -69,7 +69,7 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return checkSetup;
     }
-
+    
     @Override
     public boolean setup(AppCompatActivity activity, String title) {
         if (defaultSetup(activity)) {
@@ -79,7 +79,7 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return checkSetup;
     }
-
+    
     @Override
     public boolean setup(AppCompatActivity activity, String title, @DrawableRes int icLeft) {
         if (setup(activity, title)) {
@@ -94,7 +94,7 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return checkSetup;
     }
-
+    
     @Override
     public boolean setup(AppCompatActivity activity, String title, @DrawableRes int icLeft, @DrawableRes int icRight) {
         if (setup(activity, title, icLeft)) {
@@ -109,88 +109,123 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return checkSetup;
     }
-
+    
     @Override
-    public void showAppIcon() {
+    public NToolbar showAppIcon() {
         if (checkSetup) {
             showAppIcon = true;
             civAppIcon.setVisibility(VISIBLE);
         }
+        return this;
     }
-
+    
     @Override
-    public void hideAppIcon() {
+    public NToolbar hideAppIcon() {
         if (checkSetup) {
             showAppIcon = false;
             civAppIcon.setVisibility(GONE);
         }
+        return this;
     }
-
+    
     @Override
-    public void showLeftIcon() {
+    public NToolbar showLeftIcon() {
         if (checkSetup) {
             showLeftIcon = true;
             ivLeftIcon.setVisibility(VISIBLE);
         }
+        return this;
     }
-
+    
     @Override
-    public void hideLeftIcon() {
+    public NToolbar showLeftIcon(@DrawableRes int icLeft) {
+        if (checkSetup) {
+            showLeftIcon = true;
+            ivLeftIcon.setVisibility(VISIBLE);
+            
+            if (icLeft != 0) {
+                ivLeftIcon.setImageResource(icLeft);
+            }
+        }
+        return this;
+    }
+    
+    @Override
+    public NToolbar hideLeftIcon() {
         if (checkSetup) {
             showLeftIcon = false;
             ivLeftIcon.setVisibility(GONE);
         }
+        return this;
     }
-
+    
     @Override
-    public void showRightIcon() {
+    public NToolbar showRightIcon() {
         if (checkSetup) {
             showRightIcon = true;
             ivRightIcon.setVisibility(VISIBLE);
         }
+        return this;
     }
-
+    
     @Override
-    public void hideRightIcon() {
+    public NToolbar showRightIcon(@DrawableRes int icRight) {
+        if (checkSetup) {
+            showRightIcon = true;
+            ivRightIcon.setVisibility(VISIBLE);
+            
+            if (icRight != 0) {
+                ivLeftIcon.setImageResource(icRight);
+            }
+        }
+        return this;
+    }
+    
+    @Override
+    public NToolbar hideRightIcon() {
         if (checkSetup) {
             showRightIcon = false;
             ivRightIcon.setVisibility(GONE);
         }
+        return this;
     }
-
+    
     @Override
-    public void showToolbarColor() {
+    public NToolbar showToolbarColor() {
         if (checkSetup) {
             showToolbarColor = true;
             toolbar.setBackgroundColor(activity.getResources().getColor(R.color.colorMain));
         }
+        return this;
     }
-
+    
     @Override
-    public void hideToolbarColor() {
+    public NToolbar hideToolbarColor() {
         if (checkSetup) {
             showToolbarColor = false;
             toolbar.setBackgroundColor(activity.getResources().getColor(R.color.transparent));
         }
+        return this;
     }
-
+    
     @Override
-    public void setTitle(String title) {
+    public NToolbar setTitle(String title) {
         if (checkSetup) {
             tvTitle.setText(title);
         }
+        return this;
     }
-
+    
     @Override
     public void setOnLeftClickListener(View.OnClickListener onLeftClickListener) {
         ivLeftIcon.setOnClickListener(onLeftClickListener);
     }
-
+    
     @Override
     public void setOnRightClickListener(View.OnClickListener onRightClickListener) {
         ivRightIcon.setOnClickListener(onRightClickListener);
     }
-
+    
     @Override
     public void setOnLlRootListener(View.OnClickListener onLlRootClickListener) {
         llRoot.setOnClickListener(onLlRootClickListener);
