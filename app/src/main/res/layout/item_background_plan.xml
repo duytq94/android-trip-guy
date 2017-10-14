@@ -25,7 +25,7 @@
         android:id="@+id/item_background_plan_iv_border"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/bg_border"
+        android:src="@drawable/bg_border_green"
         android:visibility="gone"
         />
 </FrameLayout>

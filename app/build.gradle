@@ -160,4 +160,7 @@ dependencies {
     compile 'org.lucasr.twowayview:twowayview:0.1.4'
 }
 // this line has to put out of dependencies so app can run Google Map
+dependencies {
+    compile 'com.android.support:support-v4:25.+'
+}
 apply plugin: 'com.google.gms.google-services'

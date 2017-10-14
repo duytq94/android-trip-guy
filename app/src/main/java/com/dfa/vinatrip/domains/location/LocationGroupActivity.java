@@ -449,7 +449,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             }
             getUserFriendLocation(userLocationCurrent);
         });
-        
+
         socket.on("a_user_turn_off", args -> {
             String fromUser = null;
             try {

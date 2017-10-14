@@ -5,6 +5,10 @@
         android:icon="@drawable/ic_explore"
         android:title="@string/menu_location"/>
     <item
+        android:id="@+id/iconTrend"
+        android:icon="@drawable/ic_explore"
+        android:title="@string/menu_trend"/>
+    <item
         android:id="@+id/iconPlan"
         android:icon="@drawable/ic_plan"
         android:title="@string/menu_plan"/>

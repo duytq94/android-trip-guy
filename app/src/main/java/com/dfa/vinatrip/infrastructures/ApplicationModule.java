@@ -15,6 +15,9 @@ import com.dfa.vinatrip.services.account.RestAccountService;
 import com.dfa.vinatrip.services.chat.ChatService;
 import com.dfa.vinatrip.services.chat.DefaultChatService;
 import com.dfa.vinatrip.services.chat.RestChatService;
+import com.dfa.vinatrip.services.deal.DealService;
+import com.dfa.vinatrip.services.deal.DefaultDealService;
+import com.dfa.vinatrip.services.deal.RestDealService;
 import com.dfa.vinatrip.services.default_data.DataService;
 import com.dfa.vinatrip.services.default_data.DefaultDataService;
 import com.dfa.vinatrip.services.default_data.RestDataService;
@@ -99,6 +102,15 @@ public class ApplicationModule {
                 .provideApi(ApiUrls.SERVER_API_CHAT, RestChatService.class);
 
         return new DefaultChatService(restService, rxNetworkProvider, apiErrorFilter);
+    }
+
+    @Provides
+    @ApplicationScope
+    public DealService provideDealService(NetworkProvider rxNetworkProvider, ApiErrorFilter apiErrorFilter) {
+        RestDealService restService = rxNetworkProvider.addDefaultHeader()
+                .provideApi(ApiUrls.SERVER_API_CHAT, RestDealService.class);
+
+        return new DefaultDealService(restService, rxNetworkProvider, apiErrorFilter);
     }
 
     @Provides

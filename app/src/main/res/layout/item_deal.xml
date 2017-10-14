@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="130dp"
+              android:background="@android:color/white"
+              android:orientation="horizontal">
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/item_deal_iv_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_test4"/>
+
+        <com.dfa.vinatrip.widgets.RotateLoading
+            android:id="@+id/item_deal_rotate_loading"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:loading_width="3dp"/>
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:layout_weight="2.5"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_deal_tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="DU LỊCH NHA TRANG - ĐÀ LẠT [LỄ HỘI HOA]"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="vertical"
+                android:paddingRight="5dp">
+
+                <TextView
+                    android:id="@+id/item_deal_tv_route"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="TP. HỒ CHÍ MINH - NHA TRANG | ĐÀ LẠT"
+                    android:textSize="@dimen/text_small"/>
+
+                <TextView
+                    android:id="@+id/item_deal_tv_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:text="- Với chủ đề “Hoa Đà Lạt - kết tinh kỳ diệu từ đất lành”,...\nThời gian : 5 ngày 4 đêm\nPhương tiện : Xe"
+                    android:textColor="@android:color/black"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/btn_positive"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giá từ"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:id="@+id/item_deal_tv_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3,999,000đ"
+                    android:textColor="@android:color/white"/>
+
+                <Button
+                    android:id="@+id/item_deal_btn_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_border_white"
+                    android:text="Chi tiết"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_small"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

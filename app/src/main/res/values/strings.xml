@@ -20,6 +20,7 @@
     <string name="menu_share">Chia sẻ</string>
     <string name="menu_my_friend">Bạn tôi</string>
     <string name="menu_me">Cá nhân</string>
+    <string name="menu_trend">Xu hướng</string>
     <!-- String for activity sign in, sign up -->
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
@@ -91,4 +92,7 @@
         <item>"Địa điểm"</item>
         <item>"Ảnh đẹp"</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
