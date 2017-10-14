@@ -22,14 +22,13 @@
             android:layout_marginTop="5dp"
             android:src="@drawable/ic_avatar"/>
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/maker_avatar_civ_overlay"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="12.6dp"
-            android:layout_marginTop="5dp"
-            android:src="@color/grayTransparentMarker"
-            android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/maker_avatar_iv_indicator"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_gravity="top|left"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/green_circle"/>
     </FrameLayout>
 
 </FrameLayout>

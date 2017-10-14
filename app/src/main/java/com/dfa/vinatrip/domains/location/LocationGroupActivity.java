@@ -56,6 +56,8 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -310,12 +312,12 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 View viewMaker = LayoutInflater.from(LocationGroupActivity.this).inflate(R.layout.maker_avatar, null);
                 CircleImageView civAvatar = (CircleImageView) viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
-                CircleImageView civOverLay = (CircleImageView) viewMaker.findViewById(R.id.maker_avatar_civ_overlay);
+                ImageView ivIndicator = (ImageView) viewMaker.findViewById(R.id.maker_avatar_iv_indicator);
 
                 if (userLocation.getIsOnline()) {
-                    civOverLay.setVisibility(View.VISIBLE);
+                    ivIndicator.setVisibility(View.VISIBLE);
                 } else {
-                    civOverLay.setVisibility(View.GONE);
+                    ivIndicator.setVisibility(View.GONE);
                 }
 
                 civAvatar.setImageBitmap(loadedImage);
@@ -434,9 +436,35 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
         for (UserLocation userLocation : this.userLocationList) {
             getUserFriendLocation(userLocation);
         }
+
         socket.on("receive_location", args -> {
-            UserLocation userLocation = gson.fromJson(args[0].toString(), UserLocation.class);
-            getUserFriendLocation(userLocation);
+            UserLocation userLocationCurrent = gson.fromJson(args[0].toString(), UserLocation.class);
+            userLocationCurrent.setIsOnline(1);
+            for (int i = 0; i < this.userLocationList.size(); i++) {
+                UserLocation userLocation = this.userLocationList.get(i);
+                if (userLocation.getFromUser().equals(userLocationCurrent.getFromUser())) {
+                    this.userLocationList.set(i, userLocationCurrent);
+                    break;
+                }
+            }
+            getUserFriendLocation(userLocationCurrent);
+        });
+        
+        socket.on("a_user_turn_off", args -> {
+            String fromUser = null;
+            try {
+                fromUser = ((JSONObject) args[0]).getString("username");
+                for (int i = 0; i < this.userLocationList.size(); i++) {
+                    UserLocation userLocation = this.userLocationList.get(i);
+                    if (userLocation.getFromUser().equals(fromUser)) {
+                        userLocation.setIsOnline(0);
+                        getUserFriendLocation(userLocation);
+                        break;
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         });
     }
 
