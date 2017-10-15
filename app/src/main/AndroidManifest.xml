@@ -104,6 +104,8 @@
             android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".domains.deal.DealActivity_">
         </activity>
+        <activity android:name=".domains.web.WebActivity_">
+        </activity>
     </application>
 
 </manifest>

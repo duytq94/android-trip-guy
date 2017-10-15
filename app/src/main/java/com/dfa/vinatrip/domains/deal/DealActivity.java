@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
+import com.dfa.vinatrip.domains.web.WebActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.Deal;
 import com.dfa.vinatrip.widgets.RotateLoading;
@@ -47,6 +48,8 @@ public class DealActivity extends BaseActivity<DealView, DealPresenter> implemen
     protected Toolbar toolbar;
     @ViewById(R.id.activity_deal_lv_item)
     protected ListView lvItem;
+    @ViewById(R.id.activity_deal_tv_no_content)
+    protected TextView tvNoContent;
 
     private QuickAdapter<Deal> adapter;
     private List<Deal> dealList;
@@ -110,7 +113,7 @@ public class DealActivity extends BaseActivity<DealView, DealPresenter> implemen
                 tvContent.setText(item.getRoute());
                 tvPrice.setText(String.valueOf(item.getPrice()));
                 btnDetail.setOnClickListener(v -> {
-
+                    WebActivity_.intent(DealActivity.this).url(item.getLinkDetail()).start();
                 });
                 imageLoader.displayImage(item.getImg(), ivPhoto, imageOptions, new ImageLoadingListener() {
                     @Override
@@ -200,10 +203,18 @@ public class DealActivity extends BaseActivity<DealView, DealPresenter> implemen
 
     @Override
     public void getDealSuccess(List<Deal> dealList) {
-        this.dealList = dealList;
-        adapter.clear();
-        adapter.addAll(this.dealList);
-        adapter.notifyDataSetChanged();
+        if (dealList.size() > 0) {
+            tvNoContent.setVisibility(View.GONE);
+            lvItem.setVisibility(View.VISIBLE);
+
+            this.dealList = dealList;
+            adapter.clear();
+            adapter.addAll(this.dealList);
+            adapter.notifyDataSetChanged();
+        } else {
+            tvNoContent.setVisibility(View.VISIBLE);
+            lvItem.setVisibility(View.GONE);
+        }
     }
 
     @NonNull

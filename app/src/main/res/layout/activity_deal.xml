@@ -9,17 +9,33 @@
 
     <include layout="@layout/toolbar"/>
 
-    <ListView
-        android:id="@+id/activity_deal_lv_item"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#e5e5e5"
-        android:divider="@color/transparent"
-        android:dividerHeight="8dp"
-        android:paddingBottom="8dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="8dp"
-        android:scrollbars="none"/>
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/activity_deal_lv_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#e5e5e5"
+            android:divider="@color/transparent"
+            android:dividerHeight="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="8dp"
+            android:scrollbars="none"/>
+
+        <TextView
+            android:id="@+id/activity_deal_tv_no_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Không tìm thấy kết quả nào"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+
+    </FrameLayout>
 
 </LinearLayout>
