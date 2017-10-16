@@ -81,6 +81,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/item_deal_ll_go_detail"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -100,10 +101,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3,999,000đ"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_small"/>
 
                 <Button
-                    android:id="@+id/item_deal_btn_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_marginTop="10dp"

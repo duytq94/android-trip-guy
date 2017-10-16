@@ -6,13 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.web.WebActivity_;
 import com.dfa.vinatrip.models.response.Deal;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.widgets.RotateLoading;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -61,8 +62,8 @@ public class DealAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         dealHolder.tvTitle.setText(deal.getTitle());
         dealHolder.tvRoute.setText(deal.getRoute());
         dealHolder.tvContent.setText(deal.getContent());
-        dealHolder.tvPrice.setText(String.valueOf(deal.getPrice()));
-        dealHolder.btnDetail.setOnClickListener(v -> {
+        dealHolder.tvPrice.setText(String.format("%sđ", AppUtil.convertPrice(deal.getPrice())));
+        dealHolder.llGoDetail.setOnClickListener(v -> {
             WebActivity_.intent(context).url(deal.getLinkDetail()).start();
         });
         imageLoader.displayImage(deal.getImg(), dealHolder.ivPhoto, imageOptions, new ImageLoadingListener() {
@@ -114,7 +115,7 @@ public class DealAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private ImageView ivPhoto;
         private TextView tvTitle, tvRoute, tvContent, tvPrice;
-        private Button btnDetail;
+        private LinearLayout llGoDetail;
         private RotateLoading rotateLoading;
 
         public DealHolder(View itemView) {
@@ -124,7 +125,7 @@ public class DealAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tvRoute = (TextView) itemView.findViewById(R.id.item_deal_tv_route);
             tvContent = (TextView) itemView.findViewById(R.id.item_deal_tv_content);
             tvPrice = (TextView) itemView.findViewById(R.id.item_deal_tv_price);
-            btnDetail = (Button) itemView.findViewById(R.id.item_deal_btn_detail);
+            llGoDetail = (LinearLayout) itemView.findViewById(R.id.item_deal_ll_go_detail);
             rotateLoading = (RotateLoading) itemView.findViewById(R.id.item_deal_rotate_loading);
         }
     }

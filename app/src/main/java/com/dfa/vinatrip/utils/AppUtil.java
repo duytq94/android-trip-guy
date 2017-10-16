@@ -33,6 +33,8 @@ import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -300,5 +302,12 @@ public class AppUtil {
     public static int dpToPx(Context context, float dp) {
         return (int) (TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics()));
+    }
+
+    public static String convertPrice(double price) {
+        DecimalFormat decimalFormat;
+        decimalFormat = (DecimalFormat) NumberFormat.getCurrencyInstance();
+        decimalFormat.applyPattern("#,###,##0");
+        return decimalFormat.format(price);
     }
 }
