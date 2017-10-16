@@ -35,7 +35,7 @@ public class DealPresenter extends BasePresenter<DealView> {
                 .subscribe(dealList -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().getDealSuccess(dealList);
+                        getView().getDealSuccess(dealList, page);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {

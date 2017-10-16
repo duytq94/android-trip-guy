@@ -2,34 +2,25 @@ package com.dfa.vinatrip.domains.deal;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
-import com.dfa.vinatrip.domains.web.WebActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.Deal;
-import com.dfa.vinatrip.widgets.RotateLoading;
-import com.joanzapata.android.BaseAdapterHelper;
-import com.joanzapata.android.QuickAdapter;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.dfa.vinatrip.widgets.EndlessRecyclerViewScrollListener;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -46,15 +37,13 @@ public class DealActivity extends BaseActivity<DealView, DealPresenter> implemen
 
     @ViewById(R.id.my_toolbar)
     protected Toolbar toolbar;
-    @ViewById(R.id.activity_deal_lv_item)
-    protected ListView lvItem;
+    @ViewById(R.id.activity_deal_rv_item)
+    protected RecyclerView rvItem;
     @ViewById(R.id.activity_deal_tv_no_content)
     protected TextView tvNoContent;
 
-    private QuickAdapter<Deal> adapter;
-    private List<Deal> dealList;
-    private ImageLoader imageLoader;
-    private DisplayImageOptions imageOptions;
+    private DealAdapter adapter;
+    private String strQuery;
 
     @App
     protected MainApplication application;
@@ -74,17 +63,6 @@ public class DealActivity extends BaseActivity<DealView, DealPresenter> implemen
     public void init() {
         setupAppBar();
         setupAdapter();
-
-        imageLoader = ImageLoader.getInstance();
-        imageOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.bg_green)
-                .showImageForEmptyUri(R.drawable.photo_not_available)
-                .showImageOnFail(R.drawable.photo_not_available)
-                .resetViewBeforeLoading(true)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .bitmapConfig(Bitmap.Config.ARGB_4444)
-                .build();
     }
 
     public void setupAppBar() {
@@ -97,52 +75,20 @@ public class DealActivity extends BaseActivity<DealView, DealPresenter> implemen
     }
 
     public void setupAdapter() {
-        adapter = new QuickAdapter<Deal>(this, R.layout.item_deal) {
+        adapter = new DealAdapter(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        rvItem.setLayoutManager(layoutManager);
+        rvItem.setAdapter(adapter);
+        rvItem.setHasFixedSize(true);
+
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
-            protected void convert(BaseAdapterHelper helper, Deal item) {
-                ImageView ivPhoto = helper.getView(R.id.item_deal_iv_photo);
-                TextView tvTitle = helper.getView(R.id.item_deal_tv_title);
-                TextView tvRoute = helper.getView(R.id.item_deal_tv_route);
-                TextView tvContent = helper.getView(R.id.item_deal_tv_content);
-                TextView tvPrice = helper.getView(R.id.item_deal_tv_price);
-                Button btnDetail = helper.getView(R.id.item_deal_btn_detail);
-                RotateLoading rotateLoading = helper.getView(R.id.item_deal_rotate_loading);
-
-                tvTitle.setText(item.getTitle());
-                tvRoute.setText(item.getRoute());
-                tvContent.setText(item.getRoute());
-                tvPrice.setText(String.valueOf(item.getPrice()));
-                btnDetail.setOnClickListener(v -> {
-                    WebActivity_.intent(DealActivity.this).url(item.getLinkDetail()).start();
-                });
-                imageLoader.displayImage(item.getImg(), ivPhoto, imageOptions, new ImageLoadingListener() {
-                    @Override
-                    public void onLoadingStarted(String imageUri, View view) {
-                        rotateLoading.setVisibility(View.VISIBLE);
-                        rotateLoading.start();
-                    }
-
-                    @Override
-                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                        rotateLoading.setVisibility(View.GONE);
-                        rotateLoading.stop();
-                    }
-
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                        rotateLoading.setVisibility(View.GONE);
-                        rotateLoading.stop();
-                    }
-
-                    @Override
-                    public void onLoadingCancelled(String imageUri, View view) {
-                        rotateLoading.setVisibility(View.GONE);
-                        rotateLoading.stop();
-                    }
-                });
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                presenter.getDeal(strQuery, page, 10);
             }
         };
-        lvItem.setAdapter(adapter);
+        rvItem.addOnScrollListener(scrollListener);
     }
 
     @Override
@@ -169,7 +115,8 @@ public class DealActivity extends BaseActivity<DealView, DealPresenter> implemen
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                presenter.getDeal(query, 1, 10);
+                strQuery = query;
+                presenter.getDeal(strQuery, 1, 10);
                 return false;
             }
 
@@ -202,18 +149,22 @@ public class DealActivity extends BaseActivity<DealView, DealPresenter> implemen
     }
 
     @Override
-    public void getDealSuccess(List<Deal> dealList) {
+    public void getDealSuccess(List<Deal> dealList, int page) {
         if (dealList.size() > 0) {
             tvNoContent.setVisibility(View.GONE);
-            lvItem.setVisibility(View.VISIBLE);
+            rvItem.setVisibility(View.VISIBLE);
 
-            this.dealList = dealList;
-            adapter.clear();
-            adapter.addAll(this.dealList);
+            if (page == 1) {
+                adapter.setDealList(dealList);
+            } else {
+                adapter.appendList(dealList);
+            }
             adapter.notifyDataSetChanged();
         } else {
-            tvNoContent.setVisibility(View.VISIBLE);
-            lvItem.setVisibility(View.GONE);
+            if (page == 1) {
+                tvNoContent.setVisibility(View.VISIBLE);
+                rvItem.setVisibility(View.GONE);
+            }
         }
     }
 

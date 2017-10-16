@@ -12,5 +12,5 @@ import java.util.List;
 public interface DealView extends BaseMvpView {
     void getDataFail(Throwable throwable);
 
-    void getDealSuccess(List<Deal> dealList);
+    void getDealSuccess(List<Deal> dealList, int page);
 }
