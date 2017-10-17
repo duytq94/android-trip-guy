@@ -41,8 +41,9 @@
             android:id="@+id/item_deal_tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
             android:text="DU LỊCH NHA TRANG - ĐÀ LẠT [LỄ HỘI HOA]"
             android:textColor="@android:color/black"
             android:textStyle="bold"/>
@@ -65,8 +66,9 @@
                     android:id="@+id/item_deal_tv_route"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
                     android:text="TP. HỒ CHÍ MINH - NHA TRANG | ĐÀ LẠT"
                     android:textSize="@dimen/text_small"/>
 
@@ -88,13 +90,14 @@
                 android:background="@drawable/btn_positive"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="3dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Giá từ"
-                    android:textColor="@android:color/white"/>
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_small"/>
 
                 <TextView
                     android:id="@+id/item_deal_tv_price"
@@ -104,12 +107,28 @@
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_small"/>
 
-                <Button
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/white"/>
+
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/bg_border_white"
-                    android:text="Chi tiết"
+                    android:layout_height="wrap_content"
+                    android:text="Khởi hành"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/text_small"/>
+
+                <TextView
+                    android:id="@+id/item_deal_tv_day_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="Thứ 4 hàng tuần"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_small"/>
             </LinearLayout>

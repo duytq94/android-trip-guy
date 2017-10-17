@@ -3,6 +3,7 @@ package com.dfa.vinatrip.domains.deal;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,9 +61,12 @@ public class DealAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Deal deal = dealList.get(position);
 
         dealHolder.tvTitle.setText(deal.getTitle());
-        dealHolder.tvRoute.setText(deal.getRoute());
-        dealHolder.tvContent.setText(deal.getContent());
+        dealHolder.tvTitle.setSelected(true);
+        dealHolder.tvRoute.setText(Html.fromHtml(deal.getRoute()));
+        dealHolder.tvRoute.setSelected(true);
+        dealHolder.tvContent.setText(Html.fromHtml(deal.getContent()));
         dealHolder.tvPrice.setText(String.format("%sđ", AppUtil.convertPrice(deal.getPrice())));
+        dealHolder.tvDayStart.setText(deal.getDayStart());
         dealHolder.llGoDetail.setOnClickListener(v -> {
             WebActivity_.intent(context).url(deal.getLinkDetail()).start();
         });
@@ -114,7 +118,7 @@ public class DealAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public class DealHolder extends RecyclerView.ViewHolder {
 
         private ImageView ivPhoto;
-        private TextView tvTitle, tvRoute, tvContent, tvPrice;
+        private TextView tvTitle, tvRoute, tvContent, tvPrice, tvDayStart;
         private LinearLayout llGoDetail;
         private RotateLoading rotateLoading;
 
@@ -125,6 +129,7 @@ public class DealAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tvRoute = (TextView) itemView.findViewById(R.id.item_deal_tv_route);
             tvContent = (TextView) itemView.findViewById(R.id.item_deal_tv_content);
             tvPrice = (TextView) itemView.findViewById(R.id.item_deal_tv_price);
+            tvDayStart = (TextView) itemView.findViewById(R.id.item_deal_tv_day_start);
             llGoDetail = (LinearLayout) itemView.findViewById(R.id.item_deal_ll_go_detail);
             rotateLoading = (RotateLoading) itemView.findViewById(R.id.item_deal_rotate_loading);
         }

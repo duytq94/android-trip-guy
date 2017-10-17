@@ -2,11 +2,13 @@ package com.dfa.vinatrip.models.response;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by duytq on 10/14/2017.
  */
 
-public class Deal {
+public class Deal implements Serializable {
     @SerializedName("img")
     private String img;
     @SerializedName("title")
@@ -21,8 +23,11 @@ public class Deal {
     private String route;
     @SerializedName("fromWebsite")
     private String fromWebsite;
+    @SerializedName("dayStart")
+    private String dayStart;
 
-    public Deal(String img, String title, String content, double price, String linkDetail, String route, String fromWebsite) {
+    public Deal(String img, String title, String content, double price, String linkDetail,
+                String route, String fromWebsite, String dayStart) {
         this.img = img;
         this.title = title;
         this.content = content;
@@ -30,6 +35,15 @@ public class Deal {
         this.linkDetail = linkDetail;
         this.route = route;
         this.fromWebsite = fromWebsite;
+        this.dayStart = dayStart;
+    }
+
+    public String getDayStart() {
+        return dayStart;
+    }
+
+    public void setDayStart(String dayStart) {
+        this.dayStart = dayStart;
     }
 
     public String getImg() {

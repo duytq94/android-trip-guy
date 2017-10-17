@@ -1,12 +1,21 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.dfa.vinatrip.domains.main.fragment.trend.TrendFragment">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.dfa.vinatrip.domains.main.fragment.trend.TrendFragment">
 
     <Button
         android:id="@+id/fragment_trend_btn"
         android:layout_width="50dp"
         android:layout_height="50dp"/>
 
-</FrameLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment_trend_rv_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e5e5e5"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"/>
+</LinearLayout>

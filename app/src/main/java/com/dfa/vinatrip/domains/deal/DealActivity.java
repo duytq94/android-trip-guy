@@ -93,12 +93,12 @@ public class DealActivity extends BaseActivity<DealView, DealPresenter> implemen
 
     @Override
     public void showLoading() {
-
+        showHUD();
     }
 
     @Override
     public void hideLoading() {
-
+        hideHUD();
     }
 
     @Override

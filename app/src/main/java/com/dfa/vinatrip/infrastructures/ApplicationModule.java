@@ -25,6 +25,9 @@ import com.dfa.vinatrip.services.filter.ApiErrorFilter;
 import com.dfa.vinatrip.services.location.DefaultLocationService;
 import com.dfa.vinatrip.services.location.LocationService;
 import com.dfa.vinatrip.services.location.RestLocationService;
+import com.dfa.vinatrip.services.trend.DefaultTrendService;
+import com.dfa.vinatrip.services.trend.RestTrendService;
+import com.dfa.vinatrip.services.trend.TrendService;
 import com.dfa.vinatrip.utils.Constants;
 
 import org.greenrobot.eventbus.EventBus;
@@ -111,6 +114,15 @@ public class ApplicationModule {
                 .provideApi(ApiUrls.SERVER_API_CHAT, RestDealService.class);
 
         return new DefaultDealService(restService, rxNetworkProvider, apiErrorFilter);
+    }
+
+    @Provides
+    @ApplicationScope
+    public TrendService provideTrendService(NetworkProvider rxNetworkProvider, ApiErrorFilter apiErrorFilter) {
+        RestTrendService restService = rxNetworkProvider.addDefaultHeader()
+                .provideApi(ApiUrls.SERVER_API_CHAT, RestTrendService.class);
+
+        return new DefaultTrendService(restService, rxNetworkProvider, apiErrorFilter);
     }
 
     @Provides

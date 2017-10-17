@@ -6,6 +6,7 @@ import com.dfa.vinatrip.services.chat.ChatService;
 import com.dfa.vinatrip.services.deal.DealService;
 import com.dfa.vinatrip.services.default_data.DataService;
 import com.dfa.vinatrip.services.location.LocationService;
+import com.dfa.vinatrip.services.trend.TrendService;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -25,6 +26,8 @@ public interface ApplicationComponent {
     ChatService chatService();
 
     DealService dealService();
+
+    TrendService trendService();
 
     LocationService locationService();
 
