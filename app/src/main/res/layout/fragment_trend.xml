@@ -6,11 +6,6 @@
     android:orientation="vertical"
     tools:context="com.dfa.vinatrip.domains.main.fragment.trend.TrendFragment">
 
-    <Button
-        android:id="@+id/fragment_trend_btn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"/>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fragment_trend_rv_item"
         android:layout_width="match_parent"

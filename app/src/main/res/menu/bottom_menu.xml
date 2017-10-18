@@ -6,16 +6,16 @@
         android:title="@string/menu_location"/>
     <item
         android:id="@+id/iconTrend"
-        android:icon="@drawable/ic_explore"
+        android:icon="@drawable/ic_trend"
         android:title="@string/menu_trend"/>
     <item
         android:id="@+id/iconPlan"
         android:icon="@drawable/ic_plan"
         android:title="@string/menu_plan"/>
     <item
-        android:id="@+id/iconShare"
-        android:icon="@drawable/ic_share"
-        android:title="@string/menu_share"/>
+        android:id="@+id/iconDeal"
+        android:icon="@drawable/ic_deal"
+        android:title="@string/menu_deal"/>
     <item
         android:id="@+id/iconMe"
         android:icon="@drawable/ic_me"

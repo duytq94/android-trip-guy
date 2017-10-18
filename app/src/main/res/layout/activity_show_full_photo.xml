@@ -9,19 +9,9 @@
 
     <include layout="@layout/toolbar"/>
 
-    <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/activity_show_full_photo_photoview"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/activity_show_full_photo_vp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="55dp"
-        />
-
-    <com.dfa.vinatrip.widgets.RotateLoading
-        android:id="@+id/activity_show_full_photo_rotate_loading_right"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        app:loading_width="3dp"/>
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

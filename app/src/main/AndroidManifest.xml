@@ -82,15 +82,6 @@
             android:name=".domains.main.plan.make_plan.ChooseBackgroundPlanActivity_"
             android:windowSoftInputMode="adjustNothing"/>
         <activity
-            android:name=".domains.main.fragment.share.make_share.MakeShareActivity_"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".domains.main.fragment.share.detail_share.DetailShareActivity_"
-            android:windowSoftInputMode="adjustNothing"/>
-        <activity
-            android:name=".domains.main.fragment.share.make_share.image_multi_select.SelectImageActivity_"
-            android:windowSoftInputMode="adjustNothing"/>
-        <activity
             android:name=".domains.chat.ChatGroupActivity_"
             android:windowSoftInputMode="adjustNothing"/>
         <activity
@@ -99,8 +90,6 @@
         <activity
             android:name=".domains.location.LocationGroupActivity_"
             android:windowSoftInputMode="adjustNothing"/>
-        <activity android:name=".domains.deal.DealActivity_">
-        </activity>
         <activity android:name=".domains.web.WebActivity_">
         </activity>
         <activity android:name=".domains.main.fragment.trend.detail_trend.DetailTrendActivity_">

@@ -17,51 +17,12 @@
             android:id="@+id/fragment_plan_rl_login"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:visibility="gone"
             >
-
-            <RelativeLayout
-                android:id="@+id/fragment_plan_rl_toolbar_login"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorMain"
-                >
-
-                <ImageView
-                    android:id="@+id/fragment_plan_iv_symbol"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:src="@drawable/ic_symbol"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/fragment_plan_iv_symbol"
-                    android:text="Kế hoạch chuyến đi"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/text_large"
-                    android:textStyle="bold"
-                    />
-
-                <ImageView
-                    android:id="@+id/fragment_plan_iv_info"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_alignParentRight="true"
-                    android:padding="16dp"
-                    android:src="@drawable/ic_info"
-                    />
-            </RelativeLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/fragment_plan_rl_toolbar_login"
                 >
 
                 <LinearLayout
@@ -120,42 +81,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
-            android:visibility="gone"
-            >
-
-            <RelativeLayout
-                android:id="@+id/fragment_plan_rl_toolbar_not_login"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorMain"
-                >
-
-                <ImageView
-                    android:id="@+id/fragment_me_iv_symbol2"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:src="@drawable/ic_symbol"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/fragment_me_iv_symbol2"
-                    android:text="Kế hoạch chuyến đi"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/text_large"
-                    android:textStyle="bold"
-                    />
-            </RelativeLayout>
+            android:visibility="visible">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
-                android:layout_below="@+id/fragment_plan_rl_toolbar_not_login"
                 android:background="@drawable/bg_shadow_toolbar"
                 />
 
@@ -163,7 +93,6 @@
                 android:id="@+id/fragment_plan_iv_ic_plan"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_below="@+id/fragment_plan_rl_toolbar_not_login"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="180dp"

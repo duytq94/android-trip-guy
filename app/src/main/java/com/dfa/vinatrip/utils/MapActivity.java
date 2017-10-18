@@ -5,7 +5,6 @@ import android.support.v7.widget.Toolbar;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.fragment.province.each_item_detail_province.each_province_destination.ProvinceDestinationDetail;
-import com.dfa.vinatrip.domains.main.fragment.share.Share;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -35,8 +34,6 @@ public class MapActivity extends AppCompatActivity {
 //    ProvinceFood detailFood;
     @Extra
     ProvinceDestinationDetail detailDestination;
-    @Extra
-    Share detailShare;
     @Extra
     LatLng latLng;
     
@@ -80,14 +77,6 @@ public class MapActivity extends AppCompatActivity {
 //                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_destination)))
 //                             .showInfoWindow();
 //                }
-//                if (detailShare != null) {
-//                    googleMap.addMarker(new MarkerOptions()
-//                                                .position(latLng)
-//                                                .title(detailShare.getDestination())
-//                                                .icon(BitmapDescriptorFactory
-//                                                              .fromResource(R.drawable.ic_location2)))
-//                             .showInfoWindow();
-//                }
 //
 //                // For zooming automatically to the location of the marker
 //                CameraPosition cameraPosition =
@@ -109,9 +98,6 @@ public class MapActivity extends AppCompatActivity {
 //        if (detailDestination != null) {
 //            // Get ProvinceDestination from EachProvinceDestinationFragment
 //            titleActionBar = detailDestination.getName();
-//        }
-//        if (detailShare != null) {
-//            titleActionBar = detailShare.getDestination();
 //        }
 //
 //        setSupportActionBar(toolbar);

@@ -17,7 +17,7 @@
     <!-- String for bottom menu -->
     <string name="menu_location">Địa điểm</string>
     <string name="menu_plan">Kế hoạch</string>
-    <string name="menu_share">Chia sẻ</string>
+    <string name="menu_deal">Tìm deal</string>
     <string name="menu_my_friend">Bạn tôi</string>
     <string name="menu_me">Cá nhân</string>
     <string name="menu_trend">Xu hướng</string>

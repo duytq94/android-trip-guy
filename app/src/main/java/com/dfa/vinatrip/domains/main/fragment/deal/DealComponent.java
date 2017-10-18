@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.deal;
+package com.dfa.vinatrip.domains.main.fragment.deal;
 
 import android.app.Activity;
 
@@ -17,5 +17,5 @@ import dagger.Component;
 public interface DealComponent {
     Activity activity();
 
-    void inject(DealActivity activity);
+    void inject(DealFragment dealFragment);
 }

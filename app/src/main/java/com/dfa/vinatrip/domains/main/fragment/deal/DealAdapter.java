@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.deal;
+package com.dfa.vinatrip.domains.main.fragment.deal;
 
 import android.content.Context;
 import android.graphics.Bitmap;

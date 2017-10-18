@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.deal;
+package com.dfa.vinatrip.domains.main.fragment.deal;
 
 import com.beesightsoft.caf.services.schedulers.RxScheduler;
 import com.dfa.vinatrip.base.BasePresenter;

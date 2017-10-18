@@ -27,6 +27,7 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 import org.lucasr.twowayview.TwoWayView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -65,7 +66,7 @@ public class DetailTrendActivity extends AppCompatActivity {
                 .cacheOnDisk(true)
                 .bitmapConfig(Bitmap.Config.ARGB_4444)
                 .build();
-        urlList = Arrays.asList(trend.getUrl().split(" "));
+        urlList = new ArrayList<>(Arrays.asList(trend.getUrl().split(" ")));
         setupAdapter();
         tvTitle.setText(trend.getTitle());
         tvIntro.setText(Html.fromHtml(trend.getIntro()));
@@ -76,7 +77,7 @@ public class DetailTrendActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle("Trend");
+            actionBar.setTitle("Xu hướng");
             // Set button back
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -90,7 +91,8 @@ public class DetailTrendActivity extends AppCompatActivity {
                 RotateLoading rotateLoading = helper.getView(R.id.item_photo_selected_rotate_loading);
 
                 ivPhoto.setOnClickListener(v -> {
-                    ShowFullPhotoActivity_.intent(DetailTrendActivity.this).url(item).start();
+                    ShowFullPhotoActivity_.intent(DetailTrendActivity.this)
+                            .listUrl((ArrayList<String>) urlList).position(helper.getPosition()).start();
                 });
                 imageLoader.displayImage(item, ivPhoto, imageOptions, new ImageLoadingListener() {
                     @Override

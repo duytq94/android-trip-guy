@@ -243,21 +243,6 @@ public class PlanFragment extends Fragment {
         MakePlanActivity_.intent(getActivity()).start();
     }
     
-    @Click(R.id.fragment_plan_iv_info)
-    void onIvInfoClick() {
-        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-        alertDialog.setTitle("Lập kế hoạch chuyến đi");
-        alertDialog.setMessage(getString(R.string.message_plan));
-        alertDialog.setIcon(R.drawable.ic_symbol);
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "XONG", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                
-            }
-        });
-        alertDialog.show();
-    }
-    
     @Click(R.id.fragment_plan_btn_sign_in)
     void onBtnSignInClick() {
         SignInActivity_.intent(getActivity()).start();
