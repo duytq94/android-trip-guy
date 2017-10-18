@@ -6,7 +6,8 @@
     android:layout_height="200dp"
     android:layout_margin="5dp"
     android:orientation="vertical"
-    app:cardCornerRadius="4dp">
+    app:cardCornerRadius="4dp"
+    app:cardElevation="0dp">
 
     <LinearLayout
         android:id="@+id/item_trend_ll_root"

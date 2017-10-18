@@ -64,9 +64,6 @@
             android:name=".domains.main.fragment.province.each_item_detail_province.rating.RatingActivity_"
             android:windowSoftInputMode="adjustNothing"/>
         <activity
-            android:name=".utils.ShowFullPhotoLocalActivity_"
-            android:windowSoftInputMode="adjustNothing"/>
-        <activity
             android:name=".domains.chat.ShowFullPhotoActivity_"
             android:windowSoftInputMode="adjustNothing"/>
         <activity

@@ -8,7 +8,9 @@
     <android.support.v7.widget.CardView
         android:layout_width="90dp"
         android:layout_height="80dp"
-        android:layout_margin="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
         app:cardCornerRadius="4dp"
         app:cardElevation="0dp">
 
@@ -21,7 +23,8 @@
                 android:id="@+id/item_photo_selected_iv_photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:src="@drawable/bg_green"/>
 
             <com.dfa.vinatrip.widgets.RotateLoading
                 android:id="@+id/item_photo_selected_rotate_loading"

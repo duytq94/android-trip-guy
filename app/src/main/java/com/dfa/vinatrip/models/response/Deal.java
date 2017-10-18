@@ -2,13 +2,11 @@ package com.dfa.vinatrip.models.response;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-
 /**
  * Created by duytq on 10/14/2017.
  */
 
-public class Deal implements Serializable {
+public class Deal {
     @SerializedName("img")
     private String img;
     @SerializedName("title")
