@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/view_ntoolbar"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/actionBarSize"
-    android:background="@color/colorMain"
-    android:contentInsetLeft="0dp"
-    android:contentInsetStart="0dp"
-    android:theme="@style/Toolbar"
-    app:contentInsetEnd="0dp"
-    app:contentInsetLeft="0dp"
-    app:contentInsetRight="0dp"
-    app:contentInsetStart="0dp"
+    android:orientation="vertical"
     tools:ignore="MissingPrefix">
 
     <LinearLayout
         android:id="@+id/view_ntoolbar_ll_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorMain"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -68,4 +62,11 @@
             android:padding="7dp"
             android:src="@drawable/ic_info"/>
     </LinearLayout>
-</android.support.v7.widget.Toolbar>
+
+    <View
+        android:id="@+id/view_ntoolbar_view_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/bg_shadow_toolbar"
+        android:visibility="gone"/>
+</LinearLayout>

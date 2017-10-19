@@ -1,14 +1,10 @@
 package com.dfa.vinatrip.domains.main;
 
-import android.app.SearchManager;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.View;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.custom_view.NToolbar;
@@ -24,7 +20,6 @@ import com.dfa.vinatrip.utils.StopShiftModeBottomNavView;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +34,14 @@ public class MainActivity extends AppCompatActivity {
     @ViewById(R.id.activity_main_bnv_menu)
     protected BottomNavigationView bnvMenu;
 
-    private SearchView searchView;
+    private AlertDialog dialogInfo;
 
     @AfterViews
     public void init() {
         nToolbar.setup(this, "TripGuy");
         nToolbar.showAppIcon();
         nToolbar.showToolbarColor();
+        nToolbar.showRightIcon();
 
         List<Fragment> arrayFragment = new ArrayList<>();
         arrayFragment.add(ProvinceFragment_.builder().build());
@@ -57,62 +53,61 @@ public class MainActivity extends AppCompatActivity {
         vpFragment.setAdapter(new MainPagerAdapter(getSupportFragmentManager(), arrayFragment));
         vpFragment.setOffscreenPageLimit(arrayFragment.size());
 
+        dialogInfo = new AlertDialog.Builder(this).create();
+        dialogInfo.setIcon(R.drawable.ic_symbol);
+        dialogInfo.setButton(DialogInterface.BUTTON_POSITIVE, "XONG", (dialogInterface, i) -> {
+            dialogInfo.dismiss();
+        });
+
+        nToolbar.setOnRightClickListener(v -> {
+            switch (vpFragment.getCurrentItem()) {
+                case 0:
+                    dialogInfo.setTitle("Tìm địa điểm");
+                    dialogInfo.setMessage(getString(R.string.message_province));
+                    break;
+                case 1:
+                    dialogInfo.setTitle("Nơi nào hot?");
+                    dialogInfo.setMessage(getString(R.string.message_trend));
+                    break;
+                case 2:
+                    dialogInfo.setTitle("Lập kế hoạch");
+                    dialogInfo.setMessage(getString(R.string.message_plan));
+                    break;
+                case 3:
+                    dialogInfo.setTitle("Tìm deal và book vé");
+                    dialogInfo.setMessage(getString(R.string.message_deal));
+                    break;
+                case 4:
+                    dialogInfo.setTitle("Quản lý cá nhân");
+                    dialogInfo.setMessage(getString(R.string.message_personal));
+                    break;
+            }
+            dialogInfo.show();
+        });
+
         StopShiftModeBottomNavView.disableShiftMode(bnvMenu);
         bnvMenu.setOnNavigationItemSelectedListener
                 (item -> {
                     switch (item.getItemId()) {
                         case R.id.iconLocation:
                             vpFragment.setCurrentItem(0, false);
-                            searchView.setVisibility(View.GONE);
                             break;
                         case R.id.iconTrend:
                             vpFragment.setCurrentItem(1, false);
-                            searchView.setVisibility(View.GONE);
                             break;
                         case R.id.iconPlan:
                             vpFragment.setCurrentItem(2, false);
-                            searchView.setVisibility(View.GONE);
                             break;
                         case R.id.iconDeal:
                             vpFragment.setCurrentItem(3, false);
-                            searchView.setVisibility(View.VISIBLE);
-                            searchView.setQueryHint("Tìm deal");
                             break;
                         case R.id.iconMe:
                             vpFragment.setCurrentItem(4, false);
-                            searchView.setVisibility(View.GONE);
                             break;
                     }
                     // Must true so item in bottom bar can transform
                     return true;
                 });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_menu, menu);
-
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.search_menu_menuSearch).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false);
-        searchView.setVisibility(View.GONE);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                EventBus.getDefault().post(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-
-        return true;
     }
 }
 

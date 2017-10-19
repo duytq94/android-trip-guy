@@ -2,6 +2,7 @@ package com.dfa.vinatrip.domains.main.fragment.deal;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,9 +19,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -34,6 +32,8 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
     protected RecyclerView rvItem;
     @ViewById(R.id.fragment_deal_tv_no_content)
     protected TextView tvNoContent;
+    @ViewById(R.id.fragment_deal_sv)
+    protected SearchView searchView;
 
     private DealAdapter adapter;
     private String strQuery;
@@ -54,6 +54,7 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
     @AfterViews
     public void init() {
         setupAdapter();
+        setupSearch();
     }
 
     public void setupAdapter() {
@@ -71,6 +72,24 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
             }
         };
         rvItem.addOnScrollListener(scrollListener);
+    }
+
+    public void setupSearch() {
+        searchView.setQueryHint("Tìm deal...");
+        searchView.setIconifiedByDefault(false);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                strQuery = query;
+                presenter.getDeal(strQuery, 1, 10);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
     @Override
@@ -116,23 +135,5 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
     @Override
     public DealPresenter createPresenter() {
         return presenter;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSearchQuery(String query) {
-        strQuery = query;
-        presenter.getDeal(strQuery, 1, 10);
     }
 }

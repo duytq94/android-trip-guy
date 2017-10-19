@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.dfa.vinatrip.domains.deal.DealActivity">
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/colorMain"
+        android:paddingBottom="7dp"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp">
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/fragment_deal_sv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_white_corner"
+            android:theme="@style/DealSearchView"/>
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_deal_rv_item"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#e5e5e5"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"/>
 
         <TextView
             android:id="@+id/fragment_deal_tv_no_content"
@@ -28,6 +34,14 @@
             android:textSize="20dp"
             android:textStyle="bold"
             android:visibility="gone"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_deal_rv_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#e5e5e5"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"/>
 
     </FrameLayout>
 

@@ -5,22 +5,24 @@
     <string name="next">Kế tiếp</string>
     <string name="back">Về trước</string>
     <string name="btn_launch_now">Sử dụng ngay</string>
+
     <!-- String for welcome screen -->
     <string name="welcome_screen_title1">Thông tin địa điểm</string>
     <string name="welcome_screen_desc1">Cung cấp thông tin điểm đến, khách sạn, ăn uống và nhiều thông tin khác</string>
     <string name="welcome_screen_title2">Lên lịch trình</string>
-    <string name="welcome_screen_desc2">Giúp bạn tạo lịch trình chu đáo để có chuyến đi trọn vẹn</string>
-    <string name="welcome_screen_title3">Chia sẻ trải nghiệm</string>
-    <string name="welcome_screen_desc3">Cùng cộng đồng người dùng VinaTrip chia sẻ các trải nghiệm với nhau để tạo nên chuyến du lịch tuyệt vời nhất</string>
-    <string name="welcome_screen_title4">Lưu lại cảm xúc</string>
-    <string name="welcome_screen_desc4">Những nơi bạn đi qua sẽ được lưu lại cùng với những cảm xúc khó quên</string>
+    <string name="welcome_screen_desc2">Giúp bạn tạo lịch trình chu đáo để có chuyến đi trọn vẹn, kết nối, giữ liên lạc với những người trong chuyến đi</string>
+    <string name="welcome_screen_title3">Tìm deal giá rẻ</string>
+    <string name="welcome_screen_desc3">Tìm deal phù hợp nhất với mục đích chuyến đi của bạn</string>
+    <string name="welcome_screen_title4">Các địa điểm "hot" nhất trong mùa</string>
+    <string name="welcome_screen_desc4">Cùng TripGuy theo dõi các địa điểm du lịch "hot" nhất hiện nay</string>
+
     <!-- String for bottom menu -->
     <string name="menu_location">Địa điểm</string>
     <string name="menu_plan">Kế hoạch</string>
     <string name="menu_deal">Tìm deal</string>
-    <string name="menu_my_friend">Bạn tôi</string>
     <string name="menu_me">Cá nhân</string>
     <string name="menu_trend">Xu hướng</string>
+
     <!-- String for activity sign in, sign up -->
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
@@ -33,6 +35,7 @@
     <string name="body_forgot_password">Bạn hãy nhập địa chỉ email, chúng tôi sẽ gửi lại bạn mật khẩu mới</string>
     <string name="btn_reset_password">Reset mật khẩu</string>
     <string name="btn_back">&#8810; Trở về</string>
+
     <!-- String for personal settings -->
     <string name="nickname">Nickname</string>
     <string name="city">Nơi ở</string>
@@ -52,6 +55,7 @@
     <string name="update_profile">Chỉnh sửa trang cá nhân</string>
     <string name="done">Xong</string>
     <string name="cancel">Hủy</string>
+
     <!-- String for layout item_province -->
     <string name="name_not_available">Name is not available</string>
     <string name="title_not_available">Title is not available</string>
@@ -78,12 +82,18 @@
     <string name="trip_plan">Kế hoạch chuyến đi</string>
     <string name="plan_list_not_available">Hiện bạn chưa có kế hoạch du lịch nào</string>
     <string name="not_login">Hiện bạn chưa đăng nhập</string>
+
+    <!-- String for info icon click -->
     <string name="message_my_friend">Xem vị trí của bạn bè của bạn trên bản đồ, đặc biệt trong những chuyến du lịch,
         bạn sẽ không bao giờ mất liên lạc với họ nữa.\nLưu ý: bạn có thể tắt định vị khi không dùng đến tính năng này.</string>
     <string name="message_plan">Lên kế hoạch, lịch trình cho chuyến đi của bạn, tag bạn bè cùng đi vào để mọi người có thể
     theo dõi và đóng góp cho chuyến đi nhé.</string>
-    <string name="message_share">Chia sẻ chuyến đi, trải nghiệm của bạn, cùng chia sẻ những kinh nghiệm khi đi
-    du lịch của bạn với mọi người nhé.</string>
+    <string name="message_province">TripGuy cho bạn thông tin các địa điểm du lịch theo tỉnh thành, bạn có thể xem thêm thông tin chi tiết về
+        địa điểm ẩm thực, khách sạn và nơi tham quan.</string>
+    <string name="message_trend">TripGuy theo dõi các địa điểm du lịch hot nhất hiện nay, hãy cùng bạn bè và người thân xách balo lên và đi
+    đến những nơi này ngay nào.</string>
+    <string name="message_deal">TripGuy giúp bạn tìm deal nhanh và hiệu quả nhất, hãy đặt ngay vé cho bạn cùng gia đình nào.</string>
+    <string name="message_personal">TripGuy giúp bãn quản lý thông tin cá nhân một cách đơn giản và hiệu quả nhất.</string>
 
     <string-array name="province_detail_tab_pager">
         <item>"Giới thiệu"</item>

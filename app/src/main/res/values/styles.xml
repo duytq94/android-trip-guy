@@ -18,4 +18,9 @@
     <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark">
         <item name="android:textCursorDrawable">@drawable/cursor</item>
     </style>
+
+    <style name="DealSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColorHint">@android:color/black</item>
+    </style>
 </resources>

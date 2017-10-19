@@ -2,9 +2,7 @@ package com.dfa.vinatrip.custom_view;
 
 import android.content.Context;
 import android.support.annotation.DrawableRes;
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,9 +22,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 @EViewGroup(R.layout.view_ntoolbar)
-public class NToolbar extends AppBarLayout implements MainCallbackListener {
+public class NToolbar extends LinearLayout implements MainCallbackListener {
     @ViewById(R.id.view_ntoolbar)
-    protected Toolbar toolbar;
+    protected LinearLayout toolbar;
     @ViewById(R.id.view_ntoolbar_iv_left_icon)
     protected ImageView ivLeftIcon;
     @ViewById(R.id.view_ntoolbar_iv_right_icon)
@@ -37,25 +35,26 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
     protected CircleImageView civAppIcon;
     @ViewById(R.id.view_ntoolbar_ll_root)
     protected LinearLayout llRoot;
-    
+    @ViewById(R.id.view_ntoolbar_view_shadow)
+    protected View viewShadow;
+
     private AppCompatActivity activity;
     private boolean showLeftIcon = false;
     private boolean showRightIcon = false;
     private boolean showAppIcon = false;
     private boolean showToolbarColor = false;
     private boolean checkSetup = true;
-    
+
     public NToolbar(Context context) {
         super(context);
     }
-    
+
     public NToolbar(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-    
+
     private boolean defaultSetup(AppCompatActivity activity) {
         this.activity = activity;
-        activity.setSupportActionBar(toolbar);
         if (activity.getSupportActionBar() != null) {
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             ivLeftIcon.setVisibility(showLeftIcon ? VISIBLE : GONE);
@@ -69,7 +68,7 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return checkSetup;
     }
-    
+
     @Override
     public boolean setup(AppCompatActivity activity, String title) {
         if (defaultSetup(activity)) {
@@ -79,7 +78,7 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return checkSetup;
     }
-    
+
     @Override
     public boolean setup(AppCompatActivity activity, String title, @DrawableRes int icLeft) {
         if (setup(activity, title)) {
@@ -94,7 +93,7 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return checkSetup;
     }
-    
+
     @Override
     public boolean setup(AppCompatActivity activity, String title, @DrawableRes int icLeft, @DrawableRes int icRight) {
         if (setup(activity, title, icLeft)) {
@@ -109,7 +108,7 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return checkSetup;
     }
-    
+
     @Override
     public NToolbar showAppIcon() {
         if (checkSetup) {
@@ -118,7 +117,7 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return this;
     }
-    
+
     @Override
     public NToolbar hideAppIcon() {
         if (checkSetup) {
@@ -127,7 +126,7 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return this;
     }
-    
+
     @Override
     public NToolbar showLeftIcon() {
         if (checkSetup) {
@@ -136,20 +135,20 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return this;
     }
-    
+
     @Override
     public NToolbar showLeftIcon(@DrawableRes int icLeft) {
         if (checkSetup) {
             showLeftIcon = true;
             ivLeftIcon.setVisibility(VISIBLE);
-            
+
             if (icLeft != 0) {
                 ivLeftIcon.setImageResource(icLeft);
             }
         }
         return this;
     }
-    
+
     @Override
     public NToolbar hideLeftIcon() {
         if (checkSetup) {
@@ -158,7 +157,7 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return this;
     }
-    
+
     @Override
     public NToolbar showRightIcon() {
         if (checkSetup) {
@@ -167,20 +166,20 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return this;
     }
-    
+
     @Override
     public NToolbar showRightIcon(@DrawableRes int icRight) {
         if (checkSetup) {
             showRightIcon = true;
             ivRightIcon.setVisibility(VISIBLE);
-            
+
             if (icRight != 0) {
                 ivLeftIcon.setImageResource(icRight);
             }
         }
         return this;
     }
-    
+
     @Override
     public NToolbar hideRightIcon() {
         if (checkSetup) {
@@ -189,7 +188,7 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return this;
     }
-    
+
     @Override
     public NToolbar showToolbarColor() {
         if (checkSetup) {
@@ -198,7 +197,7 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return this;
     }
-    
+
     @Override
     public NToolbar hideToolbarColor() {
         if (checkSetup) {
@@ -207,7 +206,7 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return this;
     }
-    
+
     @Override
     public NToolbar setTitle(String title) {
         if (checkSetup) {
@@ -215,17 +214,29 @@ public class NToolbar extends AppBarLayout implements MainCallbackListener {
         }
         return this;
     }
-    
+
+    @Override
+    public NToolbar showShadow() {
+        viewShadow.setVisibility(VISIBLE);
+        return this;
+    }
+
+    @Override
+    public NToolbar hideShadow() {
+        viewShadow.setVisibility(GONE);
+        return this;
+    }
+
     @Override
     public void setOnLeftClickListener(View.OnClickListener onLeftClickListener) {
         ivLeftIcon.setOnClickListener(onLeftClickListener);
     }
-    
+
     @Override
     public void setOnRightClickListener(View.OnClickListener onRightClickListener) {
         ivRightIcon.setOnClickListener(onRightClickListener);
     }
-    
+
     @Override
     public void setOnLlRootListener(View.OnClickListener onLlRootClickListener) {
         llRoot.setOnClickListener(onLlRootClickListener);
