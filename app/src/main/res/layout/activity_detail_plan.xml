@@ -5,14 +5,17 @@
     android:id="@+id/fragment_each_province_destination_srlReload"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e5e5e5"
     android:orientation="vertical"
     >
 
     <include layout="@layout/toolbar"/>
+
     <!-- Combine two types of scroll, if not, two scroll bar will show -->
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         >
 
         <LinearLayout
@@ -82,25 +85,6 @@
                                 android:paddingTop="@dimen/text_view_padding"
                                 />
                         </LinearLayout>
-
-                        <Button
-                            android:id="@+id/activity_detail_plan_btn_chat_group"
-                            android:layout_width="80dp"
-                            android:layout_height="40dp"
-                            android:background="@drawable/btn_positive"
-                            android:text="Thảo luận"
-                            android:textColor="#ffffff"
-                            android:textSize="12dp"/>
-
-                        <Button
-                            android:id="@+id/activity_detail_plan_btn_location_group"
-                            android:layout_width="80dp"
-                            android:layout_height="40dp"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/btn_positive"
-                            android:text="Vị trí"
-                            android:textColor="#ffffff"
-                            android:textSize="12dp"/>
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -160,13 +144,13 @@
                     >
 
                     <TextView
+                        android:id="@+id/textView4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="@dimen/text_view_padding"
                         android:text="Nơi đến"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_large"
-                        />
+                        android:textSize="@dimen/text_large"/>
 
                     <TextView
                         android:id="@+id/activity_detail_plan_tv_destination"
@@ -287,4 +271,65 @@
             </android.support.v7.widget.CardView>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/activity_detail_plan_ll_chat_group"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="7dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_positive"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="Thảo luận"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_large"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="3dp"
+                android:src="@drawable/ic_chat"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_detail_plan_ll_location_group"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="7dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_positive"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="25dp"
+                android:gravity="center"
+                android:text="Vị trí nhóm"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_large"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="3dp"
+                android:src="@drawable/ic_location"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>

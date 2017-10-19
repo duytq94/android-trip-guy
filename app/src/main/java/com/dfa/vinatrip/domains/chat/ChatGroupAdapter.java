@@ -37,8 +37,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private String currentUser;
     private List<BaseMessage> baseMessageList;
     private ImageLoader imageLoader;
-    private DisplayImageOptions displayImageOptionsPhotoRight;
-    private DisplayImageOptions displayImageOptionsPhotoLeft;
+    private DisplayImageOptions imageOptions;
     private DisplayImageOptions displayImageOptionsAvatar;
     private AdapterChatListener adapterChatListener;
     private Map<String, String> mapAvatar;
@@ -49,17 +48,8 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         setHasStableIds(true);
         this.currentUser = currentUser;
         this.imageLoader = ImageLoader.getInstance();
-        this.displayImageOptionsPhotoRight = new DisplayImageOptions.Builder()
+        this.imageOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.bg_green)
-                .showImageForEmptyUri(R.drawable.photo_not_available)
-                .showImageOnFail(R.drawable.photo_not_available)
-                .resetViewBeforeLoading(true)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .bitmapConfig(Bitmap.Config.ARGB_4444)
-                .build();
-        this.displayImageOptionsPhotoLeft = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.bg_white)
                 .showImageForEmptyUri(R.drawable.photo_not_available)
                 .showImageOnFail(R.drawable.photo_not_available)
                 .resetViewBeforeLoading(true)
@@ -109,7 +99,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 messageHolder.tvMsgLeft.setVisibility(View.GONE);
                 messageHolder.psivPhotoLeft.setVisibility(View.VISIBLE);
 
-                imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoLeft, displayImageOptionsPhotoLeft,
+                imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoLeft, imageOptions,
                         new ImageLoadingListener() {
                             @Override
                             public void onLoadingStarted(String s, View view) {
@@ -195,7 +185,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 messageHolder.tvMsgRight.setVisibility(View.GONE);
                 messageHolder.psivPhotoRight.setVisibility(View.VISIBLE);
 
-                imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoRight, displayImageOptionsPhotoRight,
+                imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoRight, imageOptions,
                         new ImageLoadingListener() {
                             @Override
                             public void onLoadingStarted(String s, View view) {

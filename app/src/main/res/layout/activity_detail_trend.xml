@@ -26,13 +26,15 @@
                 android:layout_margin="5dp"
                 android:gravity="center"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/text_large"/>
+                android:textSize="@dimen/text_large"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/activity_detail_trend_tv_intro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"/>
+                android:layout_margin="5dp"
+                android:textColor="@android:color/black"/>
 
             <TextView
                 android:id="@+id/activity_detail_trend_tv_content"

@@ -59,9 +59,11 @@ public class TrendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TrendHolder trendHolder = (TrendHolder) holder;
         Trend trend = trendList.get(position);
 
+        String background = trend.getUrl().split(" ")[0];
+
         trendHolder.tvTitle.setText(trend.getTitle());
         trendHolder.tvIntro.setText(Html.fromHtml(trend.getIntro()));
-        imageLoader.displayImage(trend.getBackground(), trendHolder.ivBackground, imageOptions, new ImageLoadingListener() {
+        imageLoader.displayImage(background, trendHolder.ivBackground, imageOptions, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
                 trendHolder.rotateLoading.setVisibility(View.VISIBLE);

@@ -13,8 +13,6 @@ public class Trend implements Serializable {
     private String title;
     @SerializedName("intro")
     private String intro;
-    @SerializedName("background")
-    private String background;
     @SerializedName("content")
     private String content;
     @SerializedName("url")
@@ -34,14 +32,6 @@ public class Trend implements Serializable {
 
     public void setIntro(String intro) {
         this.intro = intro;
-    }
-
-    public String getBackground() {
-        return background;
-    }
-
-    public void setBackground(String background) {
-        this.background = background;
     }
 
     public String getContent() {

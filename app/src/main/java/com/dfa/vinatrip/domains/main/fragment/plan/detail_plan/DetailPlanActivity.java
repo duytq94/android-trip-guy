@@ -144,13 +144,13 @@ public class DetailPlanActivity extends AppCompatActivity {
         return false;
     }
     
-    @Click(R.id.activity_detail_plan_btn_chat_group)
-    public void onBtnChatGroupClick() {
+    @Click(R.id.activity_detail_plan_ll_chat_group)
+    public void onLlChatGroupClick() {
         ChatGroupActivity_.intent(this).userFriendList((ArrayList<UserFriend>) userFriendList).plan(plan).start();
     }
     
-    @Click(R.id.activity_detail_plan_btn_location_group)
-    public void onBtnLocationGroup() {
+    @Click(R.id.activity_detail_plan_ll_location_group)
+    public void onLlLocationGroup() {
         LocationGroupActivity_.intent(this).plan(plan).start();
     }
 }

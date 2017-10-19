@@ -5,6 +5,7 @@
     android:id="@+id/fragment_plan_srl_reload"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e5e5e5"
     >
 
     <LinearLayout
