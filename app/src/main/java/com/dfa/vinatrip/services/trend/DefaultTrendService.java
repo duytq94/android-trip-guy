@@ -1,7 +1,7 @@
 package com.dfa.vinatrip.services.trend;
 
 import com.beesightsoft.caf.services.network.NetworkProvider;
-import com.dfa.vinatrip.models.response.place.Trend;
+import com.dfa.vinatrip.domains.main.fragment.trend.Trend;
 import com.dfa.vinatrip.services.filter.ApiErrorFilter;
 
 import java.util.List;
@@ -30,6 +30,13 @@ public class DefaultTrendService implements TrendService {
     public Observable<List<Trend>> getTrend(int page, int pageSize) {
         return networkProvider
                 .transformResponse(restTrendService.getTrend(page, pageSize))
+                .compose(apiErrorFilter.execute());
+    }
+
+    @Override
+    public Observable<Trend> updateTrendCount(Trend trendUpdate) {
+        return networkProvider
+                .transformResponse(restTrendService.updateTrendCount(trendUpdate))
                 .compose(apiErrorFilter.execute());
     }
 }

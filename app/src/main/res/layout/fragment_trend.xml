@@ -1,9 +1,9 @@
-<LinearLayout
+<android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_trend_srl_reload"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.dfa.vinatrip.domains.main.fragment.trend.TrendFragment">
 
     <android.support.v7.widget.RecyclerView
@@ -13,4 +13,4 @@
         android:background="#e5e5e5"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"/>
-</LinearLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

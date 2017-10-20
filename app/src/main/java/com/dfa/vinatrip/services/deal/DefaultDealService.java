@@ -1,7 +1,7 @@
 package com.dfa.vinatrip.services.deal;
 
 import com.beesightsoft.caf.services.network.NetworkProvider;
-import com.dfa.vinatrip.models.response.Deal;
+import com.dfa.vinatrip.domains.main.fragment.deal.Deal;
 import com.dfa.vinatrip.services.filter.ApiErrorFilter;
 
 import java.util.List;

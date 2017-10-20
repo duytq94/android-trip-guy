@@ -1,18 +1,22 @@
 package com.dfa.vinatrip.domains.main.fragment.trend.detail_trend;
 
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.domains.chat.ShowFullPhotoActivity_;
-import com.dfa.vinatrip.models.response.place.Trend;
+import com.dfa.vinatrip.domains.main.fragment.trend.Trend;
+import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.widgets.RotateLoading;
 import com.joanzapata.android.BaseAdapterHelper;
 import com.joanzapata.android.QuickAdapter;
@@ -21,7 +25,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
@@ -31,8 +37,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+
 @EActivity(R.layout.activity_detail_trend)
-public class DetailTrendActivity extends AppCompatActivity {
+public class DetailTrendActivity extends BaseActivity<DetailTrendView, DetailTrendPresenter>
+        implements DetailTrendView {
 
     @Extra
     protected Trend trend;
@@ -53,6 +62,20 @@ public class DetailTrendActivity extends AppCompatActivity {
     private QuickAdapter<String> adapter;
     private List<String> urlList;
 
+    @App
+    protected MainApplication application;
+
+    @Inject
+    protected DetailTrendPresenter presenter;
+
+    @AfterInject
+    protected void initInject() {
+        DaggerDetailTrendComponent.builder()
+                .applicationComponent(application.getApplicationComponent())
+                .activityModule(new ActivityModule(this))
+                .build().inject(this);
+    }
+
     @AfterViews
     public void init() {
         setupAppBar();
@@ -71,6 +94,9 @@ public class DetailTrendActivity extends AppCompatActivity {
         tvTitle.setText(trend.getTitle());
         tvIntro.setText(Html.fromHtml(trend.getIntro()));
         tvContent.setText(trend.getContent());
+
+        trend.setCountView(trend.getCountView() + 1);
+        presenter.updateTrendCount(trend);
     }
 
     public void setupAppBar() {
@@ -133,5 +159,36 @@ public class DetailTrendActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void showLoading() {
+        showHUD();
+    }
+
+    @Override
+    public void hideLoading() {
+        hideHUD();
+    }
+
+    @Override
+    public void apiError(Throwable throwable) {
+
+    }
+
+    @Override
+    public void updateTrendCountSuccess(Trend trend) {
+
+    }
+
+    @Override
+    public void getDataFail(Throwable throwable) {
+        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @NonNull
+    @Override
+    public DetailTrendPresenter createPresenter() {
+        return presenter;
     }
 }

@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.models.response;
+package com.dfa.vinatrip.domains.chat;
 
 import com.google.gson.annotations.SerializedName;
 

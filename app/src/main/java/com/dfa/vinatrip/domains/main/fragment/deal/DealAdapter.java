@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.web.WebActivity_;
-import com.dfa.vinatrip.models.response.Deal;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.widgets.RotateLoading;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;

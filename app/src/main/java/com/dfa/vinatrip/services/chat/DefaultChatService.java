@@ -1,8 +1,8 @@
 package com.dfa.vinatrip.services.chat;
 
 import com.beesightsoft.caf.services.network.NetworkProvider;
-import com.dfa.vinatrip.models.response.BaseMessage;
-import com.dfa.vinatrip.models.response.StatusUserChat;
+import com.dfa.vinatrip.domains.chat.BaseMessage;
+import com.dfa.vinatrip.domains.chat.StatusUserChat;
 import com.dfa.vinatrip.services.filter.ApiErrorFilter;
 
 import java.util.List;

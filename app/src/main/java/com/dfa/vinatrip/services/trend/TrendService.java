@@ -1,6 +1,6 @@
 package com.dfa.vinatrip.services.trend;
 
-import com.dfa.vinatrip.models.response.place.Trend;
+import com.dfa.vinatrip.domains.main.fragment.trend.Trend;
 
 import java.util.List;
 
@@ -12,4 +12,6 @@ import rx.Observable;
 
 public interface TrendService {
     Observable<List<Trend>> getTrend(int page, int pageSize);
+
+    Observable<Trend> updateTrendCount(Trend trendUpdate);
 }

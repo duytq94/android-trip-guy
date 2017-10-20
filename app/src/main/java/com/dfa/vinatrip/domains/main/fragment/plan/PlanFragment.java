@@ -74,18 +74,15 @@ public class PlanFragment extends Fragment {
         }
         
         srlReload.setColorSchemeResources(R.color.colorMain);
-        srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (AppUtil.isNetworkConnected(getActivity())) {
-                    if (dataService.getCurrentUser() != null) {
-                        planList.clear();
-                        initView();
-                    }
-                    srlReload.setRefreshing(false);
-                } else {
-                    srlReload.setRefreshing(false);
+        srlReload.setOnRefreshListener(() -> {
+            if (AppUtil.isNetworkConnected(getActivity())) {
+                if (dataService.getCurrentUser() != null) {
+                    planList.clear();
+                    initView();
                 }
+                srlReload.setRefreshing(false);
+            } else {
+                srlReload.setRefreshing(false);
             }
         });
     }

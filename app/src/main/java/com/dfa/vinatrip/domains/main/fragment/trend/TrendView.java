@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.domains.main.fragment.trend;
 
 import com.dfa.vinatrip.base.BaseMvpView;
-import com.dfa.vinatrip.models.response.place.Trend;
 
 import java.util.List;
 

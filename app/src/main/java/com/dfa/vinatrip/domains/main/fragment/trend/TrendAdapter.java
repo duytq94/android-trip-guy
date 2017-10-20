@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.fragment.trend.detail_trend.DetailTrendActivity_;
-import com.dfa.vinatrip.models.response.place.Trend;
 import com.dfa.vinatrip.widgets.RotateLoading;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -61,6 +60,7 @@ public class TrendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         String background = trend.getUrl().split(" ")[0];
 
+        trendHolder.tvCountView.setText(String.valueOf(trend.getCountView()));
         trendHolder.tvTitle.setText(trend.getTitle());
         trendHolder.tvIntro.setText(Html.fromHtml(trend.getIntro()));
         imageLoader.displayImage(background, trendHolder.ivBackground, imageOptions, new ImageLoadingListener() {
@@ -114,7 +114,7 @@ public class TrendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public class TrendHolder extends RecyclerView.ViewHolder {
 
         ImageView ivBackground;
-        TextView tvTitle, tvIntro;
+        TextView tvTitle, tvIntro, tvCountView;
         RotateLoading rotateLoading;
         LinearLayout llRoot;
 
@@ -125,6 +125,7 @@ public class TrendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             tvIntro = (TextView) itemView.findViewById(R.id.item_trend_tv_intro);
             rotateLoading = (RotateLoading) itemView.findViewById(R.id.item_trend_rotate_loading);
             llRoot = (LinearLayout) itemView.findViewById(R.id.item_trend_ll_root);
+            tvCountView = (TextView) itemView.findViewById(R.id.item_trend_tv_count_view);
         }
     }
 }

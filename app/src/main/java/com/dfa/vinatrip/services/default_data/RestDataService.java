@@ -19,7 +19,7 @@ import rx.Observable;
 
 public interface RestDataService {
     
-    @GET("api/provinces")
+    @GET("api/province")
     Observable<RestMessageResponse<List<Province>>> getProvinces(
             @Query("page") long page,
             @Query("per_page") long per_page);

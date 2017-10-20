@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.models.response;
+package com.dfa.vinatrip.domains.main.fragment.deal;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Deal {
+    @SerializedName("id")
+    private long id;
     @SerializedName("img")
     private String img;
     @SerializedName("title")
@@ -24,16 +26,12 @@ public class Deal {
     @SerializedName("dayStart")
     private String dayStart;
 
-    public Deal(String img, String title, String content, double price, String linkDetail,
-                String route, String fromWebsite, String dayStart) {
-        this.img = img;
-        this.title = title;
-        this.content = content;
-        this.price = price;
-        this.linkDetail = linkDetail;
-        this.route = route;
-        this.fromWebsite = fromWebsite;
-        this.dayStart = dayStart;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getDayStart() {

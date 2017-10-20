@@ -1,6 +1,6 @@
 package com.dfa.vinatrip.services.deal;
 
-import com.dfa.vinatrip.models.response.Deal;
+import com.dfa.vinatrip.domains.main.fragment.deal.Deal;
 
 import java.util.List;
 

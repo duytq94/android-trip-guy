@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.domains.main.fragment.deal;
 
 import com.dfa.vinatrip.base.BaseMvpView;
-import com.dfa.vinatrip.models.response.Deal;
 
 import java.util.List;
 

@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.models.TypeMessage;
-import com.dfa.vinatrip.models.response.BaseMessage;
 import com.dfa.vinatrip.utils.AdapterChatListener;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.widgets.RotateLoading;

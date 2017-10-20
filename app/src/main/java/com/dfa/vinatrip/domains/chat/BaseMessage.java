@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.models.response;
+package com.dfa.vinatrip.domains.chat;
 
 import com.dfa.vinatrip.models.TypeMessage;
 import com.google.gson.annotations.SerializedName;
@@ -10,16 +10,12 @@ import com.google.gson.annotations.SerializedName;
 public class BaseMessage {
     @SerializedName("content")
     private String content;
-
     @SerializedName("time_arrive")
     private long timestamp;
-
     @SerializedName("from_user")
     private String from;
-
     @SerializedName("to_group")
     private String to;
-
     @SerializedName("type_message")
     private TypeMessage typeMessage;
 

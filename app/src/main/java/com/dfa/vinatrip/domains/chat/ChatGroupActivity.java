@@ -26,8 +26,6 @@ import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFrien
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.TypeMessage;
-import com.dfa.vinatrip.models.response.BaseMessage;
-import com.dfa.vinatrip.models.response.StatusUserChat;
 import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.AdapterChatListener;
 import com.dfa.vinatrip.utils.AppUtil;

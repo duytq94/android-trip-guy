@@ -3,7 +3,8 @@ package com.dfa.vinatrip.domains.location;
 import com.google.gson.annotations.SerializedName;
 
 public class UserLocation {
-
+    @SerializedName("id")
+    private long id;
     @SerializedName("from_user")
     private String fromUser;
     @SerializedName("to_group")

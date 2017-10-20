@@ -1,8 +1,6 @@
 package com.dfa.vinatrip.domains.chat;
 
 import com.dfa.vinatrip.base.BaseMvpView;
-import com.dfa.vinatrip.models.response.BaseMessage;
-import com.dfa.vinatrip.models.response.StatusUserChat;
 
 import java.util.List;
 

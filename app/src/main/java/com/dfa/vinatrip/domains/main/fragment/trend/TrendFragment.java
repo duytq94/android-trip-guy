@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.domains.main.fragment.trend;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
@@ -8,7 +9,6 @@ import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseFragment;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
-import com.dfa.vinatrip.models.response.place.Trend;
 import com.dfa.vinatrip.widgets.EndlessRecyclerViewScrollListener;
 
 import org.androidannotations.annotations.AfterInject;
@@ -26,9 +26,10 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
 
     @ViewById(R.id.fragment_trend_rv_item)
     protected RecyclerView rvItem;
+    @ViewById(R.id.fragment_trend_srl_reload)
+    SwipeRefreshLayout srlReload;
 
     private TrendAdapter adapter;
-
 
     @App
     protected MainApplication mainApplication;
@@ -65,6 +66,12 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
         };
         rvItem.addOnScrollListener(scrollListener);
         presenter.getTrend(1, 10);
+
+        srlReload.setColorSchemeResources(R.color.colorMain);
+        srlReload.setOnRefreshListener(() -> {
+            presenter.getTrend(1, 10);
+            srlReload.setRefreshing(false);
+        });
     }
 
     @Override
