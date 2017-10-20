@@ -34,7 +34,7 @@ public class DefaultTrendService implements TrendService {
     }
 
     @Override
-    public Observable<Trend> updateTrendCount(Trend trendUpdate) {
+    public Observable<String> updateTrendCount(Trend trendUpdate) {
         return networkProvider
                 .transformResponse(restTrendService.updateTrendCount(trendUpdate))
                 .compose(apiErrorFilter.execute());

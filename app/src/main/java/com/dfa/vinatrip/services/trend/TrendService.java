@@ -13,5 +13,5 @@ import rx.Observable;
 public interface TrendService {
     Observable<List<Trend>> getTrend(int page, int pageSize);
 
-    Observable<Trend> updateTrendCount(Trend trendUpdate);
+    Observable<String> updateTrendCount(Trend trendUpdate);
 }

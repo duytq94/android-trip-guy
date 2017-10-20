@@ -23,7 +23,7 @@ public interface RestTrendService {
     );
 
     @PUT("trend/update_count")
-    Observable<RestMessageResponse<Trend>> updateTrendCount(
+    Observable<RestMessageResponse<String>> updateTrendCount(
             @Body Trend trendUpdate
     );
 }

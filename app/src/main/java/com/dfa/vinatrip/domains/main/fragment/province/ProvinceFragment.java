@@ -39,9 +39,9 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
     protected MainApplication mainApplication;
     @Inject
     protected ProvincePresenter presenter;
-    
+
     @ViewById(R.id.fragment_province_srl_swipe)
-    protected SwipeRefreshLayout swipeRefreshLayout;
+    protected SwipeRefreshLayout srlReload;
     @ViewById(R.id.fragment_province_nsv_scrollview)
     protected NestedScrollView nestedScrollView;
     @ViewById(R.id.fragment_province_vp_banner)
@@ -50,15 +50,15 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
     protected LinearLayout llBannerPosition;
     @ViewById(R.id.fragment_province_rcv_recycler)
     protected RecyclerView rcvProvince;
-    
+
     private List<String> banners;
     private PagerBannerAdapter pagerBannerAdapter;
-    
+
     private List<Province> provinceList;
     private RecyclerProvinceAdapter recyclerProvinceAdapter;
     private int page = 1;
     private int per_page = 10;
-    
+
     @AfterInject
     void initInject() {
         DaggerProvinceComponent.builder()
@@ -66,43 +66,45 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
                 .applicationComponent(mainApplication.getApplicationComponent())
                 .build().inject(this);
     }
-    
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @AfterViews
     void init() {
         firstSetup();
-        
+
         presenter.getBanner();
         presenter.getProvince(page, per_page);
-        
+
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 Log.e("test", scrollX + " " + scrollY + " " + oldScrollX + " " + oldScrollY);
             }
         });
-        
+
         nestedScrollView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
             @Override
             public void onSystemUiVisibilityChange(int i) {
                 Log.e("test", " " + i);
             }
         });
+
+        srlReload.setColorSchemeResources(R.color.colorMain);
     }
-    
+
     private void firstSetup() {
         provinceList = new ArrayList<>();
         recyclerProvinceAdapter = new RecyclerProvinceAdapter(getContext(), provinceList);
         rcvProvince.setHasFixedSize(true);
         rcvProvince.setLayoutManager(new GridLayoutManager(getContext(), 2));
         rcvProvince.setAdapter(recyclerProvinceAdapter);
-        
+
         banners = new ArrayList<>();
         pagerBannerAdapter = new PagerBannerAdapter(getContext(), banners);
         vpBanner.setAdapter(pagerBannerAdapter);
         vpBanner.setPageTransformer(true, new ViewPager.PageTransformer() {
             static final float MIN_SCALE = 0.75f;
-            
+
             @Override
             public void transformPage(View page, float position) {
                 int pageWidth = page.getWidth();
@@ -116,7 +118,7 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
                 } else if (position <= 1) {
                     page.setAlpha(1 - position);
                     page.setTranslationX(pageWidth * -position);
-                    
+
                     float scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - Math.abs(position));
                     page.setScaleX(scaleFactor);
                     page.setScaleY(scaleFactor);
@@ -126,40 +128,40 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
             }
         });
     }
-    
+
     @Override
     public ProvincePresenter createPresenter() {
         return presenter;
     }
-    
+
     @Override
     public void showLoading() {
         showHUD();
     }
-    
+
     @Override
     public void hideLoading() {
         hideHUD();
     }
-    
+
     @Override
     public void apiError(Throwable throwable) {
-        
+
     }
-    
+
     @Override
     public void getBannerSuccess(List<String> banners) {
         this.banners.addAll(banners);
         pagerBannerAdapter.notifyDataSetChanged();
-        
+
         for (int i = 0; i < this.banners.size(); i++) {
             LinearLayout.LayoutParams layoutParams =
                     new LinearLayout.LayoutParams(AppUtil.dpToPx(getContext(), 8f), AppUtil.dpToPx(getContext(), 8f));
             layoutParams.setMargins(AppUtil.dpToPx(getContext(), 4f), 0, AppUtil.dpToPx(getContext(), 4f), 0);
-            
+
             ImageView imageView = new ImageView(getContext());
             imageView.setLayoutParams(layoutParams);
-            
+
             if (i == 0) {
                 imageView.setBackgroundResource(R.drawable.bg_oval_select);
             } else {
@@ -167,13 +169,13 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
             }
             llBannerPosition.addView(imageView);
         }
-        
+
         vpBanner.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                
+
             }
-            
+
             @Override
             public void onPageSelected(int position) {
                 for (int i = 0; i < banners.size(); i++) {
@@ -185,14 +187,14 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
                     }
                 }
             }
-            
+
             @Override
             public void onPageScrollStateChanged(int state) {
-                
+
             }
         });
     }
-    
+
     @Override
     public void getProvinceSuccess(List<Province> provinces) {
         provinceList.addAll(provinces);

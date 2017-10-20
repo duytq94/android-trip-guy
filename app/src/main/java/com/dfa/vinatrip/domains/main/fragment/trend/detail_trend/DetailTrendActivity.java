@@ -177,7 +177,7 @@ public class DetailTrendActivity extends BaseActivity<DetailTrendView, DetailTre
     }
 
     @Override
-    public void updateTrendCountSuccess(Trend trend) {
+    public void updateTrendCountSuccess(String message) {
 
     }
 

@@ -30,9 +30,9 @@ public class DetailTrendPresenter extends BasePresenter<DetailTrendView> {
         RxScheduler.onStop(subscriptionUpdateTrend);
         subscriptionUpdateTrend = trendService.updateTrendCount(trendUpdate)
                 .compose(RxScheduler.applyIoSchedulers())
-                .subscribe(trend -> {
+                .subscribe(str -> {
                     if (isViewAttached()) {
-                        getView().updateTrendCountSuccess(trend);
+                        getView().updateTrendCountSuccess(str);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {
