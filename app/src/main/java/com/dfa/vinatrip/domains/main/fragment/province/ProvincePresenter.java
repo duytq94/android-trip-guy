@@ -40,7 +40,7 @@ public class ProvincePresenter extends BasePresenter<ProvinceView> {
     public void getProvince(long page, long per_page) {
         RxHelper.onStop(subscription);
         if (isViewAttached()) {
-            getView().showLoading();
+//            getView().showLoading();
         }
         subscription = dataService.getProvinces(page, per_page)
                 .compose(RxHelper.applyIOSchedulers())

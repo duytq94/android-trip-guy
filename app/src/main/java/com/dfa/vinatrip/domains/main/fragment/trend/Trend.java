@@ -21,6 +21,16 @@ public class Trend implements Serializable {
     private String url;
     @SerializedName("count_view")
     private int countView;
+    @SerializedName("from_website")
+    private String fromWebsite;
+
+    public String getFromWebsite() {
+        return fromWebsite;
+    }
+
+    public void setFromWebsite(String fromWebsite) {
+        this.fromWebsite = fromWebsite;
+    }
 
     public int getCountView() {
         return countView;

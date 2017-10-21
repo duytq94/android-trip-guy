@@ -91,9 +91,18 @@ public class DetailTrendActivity extends BaseActivity<DetailTrendView, DetailTre
                 .build();
         urlList = new ArrayList<>(Arrays.asList(trend.getUrl().split(" ")));
         setupAdapter();
-        tvTitle.setText(trend.getTitle());
-        tvIntro.setText(Html.fromHtml(trend.getIntro()));
-        tvContent.setText(trend.getContent());
+        if (trend.getFromWebsite().equals("mytour")) {
+            tvTitle.setVisibility(View.VISIBLE);
+            tvIntro.setVisibility(View.VISIBLE);
+
+            tvTitle.setText(trend.getTitle());
+            tvIntro.setText(Html.fromHtml(trend.getIntro()));
+        } else {
+            tvTitle.setVisibility(View.GONE);
+            tvIntro.setVisibility(View.GONE);
+        }
+
+        tvContent.setText(Html.fromHtml(trend.getContent()));
 
         trend.setCountView(trend.getCountView() + 1);
         presenter.updateTrendCount(trend);
