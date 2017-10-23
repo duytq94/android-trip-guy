@@ -6,11 +6,51 @@
     android:layout_height="match_parent"
     tools:context="com.dfa.vinatrip.domains.main.fragment.trend.TrendFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment_trend_rv_item"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#e5e5e5"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"/>
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/colorMain"
+            android:paddingBottom="7dp"
+            android:paddingLeft="7dp"
+            android:paddingRight="7dp">
+
+            <android.support.v7.widget.SearchView
+                android:id="@+id/fragment_trend_sv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_white_corner"
+                android:theme="@style/DealSearchView"/>
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/fragment_trend_tv_no_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Không tìm thấy kết quả nào"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_trend_rv_item"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#e5e5e5"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
 </android.support.v4.widget.SwipeRefreshLayout>

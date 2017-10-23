@@ -17,14 +17,34 @@ public class Deal {
     private String content;
     @SerializedName("price")
     private double price;
-    @SerializedName("linkDetail")
+    @SerializedName("link_detail")
     private String linkDetail;
     @SerializedName("route")
     private String route;
-    @SerializedName("fromWebsite")
+    @SerializedName("from_website")
     private String fromWebsite;
-    @SerializedName("dayStart")
+    @SerializedName("day_start")
     private String dayStart;
+    @SerializedName("during_day")
+    private int duringDay;
+    @SerializedName("during_night")
+    private int duringNight;
+
+    public int getDuringDay() {
+        return duringDay;
+    }
+
+    public void setDuringDay(int duringDay) {
+        this.duringDay = duringDay;
+    }
+
+    public int getDuringNight() {
+        return duringNight;
+    }
+
+    public void setDuringNight(int duringNight) {
+        this.duringNight = duringNight;
+    }
 
     public long getId() {
         return id;

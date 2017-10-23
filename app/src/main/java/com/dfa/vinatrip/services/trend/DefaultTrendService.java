@@ -27,9 +27,9 @@ public class DefaultTrendService implements TrendService {
 
 
     @Override
-    public Observable<List<Trend>> getTrend(int page, int pageSize) {
+    public Observable<List<Trend>> getTrend(String where, int page, int pageSize) {
         return networkProvider
-                .transformResponse(restTrendService.getTrend(page, pageSize))
+                .transformResponse(restTrendService.getTrend(where, page, pageSize))
                 .compose(apiErrorFilter.execute());
     }
 

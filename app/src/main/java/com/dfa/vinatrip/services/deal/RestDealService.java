@@ -6,7 +6,6 @@ import com.dfa.vinatrip.domains.main.fragment.deal.Deal;
 import java.util.List;
 
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -15,9 +14,9 @@ import rx.Observable;
  */
 
 public interface RestDealService {
-    @GET("deal/{where}")
+    @GET("deal")
     Observable<RestMessageResponse<List<Deal>>> getDeal(
-            @Path("where") String where,
+            @Query("where") String where,
             @Query("page") int page,
             @Query("pageSize") int pageSize
     );

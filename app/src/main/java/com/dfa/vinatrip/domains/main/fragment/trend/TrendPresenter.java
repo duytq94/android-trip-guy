@@ -25,12 +25,12 @@ public class TrendPresenter extends BasePresenter<TrendView> {
         this.trendService = trendService;
     }
 
-    public void getTrend(int page, int pageSize) {
+    public void getTrend(String where, int page, int pageSize) {
         RxScheduler.onStop(subscriptionGetTrend);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscriptionGetTrend = trendService.getTrend(page, pageSize)
+        subscriptionGetTrend = trendService.getTrend(where, page, pageSize)
                 .compose(RxScheduler.applyIoSchedulers())
                 .subscribe(trendList -> {
                     if (isViewAttached()) {

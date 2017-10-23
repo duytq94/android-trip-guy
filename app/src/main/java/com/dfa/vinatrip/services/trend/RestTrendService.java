@@ -18,11 +18,12 @@ import rx.Observable;
 public interface RestTrendService {
     @GET("trend")
     Observable<RestMessageResponse<List<Trend>>> getTrend(
+            @Query("where") String where,
             @Query("page") int page,
             @Query("pageSize") int pageSize
     );
 
-    @PUT("trend/update_count")
+    @PUT("trend/updateCount")
     Observable<RestMessageResponse<String>> updateTrendCount(
             @Body Trend trendUpdate
     );

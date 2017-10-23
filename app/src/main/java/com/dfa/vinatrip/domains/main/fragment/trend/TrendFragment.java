@@ -3,6 +3,9 @@ package com.dfa.vinatrip.domains.main.fragment.trend;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.MainApplication;
@@ -24,12 +27,17 @@ import javax.inject.Inject;
 @EFragment(R.layout.fragment_trend)
 public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> implements TrendView {
 
+    @ViewById(R.id.fragment_trend_srl_reload)
+    protected SwipeRefreshLayout srlReload;
     @ViewById(R.id.fragment_trend_rv_item)
     protected RecyclerView rvItem;
-    @ViewById(R.id.fragment_trend_srl_reload)
-    SwipeRefreshLayout srlReload;
+    @ViewById(R.id.fragment_trend_tv_no_content)
+    protected TextView tvNoContent;
+    @ViewById(R.id.fragment_trend_sv)
+    protected SearchView searchView;
 
     private TrendAdapter adapter;
+    private String strQuery = "";
 
     @App
     protected MainApplication mainApplication;
@@ -48,6 +56,8 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
     @AfterViews
     public void init() {
         setupAdapter();
+        setupSearch();
+        presenter.getTrend(strQuery, 1, 10);
     }
 
     public void setupAdapter() {
@@ -61,16 +71,36 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                presenter.getTrend(page, 10);
+                presenter.getTrend(strQuery, page, 10);
             }
         };
         rvItem.addOnScrollListener(scrollListener);
-        presenter.getTrend(1, 10);
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         srlReload.setOnRefreshListener(() -> {
-            presenter.getTrend(1, 10);
+            presenter.getTrend(strQuery, 1, 10);
             srlReload.setRefreshing(false);
+        });
+    }
+
+    public void setupSearch() {
+        searchView.setQueryHint("Nơi đến...");
+        searchView.setIconifiedByDefault(false);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                strQuery = query;
+                presenter.getTrend(strQuery, 1, 10);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (searchView.getQuery().length() == 0) {
+                    strQuery = "";
+                }
+                return false;
+            }
         });
     }
 
@@ -102,12 +132,20 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
     @Override
     public void getTrendSuccess(List<Trend> trendList, int page) {
         if (trendList.size() > 0) {
+            tvNoContent.setVisibility(View.GONE);
+            rvItem.setVisibility(View.VISIBLE);
+
             if (page == 1) {
                 adapter.setDealList(trendList);
             } else {
                 adapter.appendList(trendList);
             }
             adapter.notifyDataSetChanged();
+        } else {
+            if (page == 1) {
+                tvNoContent.setVisibility(View.VISIBLE);
+                rvItem.setVisibility(View.GONE);
+            }
         }
     }
 }
