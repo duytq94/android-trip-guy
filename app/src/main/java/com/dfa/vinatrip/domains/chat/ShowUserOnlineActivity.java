@@ -34,7 +34,12 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
     protected Toolbar toolbar;
     @ViewById(R.id.activity_show_user_online_lv_user)
     protected ListView lvUser;
+    @ViewById(R.id.activity_show_user_online_tv_count_current)
+    protected TextView tvCountCurrent;
+    @ViewById(R.id.activity_show_user_online_tv_count_sum)
+    protected TextView tvCountSum;
 
+    private int countCurrent;
     private QuickAdapter<UserFriend> adapter;
     private ImageLoader imageLoader;
 
@@ -51,14 +56,18 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
                 CircleImageView civAvatar = helper.getView(R.id.item_user_online_vertical_civ_avatar);
                 TextView tvNickname = helper.getView(R.id.item_user_online_vertical_tv_nickname);
                 TextView tvEmail = helper.getView(R.id.item_user_online_vertical_tv_email);
+                TextView tvType = helper.getView(R.id.item_user_online_tv_type);
 
                 imageLoader.displayImage(item.getAvatar(), civAvatar);
                 tvNickname.setText(item.getNickname());
                 tvEmail.setText(item.getEmail());
                 if (item.getIsOnline()) {
                     ivIndicator.setVisibility(View.VISIBLE);
+                    tvType.setText("Online");
+                    countCurrent++;
                 } else {
                     ivIndicator.setVisibility(View.GONE);
+                    tvType.setText("Offline");
                 }
             }
         };
@@ -66,6 +75,9 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
 
         adapter.addAll(userFriendList);
         adapter.notifyDataSetChanged();
+
+        tvCountSum.setText(String.valueOf(userFriendList.size()));
+        tvCountCurrent.setText(String.valueOf(countCurrent));
     }
 
     public void setupAppBar() {

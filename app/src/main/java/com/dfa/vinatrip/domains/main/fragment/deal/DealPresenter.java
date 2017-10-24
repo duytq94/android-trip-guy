@@ -25,12 +25,12 @@ public class DealPresenter extends BasePresenter<DealView> {
         this.dealService = dealService;
     }
 
-    public void getDeal(String where, int page, int pageSize) {
+    public void getDeal(String where, float priceMin, float priceMax, int dayMin, int dayMax, int page, int pageSize) {
         RxScheduler.onStop(subscriptionGetDeal);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscriptionGetDeal = dealService.getDeal(where, page, pageSize)
+        subscriptionGetDeal = dealService.getDeal(where, priceMin, priceMax, dayMin, dayMax, page, pageSize)
                 .compose(RxScheduler.applyIoSchedulers())
                 .subscribe(dealList -> {
                     if (isViewAttached()) {

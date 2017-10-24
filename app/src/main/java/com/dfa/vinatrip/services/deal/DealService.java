@@ -11,5 +11,5 @@ import rx.Observable;
  */
 
 public interface DealService {
-    Observable<List<Deal>> getDeal(String where, int page, int pageSize);
+    Observable<List<Deal>> getDeal(String where, float priceMin, float priceMax, int dayMin, int dayMax, int page, int pageSize);
 }

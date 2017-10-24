@@ -12,7 +12,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:background="@color/colorMain"
             android:orientation="horizontal"
             android:paddingLeft="7dp"
@@ -30,32 +30,37 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:background="@color/colorMain"
             android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/fragment_deal_sp_price"
+            <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="7dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_white_corner"/>
+                android:background="@drawable/bg_spinner_deal">
 
-            <Spinner
-                android:id="@+id/fragment_deal_sp_during"
+                <Spinner
+                    android:id="@+id/fragment_deal_sp_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="7dp"
-                android:layout_marginTop="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_white_corner"/>
+                android:background="@drawable/bg_spinner_deal">
 
+                <Spinner
+                    android:id="@+id/fragment_deal_sp_during"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </RelativeLayout>
         </LinearLayout>
 
         <FrameLayout

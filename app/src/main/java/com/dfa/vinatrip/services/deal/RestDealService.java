@@ -17,6 +17,10 @@ public interface RestDealService {
     @GET("deal")
     Observable<RestMessageResponse<List<Deal>>> getDeal(
             @Query("where") String where,
+            @Query("priceMin") float priceMin,
+            @Query("priceMax") float priceMax,
+            @Query("dayMin") int dayMin,
+            @Query("dayMax") int dayMax,
             @Query("page") int page,
             @Query("pageSize") int pageSize
     );

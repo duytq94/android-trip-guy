@@ -29,7 +29,7 @@ import javax.inject.Inject;
 
 @EFragment(R.layout.fragment_deal)
 public class DealFragment extends BaseFragment<DealView, DealPresenter>
-        implements DealView, AdapterView.OnItemSelectedListener {
+        implements DealView {
 
     @ViewById(R.id.fragment_deal_srl_reload)
     protected SwipeRefreshLayout srlReload;
@@ -46,6 +46,10 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
 
     private DealAdapter adapter;
     private String strQuery = "";
+    private float priceMin = 0;
+    private float priceMax = 100000000;
+    private int dayMax = 30;
+    private int dayMin = 0;
 
     @App
     protected MainApplication mainApplication;
@@ -65,7 +69,7 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
         setupAdapter();
         setupSearch();
         setupSpinner();
-        presenter.getDeal(strQuery, 1, 10);
+        presenter.getDeal(strQuery, priceMin, priceMax, dayMin, dayMax, 1, 10);
     }
 
     public void setupAdapter() {
@@ -79,14 +83,14 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                presenter.getDeal(strQuery, page, 10);
+                presenter.getDeal(strQuery, priceMin, priceMax, dayMin, dayMax, page, 10);
             }
         };
         rvItem.addOnScrollListener(scrollListener);
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         srlReload.setOnRefreshListener(() -> {
-            presenter.getDeal(strQuery, 1, 10);
+            presenter.getDeal(strQuery, priceMin, priceMax, dayMin, dayMax, 1, 10);
             srlReload.setRefreshing(false);
         });
     }
@@ -98,7 +102,7 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
             @Override
             public boolean onQueryTextSubmit(String query) {
                 strQuery = query;
-                presenter.getDeal(strQuery, 1, 10);
+                presenter.getDeal(strQuery, priceMin, priceMax, dayMin, dayMax, 1, 10);
                 return false;
             }
 
@@ -114,14 +118,72 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
 
     public void setupSpinner() {
         ArrayAdapter<CharSequence> priceAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.range_price, android.R.layout.simple_spinner_item);
-        priceAdapter.setDropDownViewResource(R.layout.item_spinner_deal);
+                R.array.range_price, R.layout.item_spinner_deal);
         spPrice.setAdapter(priceAdapter);
+        spPrice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        priceMin = 0;
+                        priceMax = 100000000;
+                        break;
+                    case 1:
+                        priceMin = 0;
+                        priceMax = 2000000;
+                        break;
+                    case 2:
+                        priceMin = 2000000;
+                        priceMax = 3000000;
+                        break;
+                    case 3:
+                        priceMin = 3000000;
+                        priceMax = 5000000;
+                        break;
+                    case 4:
+                        priceMin = 5000000;
+                        priceMax = 10000000;
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         ArrayAdapter<CharSequence> duringAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.range_during, android.R.layout.simple_spinner_item);
-        duringAdapter.setDropDownViewResource(R.layout.item_spinner_deal);
+                R.array.range_during, R.layout.item_spinner_deal);
         spDuring.setAdapter(duringAdapter);
+        spDuring.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        dayMin = 0;
+                        dayMax = 30;
+                        break;
+                    case 1:
+                        dayMin = 0;
+                        dayMax = 2;
+                        break;
+                    case 2:
+                        dayMin = 2;
+                        dayMax = 4;
+                        break;
+                    case 3:
+                        dayMin = 4;
+                        dayMax = 6;
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
@@ -167,15 +229,5 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
     @Override
     public DealPresenter createPresenter() {
         return presenter;
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
     }
 }

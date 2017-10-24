@@ -27,9 +27,9 @@ public class DefaultDealService implements DealService {
 
 
     @Override
-    public Observable<List<Deal>> getDeal(String where, int page, int pageSize) {
+    public Observable<List<Deal>> getDeal(String where, float priceMin, float priceMax, int dayMin, int dayMax, int page, int pageSize) {
         return networkProvider
-                .transformResponse(restDealService.getDeal(where, page, pageSize))
+                .transformResponse(restDealService.getDeal(where, priceMin, priceMax, dayMin, dayMax, page, pageSize))
                 .compose(apiErrorFilter.execute());
     }
 }
