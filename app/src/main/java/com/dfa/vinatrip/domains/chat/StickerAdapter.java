@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.dfa.vinatrip.R;
 
 import java.util.List;
@@ -19,10 +20,11 @@ public class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private StickerListener stickerListener;
     private List<Integer> listSticker;
+    private Context context;
 
-    public StickerAdapter(List<Integer> listSticker, Context context) {
+    public StickerAdapter(Context context) {
         this.stickerListener = (StickerListener) context;
-        this.listSticker = listSticker;
+        this.context = context;
     }
 
     @Override
@@ -34,7 +36,7 @@ public class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         StickerHolder stickerHolder = (StickerHolder) holder;
-        stickerHolder.ivSticker.setImageResource(listSticker.get(position));
+        Glide.with(context).load(listSticker.get(position)).into(stickerHolder.ivSticker);
         stickerHolder.ivSticker.setOnClickListener(v -> {
             stickerListener.onStickerClick(String.format("sticker%s", position + 1));
         });
@@ -52,6 +54,10 @@ public class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    public void setList(List<Integer> listSticker) {
+        this.listSticker = listSticker;
     }
 
     public class StickerHolder extends RecyclerView.ViewHolder {

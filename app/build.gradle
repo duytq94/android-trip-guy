@@ -158,6 +158,9 @@ dependencies {
     compile 'com.joanzapata.android:base-adapter-helper:1.1.11'
 
     compile 'org.lucasr.twowayview:twowayview:0.1.4'
+
+    compile 'com.github.bumptech.glide:glide:4.2.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
 }
 // this line has to put out of dependencies so app can run Google Map
 apply plugin: 'com.google.gms.google-services'

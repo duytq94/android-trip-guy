@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.utils.AdapterChatListener;
 import com.dfa.vinatrip.utils.AppUtil;
@@ -41,6 +42,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Map<String, String> mapAvatar;
     private Map<String, String> mapNickname;
     private Map<String, Integer> mapSticker;
+    private Context context;
 
     public ChatGroupAdapter(String currentUser, List<BaseMessage> baseMessageList, Map<String, String> mapAvatar,
                             Map<String, String> mapNickname, Map<String, Integer> mapSticker, Context context) {
@@ -70,6 +72,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.mapNickname = mapNickname;
         this.mapSticker = mapSticker;
         this.adapterChatListener = (AdapterChatListener) context;
+        this.context = context;
     }
 
     @Override
@@ -141,7 +144,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     messageHolder.psivPhotoLeft.setVisibility(View.GONE);
                     messageHolder.ivStickerLeft.setVisibility(View.VISIBLE);
 
-                    messageHolder.ivStickerLeft.setImageResource(mapSticker.get(baseMessage.getContent()));
+                    Glide.with(context).load(mapSticker.get(baseMessage.getContent())).into(messageHolder.ivStickerLeft);
                     break;
             }
 
@@ -241,7 +244,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     messageHolder.psivPhotoRight.setVisibility(View.GONE);
                     messageHolder.ivStickerRight.setVisibility(View.VISIBLE);
 
-                    messageHolder.ivStickerRight.setImageResource(mapSticker.get(baseMessage.getContent()));
+                    Glide.with(context).load(mapSticker.get(baseMessage.getContent())).into(messageHolder.ivStickerRight);
                     break;
             }
         }
