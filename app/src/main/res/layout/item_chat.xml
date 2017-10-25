@@ -75,6 +75,13 @@
                     android:visibility="gone"
                     app:siShape="@drawable/item_chat_left"/>
 
+                <ImageView
+                    android:id="@+id/item_chat_iv_sticker_left"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"/>
+
                 <com.dfa.vinatrip.widgets.RotateLoading
                     android:id="@+id/item_chat_rotate_loading_left"
                     android:layout_width="50dp"
@@ -118,6 +125,13 @@
             android:scaleType="centerCrop"
             android:visibility="gone"
             app:siShape="@drawable/item_chat_right"/>
+
+        <ImageView
+            android:id="@+id/item_chat_iv_sticker_right"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"/>
 
         <com.dfa.vinatrip.widgets.RotateLoading
             android:id="@+id/item_chat_rotate_loading_right"

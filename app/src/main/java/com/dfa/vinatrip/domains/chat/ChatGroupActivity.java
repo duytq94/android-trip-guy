@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -69,12 +70,13 @@ import io.socket.client.Socket;
 
 import static com.dfa.vinatrip.ApiUrls.SERVER_SOCKET_CHAT;
 import static com.dfa.vinatrip.models.TypeMessage.image;
+import static com.dfa.vinatrip.models.TypeMessage.sticker;
 import static com.dfa.vinatrip.models.TypeMessage.text;
 import static com.sangcomz.fishbun.define.Define.ALBUM_REQUEST_CODE;
 
 @EActivity(R.layout.activity_chat_group)
 public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPresenter>
-        implements ChatGroupView, AdapterChatListener {
+        implements ChatGroupView, AdapterChatListener, StickerAdapter.StickerListener {
 
     @Bean
     DataService dataService;
@@ -97,19 +99,24 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     protected LinearLayout llAddPhoto;
     @ViewById(R.id.activity_chat_group_lv_photo_selected)
     protected TwoWayView lvPhotoSelected;
+    @ViewById(R.id.activity_chat_group_rv_sticker)
+    protected RecyclerView rvSticker;
 
     private ArrayList<Uri> photoSelectedList;
     private QuickAdapter<Uri> photoSelectedAdapter;
     private ImageLoader imageLoader;
     private boolean isSendPhoto;
 
-    private ChatGroupAdapter adapter;
+    private ChatGroupAdapter chatGroupAdapter;
+    private StickerAdapter stickerAdapter;
     private List<BaseMessage> baseMessageList;
     private Socket socket;
     private Gson gson;
+    private List<Integer> listSticker;
 
     private Map<String, String> mapAvatar;
     private Map<String, String> mapNickname;
+    private Map<String, Integer> mapSticker;
 
     @App
     protected MainApplication application;
@@ -150,6 +157,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             setupAppBar();
             setupChatAdapter();
             setupPhotoAdapter();
+            setupStickerAdapter();
 
             presenter.getHistory(plan.getId(), 1, 10);
             presenter.getStatus(plan.getId());
@@ -158,7 +166,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 BaseMessage baseMessage = gson.fromJson(args[0].toString(), BaseMessage.class);
                 baseMessageList.add(baseMessage);
                 runOnUiThread(() -> {
-                    adapter.notifyDataSetChanged();
+                    chatGroupAdapter.notifyDataSetChanged();
                     rvList.scrollToPosition(baseMessageList.size() - 1);
                 });
             });
@@ -210,6 +218,40 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             mapAvatar.put(userFriendList.get(i).getEmail(), userFriendList.get(i).getAvatar());
             mapNickname.put(userFriendList.get(i).getEmail(), userFriendList.get(i).getNickname());
         }
+
+        mapSticker = new HashMap<>();
+        mapSticker.put("sticker1", R.drawable.sticker1);
+        mapSticker.put("sticker2", R.drawable.sticker2);
+        mapSticker.put("sticker3", R.drawable.sticker3);
+        mapSticker.put("sticker4", R.drawable.sticker4);
+        mapSticker.put("sticker5", R.drawable.sticker5);
+        mapSticker.put("sticker6", R.drawable.sticker6);
+        mapSticker.put("sticker7", R.drawable.sticker7);
+        mapSticker.put("sticker8", R.drawable.sticker8);
+        mapSticker.put("sticker9", R.drawable.sticker9);
+        mapSticker.put("sticker10", R.drawable.sticker10);
+        mapSticker.put("sticker11", R.drawable.sticker11);
+        mapSticker.put("sticker12", R.drawable.sticker12);
+        mapSticker.put("sticker13", R.drawable.sticker13);
+        mapSticker.put("sticker14", R.drawable.sticker14);
+        mapSticker.put("sticker15", R.drawable.sticker15);
+
+        listSticker = new ArrayList<>();
+        listSticker.add(R.drawable.sticker1);
+        listSticker.add(R.drawable.sticker2);
+        listSticker.add(R.drawable.sticker3);
+        listSticker.add(R.drawable.sticker4);
+        listSticker.add(R.drawable.sticker5);
+        listSticker.add(R.drawable.sticker6);
+        listSticker.add(R.drawable.sticker7);
+        listSticker.add(R.drawable.sticker8);
+        listSticker.add(R.drawable.sticker9);
+        listSticker.add(R.drawable.sticker10);
+        listSticker.add(R.drawable.sticker11);
+        listSticker.add(R.drawable.sticker12);
+        listSticker.add(R.drawable.sticker13);
+        listSticker.add(R.drawable.sticker14);
+        listSticker.add(R.drawable.sticker15);
     }
 
     public void setupAppBar() {
@@ -224,13 +266,14 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     }
 
     public void setupChatAdapter() {
-        adapter = new ChatGroupAdapter(dataService.getCurrentUser().getEmail(), baseMessageList, mapAvatar, mapNickname, this);
+        chatGroupAdapter = new ChatGroupAdapter(dataService.getCurrentUser().getEmail(), baseMessageList, mapAvatar,
+                mapNickname, mapSticker, this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
 
         rvList.setLayoutManager(layoutManager);
-        rvList.setAdapter(adapter);
+        rvList.setAdapter(chatGroupAdapter);
         rvList.setHasFixedSize(true);
 
         ToplessRecyclerViewScrollListener scrollListener = new ToplessRecyclerViewScrollListener(layoutManager) {
@@ -262,6 +305,15 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             }
         };
         lvPhotoSelected.setAdapter(photoSelectedAdapter);
+    }
+
+    public void setupStickerAdapter() {
+        stickerAdapter = new StickerAdapter(listSticker, this);
+
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2, LinearLayoutManager.HORIZONTAL, false);
+        rvSticker.setLayoutManager(layoutManager);
+        rvSticker.setAdapter(stickerAdapter);
+        rvSticker.setHasFixedSize(true);
     }
 
     @Click(R.id.activity_chat_group_ll_send)
@@ -327,7 +379,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 baseMessage = new BaseMessage(content, timestamp,
                         dataService.getCurrentUser().getEmail(), plan.getId(), text);
                 baseMessageList.add(baseMessage);
-                adapter.notifyDataSetChanged();
+                chatGroupAdapter.notifyDataSetChanged();
                 rvList.scrollToPosition(baseMessageList.size() - 1);
                 break;
 
@@ -337,7 +389,16 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 baseMessage = new BaseMessage(content, timestamp,
                         dataService.getCurrentUser().getEmail(), plan.getId(), image);
                 baseMessageList.add(baseMessage);
-                adapter.notifyDataSetChanged();
+                chatGroupAdapter.notifyDataSetChanged();
+                rvList.scrollToPosition(baseMessageList.size() - 1);
+                break;
+
+            case sticker:
+                socket.emit("send_message", content, timestamp, sticker);
+                baseMessage = new BaseMessage(content, timestamp,
+                        dataService.getCurrentUser().getEmail(), plan.getId(), sticker);
+                baseMessageList.add(baseMessage);
+                chatGroupAdapter.notifyDataSetChanged();
                 rvList.scrollToPosition(baseMessageList.size() - 1);
                 break;
 
@@ -374,6 +435,17 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
         }
     }
 
+    @Click(R.id.activity_chat_group_ll_add_sticker)
+    public void onLlAddStickerClick() {
+        if (rvSticker.getVisibility() == View.GONE) {
+            if (lvPhotoSelected.getVisibility() == View.VISIBLE) {
+                lvPhotoSelected.setVisibility(View.GONE);
+                photoSelectedList.clear();
+            }
+            rvSticker.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public void showLoading() {
         showHUD();
@@ -396,7 +468,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             this.baseMessageList.addAll(baseMessageList);
         } else {
             this.baseMessageList.addAll(0, baseMessageList);
-            adapter.notifyDataSetChanged();
+            chatGroupAdapter.notifyDataSetChanged();
             rvList.scrollToPosition(baseMessageList.size() - 1);
         }
     }
@@ -440,7 +512,8 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
 
     @Override
     public void onBackPressed() {
-        if (lvPhotoSelected.getVisibility() == View.VISIBLE) {
+        if (lvPhotoSelected.getVisibility() == View.VISIBLE || rvSticker.getVisibility() == View.VISIBLE) {
+            rvSticker.setVisibility(View.GONE);
             lvPhotoSelected.setVisibility(View.GONE);
             isSendPhoto = false;
             photoSelectedList.clear();
@@ -469,5 +542,10 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     @Override
     public void onPhotoClick(String url) {
         ShowFullPhotoActivity_.intent(this).url(url).start();
+    }
+
+    @Override
+    public void onStickerClick(String position) {
+        sendMessage(position, sticker);
     }
 }

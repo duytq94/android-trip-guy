@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.models.TypeMessage;
 import com.dfa.vinatrip.utils.AdapterChatListener;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.widgets.RotateLoading;
@@ -41,9 +40,10 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private AdapterChatListener adapterChatListener;
     private Map<String, String> mapAvatar;
     private Map<String, String> mapNickname;
+    private Map<String, Integer> mapSticker;
 
-    public ChatGroupAdapter(String currentUser, List<BaseMessage> baseMessageList,
-                            Map<String, String> mapAvatar, Map<String, String> mapNickname, Context context) {
+    public ChatGroupAdapter(String currentUser, List<BaseMessage> baseMessageList, Map<String, String> mapAvatar,
+                            Map<String, String> mapNickname, Map<String, Integer> mapSticker, Context context) {
         setHasStableIds(true);
         this.currentUser = currentUser;
         this.imageLoader = ImageLoader.getInstance();
@@ -68,6 +68,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.baseMessageList = baseMessageList;
         this.mapAvatar = mapAvatar;
         this.mapNickname = mapNickname;
+        this.mapSticker = mapSticker;
         this.adapterChatListener = (AdapterChatListener) context;
     }
 
@@ -89,45 +90,59 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             messageHolder.llGroupLeft.setVisibility(View.VISIBLE);
             messageHolder.flGroupRight.setVisibility(View.GONE);
 
-            if (baseMessage.getTypeMessage().equals(TypeMessage.text)) {
-                messageHolder.tvMsgLeft.setVisibility(View.VISIBLE);
-                messageHolder.psivPhotoLeft.setVisibility(View.GONE);
+            switch (baseMessage.getTypeMessage()) {
+                case text:
+                    messageHolder.tvMsgLeft.setVisibility(View.VISIBLE);
+                    messageHolder.psivPhotoLeft.setVisibility(View.GONE);
+                    messageHolder.ivStickerLeft.setVisibility(View.GONE);
 
-                messageHolder.tvMsgLeft.setText(baseMessage.getContent());
-            } else {
-                messageHolder.tvMsgLeft.setVisibility(View.GONE);
-                messageHolder.psivPhotoLeft.setVisibility(View.VISIBLE);
+                    messageHolder.tvMsgLeft.setText(baseMessage.getContent());
+                    break;
 
-                imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoLeft, imageOptions,
-                        new ImageLoadingListener() {
-                            @Override
-                            public void onLoadingStarted(String s, View view) {
-                                messageHolder.rotateLoadingLeft.setVisibility(View.VISIBLE);
-                                messageHolder.rotateLoadingLeft.start();
-                            }
+                case image:
+                    messageHolder.tvMsgLeft.setVisibility(View.GONE);
+                    messageHolder.psivPhotoLeft.setVisibility(View.VISIBLE);
+                    messageHolder.ivStickerLeft.setVisibility(View.GONE);
 
-                            @Override
-                            public void onLoadingFailed(String s, View view, FailReason failReason) {
-                                messageHolder.rotateLoadingLeft.setVisibility(View.GONE);
-                                messageHolder.rotateLoadingLeft.stop();
-                            }
+                    imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoLeft, imageOptions,
+                            new ImageLoadingListener() {
+                                @Override
+                                public void onLoadingStarted(String s, View view) {
+                                    messageHolder.rotateLoadingLeft.setVisibility(View.VISIBLE);
+                                    messageHolder.rotateLoadingLeft.start();
+                                }
 
-                            @Override
-                            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                                messageHolder.rotateLoadingLeft.setVisibility(View.GONE);
-                                messageHolder.rotateLoadingLeft.stop();
-                            }
+                                @Override
+                                public void onLoadingFailed(String s, View view, FailReason failReason) {
+                                    messageHolder.rotateLoadingLeft.setVisibility(View.GONE);
+                                    messageHolder.rotateLoadingLeft.stop();
+                                }
 
-                            @Override
-                            public void onLoadingCancelled(String s, View view) {
-                                messageHolder.rotateLoadingLeft.setVisibility(View.GONE);
-                                messageHolder.rotateLoadingLeft.stop();
-                            }
-                        });
+                                @Override
+                                public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                                    messageHolder.rotateLoadingLeft.setVisibility(View.GONE);
+                                    messageHolder.rotateLoadingLeft.stop();
+                                }
 
-                messageHolder.psivPhotoLeft.setOnClickListener(view -> {
-                    adapterChatListener.onPhotoClick(baseMessage.getContent());
-                });
+                                @Override
+                                public void onLoadingCancelled(String s, View view) {
+                                    messageHolder.rotateLoadingLeft.setVisibility(View.GONE);
+                                    messageHolder.rotateLoadingLeft.stop();
+                                }
+                            });
+
+                    messageHolder.psivPhotoLeft.setOnClickListener(view -> {
+                        adapterChatListener.onPhotoClick(baseMessage.getContent());
+                    });
+                    break;
+
+                case sticker:
+                    messageHolder.tvMsgLeft.setVisibility(View.GONE);
+                    messageHolder.psivPhotoLeft.setVisibility(View.GONE);
+                    messageHolder.ivStickerLeft.setVisibility(View.VISIBLE);
+
+                    messageHolder.ivStickerLeft.setImageResource(mapSticker.get(baseMessage.getContent()));
+                    break;
             }
 
             if (position + 1 < baseMessageList.size()) {
@@ -175,45 +190,59 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             messageHolder.llGroupLeft.setVisibility(View.GONE);
             messageHolder.flGroupRight.setVisibility(View.VISIBLE);
 
-            if (baseMessage.getTypeMessage().equals(TypeMessage.text)) {
-                messageHolder.tvMsgRight.setVisibility(View.VISIBLE);
-                messageHolder.psivPhotoRight.setVisibility(View.GONE);
+            switch (baseMessage.getTypeMessage()) {
+                case text:
+                    messageHolder.tvMsgRight.setVisibility(View.VISIBLE);
+                    messageHolder.psivPhotoRight.setVisibility(View.GONE);
+                    messageHolder.ivStickerRight.setVisibility(View.GONE);
 
-                messageHolder.tvMsgRight.setText(baseMessage.getContent());
-            } else {
-                messageHolder.tvMsgRight.setVisibility(View.GONE);
-                messageHolder.psivPhotoRight.setVisibility(View.VISIBLE);
+                    messageHolder.tvMsgRight.setText(baseMessage.getContent());
+                    break;
 
-                imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoRight, imageOptions,
-                        new ImageLoadingListener() {
-                            @Override
-                            public void onLoadingStarted(String s, View view) {
-                                messageHolder.rotateLoadingRight.setVisibility(View.VISIBLE);
-                                messageHolder.rotateLoadingRight.start();
-                            }
+                case image:
+                    messageHolder.tvMsgRight.setVisibility(View.GONE);
+                    messageHolder.psivPhotoRight.setVisibility(View.VISIBLE);
+                    messageHolder.ivStickerRight.setVisibility(View.GONE);
 
-                            @Override
-                            public void onLoadingFailed(String s, View view, FailReason failReason) {
-                                messageHolder.rotateLoadingRight.setVisibility(View.GONE);
-                                messageHolder.rotateLoadingRight.stop();
-                            }
+                    imageLoader.displayImage(baseMessage.getContent(), messageHolder.psivPhotoRight, imageOptions,
+                            new ImageLoadingListener() {
+                                @Override
+                                public void onLoadingStarted(String s, View view) {
+                                    messageHolder.rotateLoadingRight.setVisibility(View.VISIBLE);
+                                    messageHolder.rotateLoadingRight.start();
+                                }
 
-                            @Override
-                            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                                messageHolder.rotateLoadingRight.setVisibility(View.GONE);
-                                messageHolder.rotateLoadingRight.stop();
-                            }
+                                @Override
+                                public void onLoadingFailed(String s, View view, FailReason failReason) {
+                                    messageHolder.rotateLoadingRight.setVisibility(View.GONE);
+                                    messageHolder.rotateLoadingRight.stop();
+                                }
 
-                            @Override
-                            public void onLoadingCancelled(String s, View view) {
-                                messageHolder.rotateLoadingRight.setVisibility(View.GONE);
-                                messageHolder.rotateLoadingRight.stop();
-                            }
-                        });
+                                @Override
+                                public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                                    messageHolder.rotateLoadingRight.setVisibility(View.GONE);
+                                    messageHolder.rotateLoadingRight.stop();
+                                }
 
-                messageHolder.psivPhotoRight.setOnClickListener(view -> {
-                    adapterChatListener.onPhotoClick(baseMessage.getContent());
-                });
+                                @Override
+                                public void onLoadingCancelled(String s, View view) {
+                                    messageHolder.rotateLoadingRight.setVisibility(View.GONE);
+                                    messageHolder.rotateLoadingRight.stop();
+                                }
+                            });
+
+                    messageHolder.psivPhotoRight.setOnClickListener(view -> {
+                        adapterChatListener.onPhotoClick(baseMessage.getContent());
+                    });
+                    break;
+
+                case sticker:
+                    messageHolder.tvMsgRight.setVisibility(View.GONE);
+                    messageHolder.psivPhotoRight.setVisibility(View.GONE);
+                    messageHolder.ivStickerRight.setVisibility(View.VISIBLE);
+
+                    messageHolder.ivStickerRight.setImageResource(mapSticker.get(baseMessage.getContent()));
+                    break;
             }
         }
     }
@@ -247,7 +276,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public class MessageHolder extends RecyclerView.ViewHolder {
         private LinearLayout llGroupLeft;
         private FrameLayout flGroupRight;
-        private ImageView civLeft;
+        private ImageView civLeft, ivStickerLeft, ivStickerRight;
         private TextView tvMsgLeft, tvNicknameLeft, tvMsgRight;
         private PorterShapeImageView psivPhotoLeft, psivPhotoRight;
         private RotateLoading rotateLoadingRight, rotateLoadingLeft;
@@ -261,12 +290,14 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             tvNicknameLeft = (TextView) itemView.findViewById(R.id.item_chat_tv_nickname_left);
             psivPhotoLeft = (PorterShapeImageView) itemView.findViewById(R.id.item_chat_psiv_photo_left);
             rotateLoadingLeft = (RotateLoading) itemView.findViewById(R.id.item_chat_rotate_loading_left);
+            ivStickerLeft = (ImageView) itemView.findViewById(R.id.item_chat_iv_sticker_left);
 
             // Right content
             flGroupRight = (FrameLayout) itemView.findViewById(R.id.item_chat_ll_group_right);
             tvMsgRight = (TextView) itemView.findViewById(R.id.item_chat_tv_msg_right);
             psivPhotoRight = (PorterShapeImageView) itemView.findViewById(R.id.item_chat_psiv_photo_right);
             rotateLoadingRight = (RotateLoading) itemView.findViewById(R.id.item_chat_rotate_loading_right);
+            ivStickerRight = (ImageView) itemView.findViewById(R.id.item_chat_iv_sticker_right);
         }
     }
 

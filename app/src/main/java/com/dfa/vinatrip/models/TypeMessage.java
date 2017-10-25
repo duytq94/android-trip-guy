@@ -6,5 +6,6 @@ package com.dfa.vinatrip.models;
 
 public enum TypeMessage {
     text,
-    image
+    image,
+    sticker
 }
