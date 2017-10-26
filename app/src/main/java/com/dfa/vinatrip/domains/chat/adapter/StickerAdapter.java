@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.chat;
+package com.dfa.vinatrip.domains.chat.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +21,7 @@ public class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private StickerListener stickerListener;
     private List<Integer> listSticker;
     private Context context;
+    private String typeSticker;
 
     public StickerAdapter(Context context) {
         this.stickerListener = (StickerListener) context;
@@ -38,7 +39,7 @@ public class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         StickerHolder stickerHolder = (StickerHolder) holder;
         Glide.with(context).load(listSticker.get(position)).into(stickerHolder.ivSticker);
         stickerHolder.ivSticker.setOnClickListener(v -> {
-            stickerListener.onStickerClick(String.format("sticker%s", position + 1));
+            stickerListener.onStickerClick(String.format("%s%s", typeSticker, position + 1));
         });
     }
 
@@ -56,8 +57,9 @@ public class StickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return position;
     }
 
-    public void setList(List<Integer> listSticker) {
+    public void setList(List<Integer> listSticker, String typeSticker) {
         this.listSticker = listSticker;
+        this.typeSticker = typeSticker;
     }
 
     public class StickerHolder extends RecyclerView.ViewHolder {

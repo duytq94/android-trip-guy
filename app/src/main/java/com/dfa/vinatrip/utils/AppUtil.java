@@ -14,13 +14,12 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
-import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -66,12 +65,6 @@ public class AppUtil {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return connectivityManager.getActiveNetworkInfo() != null;
-    }
-
-    public static void changeColorStatusBar(Activity activity) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.colorStatusBar));
-        }
     }
 
     public static int exifToDegrees(int exifOrientation) {
@@ -309,5 +302,15 @@ public class AppUtil {
         decimalFormat = (DecimalFormat) NumberFormat.getCurrencyInstance();
         decimalFormat.applyPattern("#,###,##0");
         return decimalFormat.format(price);
+    }
+
+    public static void hideKeyBoard(Activity ctx) {
+        if (context == null)
+            throw new RuntimeException("Context is null, init(Context)");
+        View viewFocus = ctx.getCurrentFocus();
+        if (viewFocus != null) {
+            InputMethodManager mgr = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            mgr.hideSoftInputFromWindow(viewFocus.getWindowToken(), 0);
+        }
     }
 }

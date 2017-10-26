@@ -23,13 +23,17 @@ import android.widget.Toast;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
+import com.dfa.vinatrip.domains.chat.adapter.ChatGroupAdapter;
+import com.dfa.vinatrip.domains.chat.adapter.StickerAdapter;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.TypeMessage;
+import com.dfa.vinatrip.models.TypeSticker;
 import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.AdapterChatListener;
 import com.dfa.vinatrip.utils.AppUtil;
+import com.dfa.vinatrip.utils.KeyboardListener;
 import com.dfa.vinatrip.widgets.RotateLoading;
 import com.dfa.vinatrip.widgets.ToplessRecyclerViewScrollListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -72,11 +76,19 @@ import static com.dfa.vinatrip.ApiUrls.SERVER_SOCKET_CHAT;
 import static com.dfa.vinatrip.models.TypeMessage.image;
 import static com.dfa.vinatrip.models.TypeMessage.sticker;
 import static com.dfa.vinatrip.models.TypeMessage.text;
+import static com.dfa.vinatrip.utils.Constants.A_USER_JOIN_ROOM;
+import static com.dfa.vinatrip.utils.Constants.A_USER_LEAVE_ROOM;
+import static com.dfa.vinatrip.utils.Constants.FOLDER_STORAGE_CHAT;
+import static com.dfa.vinatrip.utils.Constants.JOIN_ROOM;
+import static com.dfa.vinatrip.utils.Constants.RECEIVE_MESSAGE;
+import static com.dfa.vinatrip.utils.Constants.SEND_MESSAGE;
+import static com.dfa.vinatrip.utils.Constants.URL_STORAGE;
+import static com.dfa.vinatrip.utils.Constants.USERNAME;
 import static com.sangcomz.fishbun.define.Define.ALBUM_REQUEST_CODE;
 
 @EActivity(R.layout.activity_chat_group)
 public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPresenter>
-        implements ChatGroupView, AdapterChatListener, StickerAdapter.StickerListener {
+        implements ChatGroupView, AdapterChatListener, StickerAdapter.StickerListener, KeyboardListener.KeyboardVisibilityListener {
 
     @Bean
     DataService dataService;
@@ -147,10 +159,11 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             socket = IO.socket(SERVER_SOCKET_CHAT);
             socket.connect();
 
-            socket.emit("join_room", dataService.getCurrentUser().getEmail(), plan.getId());
+            socket.emit(JOIN_ROOM, dataService.getCurrentUser().getEmail(), plan.getId());
 
             imageLoader = ImageLoader.getInstance();
             gson = new Gson();
+            KeyboardListener.setEventListener(this, this);
 
             baseMessageList = new ArrayList<>();
             photoSelectedList = new ArrayList<>();
@@ -165,7 +178,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             presenter.getHistory(plan.getId(), 1, 10);
             presenter.getStatus(plan.getId());
 
-            socket.on("receive_message", args -> {
+            socket.on(RECEIVE_MESSAGE, args -> {
                 BaseMessage baseMessage = gson.fromJson(args[0].toString(), BaseMessage.class);
                 baseMessageList.add(baseMessage);
                 runOnUiThread(() -> {
@@ -174,13 +187,13 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 });
             });
 
-            socket.on("a_user_join_room", args -> {
+            socket.on(A_USER_JOIN_ROOM, args -> {
                 for (int i = 0; i < userFriendList.size(); i++) {
                     UserFriend userFriend = userFriendList.get(i);
                     JSONObject jsonObject = (JSONObject) args[0];
                     String username = "";
                     try {
-                        username = jsonObject.getString("username");
+                        username = jsonObject.getString(USERNAME);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -191,13 +204,13 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 }
             });
 
-            socket.on("a_user_leave_room", args -> {
+            socket.on(A_USER_LEAVE_ROOM, args -> {
                 for (int i = 0; i < userFriendList.size(); i++) {
                     UserFriend userFriend = userFriendList.get(i);
                     JSONObject jsonObject = (JSONObject) args[0];
                     String username = "";
                     try {
-                        username = jsonObject.getString("username");
+                        username = jsonObject.getString(USERNAME);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -223,44 +236,54 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
         }
 
         mapSticker = new HashMap<>();
-        mapSticker.put("sticker1", R.drawable.sticker1);
-        mapSticker.put("sticker2", R.drawable.sticker2);
-        mapSticker.put("sticker3", R.drawable.sticker3);
-        mapSticker.put("sticker4", R.drawable.sticker4);
-        mapSticker.put("sticker5", R.drawable.sticker5);
-        mapSticker.put("sticker6", R.drawable.sticker6);
-        mapSticker.put("sticker7", R.drawable.sticker7);
-        mapSticker.put("sticker8", R.drawable.sticker8);
-        mapSticker.put("sticker9", R.drawable.sticker9);
-        mapSticker.put("sticker10", R.drawable.sticker10);
-        mapSticker.put("sticker11", R.drawable.sticker11);
-        mapSticker.put("sticker12", R.drawable.sticker12);
-        mapSticker.put("sticker13", R.drawable.sticker13);
-        mapSticker.put("sticker14", R.drawable.sticker14);
-        mapSticker.put("sticker15", R.drawable.sticker15);
-        mapSticker.put("sticker16", R.drawable.sticker16);
-        mapSticker.put("sticker17", R.drawable.sticker17);
+        mapSticker.put("emotion1", R.drawable.emotion1);
+        mapSticker.put("emotion2", R.drawable.emotion2);
+        mapSticker.put("emotion3", R.drawable.emotion3);
+        mapSticker.put("emotion4", R.drawable.emotion4);
+        mapSticker.put("emotion5", R.drawable.emotion5);
+        mapSticker.put("emotion6", R.drawable.emotion6);
+        mapSticker.put("emotion7", R.drawable.emotion7);
+        mapSticker.put("emotion8", R.drawable.emotion8);
+        mapSticker.put("emotion9", R.drawable.emotion9);
+        mapSticker.put("emotion10", R.drawable.emotion10);
+        mapSticker.put("emotion11", R.drawable.emotion11);
+        mapSticker.put("emotion12", R.drawable.emotion12);
+        mapSticker.put("emotion13", R.drawable.emotion13);
+        mapSticker.put("mimi1", R.drawable.mimi1);
+        mapSticker.put("mimi2", R.drawable.mimi2);
+        mapSticker.put("mimi3", R.drawable.mimi3);
+        mapSticker.put("mimi4", R.drawable.mimi4);
+        mapSticker.put("mimi5", R.drawable.mimi5);
+        mapSticker.put("mimi6", R.drawable.mimi6);
+        mapSticker.put("mimi7", R.drawable.mimi7);
+        mapSticker.put("mimi8", R.drawable.mimi8);
+        mapSticker.put("mimi9", R.drawable.mimi9);
 
         listStickerEmotion = new ArrayList<>();
-        listStickerEmotion.add(R.drawable.sticker1);
-        listStickerEmotion.add(R.drawable.sticker2);
-        listStickerEmotion.add(R.drawable.sticker3);
-        listStickerEmotion.add(R.drawable.sticker4);
-        listStickerEmotion.add(R.drawable.sticker5);
-        listStickerEmotion.add(R.drawable.sticker6);
-        listStickerEmotion.add(R.drawable.sticker7);
-        listStickerEmotion.add(R.drawable.sticker8);
+        listStickerEmotion.add(R.drawable.emotion1);
+        listStickerEmotion.add(R.drawable.emotion2);
+        listStickerEmotion.add(R.drawable.emotion3);
+        listStickerEmotion.add(R.drawable.emotion4);
+        listStickerEmotion.add(R.drawable.emotion5);
+        listStickerEmotion.add(R.drawable.emotion6);
+        listStickerEmotion.add(R.drawable.emotion7);
+        listStickerEmotion.add(R.drawable.emotion8);
+        listStickerEmotion.add(R.drawable.emotion9);
+        listStickerEmotion.add(R.drawable.emotion10);
+        listStickerEmotion.add(R.drawable.emotion11);
+        listStickerEmotion.add(R.drawable.emotion12);
+        listStickerEmotion.add(R.drawable.emotion13);
 
         listStickerMimi = new ArrayList<>();
-        listStickerMimi.add(R.drawable.sticker9);
-        listStickerMimi.add(R.drawable.sticker10);
-        listStickerMimi.add(R.drawable.sticker11);
-        listStickerMimi.add(R.drawable.sticker12);
-        listStickerMimi.add(R.drawable.sticker13);
-        listStickerMimi.add(R.drawable.sticker14);
-        listStickerMimi.add(R.drawable.sticker15);
-        listStickerMimi.add(R.drawable.sticker16);
-        listStickerMimi.add(R.drawable.sticker17);
+        listStickerMimi.add(R.drawable.mimi1);
+        listStickerMimi.add(R.drawable.mimi2);
+        listStickerMimi.add(R.drawable.mimi3);
+        listStickerMimi.add(R.drawable.mimi4);
+        listStickerMimi.add(R.drawable.mimi5);
+        listStickerMimi.add(R.drawable.mimi6);
+        listStickerMimi.add(R.drawable.mimi7);
+        listStickerMimi.add(R.drawable.mimi8);
+        listStickerMimi.add(R.drawable.mimi9);
     }
 
     public void setupAppBar() {
@@ -318,24 +341,12 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
 
     public void setupStickerAdapter() {
         stickerAdapter = new StickerAdapter(this);
-        stickerAdapter.setList(listStickerEmotion);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2, LinearLayoutManager.HORIZONTAL, false);
+        stickerAdapter.setList(listStickerEmotion, TypeSticker.emotion.name());
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 4, LinearLayoutManager.VERTICAL, false);
         rvSticker.setLayoutManager(layoutManager);
         rvSticker.setAdapter(stickerAdapter);
         rvSticker.setHasFixedSize(true);
         stickerAdapter.notifyDataSetChanged();
-    }
-
-    @Click(R.id.activity_chat_group_ll_send)
-    public void onLlSendClick() {
-        if (!etInput.getText().toString().trim().isEmpty()) {
-            sendMessage(etInput.getText().toString(), text);
-        }
-        if (lvPhotoSelected.getVisibility() == View.VISIBLE && !isSendPhoto) {
-            isSendPhoto = true;
-            prepareUpload(photoSelectedList.get(0));
-            photoSelectedAdapter.notifyDataSetChanged();
-        }
     }
 
     public void prepareUpload(Uri uriPhoto) {
@@ -349,8 +360,8 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
 
             // Get the path and name photo be upload
             StorageReference storageReference = FirebaseStorage.getInstance()
-                    .getReferenceFromUrl("gs://tripguy-10864.appspot.com")
-                    .child("Chat")
+                    .getReferenceFromUrl(URL_STORAGE)
+                    .child(FOLDER_STORAGE_CHAT)
                     .child(System.currentTimeMillis() + ".jpg");
 
             UploadTask uploadTask = storageReference.putBytes(byteArrayPhoto);
@@ -384,7 +395,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
 
         switch (typeMessage) {
             case text:
-                socket.emit("send_message", content, timestamp, text);
+                socket.emit(SEND_MESSAGE, content, timestamp, text);
                 etInput.setText("");
                 baseMessage = new BaseMessage(content, timestamp,
                         dataService.getCurrentUser().getEmail(), plan.getId(), text);
@@ -394,7 +405,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 break;
 
             case image:
-                socket.emit("send_message", content, timestamp, image);
+                socket.emit(SEND_MESSAGE, content, timestamp, image);
                 etInput.setText("");
                 baseMessage = new BaseMessage(content, timestamp,
                         dataService.getCurrentUser().getEmail(), plan.getId(), image);
@@ -404,7 +415,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 break;
 
             case sticker:
-                socket.emit("send_message", content, timestamp, sticker);
+                socket.emit(SEND_MESSAGE, content, timestamp, sticker);
                 baseMessage = new BaseMessage(content, timestamp,
                         dataService.getCurrentUser().getEmail(), plan.getId(), sticker);
                 baseMessageList.add(baseMessage);
@@ -415,46 +426,6 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             default:
                 Toast.makeText(this, "Can not send message", Toast.LENGTH_SHORT).show();
                 break;
-        }
-    }
-
-    @Click(R.id.activity_chat_group_ll_add_photo)
-    public void onLlAddPhotoClick() {
-        if (lvPhotoSelected.getVisibility() == View.GONE) {
-            photoSelectedList.clear();
-            etInput.setText("");
-            FishBun.with(this)
-                    .MultiPageMode()
-                    .setMaxCount(4)
-                    .setMinCount(1)
-                    .setPickerSpanCount(4)
-                    .setActionBarColor(Color.parseColor("#228B22"), Color.parseColor("#156915"), false)
-                    .setActionBarTitleColor(Color.parseColor("#ffffff"))
-                    .setArrayPaths(photoSelectedList)
-                    .setAlbumSpanCount(1, 2)
-                    .setButtonInAlbumActivity(true)
-                    .setCamera(true)
-                    .exceptGif(true)
-                    .setReachLimitAutomaticClose(true)
-                    .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_white_24dp))
-                    .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_white_48dp))
-                    .setAllViewTitle("All")
-                    .setActionBarTitle("Chọn ảnh")
-                    .textOnNothingSelected("Hãy chọn ít nhất 1 ảnh")
-                    .startAlbum();
-        }
-    }
-
-    @Click(R.id.activity_chat_group_ll_add_sticker)
-    public void onLlAddStickerClick() {
-        if (llSticker.getVisibility() == View.GONE) {
-            if (lvPhotoSelected.getVisibility() == View.VISIBLE) {
-                lvPhotoSelected.setVisibility(View.GONE);
-                photoSelectedList.clear();
-            }
-            llSticker.setVisibility(View.VISIBLE);
-        } else {
-            llSticker.setVisibility(View.GONE);
         }
     }
 
@@ -561,16 +532,81 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
         sendMessage(position, sticker);
     }
 
-    @Click(R.id.activity_chat_group_iv_emotion)
+    @Click(R.id.activity_chat_group_tv_emotion)
     public void onIvEmotionClick() {
-        stickerAdapter.setList(listStickerEmotion);
+        stickerAdapter.setList(listStickerEmotion, TypeSticker.emotion.name());
         stickerAdapter.notifyDataSetChanged();
     }
 
-    @Click(R.id.activity_chat_group_iv_mimi)
+    @Click(R.id.activity_chat_group_tv_mimi)
     public void onIvMimiClick() {
-        stickerAdapter.setList(listStickerMimi);
+        stickerAdapter.setList(listStickerMimi, TypeSticker.mimi.name());
         stickerAdapter.notifyDataSetChanged();
     }
 
+    @Click(R.id.activity_chat_group_ll_add_photo)
+    public void onLlAddPhotoClick() {
+        if (lvPhotoSelected.getVisibility() == View.GONE) {
+            if (llSticker.getVisibility() == View.VISIBLE) {
+                llSticker.setVisibility(View.GONE);
+            }
+            photoSelectedList.clear();
+            etInput.setText("");
+            FishBun.with(this)
+                    .MultiPageMode()
+                    .setMaxCount(4)
+                    .setMinCount(1)
+                    .setPickerSpanCount(4)
+                    .setActionBarColor(Color.parseColor("#228B22"), Color.parseColor("#156915"), false)
+                    .setActionBarTitleColor(Color.parseColor("#ffffff"))
+                    .setArrayPaths(photoSelectedList)
+                    .setAlbumSpanCount(1, 2)
+                    .setButtonInAlbumActivity(true)
+                    .setCamera(true)
+                    .exceptGif(true)
+                    .setReachLimitAutomaticClose(true)
+                    .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_white_24dp))
+                    .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_white_48dp))
+                    .setAllViewTitle("Tất cả ảnh")
+                    .setActionBarTitle("Chọn ảnh")
+                    .textOnNothingSelected("Hãy chọn ít nhất 1 ảnh")
+                    .startAlbum();
+        }
+    }
+
+    @Click(R.id.activity_chat_group_ll_add_sticker)
+    public void onLlAddStickerClick() {
+        if (llSticker.getVisibility() == View.GONE) {
+            if (lvPhotoSelected.getVisibility() == View.VISIBLE) {
+                lvPhotoSelected.setVisibility(View.GONE);
+                photoSelectedList.clear();
+            }
+            etInput.clearFocus();
+            AppUtil.hideKeyBoard(this);
+            llSticker.setVisibility(View.VISIBLE);
+        } else {
+            llSticker.setVisibility(View.GONE);
+        }
+    }
+
+    @Click(R.id.activity_chat_group_ll_send)
+    public void onLlSendClick() {
+        if (!etInput.getText().toString().trim().isEmpty()) {
+            sendMessage(etInput.getText().toString(), text);
+        }
+        if (lvPhotoSelected.getVisibility() == View.VISIBLE && !isSendPhoto) {
+            isSendPhoto = true;
+            prepareUpload(photoSelectedList.get(0));
+            photoSelectedAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onKeyboardVisibilityChanged(boolean isOpen) {
+        if (isOpen) {
+            if (llSticker.getVisibility() == View.VISIBLE) {
+                llSticker.setVisibility(View.GONE);
+            }
+        }
+    }
 }

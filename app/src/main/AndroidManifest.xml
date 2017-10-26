@@ -83,7 +83,7 @@
             android:windowSoftInputMode="adjustNothing"/>
         <activity
             android:name=".domains.chat.ChatGroupActivity_"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".domains.chat.ShowUserOnlineActivity_"
             android:windowSoftInputMode="adjustNothing"/>

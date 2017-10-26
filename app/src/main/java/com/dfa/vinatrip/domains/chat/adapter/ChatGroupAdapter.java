@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.chat;
+package com.dfa.vinatrip.domains.chat.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.chat.BaseMessage;
 import com.dfa.vinatrip.utils.AdapterChatListener;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.widgets.RotateLoading;

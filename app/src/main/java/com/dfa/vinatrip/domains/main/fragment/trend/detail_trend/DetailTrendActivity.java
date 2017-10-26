@@ -39,6 +39,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.dfa.vinatrip.utils.Constants.MY_TOUR;
+
 @EActivity(R.layout.activity_detail_trend)
 public class DetailTrendActivity extends BaseActivity<DetailTrendView, DetailTrendPresenter>
         implements DetailTrendView {
@@ -91,7 +93,7 @@ public class DetailTrendActivity extends BaseActivity<DetailTrendView, DetailTre
                 .build();
         urlList = new ArrayList<>(Arrays.asList(trend.getUrl().split(" ")));
         setupAdapter();
-        if (trend.getFromWebsite().equals("mytour")) {
+        if (trend.getFromWebsite().equals(MY_TOUR)) {
             tvTitle.setVisibility(View.VISIBLE);
             tvIntro.setVisibility(View.VISIBLE);
 
