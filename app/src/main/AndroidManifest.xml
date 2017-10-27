@@ -71,7 +71,7 @@
             android:windowSoftInputMode="adjustNothing"/>
         <activity
             android:name=".domains.main.fragment.plan.make_plan.MakePlanActivity_"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".domains.main.fragment.plan.detail_plan.DetailPlanActivity_"
             android:windowSoftInputMode="adjustNothing"/>

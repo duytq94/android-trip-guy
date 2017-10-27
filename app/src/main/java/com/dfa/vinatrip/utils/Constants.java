@@ -10,6 +10,7 @@ public class Constants {
     public static final String LOGENTRIES_APP_KEY = "5c68f295-8f87-4444-9e64-e72483c8f7f7";
 
     public static final int REQUEST_PERMISSION_LOCATION = 2;
+    public static final int REQUEST_BACKGROUND = 1;
 
     // Chat
     public static final String JOIN_ROOM = "join_room";
@@ -25,4 +26,7 @@ public class Constants {
 
     // Trend
     public static final String MY_TOUR = "mytour";
+
+    // Second in one day
+    public static final int SECOND_IN_DAY = 86400;
 }

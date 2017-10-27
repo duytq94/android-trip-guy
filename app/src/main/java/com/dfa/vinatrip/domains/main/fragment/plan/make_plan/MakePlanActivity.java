@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -23,6 +22,7 @@ import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFrien
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.domains.main.plan.make_plan.ChooseBackgroundPlanActivity_;
 import com.dfa.vinatrip.services.DataService;
+import com.dfa.vinatrip.utils.AppUtil;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.AutocompleteFilter;
@@ -53,54 +53,43 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
 import static com.dfa.vinatrip.utils.AppUtil.REQUEST_PLACE_AUTO_COMPLETE;
+import static com.dfa.vinatrip.utils.Constants.REQUEST_BACKGROUND;
+import static com.dfa.vinatrip.utils.Constants.SECOND_IN_DAY;
 
 @EActivity(R.layout.activity_make_plan)
 public class MakePlanActivity extends AppCompatActivity implements Validator.ValidationListener {
-
-    public static final int REQUEST_BACKGROUND = 1;
 
     @Bean
     DataService dataService;
 
     @ViewById(R.id.activity_make_plan_rv_list_friend)
-    RecyclerView rvListFriend;
-
+    protected RecyclerView rvListFriend;
     @ViewById(R.id.activity_make_plan_nsv_root)
-    NestedScrollView nsvRoot;
-
+    protected NestedScrollView nsvRoot;
     @Length(max = 40)
     @NotEmpty
     @ViewById(R.id.activity_make_plan_et_trip_name)
-    EditText etTripName;
-
+    protected EditText etTripName;
     @NotEmpty
     @ViewById(R.id.activity_make_plan_tv_destination)
-    TextView tvDestination;
-
+    protected TextView tvDestination;
     @NotEmpty
     @ViewById(R.id.item_day_schedule_tiet)
-    TextInputEditText tietSchedule;
-
+    protected TextInputEditText tietSchedule;
     @ViewById(R.id.activity_make_plan_tv_date_go)
-    TextView tvDateGo;
-
+    protected TextView tvDateGo;
     @ViewById(R.id.activity_make_plan_tv_date_back)
-    TextView tvDateBack;
-
+    protected TextView tvDateBack;
     @ViewById(R.id.activity_make_plan_tv_friend_not_available)
-    TextView tvFriendNotAvailable;
-
+    protected TextView tvFriendNotAvailable;
     @ViewById(R.id.activity_make_plan_progressBar)
-    ProgressBar progressBar;
-
+    protected ProgressBar progressBar;
     @ViewById(R.id.activity_make_plan_ll_schedule)
-    LinearLayout llSchedule;
-
+    protected LinearLayout llSchedule;
     @ViewById(R.id.activity_make_plan_ll_background)
-    LinearLayout llBackground;
-
+    protected LinearLayout llBackground;
     @ViewById(R.id.activity_make_plan_civ_background)
-    CircleImageView civBackground;
+    protected CircleImageView civBackground;
 
     private List<UserFriend> userFriendList;
     private InviteFriendAdapter inviteFriendAdapter;
@@ -118,11 +107,14 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     private Plan currentPlan;
     private int idBackground;
 
+    private String dateGo = "";
+    private String dateBack = "";
+
     @AfterViews
     void init() {
         // Get the current plan when user click to update plan on item recycler
-        if (getIntent().getParcelableExtra("Plan") != null) {
-            currentPlan = getIntent().getParcelableExtra("Plan");
+        if (getIntent().getSerializableExtra("Plan") != null) {
+            currentPlan = (Plan) getIntent().getSerializableExtra("Plan");
             etTripName.setText(currentPlan.getName());
             tvDestination.setText(currentPlan.getDestination());
             tvDateGo.setText(currentPlan.getDateGo());
@@ -135,7 +127,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
                     tietSchedule.setText(currentPlan.getPlanScheduleList().get(i).getContent());
                 } else {
                     TextInputLayout textInputLayout = (TextInputLayout) getLayoutInflater()
-                            .inflate(R.layout.item_day_schedule, null);
+                            .inflate(R.layout.item_add_schedule, null);
                     textInputLayout.setHint("Ngày " + ++countDaySchedule);
                     textInputLayout.getEditText().setText(currentPlan.getPlanScheduleList().get(i).getContent());
                     llSchedule.addView(textInputLayout);
@@ -212,6 +204,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String strDate = simpleDateFormat.format(calendar.getTime());
         tvDateGo.setText(strDate);
+        dateGo = strDate;
         tvDateBack.setText(strDate);
     }
 
@@ -247,27 +240,42 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         // Add value to new friend be invited
         for (String friendId : invitedFriendIdList) {
             databaseReference.child("Plan").child(friendId).child(planId)
-                    .setValue(plan, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(DatabaseError databaseError,
-                                               DatabaseReference databaseReference) {
-                            if (databaseError != null) {
-                                Toasty.error(MakePlanActivity.this, "Lỗi đường truyền, bạn hãy gửi lại!",
-                                        Toast.LENGTH_SHORT).show();
-                                progressBar.setVisibility(View.GONE);
+                    .setValue(plan, (databaseError, databaseReference1) -> {
+                        if (databaseError != null) {
+                            Toasty.error(MakePlanActivity.this, "Lỗi đường truyền, bạn hãy gửi lại!",
+                                    Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                        } else {
+                            progressBar.setVisibility(View.GONE);
+                            String message;
+                            if (currentPlan != null) {
+                                message = "Kế hoạch của bạn đã được cập nhật";
                             } else {
-                                progressBar.setVisibility(View.GONE);
-                                String message;
-                                if (currentPlan != null) {
-                                    message = "Kế hoạch của bạn đã được cập nhật";
-                                } else {
-                                    message = "Kế hoạch của bạn đã được tạo";
-                                }
-                                Toasty.success(MakePlanActivity.this, message, Toast.LENGTH_SHORT).show();
-                                finish();
+                                message = "Kế hoạch của bạn đã được tạo";
                             }
+                            Toasty.success(MakePlanActivity.this, message, Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                     });
+        }
+    }
+
+    public void initViewListSchedule() {
+        long timestampGo = AppUtil.stringDateToTimestamp(dateGo);
+        long duringDay = AppUtil.stringDateToTimestamp(dateBack) - AppUtil.stringDateToTimestamp(dateGo);
+        duringDay = duringDay / SECOND_IN_DAY;
+
+        for (int i = 0; i < duringDay; i++) {
+            LinearLayout llRoot = (LinearLayout) getLayoutInflater().inflate(R.layout.item_add_schedule, null);
+            LinearLayout llMain = (LinearLayout) llRoot.getChildAt(1);
+            EditText etTitle = (EditText) llMain.findViewById(R.id.item_add_schedule_et_title);
+            EditText etContent = (EditText) llMain.findViewById(R.id.item_add_schedule_et_content);
+            TextView tvTitle = (TextView) llMain.findViewById(R.id.item_add_schedule_tv_date);
+
+            etTitle.setHint(String.format("Ngày %s", i + 1));
+            etContent.setHint(String.format("Lịch trình ngày %s", i + 1));
+            tvTitle.setText(AppUtil.formatTime("dd/MM/yyyy", (timestampGo + SECOND_IN_DAY * i) * 1000));
+            llSchedule.addView(llRoot);
         }
     }
 
@@ -281,34 +289,14 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         validator.validate();
     }
 
-    @Click(R.id.activity_make_plan_btn_add_schedule)
-    void onBtnAddScheduleClick() {
-        TextInputLayout textInputLayout = (TextInputLayout) getLayoutInflater()
-                .inflate(R.layout.item_day_schedule, null);
-        textInputLayout.setHint("Ngày " + ++countDaySchedule);
-        llSchedule.addView(textInputLayout);
-    }
-
-    @Click(R.id.activity_make_plan_btn_remove_schedule)
-    void onBtnRemoveScheduleClick() {
-        countDaySchedule = llSchedule.getChildCount();
-        for (int i = countDaySchedule; i > 1; i--) {
-            llSchedule.removeView(llSchedule.getChildAt(i - 1));
-            --countDaySchedule;
-            break;
-        }
-    }
-
     @Click(R.id.activity_make_plan_ll_date_go)
     void onLlDateGoClick() {
         // When date be set
-        DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                tvDateGo.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-                tvDateBack.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-                calendar.set(year, month, dayOfMonth);
-            }
+        DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+            dateGo = dayOfMonth + "/" + (month + 1) + "/" + year;
+            tvDateGo.setText(dateGo);
+            tvDateBack.setText(dateGo);
+            calendar.set(year, month, dayOfMonth);
         };
 
         // Set current position time when start dialog
@@ -325,12 +313,12 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     @Click(R.id.activity_make_plan_ll_date_back)
     void onLlDateBackClick() {
         // When date be set
-        DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                tvDateBack.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-                calendar.set(year, month, dayOfMonth);
-            }
+        DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+            dateBack = dayOfMonth + "/" + (month + 1) + "/" + year;
+            tvDateBack.setText(dateBack);
+            calendar.set(year, month, dayOfMonth);
+
+            initViewListSchedule();
         };
 
         // Set current position time when start dialog

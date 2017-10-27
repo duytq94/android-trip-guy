@@ -39,6 +39,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.dfa.vinatrip.utils.Constants.SECOND_IN_DAY;
+
 /**
  * Created by duonghd on 9/27/2017.
  */
@@ -280,7 +282,7 @@ public class AppUtil {
         if (DateUtils.isToday(timeStamp)) {
             return 0;
         }
-        if (DateUtils.isToday(timeStamp + 86400000)) {
+        if (DateUtils.isToday(timeStamp + SECOND_IN_DAY * 1000)) {
             return 1;
         }
         return 2;
@@ -290,6 +292,17 @@ public class AppUtil {
         DateFormat dateFormat = new SimpleDateFormat(pattern, Locale.US);
         Date date = new Date(timeStamp);
         return dateFormat.format(date);
+    }
+
+    // Convert string date, 20/11/2011 - > 1232112334
+    public static long stringDateToTimestamp(String date) {
+        Date localTime;
+        try {
+            localTime = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(date);
+            return localTime.getTime() / 1000;
+        } catch (java.text.ParseException e) {
+            return 0;
+        }
     }
 
     public static int dpToPx(Context context, float dp) {
