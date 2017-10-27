@@ -1,14 +1,12 @@
 package com.dfa.vinatrip.domains.main.fragment.plan;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.dfa.vinatrip.domains.main.fragment.me.UserProfile;
-import com.dfa.vinatrip.domains.main.plan.make_plan.PlanSchedule;
+import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.PlanSchedule;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Plan implements Parcelable {
+public class Plan implements Serializable {
     private String id, name, destination, dateGo, dateBack;
     private int idBackground;
     private List<String> friendInvitedList;
@@ -28,48 +26,6 @@ public class Plan implements Parcelable {
         this.planScheduleList = planScheduleList;
         this.userMakePlan = userMakePlan;
     }
-
-    protected Plan(Parcel in) {
-        id = in.readString();
-        name = in.readString();
-        destination = in.readString();
-        dateGo = in.readString();
-        dateBack = in.readString();
-        idBackground = in.readInt();
-        friendInvitedList = in.createStringArrayList();
-        planScheduleList = in.createTypedArrayList(PlanSchedule.CREATOR);
-        userMakePlan = in.readParcelable(UserProfile.class.getClassLoader());
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(name);
-        dest.writeString(destination);
-        dest.writeString(dateGo);
-        dest.writeString(dateBack);
-        dest.writeInt(idBackground);
-        dest.writeStringList(friendInvitedList);
-        dest.writeTypedList(planScheduleList);
-        dest.writeParcelable(userMakePlan, flags);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Plan> CREATOR = new Creator<Plan>() {
-        @Override
-        public Plan createFromParcel(Parcel in) {
-            return new Plan(in);
-        }
-
-        @Override
-        public Plan[] newArray(int size) {
-            return new Plan[size];
-        }
-    };
 
     public String getId() {
         return id;

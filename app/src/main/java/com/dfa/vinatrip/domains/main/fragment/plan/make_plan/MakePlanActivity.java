@@ -22,7 +22,6 @@ import com.dfa.vinatrip.domains.main.fragment.me.UserProfile;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.domains.main.plan.make_plan.ChooseBackgroundPlanActivity_;
-import com.dfa.vinatrip.domains.main.plan.make_plan.PlanSchedule;
 import com.dfa.vinatrip.services.DataService;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -57,52 +56,52 @@ import static com.dfa.vinatrip.utils.AppUtil.REQUEST_PLACE_AUTO_COMPLETE;
 
 @EActivity(R.layout.activity_make_plan)
 public class MakePlanActivity extends AppCompatActivity implements Validator.ValidationListener {
-    
+
     public static final int REQUEST_BACKGROUND = 1;
-    
+
     @Bean
     DataService dataService;
-    
+
     @ViewById(R.id.activity_make_plan_rv_list_friend)
     RecyclerView rvListFriend;
-    
+
     @ViewById(R.id.activity_make_plan_nsv_root)
     NestedScrollView nsvRoot;
-    
+
     @Length(max = 40)
     @NotEmpty
     @ViewById(R.id.activity_make_plan_et_trip_name)
     EditText etTripName;
-    
+
     @NotEmpty
     @ViewById(R.id.activity_make_plan_tv_destination)
     TextView tvDestination;
-    
+
     @NotEmpty
     @ViewById(R.id.item_day_schedule_tiet)
     TextInputEditText tietSchedule;
-    
+
     @ViewById(R.id.activity_make_plan_tv_date_go)
     TextView tvDateGo;
-    
+
     @ViewById(R.id.activity_make_plan_tv_date_back)
     TextView tvDateBack;
-    
+
     @ViewById(R.id.activity_make_plan_tv_friend_not_available)
     TextView tvFriendNotAvailable;
-    
+
     @ViewById(R.id.activity_make_plan_progressBar)
     ProgressBar progressBar;
-    
+
     @ViewById(R.id.activity_make_plan_ll_schedule)
     LinearLayout llSchedule;
-    
+
     @ViewById(R.id.activity_make_plan_ll_background)
     LinearLayout llBackground;
-    
+
     @ViewById(R.id.activity_make_plan_civ_background)
     CircleImageView civBackground;
-    
+
     private List<UserFriend> userFriendList;
     private InviteFriendAdapter inviteFriendAdapter;
     private Plan plan;
@@ -118,7 +117,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     private String planId;
     private Plan currentPlan;
     private int idBackground;
-    
+
     @AfterViews
     void init() {
         // Get the current plan when user click to update plan on item recycler
@@ -130,7 +129,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
             tvDateBack.setText(currentPlan.getDateBack());
             idBackground = currentPlan.getIdBackground();
             civBackground.setImageResource(idBackground);
-            
+
             for (int i = 0; i < currentPlan.getPlanScheduleList().size(); i++) {
                 if (i == 0) {
                     tietSchedule.setText(currentPlan.getPlanScheduleList().get(i).getContent());
@@ -148,42 +147,42 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
             setCurrentDayForView();
         }
     }
-    
+
     public void initViewForNewPlan() {
         idBackground = R.drawable.bg_test3;
         civBackground.setImageResource(idBackground);
-        
+
         countDaySchedule = 1;
         planScheduleList = new ArrayList<>();
-        
+
         validator = new Validator(this);
         validator.setValidationListener(this);
-        
+
         currentUser = dataService.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         calendar = Calendar.getInstance();
         plan = new Plan();
         invitedFriendIdList = new ArrayList<>();
-        
+
         userFriendList = new ArrayList<>();
         if (dataService.getUserFriendList().size() != 0) {
             tvFriendNotAvailable.setVisibility(View.GONE);
             userFriendList.addAll(dataService.getUserFriendList());
         }
-        
+
         inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList, invitedFriendIdList, currentPlan);
         rvListFriend.setAdapter(inviteFriendAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvListFriend.setLayoutManager(manager);
     }
-    
+
     public void initViewForUpdatePlan() {
         countDaySchedule = 1;
         planScheduleList = new ArrayList<>();
-        
+
         validator = new Validator(this);
         validator.setValidationListener(this);
-        
+
         currentUser = dataService.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         calendar = Calendar.getInstance();
@@ -194,19 +193,19 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
             invitedFriendIdList.addAll(currentPlan.getFriendInvitedList());
             invitedFriendIdListOld.addAll(currentPlan.getFriendInvitedList());
         }
-        
+
         userFriendList = new ArrayList<>();
         if (dataService.getUserFriendList().size() != 0) {
             tvFriendNotAvailable.setVisibility(View.GONE);
             userFriendList.addAll(dataService.getUserFriendList());
         }
-        
+
         inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList, invitedFriendIdList, currentPlan);
         rvListFriend.setAdapter(inviteFriendAdapter);
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvListFriend.setLayoutManager(manager);
     }
-    
+
     public void setCurrentDayForView() {
         // Set current day for tvBirthday
         SimpleDateFormat simpleDateFormat;
@@ -215,7 +214,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         tvDateGo.setText(strDate);
         tvDateBack.setText(strDate);
     }
-    
+
     public void sendTripPlanToFriends() {
         // Remove value from old friend be invited
         if (invitedFriendIdListOld != null) {
@@ -233,7 +232,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
                 }
             }
         }
-        
+
         if (invitedFriendIdList.size() == 0) {
             String message;
             if (currentPlan != null) {
@@ -244,7 +243,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
             Toasty.success(MakePlanActivity.this, message, Toast.LENGTH_SHORT).show();
             finish();
         }
-        
+
         // Add value to new friend be invited
         for (String friendId : invitedFriendIdList) {
             databaseReference.child("Plan").child(friendId).child(planId)
@@ -271,17 +270,17 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
                     });
         }
     }
-    
+
     @Click(R.id.activity_make_plan_btn_cancel)
     void onBtnCancelClick() {
         super.onBackPressed();
     }
-    
+
     @Click(R.id.activity_make_plan_btn_done)
     void onBtnDoneClick() {
         validator.validate();
     }
-    
+
     @Click(R.id.activity_make_plan_btn_add_schedule)
     void onBtnAddScheduleClick() {
         TextInputLayout textInputLayout = (TextInputLayout) getLayoutInflater()
@@ -289,7 +288,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         textInputLayout.setHint("Ngày " + ++countDaySchedule);
         llSchedule.addView(textInputLayout);
     }
-    
+
     @Click(R.id.activity_make_plan_btn_remove_schedule)
     void onBtnRemoveScheduleClick() {
         countDaySchedule = llSchedule.getChildCount();
@@ -299,7 +298,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
             break;
         }
     }
-    
+
     @Click(R.id.activity_make_plan_ll_date_go)
     void onLlDateGoClick() {
         // When date be set
@@ -311,7 +310,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
                 calendar.set(year, month, dayOfMonth);
             }
         };
-        
+
         // Set current position time when start dialog
         String strDate[] = tvDateGo.getText().toString().split("/");
         int day = Integer.parseInt(strDate[0]);
@@ -322,7 +321,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         dpdDateGo.setTitle("Chọn ngày đi");
         dpdDateGo.show();
     }
-    
+
     @Click(R.id.activity_make_plan_ll_date_back)
     void onLlDateBackClick() {
         // When date be set
@@ -333,7 +332,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
                 calendar.set(year, month, dayOfMonth);
             }
         };
-        
+
         // Set current position time when start dialog
         String strDate[] = tvDateBack.getText().toString().split("/");
         int day = Integer.parseInt(strDate[0]);
@@ -344,13 +343,13 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         dpdDateBack.setTitle("Chọn ngày về");
         dpdDateBack.show();
     }
-    
+
     @Click(R.id.activity_make_plan_ll_background)
     void onLlBackgroundClick() {
         Intent intent = new Intent(this, ChooseBackgroundPlanActivity_.class);
         startActivityForResult(intent, REQUEST_BACKGROUND);
     }
-    
+
     @Click(R.id.activity_make_plan_ll_destination)
     void onLlDestinationClick() {
         try {
@@ -362,7 +361,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
             e.printStackTrace();
         }
     }
-    
+
     @OnActivityResult(REQUEST_BACKGROUND)
     void onResultBackground(int resultCode, Intent data) {
         if (resultCode == RESULT_OK && data != null) {
@@ -370,7 +369,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
             civBackground.setImageResource(idBackground);
         }
     }
-    
+
     @OnActivityResult(REQUEST_PLACE_AUTO_COMPLETE)
     void onResultPlace(int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK && data != null) {
@@ -380,7 +379,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
             Toasty.error(this, "Không chọn được địa điểm, bạn hãy thử lại", Toast.LENGTH_SHORT).show();
         }
     }
-    
+
     @Override
     public void onValidationSucceeded() {
         nsvRoot.scrollTo(0, nsvRoot.getBottom());
@@ -388,9 +387,9 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         for (int i = 0; i < countDaySchedule; i++) {
             TextInputEditText textInputEditText = (TextInputEditText) (llSchedule.getChildAt(i))
                     .findViewById(R.id.item_day_schedule_tiet);
-            planScheduleList.add(new PlanSchedule((i + 1) + "", textInputEditText.getText().toString()));
+            planScheduleList.add(new PlanSchedule((i + 1) + "", textInputEditText.getText().toString(), "title", 123124214));
         }
-        
+
         if (currentPlan == null) {
             // Set id by the time
             planId = System.currentTimeMillis() + "";
@@ -407,7 +406,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         plan.setUserMakePlan(dataService.getCurrentUser());
         plan.setFriendInvitedList(invitedFriendIdList);
         plan.setIdBackground(idBackground);
-        
+
         // Send data to storage of current user (the user create this trip plan)
         databaseReference.child("Plan").child(currentUser.getUid()).child(planId)
                 .setValue(plan, new DatabaseReference.CompletionListener() {
@@ -424,7 +423,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
                     }
                 });
     }
-    
+
     @Override
     public void onValidationFailed(List<ValidationError> errors) {
         for (ValidationError error : errors) {

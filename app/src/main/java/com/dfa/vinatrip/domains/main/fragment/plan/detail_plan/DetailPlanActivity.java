@@ -2,6 +2,7 @@ package com.dfa.vinatrip.domains.main.fragment.plan.detail_plan;
 
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -14,7 +15,7 @@ import com.dfa.vinatrip.domains.location.LocationGroupActivity_;
 import com.dfa.vinatrip.domains.main.fragment.me.UserProfile;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
-import com.dfa.vinatrip.domains.main.plan.make_plan.PlanSchedule;
+import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.PlanSchedule;
 import com.dfa.vinatrip.services.DataService;
 import com.squareup.picasso.Picasso;
 
@@ -32,56 +33,50 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 @EActivity(R.layout.activity_detail_plan)
 public class DetailPlanActivity extends AppCompatActivity {
-    
+
     @Bean
     DataService dataService;
-    
+
     @Extra
     protected Plan plan;
-    
+
     @ViewById(R.id.my_toolbar)
     protected Toolbar toolbar;
-    
     @ViewById(R.id.activity_detail_plan_civ_avatar)
     protected CircleImageView civAvatar;
-    
     @ViewById(R.id.activity_detail_plan_tv_nickname)
     protected TextView tvNickname;
-    
     @ViewById(R.id.activity_detail_plan_tv_email)
     protected TextView tvEmail;
-    
     @ViewById(R.id.activity_detail_plan_rv_friend_join)
     protected RecyclerView rvFriendJoin;
-    
     @ViewById(R.id.activity_detail_plan_tv_destination)
     protected TextView tvDestination;
-    
     @ViewById(R.id.activity_detail_plan_tv_date_go)
     protected TextView tvDateGo;
-    
     @ViewById(R.id.activity_detail_plan_tv_date_back)
     protected TextView tvDateBack;
-    
     @ViewById(R.id.activity_detail_plan_tv_schedule)
     protected TextView tvSchedule;
-    
     @ViewById(R.id.activity_detail_plan_tv_friend_not_available)
     protected TextView tvFriendNotAvailable;
-    
-    private ActionBar actionBar;
+    @ViewById(R.id.activity_detail_plan_rv_schedule)
+    protected RecyclerView rvSchedule;
+
     private List<UserFriend> userFriendList;
     private List<UserFriend> friendInvitedList;
     private ListFriendHorizontalAdapter listFriendHorizontalAdapter;
     private UserProfile currentUser;
-    
+    private ScheduleAdapter adapter;
+
     @AfterViews
     void init() {
         currentUser = dataService.getCurrentUser();
         setupAppBar();
         initView();
+        setupAdapterSchedule();
     }
-    
+
     public void initView() {
         Picasso.with(this).load(plan.getUserMakePlan().getAvatar()).into(civAvatar);
         if (currentUser.getUid().equals(plan.getUserMakePlan().getUid())) {
@@ -90,7 +85,7 @@ public class DetailPlanActivity extends AppCompatActivity {
             tvNickname.setText(plan.getUserMakePlan().getNickname());
         }
         tvEmail.setText(plan.getUserMakePlan().getEmail());
-        
+
         // Filter the friends be invited from List friend
         userFriendList = dataService.getUserFriendList();
         friendInvitedList = new ArrayList<>();
@@ -109,13 +104,13 @@ public class DetailPlanActivity extends AppCompatActivity {
                 }
             }
         }
-        
+
         listFriendHorizontalAdapter = new ListFriendHorizontalAdapter(this, friendInvitedList, tvFriendNotAvailable);
         rvFriendJoin.setAdapter(listFriendHorizontalAdapter);
         StaggeredGridLayoutManager staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
         rvFriendJoin.setLayoutManager(staggeredGridLayoutManager);
-        
+
         tvDestination.setText(plan.getDestination());
         tvDateGo.setText(plan.getDateGo());
         tvDateBack.setText(plan.getDateBack());
@@ -123,18 +118,27 @@ public class DetailPlanActivity extends AppCompatActivity {
             tvSchedule.append("Ngày " + planSchedule.getDayOrder() + ": " + planSchedule.getContent() + "\n");
         }
     }
-    
+
     public void setupAppBar() {
         setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(plan.getName());
-            
+
             // Set button back
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
-    
+
+    public void setupAdapterSchedule() {
+        adapter = new ScheduleAdapter(plan.getPlanScheduleList());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        rvSchedule.setLayoutManager(layoutManager);
+        rvSchedule.setAdapter(adapter);
+        rvSchedule.setHasFixedSize(true);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -143,12 +147,12 @@ public class DetailPlanActivity extends AppCompatActivity {
         }
         return false;
     }
-    
+
     @Click(R.id.activity_detail_plan_ll_chat_group)
     public void onLlChatGroupClick() {
         ChatGroupActivity_.intent(this).userFriendList((ArrayList<UserFriend>) userFriendList).plan(plan).start();
     }
-    
+
     @Click(R.id.activity_detail_plan_ll_location_group)
     public void onLlLocationGroup() {
         LocationGroupActivity_.intent(this).plan(plan).start();

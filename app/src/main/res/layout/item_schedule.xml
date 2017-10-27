@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:background="@color/colorDarkGray"/>
+
+        <ImageView
+            android:id="@+id/item_schedule_iv_circle_green"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/bg_circle_timeline_green"/>
+
+        <ImageView
+            android:id="@+id/item_schedule_iv_circle_gray"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/bg_circle_timeline_gray"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="7"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorDarkGray"/>
+
+        <TextView
+            android:id="@+id/item_schedule_tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Bắt đầu hành trình"
+            android:textColor="@color/colorMain"/>
+
+        <TextView
+            android:id="@+id/item_schedule_tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Đoàn dùng bữa điểm tâm sáng tại nhà hàng của khách sạn, sau đó lên xe khởi hành đi Quảng Bình, trên đường đi đoàn ghé thăm: Thánh Địa La Vang ( Được phong tặng là Tiểu Vương Cung Thánh Đường ) và chụp ảnh Vĩ tuyến 17 - Cầu Hiền Lương - Sông Bến Hải."
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/item_schedule_tv_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="5dp"
+            android:text="12/12/2019"
+            android:textColor="@android:color/black"
+            android:textStyle="italic"/>
+
+    </LinearLayout>
+
+</LinearLayout>

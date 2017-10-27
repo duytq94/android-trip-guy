@@ -1,17 +1,37 @@
-package com.dfa.vinatrip.domains.main.plan.make_plan;
+package com.dfa.vinatrip.domains.main.fragment.plan.make_plan;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.Serializable;
 
-public class PlanSchedule implements Parcelable {
-    private String dayOrder, content;
+public class PlanSchedule implements Serializable {
+    private String dayOrder;
+    private String content;
+    private String title;
+    private long timestamp;
 
     public PlanSchedule() {
     }
 
-    public PlanSchedule(String dayOrder, String content) {
+    public PlanSchedule(String dayOrder, String content, String title, long timestamp) {
         this.dayOrder = dayOrder;
         this.content = content;
+        this.title = title;
+        this.timestamp = timestamp;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getDayOrder() {
@@ -29,32 +49,4 @@ public class PlanSchedule implements Parcelable {
     public void setContent(String content) {
         this.content = content;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.dayOrder);
-        dest.writeString(this.content);
-    }
-
-    protected PlanSchedule(Parcel in) {
-        this.dayOrder = in.readString();
-        this.content = in.readString();
-    }
-
-    public static final Parcelable.Creator<PlanSchedule> CREATOR = new Parcelable.Creator<PlanSchedule>() {
-        @Override
-        public PlanSchedule createFromParcel(Parcel source) {
-            return new PlanSchedule(source);
-        }
-
-        @Override
-        public PlanSchedule[] newArray(int size) {
-            return new PlanSchedule[size];
-        }
-    };
 }
