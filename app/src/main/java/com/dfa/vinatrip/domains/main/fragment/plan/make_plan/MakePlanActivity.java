@@ -258,7 +258,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     public void initViewListSchedule() {
         timestampGo = AppUtil.stringDateToTimestamp(dateGo);
         countDaySchedule = AppUtil.stringDateToTimestamp(dateBack) - AppUtil.stringDateToTimestamp(dateGo);
-        countDaySchedule = countDaySchedule / MILLISECOND_IN_DAY;
+        countDaySchedule = countDaySchedule / MILLISECOND_IN_DAY + 1;
 
         llSchedule.removeAllViews();
         for (int i = 0; i < countDaySchedule; i++) {

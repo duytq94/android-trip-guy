@@ -4,7 +4,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -104,9 +103,8 @@ public class DetailPlanActivity extends AppCompatActivity {
 
         listFriendHorizontalAdapter = new ListFriendHorizontalAdapter(this, friendInvitedList, tvFriendNotAvailable);
         rvFriendJoin.setAdapter(listFriendHorizontalAdapter);
-        StaggeredGridLayoutManager staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
-        rvFriendJoin.setLayoutManager(staggeredGridLayoutManager);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rvFriendJoin.setLayoutManager(layoutManager);
 
         tvDestination.setText(plan.getDestination());
         tvDateGo.setText(plan.getDateGo());
@@ -125,7 +123,7 @@ public class DetailPlanActivity extends AppCompatActivity {
     }
 
     public void setupAdapterSchedule() {
-        adapter = new ScheduleAdapter(plan.getPlanScheduleList());
+        adapter = new ScheduleAdapter(plan.getPlanScheduleList(), this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         rvSchedule.setLayoutManager(layoutManager);
