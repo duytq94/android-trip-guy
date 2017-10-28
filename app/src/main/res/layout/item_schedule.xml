@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginRight="10dp"
     android:orientation="horizontal">
 
     <RelativeLayout
@@ -18,8 +19,8 @@
 
         <ImageView
             android:id="@+id/item_schedule_iv_circle_green"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
             android:src="@drawable/bg_circle_timeline_green"
@@ -27,8 +28,8 @@
 
         <ImageView
             android:id="@+id/item_schedule_iv_circle_gray"
-            android:layout_width="13dp"
-            android:layout_height="13dp"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
             android:src="@drawable/bg_circle_timeline_gray"/>
@@ -44,7 +45,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/colorDarkGray"/>
+            android:background="@color/colorLightGray"/>
 
         <TextView
             android:id="@+id/item_schedule_tv_title"
@@ -68,9 +69,10 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="5dp"
-            android:gravity="center"
+            android:gravity="right"
             android:text="12/12/2019"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/text_small"/>
 
     </LinearLayout>
 

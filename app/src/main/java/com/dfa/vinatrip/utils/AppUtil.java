@@ -39,7 +39,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.dfa.vinatrip.utils.Constants.SECOND_IN_DAY;
+import static com.dfa.vinatrip.utils.Constants.MILLISECOND_IN_DAY;
 
 /**
  * Created by duonghd on 9/27/2017.
@@ -282,7 +282,7 @@ public class AppUtil {
         if (DateUtils.isToday(timeStamp)) {
             return 0;
         }
-        if (DateUtils.isToday(timeStamp + SECOND_IN_DAY * 1000)) {
+        if (DateUtils.isToday(timeStamp + MILLISECOND_IN_DAY)) {
             return 1;
         }
         return 2;
@@ -299,7 +299,7 @@ public class AppUtil {
         Date localTime;
         try {
             localTime = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(date);
-            return localTime.getTime() / 1000;
+            return localTime.getTime();
         } catch (java.text.ParseException e) {
             return 0;
         }

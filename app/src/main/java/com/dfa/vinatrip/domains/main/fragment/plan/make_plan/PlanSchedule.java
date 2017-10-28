@@ -3,7 +3,6 @@ package com.dfa.vinatrip.domains.main.fragment.plan.make_plan;
 import java.io.Serializable;
 
 public class PlanSchedule implements Serializable {
-    private String dayOrder;
     private String content;
     private String title;
     private long timestamp;
@@ -11,8 +10,7 @@ public class PlanSchedule implements Serializable {
     public PlanSchedule() {
     }
 
-    public PlanSchedule(String dayOrder, String content, String title, long timestamp) {
-        this.dayOrder = dayOrder;
+    public PlanSchedule(String content, String title, long timestamp) {
         this.content = content;
         this.title = title;
         this.timestamp = timestamp;
@@ -34,16 +32,8 @@ public class PlanSchedule implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public String getDayOrder() {
-        return dayOrder;
-    }
-
     public String getContent() {
         return content;
-    }
-
-    public void setDayOrder(String dayOrder) {
-        this.dayOrder = dayOrder;
     }
 
     public void setContent(String content) {

@@ -32,7 +32,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         PlanSchedule planSchedule = planScheduleList.get(position);
         holder.tvTitle.setText(planSchedule.getTitle());
         holder.tvContent.setText(planSchedule.getContent());
-        holder.tvDate.setText(AppUtil.formatTime("dd MMM", planSchedule.getTimestamp()));
+        holder.tvDate.setText(AppUtil.formatTime("dd/MM/yyyy", planSchedule.getTimestamp()));
     }
 
     @Override

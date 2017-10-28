@@ -240,33 +240,14 @@
             android:padding="@dimen/text_view_padding"
             android:text="Lịch trình"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/text_medium"
-            />
+            android:textSize="@dimen/text_medium"/>
 
         <LinearLayout
             android:id="@+id/activity_make_plan_ll_schedule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/item_day_schedule_tiet"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:hint="Ngày 1"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:paddingLeft="10dp"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_medium"
-                    />
-            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -274,8 +255,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
@@ -283,8 +263,7 @@
                 android:padding="@dimen/text_view_padding"
                 android:text="Mời bạn bè tham gia"
                 android:textColor="@color/colorMain"
-                android:textSize="@dimen/text_medium"
-                />
+                android:textSize="@dimen/text_medium"/>
 
             <TextView
                 android:id="@+id/activity_make_plan_tv_friend_not_available"

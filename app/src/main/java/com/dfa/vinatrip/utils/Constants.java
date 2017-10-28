@@ -28,5 +28,5 @@ public class Constants {
     public static final String MY_TOUR = "mytour";
 
     // Second in one day
-    public static final int SECOND_IN_DAY = 86400;
+    public static final int MILLISECOND_IN_DAY = 86400000;
 }

@@ -3,8 +3,6 @@ package com.dfa.vinatrip.domains.main.fragment.plan.make_plan;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,7 +26,6 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -54,7 +51,7 @@ import es.dmoral.toasty.Toasty;
 
 import static com.dfa.vinatrip.utils.AppUtil.REQUEST_PLACE_AUTO_COMPLETE;
 import static com.dfa.vinatrip.utils.Constants.REQUEST_BACKGROUND;
-import static com.dfa.vinatrip.utils.Constants.SECOND_IN_DAY;
+import static com.dfa.vinatrip.utils.Constants.MILLISECOND_IN_DAY;
 
 @EActivity(R.layout.activity_make_plan)
 public class MakePlanActivity extends AppCompatActivity implements Validator.ValidationListener {
@@ -73,9 +70,6 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     @NotEmpty
     @ViewById(R.id.activity_make_plan_tv_destination)
     protected TextView tvDestination;
-    @NotEmpty
-    @ViewById(R.id.item_day_schedule_tiet)
-    protected TextInputEditText tietSchedule;
     @ViewById(R.id.activity_make_plan_tv_date_go)
     protected TextView tvDateGo;
     @ViewById(R.id.activity_make_plan_tv_date_back)
@@ -101,7 +95,6 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     private DatabaseReference databaseReference;
     private UserProfile currentUser;
     private Validator validator;
-    private int countDaySchedule;
     private List<PlanSchedule> planScheduleList;
     private String planId;
     private Plan currentPlan;
@@ -109,6 +102,8 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
     private String dateGo = "";
     private String dateBack = "";
+    private long timestampGo;
+    private long countDaySchedule;
 
     @AfterViews
     void init() {
@@ -124,13 +119,13 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
             for (int i = 0; i < currentPlan.getPlanScheduleList().size(); i++) {
                 if (i == 0) {
-                    tietSchedule.setText(currentPlan.getPlanScheduleList().get(i).getContent());
+//                    tietSchedule.setText(currentPlan.getPlanScheduleList().get(i).getContent());
                 } else {
-                    TextInputLayout textInputLayout = (TextInputLayout) getLayoutInflater()
-                            .inflate(R.layout.item_add_schedule, null);
-                    textInputLayout.setHint("Ngày " + ++countDaySchedule);
-                    textInputLayout.getEditText().setText(currentPlan.getPlanScheduleList().get(i).getContent());
-                    llSchedule.addView(textInputLayout);
+//                    TextInputLayout textInputLayout = (TextInputLayout) getLayoutInflater()
+//                            .inflate(R.layout.item_add_schedule, null);
+//                    textInputLayout.setHint("Ngày " + ++countDaySchedule);
+//                    textInputLayout.getEditText().setText(currentPlan.getPlanScheduleList().get(i).getContent());
+//                    llSchedule.addView(textInputLayout);
                 }
                 initViewForUpdatePlan();
             }
@@ -261,20 +256,21 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     }
 
     public void initViewListSchedule() {
-        long timestampGo = AppUtil.stringDateToTimestamp(dateGo);
-        long duringDay = AppUtil.stringDateToTimestamp(dateBack) - AppUtil.stringDateToTimestamp(dateGo);
-        duringDay = duringDay / SECOND_IN_DAY;
+        timestampGo = AppUtil.stringDateToTimestamp(dateGo);
+        countDaySchedule = AppUtil.stringDateToTimestamp(dateBack) - AppUtil.stringDateToTimestamp(dateGo);
+        countDaySchedule = countDaySchedule / MILLISECOND_IN_DAY;
 
-        for (int i = 0; i < duringDay; i++) {
+        llSchedule.removeAllViews();
+        for (int i = 0; i < countDaySchedule; i++) {
             LinearLayout llRoot = (LinearLayout) getLayoutInflater().inflate(R.layout.item_add_schedule, null);
             LinearLayout llMain = (LinearLayout) llRoot.getChildAt(1);
             EditText etTitle = (EditText) llMain.findViewById(R.id.item_add_schedule_et_title);
             EditText etContent = (EditText) llMain.findViewById(R.id.item_add_schedule_et_content);
-            TextView tvTitle = (TextView) llMain.findViewById(R.id.item_add_schedule_tv_date);
+            TextView tvDate = (TextView) llMain.findViewById(R.id.item_add_schedule_tv_date);
 
-            etTitle.setHint(String.format("Ngày %s", i + 1));
-            etContent.setHint(String.format("Lịch trình ngày %s", i + 1));
-            tvTitle.setText(AppUtil.formatTime("dd/MM/yyyy", (timestampGo + SECOND_IN_DAY * i) * 1000));
+            etTitle.setHint(String.format("Ngày %s...", i + 1));
+            etContent.setHint(String.format("Lịch trình ngày %s...", i + 1));
+            tvDate.setText(AppUtil.formatTime("dd/MM/yyyy", timestampGo + MILLISECOND_IN_DAY * i));
             llSchedule.addView(llRoot);
         }
     }
@@ -327,7 +323,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         int month = Integer.parseInt(strDate[1]) - 1;
         int year = Integer.parseInt(strDate[2]);
         dpdDateBack = new DatePickerDialog(this, listener, year, month, day);
-        dpdDateBack.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        dpdDateBack.getDatePicker().setMinDate(AppUtil.stringDateToTimestamp(dateGo));
         dpdDateBack.setTitle("Chọn ngày về");
         dpdDateBack.show();
     }
@@ -373,9 +369,9 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         nsvRoot.scrollTo(0, nsvRoot.getBottom());
         progressBar.setVisibility(View.VISIBLE);
         for (int i = 0; i < countDaySchedule; i++) {
-            TextInputEditText textInputEditText = (TextInputEditText) (llSchedule.getChildAt(i))
-                    .findViewById(R.id.item_day_schedule_tiet);
-            planScheduleList.add(new PlanSchedule((i + 1) + "", textInputEditText.getText().toString(), "title", 123124214));
+            String title = ((EditText) llSchedule.getChildAt(i).findViewById(R.id.item_add_schedule_et_title)).getText().toString();
+            String content = ((EditText) llSchedule.getChildAt(i).findViewById(R.id.item_add_schedule_et_content)).getText().toString();
+            planScheduleList.add(new PlanSchedule(content, title, timestampGo + MILLISECOND_IN_DAY * i));
         }
 
         if (currentPlan == null) {
@@ -397,17 +393,13 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
 
         // Send data to storage of current user (the user create this trip plan)
         databaseReference.child("Plan").child(currentUser.getUid()).child(planId)
-                .setValue(plan, new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        if (databaseError != null) {
-                            Toasty.error(MakePlanActivity.this,
-                                    "Lỗi đường truyền, bạn hãy gửi lại!", Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
-                        } else {
-                            // Send data to storage of friends be invited
-                            sendTripPlanToFriends();
-                        }
+                .setValue(plan, (databaseError, databaseReference1) -> {
+                    if (databaseError != null) {
+                        Toasty.error(MakePlanActivity.this, "Lỗi đường truyền, bạn hãy gửi lại!", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                    } else {
+                        // Send data to storage of friends be invited
+                        sendTripPlanToFriends();
                     }
                 });
     }

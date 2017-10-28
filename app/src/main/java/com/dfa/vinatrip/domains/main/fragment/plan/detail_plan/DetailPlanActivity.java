@@ -15,7 +15,6 @@ import com.dfa.vinatrip.domains.location.LocationGroupActivity_;
 import com.dfa.vinatrip.domains.main.fragment.me.UserProfile;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
-import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.PlanSchedule;
 import com.dfa.vinatrip.services.DataService;
 import com.squareup.picasso.Picasso;
 
@@ -56,8 +55,6 @@ public class DetailPlanActivity extends AppCompatActivity {
     protected TextView tvDateGo;
     @ViewById(R.id.activity_detail_plan_tv_date_back)
     protected TextView tvDateBack;
-    @ViewById(R.id.activity_detail_plan_tv_schedule)
-    protected TextView tvSchedule;
     @ViewById(R.id.activity_detail_plan_tv_friend_not_available)
     protected TextView tvFriendNotAvailable;
     @ViewById(R.id.activity_detail_plan_rv_schedule)
@@ -114,9 +111,6 @@ public class DetailPlanActivity extends AppCompatActivity {
         tvDestination.setText(plan.getDestination());
         tvDateGo.setText(plan.getDateGo());
         tvDateBack.setText(plan.getDateBack());
-        for (PlanSchedule planSchedule : plan.getPlanScheduleList()) {
-            tvSchedule.append("Ngày " + planSchedule.getDayOrder() + ": " + planSchedule.getContent() + "\n");
-        }
     }
 
     public void setupAppBar() {

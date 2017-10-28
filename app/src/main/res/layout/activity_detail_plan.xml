@@ -256,17 +256,11 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
                         android:paddingLeft="@dimen/text_view_padding"
                         android:text="Lịch trình"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_large"
-                        />
-
-                    <TextView
-                        android:id="@+id/activity_detail_plan_tv_schedule"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/text_view_padding"
                         />
 
                     <android.support.v7.widget.RecyclerView
