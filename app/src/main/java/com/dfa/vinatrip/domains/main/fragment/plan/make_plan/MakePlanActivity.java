@@ -18,7 +18,6 @@ import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.fragment.me.UserProfile;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
-import com.dfa.vinatrip.domains.main.plan.make_plan.ChooseBackgroundPlanActivity_;
 import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -50,8 +49,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
 import static com.dfa.vinatrip.utils.AppUtil.REQUEST_PLACE_AUTO_COMPLETE;
-import static com.dfa.vinatrip.utils.Constants.REQUEST_BACKGROUND;
 import static com.dfa.vinatrip.utils.Constants.MILLISECOND_IN_DAY;
+import static com.dfa.vinatrip.utils.Constants.REQUEST_BACKGROUND;
 
 @EActivity(R.layout.activity_make_plan)
 public class MakePlanActivity extends AppCompatActivity implements Validator.ValidationListener {
@@ -106,7 +105,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     private long countDaySchedule;
 
     @AfterViews
-    void init() {
+    public void init() {
         // Get the current plan when user click to update plan on item recycler
         if (getIntent().getSerializableExtra("Plan") != null) {
             currentPlan = (Plan) getIntent().getSerializableExtra("Plan");
@@ -199,8 +198,10 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String strDate = simpleDateFormat.format(calendar.getTime());
         tvDateGo.setText(strDate);
-        dateGo = strDate;
         tvDateBack.setText(strDate);
+        dateGo = strDate;
+        dateBack = strDate;
+        initViewListSchedule();
     }
 
     public void sendTripPlanToFriends() {
@@ -276,23 +277,26 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     }
 
     @Click(R.id.activity_make_plan_btn_cancel)
-    void onBtnCancelClick() {
+    public void onBtnCancelClick() {
         super.onBackPressed();
     }
 
     @Click(R.id.activity_make_plan_btn_done)
-    void onBtnDoneClick() {
+    public void onBtnDoneClick() {
         validator.validate();
     }
 
     @Click(R.id.activity_make_plan_ll_date_go)
-    void onLlDateGoClick() {
+    public void onLlDateGoClick() {
         // When date be set
         DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
             dateGo = dayOfMonth + "/" + (month + 1) + "/" + year;
+            dateBack = dayOfMonth + "/" + (month + 1) + "/" + year;
             tvDateGo.setText(dateGo);
             tvDateBack.setText(dateGo);
             calendar.set(year, month, dayOfMonth);
+
+            initViewListSchedule();
         };
 
         // Set current position time when start dialog
@@ -307,7 +311,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     }
 
     @Click(R.id.activity_make_plan_ll_date_back)
-    void onLlDateBackClick() {
+    public void onLlDateBackClick() {
         // When date be set
         DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
             dateBack = dayOfMonth + "/" + (month + 1) + "/" + year;
@@ -329,13 +333,13 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     }
 
     @Click(R.id.activity_make_plan_ll_background)
-    void onLlBackgroundClick() {
+    public void onLlBackgroundClick() {
         Intent intent = new Intent(this, ChooseBackgroundPlanActivity_.class);
         startActivityForResult(intent, REQUEST_BACKGROUND);
     }
 
     @Click(R.id.activity_make_plan_ll_destination)
-    void onLlDestinationClick() {
+    public void onLlDestinationClick() {
         try {
             AutocompleteFilter typeFilter = new AutocompleteFilter.Builder().setCountry("VN").build();
             Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
@@ -347,7 +351,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     }
 
     @OnActivityResult(REQUEST_BACKGROUND)
-    void onResultBackground(int resultCode, Intent data) {
+    public void onResultBackground(int resultCode, Intent data) {
         if (resultCode == RESULT_OK && data != null) {
             idBackground = data.getIntExtra("idBackground", R.drawable.bg_test3);
             civBackground.setImageResource(idBackground);
@@ -355,7 +359,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     }
 
     @OnActivityResult(REQUEST_PLACE_AUTO_COMPLETE)
-    void onResultPlace(int resultCode, Intent data) {
+    public void onResultPlace(int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK && data != null) {
             Place place = PlaceAutocomplete.getPlace(this, data);
             tvDestination.setText(place.getAddress());

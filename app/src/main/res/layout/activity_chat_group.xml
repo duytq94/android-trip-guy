@@ -47,7 +47,7 @@
     <LinearLayout
         android:id="@+id/activity_chat_group_ll_sticker"
         android:layout_width="match_parent"
-        android:layout_height="190dp"
+        android:layout_height="210dp"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -88,14 +88,14 @@
                 android:textColor="@android:color/white"/>
 
             <TextView
-                android:id="@+id/activity_chat_group_tv_aaa"
+                android:id="@+id/activity_chat_group_tv_rilakkuma"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="3dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_positive"
                 android:gravity="center"
-                android:text="aaa"
+                android:text="Rilakkuma"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"/>
 

@@ -125,6 +125,7 @@ public class DetailPlanActivity extends AppCompatActivity {
     public void setupAdapterSchedule() {
         adapter = new ScheduleAdapter(plan.getPlanScheduleList(), this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout(true);
 
         rvSchedule.setLayoutManager(layoutManager);
         rvSchedule.setAdapter(adapter);

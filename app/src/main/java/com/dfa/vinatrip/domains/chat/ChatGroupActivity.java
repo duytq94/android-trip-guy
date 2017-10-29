@@ -128,6 +128,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     private Gson gson;
     private List<Integer> listStickerEmotion;
     private List<Integer> listStickerMimi;
+    private List<Integer> listStickerRilakkuma;
 
     private Map<String, String> mapAvatar;
     private Map<String, String> mapNickname;
@@ -258,6 +259,19 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
         mapSticker.put("mimi7", R.drawable.mimi7);
         mapSticker.put("mimi8", R.drawable.mimi8);
         mapSticker.put("mimi9", R.drawable.mimi9);
+        mapSticker.put("rilakkuma1", R.drawable.rilakkuma1);
+        mapSticker.put("rilakkuma2", R.drawable.rilakkuma2);
+        mapSticker.put("rilakkuma3", R.drawable.rilakkuma3);
+        mapSticker.put("rilakkuma4", R.drawable.rilakkuma4);
+        mapSticker.put("rilakkuma5", R.drawable.rilakkuma5);
+        mapSticker.put("rilakkuma6", R.drawable.rilakkuma6);
+        mapSticker.put("rilakkuma7", R.drawable.rilakkuma7);
+        mapSticker.put("rilakkuma8", R.drawable.rilakkuma8);
+        mapSticker.put("rilakkuma9", R.drawable.rilakkuma9);
+        mapSticker.put("rilakkuma10", R.drawable.rilakkuma10);
+        mapSticker.put("rilakkuma11", R.drawable.rilakkuma11);
+        mapSticker.put("rilakkuma12", R.drawable.rilakkuma12);
+
 
         listStickerEmotion = new ArrayList<>();
         listStickerEmotion.add(R.drawable.emotion1);
@@ -284,6 +298,20 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
         listStickerMimi.add(R.drawable.mimi7);
         listStickerMimi.add(R.drawable.mimi8);
         listStickerMimi.add(R.drawable.mimi9);
+
+        listStickerRilakkuma = new ArrayList<>();
+        listStickerRilakkuma.add(R.drawable.rilakkuma1);
+        listStickerRilakkuma.add(R.drawable.rilakkuma2);
+        listStickerRilakkuma.add(R.drawable.rilakkuma3);
+        listStickerRilakkuma.add(R.drawable.rilakkuma4);
+        listStickerRilakkuma.add(R.drawable.rilakkuma5);
+        listStickerRilakkuma.add(R.drawable.rilakkuma6);
+        listStickerRilakkuma.add(R.drawable.rilakkuma7);
+        listStickerRilakkuma.add(R.drawable.rilakkuma8);
+        listStickerRilakkuma.add(R.drawable.rilakkuma9);
+        listStickerRilakkuma.add(R.drawable.rilakkuma10);
+        listStickerRilakkuma.add(R.drawable.rilakkuma11);
+        listStickerRilakkuma.add(R.drawable.rilakkuma12);
     }
 
     public void setupAppBar() {
@@ -541,6 +569,12 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     @Click(R.id.activity_chat_group_tv_mimi)
     public void onIvMimiClick() {
         stickerAdapter.setList(listStickerMimi, TypeSticker.mimi.name());
+        stickerAdapter.notifyDataSetChanged();
+    }
+
+    @Click(R.id.activity_chat_group_tv_rilakkuma)
+    public void onTvRilakkumaClick() {
+        stickerAdapter.setList(listStickerRilakkuma, TypeSticker.rilakkuma.name());
         stickerAdapter.notifyDataSetChanged();
     }
 

@@ -6,5 +6,6 @@ package com.dfa.vinatrip.models;
 
 public enum TypeSticker {
     emotion,
-    mimi
+    mimi,
+    rilakkuma
 }
