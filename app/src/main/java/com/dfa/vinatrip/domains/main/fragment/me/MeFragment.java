@@ -163,17 +163,14 @@ public class MeFragment extends Fragment {
             }
         }
 
-        srlReload.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (AppUtil.isNetworkConnected(getActivity())) {
-                    if (dataService.getCurrentUser() != null) {
-                        initView();
-                    }
-                    srlReload.setRefreshing(false);
-                } else {
-                    srlReload.setRefreshing(false);
+        srlReload.setOnRefreshListener(() -> {
+            if (AppUtil.isNetworkConnected(getActivity())) {
+                if (dataService.getCurrentUser() != null) {
+                    initView();
                 }
+                srlReload.setRefreshing(false);
+            } else {
+                srlReload.setRefreshing(false);
             }
         });
     }
@@ -228,12 +225,7 @@ public class MeFragment extends Fragment {
         });
 
         initFlInfor();
-        dataService.setOnChangeCurrentUser(new DataService.OnChangeCurrentUser() {
-            @Override
-            public void onUpdateInfor() {
-                initFlInfor();
-            }
-        });
+        dataService.setOnChangeCurrentUser(() -> initFlInfor());
 
         tvIntroduceYourSelf.setText(dataService.getCurrentUser().getIntroduceYourSelf());
         tvBirthday.setText(dataService.getCurrentUser().getBirthday());

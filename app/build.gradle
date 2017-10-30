@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         // replace with the current version of the Android plugin
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:2.3.0'
         // replace with the current version of the android-apt plugin
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
@@ -15,7 +15,6 @@ buildscript {
 
 repositories {
     mavenCentral()
-    mavenLocal()
 }
 
 apply plugin: 'com.android.application'
@@ -23,8 +22,8 @@ apply plugin: 'android-apt'
 apply plugin: 'com.neenbedankt.android-apt'
 
 dependencies {
-    apt "org.androidannotations:androidannotations:4.3.0"
-    compile "org.androidannotations:androidannotations-api:4.3.0"
+    apt "org.androidannotations:androidannotations:4.3.1"
+    compile "org.androidannotations:androidannotations-api:4.3.1"
 }
 
 android {
@@ -115,7 +114,7 @@ dependencies {
     compile "com.android.support:cardview-v7:25.3.1"
 
     // ImageView
-    compile 'jp.wasabeef:blurry:2.1.0'
+    compile 'jp.wasabeef:blurry:2.1.1'
     compile 'com.github.siyamed:android-shape-imageview:0.9.3'
     compile 'com.github.chrisbanes:PhotoView:2.0.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
@@ -123,18 +122,18 @@ dependencies {
     compile 'com.ms-square:expandableTextView:0.1.4'
 
     // Check field edit text
-    compile 'com.mobsandgeeks:android-saripaar:2.0.2'
+    compile 'com.mobsandgeeks:android-saripaar:2.0.3'
 
     // Toasty
     compile 'com.github.GrenderG:Toasty:1.2.5'
 
     // Network
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
 
     //Dagger
-    apt 'com.google.dagger:dagger-compiler:2.0'
-    compile 'com.google.dagger:dagger:2.0'
+    apt 'com.google.dagger:dagger-compiler:2.8'
+    compile 'com.google.dagger:dagger:2.8'
     provided 'javax.annotation:jsr250-api:1.0'
 
     // MVP

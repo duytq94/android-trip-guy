@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorBackground"
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             >
 
             <android.support.v4.widget.NestedScrollView
@@ -657,43 +657,13 @@
             android:id="@+id/fragment_me_rl_not_login"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            android:visibility="visible"
             >
-
-            <RelativeLayout
-                android:id="@+id/fragment_me_rl_not_login_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorMain"
-                >
-
-                <ImageView
-                    android:id="@+id/fragment_me_iv_symbol2"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:src="@drawable/ic_symbol"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@+id/fragment_me_iv_symbol2"
-                    android:text="Trang cá nhân"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/text_large"
-                    android:textStyle="bold"
-                    />
-            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/fragment_me_rl_not_login_ic"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_below="@+id/fragment_me_rl_not_login_toolbar"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="180dp"
@@ -725,7 +695,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
-                android:layout_below="@+id/fragment_me_rl_not_login_toolbar"
                 android:background="@drawable/bg_shadow_toolbar"
                 />
         </RelativeLayout>
