@@ -90,14 +90,5 @@
         android:textAllCaps="false"
         android:textColor="@color/btn_press_state_green"
         />
-
-    <ProgressBar
-        android:id="@+id/activity_sign_up_progressBar"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="20dp"
-        android:visibility="gone"
-        />
 </LinearLayout>
 

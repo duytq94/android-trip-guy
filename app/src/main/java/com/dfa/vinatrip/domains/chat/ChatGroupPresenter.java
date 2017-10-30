@@ -2,6 +2,8 @@ package com.dfa.vinatrip.domains.chat;
 
 import com.beesightsoft.caf.services.schedulers.RxScheduler;
 import com.dfa.vinatrip.base.BasePresenter;
+import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.services.account.AccountService;
 import com.dfa.vinatrip.services.chat.ChatService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -19,11 +21,17 @@ public class ChatGroupPresenter extends BasePresenter<ChatGroupView> {
     private Subscription subscriptionGetHistory;
     private Subscription subscriptionGetStatus;
     private ChatService chatService;
+    private AccountService accountService;
 
     @Inject
-    public ChatGroupPresenter(EventBus eventBus, ChatService chatService) {
+    public ChatGroupPresenter(EventBus eventBus, ChatService chatService, AccountService accountService) {
         super(eventBus);
         this.chatService = chatService;
+        this.accountService = accountService;
+    }
+
+    public User getCurrentUser() {
+        return accountService.getCurrentUser();
     }
 
     public void getHistory(String groupId, int page, int pageSize) {

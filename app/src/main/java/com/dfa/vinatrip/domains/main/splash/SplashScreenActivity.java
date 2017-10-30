@@ -53,7 +53,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private int count = 0;
 
     @AfterViews
-    void onCreate() {
+    public void init() {
         zoomOut = AnimationUtils.loadAnimation(this, R.anim.anim_zoom_out);
         ivLogo.startAnimation(zoomOut);
         zoomOut.setAnimationListener(new Animation.AnimationListener() {
@@ -79,7 +79,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         retrofit = new Retrofit.Builder().baseUrl("https://tripguy-10864.firebaseio.com")
-                                         .addConverterFactory(GsonConverterFactory.create()).build();
+                .addConverterFactory(GsonConverterFactory.create()).build();
         firebaseApi = retrofit.create(FirebaseApi.class);
 
         if (firebaseUser != null) {

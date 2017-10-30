@@ -3,8 +3,8 @@ package com.dfa.vinatrip.domains.main.fragment.plan.make_plan;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,10 +14,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.fragment.me.UserProfile;
+import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
+import com.dfa.vinatrip.infrastructures.ActivityModule;
+import com.dfa.vinatrip.models.response.User;
 import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -32,7 +35,9 @@ import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
@@ -45,6 +50,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
@@ -53,7 +60,8 @@ import static com.dfa.vinatrip.utils.Constants.MILLISECOND_IN_DAY;
 import static com.dfa.vinatrip.utils.Constants.REQUEST_BACKGROUND;
 
 @EActivity(R.layout.activity_make_plan)
-public class MakePlanActivity extends AppCompatActivity implements Validator.ValidationListener {
+public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresenter>
+        implements MakePlanView, Validator.ValidationListener {
 
     @Bean
     DataService dataService;
@@ -92,7 +100,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     private List<String> invitedFriendIdList;
     private List<String> invitedFriendIdListOld;
     private DatabaseReference databaseReference;
-    private UserProfile currentUser;
+    private User currentUser;
     private Validator validator;
     private List<PlanSchedule> planScheduleList;
     private String planId;
@@ -103,6 +111,25 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
     private String dateBack = "";
     private long timestampGo;
     private long countDaySchedule;
+
+    @App
+    protected MainApplication application;
+    @Inject
+    protected MakePlanPresenter presenter;
+
+    @AfterInject
+    protected void initInject() {
+        DaggerMakePlanComponent.builder()
+                .applicationComponent(application.getApplicationComponent())
+                .activityModule(new ActivityModule(this))
+                .build().inject(this);
+    }
+
+    @NonNull
+    @Override
+    public MakePlanPresenter createPresenter() {
+        return presenter;
+    }
 
     @AfterViews
     public void init() {
@@ -144,8 +171,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         validator = new Validator(this);
         validator.setValidationListener(this);
 
-        currentUser = dataService.getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        currentUser = presenter.getCurrentUser();
         calendar = Calendar.getInstance();
         plan = new Plan();
         invitedFriendIdList = new ArrayList<>();
@@ -169,7 +195,7 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         validator = new Validator(this);
         validator.setValidationListener(this);
 
-        currentUser = dataService.getCurrentUser();
+        currentUser = presenter.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         calendar = Calendar.getInstance();
         plan = new Plan();
@@ -391,12 +417,12 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
         plan.setPlanScheduleList(planScheduleList);
         plan.setDateGo(tvDateGo.getText().toString());
         plan.setDateBack(tvDateBack.getText().toString());
-        plan.setUserMakePlan(dataService.getCurrentUser());
+//        plan.setUserMakePlan(dataService.getCurrentUser());
         plan.setFriendInvitedList(invitedFriendIdList);
         plan.setIdBackground(idBackground);
 
         // Send data to storage of current user (the user create this trip plan)
-        databaseReference.child("Plan").child(currentUser.getUid()).child(planId)
+        databaseReference.child("Plan").child(String.valueOf(currentUser.getId())).child(planId)
                 .setValue(plan, (databaseError, databaseReference1) -> {
                     if (databaseError != null) {
                         Toasty.error(MakePlanActivity.this, "Lỗi đường truyền, bạn hãy gửi lại!", Toast.LENGTH_SHORT).show();
@@ -427,5 +453,20 @@ public class MakePlanActivity extends AppCompatActivity implements Validator.Val
                 ((EditText) view).setError(message);
             }
         }
+    }
+
+    @Override
+    public void showLoading() {
+//        showHUD();
+    }
+
+    @Override
+    public void hideLoading() {
+//        hideHUD();
+    }
+
+    @Override
+    public void apiError(Throwable throwable) {
+
     }
 }

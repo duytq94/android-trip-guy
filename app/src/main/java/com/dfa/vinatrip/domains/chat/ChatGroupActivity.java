@@ -30,7 +30,6 @@ import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.TypeMessage;
 import com.dfa.vinatrip.models.TypeSticker;
-import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.AdapterChatListener;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.KeyboardListener;
@@ -50,7 +49,6 @@ import com.sangcomz.fishbun.define.Define;
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
@@ -89,9 +87,6 @@ import static com.sangcomz.fishbun.define.Define.ALBUM_REQUEST_CODE;
 @EActivity(R.layout.activity_chat_group)
 public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPresenter>
         implements ChatGroupView, AdapterChatListener, StickerAdapter.StickerListener, KeyboardListener.KeyboardVisibilityListener {
-
-    @Bean
-    DataService dataService;
 
     @Extra
     protected Plan plan;
@@ -136,7 +131,6 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
 
     @App
     protected MainApplication application;
-
     @Inject
     protected ChatGroupPresenter presenter;
 
@@ -160,7 +154,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             socket = IO.socket(SERVER_SOCKET_CHAT);
             socket.connect();
 
-            socket.emit(JOIN_ROOM, dataService.getCurrentUser().getEmail(), plan.getId());
+            socket.emit(JOIN_ROOM, presenter.getCurrentUser().getEmail(), plan.getId());
 
             imageLoader = ImageLoader.getInstance();
             gson = new Gson();
@@ -326,7 +320,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     }
 
     public void setupChatAdapter() {
-        chatGroupAdapter = new ChatGroupAdapter(dataService.getCurrentUser().getEmail(), baseMessageList, mapAvatar,
+        chatGroupAdapter = new ChatGroupAdapter(presenter.getCurrentUser().getEmail(), baseMessageList, mapAvatar,
                 mapNickname, mapSticker, this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -426,7 +420,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 socket.emit(SEND_MESSAGE, content, timestamp, text);
                 etInput.setText("");
                 baseMessage = new BaseMessage(content, timestamp,
-                        dataService.getCurrentUser().getEmail(), plan.getId(), text);
+                        presenter.getCurrentUser().getEmail(), plan.getId(), text);
                 baseMessageList.add(baseMessage);
                 chatGroupAdapter.notifyDataSetChanged();
                 rvList.scrollToPosition(baseMessageList.size() - 1);
@@ -436,7 +430,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 socket.emit(SEND_MESSAGE, content, timestamp, image);
                 etInput.setText("");
                 baseMessage = new BaseMessage(content, timestamp,
-                        dataService.getCurrentUser().getEmail(), plan.getId(), image);
+                        presenter.getCurrentUser().getEmail(), plan.getId(), image);
                 baseMessageList.add(baseMessage);
                 chatGroupAdapter.notifyDataSetChanged();
                 rvList.scrollToPosition(baseMessageList.size() - 1);
@@ -445,7 +439,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             case sticker:
                 socket.emit(SEND_MESSAGE, content, timestamp, sticker);
                 baseMessage = new BaseMessage(content, timestamp,
-                        dataService.getCurrentUser().getEmail(), plan.getId(), sticker);
+                        presenter.getCurrentUser().getEmail(), plan.getId(), sticker);
                 baseMessageList.add(baseMessage);
                 chatGroupAdapter.notifyDataSetChanged();
                 rvList.scrollToPosition(baseMessageList.size() - 1);

@@ -90,12 +90,12 @@ public class ApplicationModule {
 
     @Provides
     @ApplicationScope
-    public AccountService provideAccountService(NetworkProvider rxNetworkProvider) {
+    public AccountService provideAccountService(NetworkProvider rxNetworkProvider, ApiErrorFilter apiErrorFilter) {
         RestAccountService restService = rxNetworkProvider.addDefaultHeader()
                 .provideApi(ApiUrls.SERVER_API, RestAccountService.class);
 
         return new DefaultAccountService(AuthenticationManagerConfiguration.init()
-                .useStorage(Constants.KEY_USER_AUTH), rxNetworkProvider, restService);
+                .useStorage(Constants.KEY_USER_AUTH), rxNetworkProvider, restService, apiErrorFilter);
     }
 
     @Provides

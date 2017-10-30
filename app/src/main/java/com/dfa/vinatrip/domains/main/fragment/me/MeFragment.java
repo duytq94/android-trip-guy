@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -13,21 +12,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dfa.vinatrip.BuildConfig;
+import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.base.BaseFragment;
 import com.dfa.vinatrip.domains.auth.sign_in.SignInActivity_;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.UserProfileDetailActivity_;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.fragment.province.each_item_detail_province.rating.UserRating;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
+import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.AppUtil;
-import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
@@ -36,6 +40,8 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.blurry.Blurry;
 
@@ -43,119 +49,118 @@ import static com.dfa.vinatrip.utils.AppUtil.REQUEST_UPDATE_INFO;
 
 
 @EFragment(R.layout.fragment_me)
-public class MeFragment extends Fragment {
+public class MeFragment extends BaseFragment<MeView, MePresenter>
+        implements MeView {
 
     @Bean
     DataService dataService;
 
     @ViewById(R.id.fragment_me_tv_nickname)
-    TextView tvNickname;
-
+    protected TextView tvNickname;
     @ViewById(R.id.fragment_me_tv_city)
-    TextView tvCity;
-
+    protected TextView tvCity;
     @ViewById(R.id.fragment_me_tv_app_info)
-    TextView tvAppInfo;
-
+    protected TextView tvAppInfo;
     @ViewById(R.id.fragment_me_tv_birthday)
-    TextView tvBirthday;
-
+    protected TextView tvBirthday;
     @ViewById(R.id.fragment_me_tv_introduce_your_self)
-    TextView tvIntroduceYourSelf;
-
+    protected TextView tvIntroduceYourSelf;
     @ViewById(R.id.fragment_me_tv_sex)
-    TextView tvSex;
-
+    protected TextView tvSex;
     @ViewById(R.id.fragment_me_tv_friend_not_available)
-    TextView tvFriendNotAvailable;
-
+    protected TextView tvFriendNotAvailable;
     @ViewById(R.id.fragment_me_tv_make_friend)
-    TextView tvMakeFriend;
-
+    protected TextView tvMakeFriend;
     @ViewById(R.id.fragment_me_tv_email)
-    TextView tvEmail;
-
+    protected TextView tvEmail;
     @ViewById(R.id.fragment_me_iv_avatar)
-    ImageView ivAvatar;
-
+    protected ImageView ivAvatar;
     @ViewById(R.id.fragment_me_iv_blur_avatar)
-    ImageView ivBlurAvatar;
-
+    protected ImageView ivBlurAvatar;
     @ViewById(R.id.fragment_me_ll_sign_out)
-    LinearLayout llSignOut;
-
+    protected LinearLayout llSignOut;
     @ViewById(R.id.fragment_me_ll_info)
-    LinearLayout llInfo;
-
+    protected LinearLayout llInfo;
     @ViewById(R.id.fragment_me_ll_my_friends)
-    LinearLayout llMyFriends;
-
+    protected LinearLayout llMyFriends;
     @ViewById(R.id.fragment_me_ll_settings)
-    LinearLayout llSettings;
-
+    protected LinearLayout llSettings;
     @ViewById(R.id.fragment_me_ll_update_profile)
-    LinearLayout llUpdateProfile;
-
+    protected LinearLayout llUpdateProfile;
     @ViewById(R.id.fragment_me_srlReload)
-    SwipeRefreshLayout srlReload;
-
+    protected SwipeRefreshLayout srlReload;
     @ViewById(R.id.fragment_me_rl_login)
-    RelativeLayout rlLogin;
-
+    protected RelativeLayout rlLogin;
     @ViewById(R.id.fragment_me_rl_not_login)
-    RelativeLayout rlNotLogin;
-
+    protected RelativeLayout rlNotLogin;
     @ViewById(R.id.fragment_me_tv_rating_not_available)
-    TextView tvRatingNotAvailable;
+    protected TextView tvRatingNotAvailable;
 
     @ViewById(R.id.fragment_me_ll_my_rating1)
-    LinearLayout llMyRating1;
+    protected LinearLayout llMyRating1;
     @ViewById(R.id.fragment_me_civ_location1)
-    CircleImageView civLocation1;
+    protected CircleImageView civLocation1;
     @ViewById(R.id.fragment_me_tv_name_location1)
-    TextView tvNameLocation1;
+    protected TextView tvNameLocation1;
     @ViewById(R.id.fragment_me_tv_content1)
-    TextView tvContent1;
+    protected TextView tvContent1;
 
     @ViewById(R.id.fragment_me_ll_my_rating2)
-    LinearLayout llMyRating2;
+    protected LinearLayout llMyRating2;
     @ViewById(R.id.fragment_me_civ_location2)
-    CircleImageView civLocation2;
+    protected CircleImageView civLocation2;
     @ViewById(R.id.fragment_me_tv_name_location2)
-    TextView tvNameLocation2;
+    protected TextView tvNameLocation2;
     @ViewById(R.id.fragment_me_tv_content2)
-    TextView tvContent2;
+    protected TextView tvContent2;
 
     @ViewById(R.id.fragment_me_ll_my_friend1)
-    LinearLayout llMyFriend1;
+    protected LinearLayout llMyFriend1;
     @ViewById(R.id.fragment_me_civ_friend_avatar1)
-    CircleImageView civAvatar1;
+    protected CircleImageView civAvatar1;
     @ViewById(R.id.fragment_me_tv_friend_nickname1)
-    TextView tvNickname1;
+    protected TextView tvNickname1;
     @ViewById(R.id.fragment_me_tv_friend_email1)
-    TextView tvEmail1;
+    protected TextView tvEmail1;
 
     @ViewById(R.id.fragment_me_ll_my_friend2)
-    LinearLayout llMyFriend2;
+    protected LinearLayout llMyFriend2;
     @ViewById(R.id.fragment_me_civ_friend_avatar2)
-    CircleImageView civAvatar2;
+    protected CircleImageView civAvatar2;
     @ViewById(R.id.fragment_me_tv_friend_nickname2)
-    TextView tvNickname2;
+    protected TextView tvNickname2;
     @ViewById(R.id.fragment_me_tv_friend_email2)
-    TextView tvEmail2;
+    protected TextView tvEmail2;
 
     private List<UserFriend> listUserFriends;
     private List<UserRating> myRatingList;
 
+    @App
+    protected MainApplication application;
+    @Inject
+    protected MePresenter presenter;
+
+    @AfterInject
+    protected void initInject() {
+        DaggerMeComponent.builder()
+                .applicationComponent(application.getApplicationComponent())
+                .activityModule(new ActivityModule(getActivity()))
+                .build().inject(this);
+    }
+
+    @Override
+    public MePresenter createPresenter() {
+        return presenter;
+    }
+
     @AfterViews
     void init() {
-        dataService.getCurrentUser();
 
         showAppInfo();
         srlReload.setColorSchemeResources(R.color.colorMain);
 
         if (AppUtil.isNetworkConnected(getActivity())) {
-            if (dataService.getCurrentUser() != null) {
+            if (presenter.getCurrentUser() != null) {
                 initView();
             } else {
                 rlLogin.setVisibility(View.GONE);
@@ -165,7 +170,7 @@ public class MeFragment extends Fragment {
 
         srlReload.setOnRefreshListener(() -> {
             if (AppUtil.isNetworkConnected(getActivity())) {
-                if (dataService.getCurrentUser() != null) {
+                if (presenter.getCurrentUser() != null) {
                     initView();
                 }
                 srlReload.setRefreshing(false);
@@ -227,10 +232,10 @@ public class MeFragment extends Fragment {
         initFlInfor();
         dataService.setOnChangeCurrentUser(() -> initFlInfor());
 
-        tvIntroduceYourSelf.setText(dataService.getCurrentUser().getIntroduceYourSelf());
-        tvBirthday.setText(dataService.getCurrentUser().getBirthday());
-        tvEmail.setText(dataService.getCurrentUser().getEmail());
-        tvSex.setText(dataService.getCurrentUser().getSex());
+        tvIntroduceYourSelf.setText(presenter.getCurrentUser().getIntro());
+        tvBirthday.setText(presenter.getCurrentUser().getBirthday());
+        tvEmail.setText(presenter.getCurrentUser().getEmail());
+        tvSex.setText(presenter.getCurrentUser().getSex());
     }
 
     public void initLlMyFriend() {
@@ -312,15 +317,15 @@ public class MeFragment extends Fragment {
     }
 
     public void initFlInfor() {
-        if (!dataService.getCurrentUser().getNickname().equals("")) {
-            tvNickname.setText(dataService.getCurrentUser().getNickname());
+        if (presenter.getCurrentUser().getUsername() != null) {
+            tvNickname.setText(presenter.getCurrentUser().getUsername());
         }
-        if (!dataService.getCurrentUser().getCity().equals("")) {
-            tvCity.setText(dataService.getCurrentUser().getCity());
+        if (presenter.getCurrentUser().getCity() != null) {
+            tvCity.setText(presenter.getCurrentUser().getCity());
         }
-        if (!dataService.getCurrentUser().getAvatar().isEmpty()) {
+        if (presenter.getCurrentUser().getAvatar() != null) {
             Picasso.with(getActivity())
-                    .load(dataService.getCurrentUser().getAvatar())
+                    .load(presenter.getCurrentUser().getAvatar())
                     .into(target);
         }
     }
@@ -331,19 +336,11 @@ public class MeFragment extends Fragment {
         alertDialog.setTitle("Đăng xuất");
         alertDialog.setMessage("Bạn có chắc chắn muốn đăng xuất tài khoản?");
         alertDialog.setIcon(R.drawable.ic_notification);
-        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ĐỒNG Ý", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                FirebaseAuth.getInstance().signOut();
-                dataService.clearData();
-                startActivity(new Intent(getActivity(), SplashScreenActivity_.class));
-            }
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "ĐỒNG Ý", (dialogInterface, i) -> {
+            presenter.signOut();
         });
-        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "KHÔNG", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "KHÔNG", (dialogInterface, i) -> {
 
-            }
         });
         alertDialog.show();
     }
@@ -430,4 +427,29 @@ public class MeFragment extends Fragment {
         }
     };
 
+    @Override
+    public void showLoading() {
+//        showHUD();
+    }
+
+    @Override
+    public void hideLoading() {
+//        hideHUD();
+    }
+
+    @Override
+    public void apiError(Throwable throwable) {
+
+    }
+
+    @Override
+    public void signOutSuccess() {
+        SplashScreenActivity_.intent(getActivity()).start();
+        getActivity().finish();
+    }
+
+    @Override
+    public void signOutFail(Throwable throwable) {
+        Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
 }

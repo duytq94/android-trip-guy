@@ -1,22 +1,14 @@
-apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
-
 buildscript {
     repositories {
         mavenCentral()
     }
     dependencies {
-        // replace with the current version of the Android plugin
-        classpath 'com.android.tools.build:gradle:2.3.0'
         // replace with the current version of the android-apt plugin
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
+apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'com.neenbedankt.android-apt'

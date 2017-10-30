@@ -60,7 +60,7 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
     private int per_page = 10;
 
     @AfterInject
-    void initInject() {
+    protected void initInject() {
         DaggerProvinceComponent.builder()
                 .activityModule(new ActivityModule(getActivity()))
                 .applicationComponent(mainApplication.getApplicationComponent())
@@ -69,7 +69,7 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @AfterViews
-    void init() {
+    public void init() {
         firstSetup();
 
         presenter.getBanner();
@@ -92,7 +92,7 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
         srlReload.setColorSchemeResources(R.color.colorMain);
     }
 
-    private void firstSetup() {
+    public void firstSetup() {
         provinceList = new ArrayList<>();
         recyclerProvinceAdapter = new RecyclerProvinceAdapter(getContext(), provinceList);
         rcvProvince.setHasFixedSize(true);

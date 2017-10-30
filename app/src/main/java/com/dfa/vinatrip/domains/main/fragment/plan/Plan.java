@@ -1,7 +1,7 @@
 package com.dfa.vinatrip.domains.main.fragment.plan;
 
-import com.dfa.vinatrip.domains.main.fragment.me.UserProfile;
 import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.PlanSchedule;
+import com.dfa.vinatrip.models.response.User;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,11 +11,11 @@ public class Plan implements Serializable {
     private int idBackground;
     private List<String> friendInvitedList;
     private List<PlanSchedule> planScheduleList;
-    private UserProfile userMakePlan;
+    private User userMakePlan;
 
     public Plan(String id, String name, String destination, String dateGo, String dateBack, int idBackground,
                 List<String> friendInvitedList,
-                List<PlanSchedule> planScheduleList, UserProfile userMakePlan) {
+                List<PlanSchedule> planScheduleList, User userMakePlan) {
         this.id = id;
         this.name = name;
         this.destination = destination;
@@ -91,11 +91,11 @@ public class Plan implements Serializable {
         this.planScheduleList = planScheduleList;
     }
 
-    public UserProfile getUserMakePlan() {
+    public User getUserMakePlan() {
         return userMakePlan;
     }
 
-    public void setUserMakePlan(UserProfile userMakePlan) {
+    public void setUserMakePlan(User userMakePlan) {
         this.userMakePlan = userMakePlan;
     }
 

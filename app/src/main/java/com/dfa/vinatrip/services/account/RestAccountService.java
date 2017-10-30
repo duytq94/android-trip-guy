@@ -13,6 +13,9 @@ import rx.Observable;
  */
 
 public interface RestAccountService {
-    @POST("api/auth/sign-in")
+    @POST("api/auth/login")
     Observable<RestMessageResponse<User>> signIn(@Body AuthRequest authRequest);
+
+    @POST("api/auth/register")
+    Observable<RestMessageResponse<User>> signUp(@Body AuthRequest authRequest);
 }

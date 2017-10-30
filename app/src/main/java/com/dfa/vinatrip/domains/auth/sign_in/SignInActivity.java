@@ -1,16 +1,10 @@
 package com.dfa.vinatrip.domains.auth.sign_in;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,10 +16,10 @@ import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.domains.auth.reset_password.ResetPasswordActivity_;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
+import com.dfa.vinatrip.models.request.AuthRequest;
+import com.dfa.vinatrip.models.response.User;
 import com.dfa.vinatrip.utils.AppUtil;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.dfa.vinatrip.utils.KeyboardListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -44,11 +38,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import es.dmoral.toasty.Toasty;
-
 @EActivity(R.layout.activity_sign_in)
 public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
-        implements SignInView, Validator.ValidationListener {
+        implements SignInView, Validator.ValidationListener, KeyboardListener.KeyboardVisibilityListener {
     @App
     protected MainApplication mainApplication;
     @Inject
@@ -83,33 +75,11 @@ public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
     }
 
     @AfterViews
-    void onCreate() {
+    public void init() {
+        KeyboardListener.setEventListener(this, this);
+
         animSlideUp = AnimationUtils.loadAnimation(this, R.anim.anim_slide_up);
         animSlideDown = AnimationUtils.loadAnimation(this, R.anim.anim_slide_down);
-
-        llRoot.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect r = new Rect();
-                llRoot.getWindowVisibleDisplayFrame(r);
-                int screenHeight = llRoot.getRootView().getHeight();
-
-                // r.bottom is the position above soft keypad or device button.
-                // if keypad is shown, the r.bottom is smaller than that before.
-                int keypadHeight = screenHeight - r.bottom;
-
-                if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
-                    // keyboard is opened
-                    ivSymbol.startAnimation(animSlideUp);
-                    isBtnSignInClick = false;
-                } else {
-                    // keyboard is closed
-                    if (!isBtnSignInClick) {
-                        ivSymbol.startAnimation(animSlideDown);
-                    }
-                }
-            }
-        });
 
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -119,27 +89,21 @@ public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
 
     @Override
     public void onValidationSucceeded() {
-//        String email = etEmail.getText().toString();
-//        String password = etPassword.getText().toString();
-//
-//        presenter.loginWithEmail(new AuthRequest(email, password));
-        String email = etEmail.getText().toString();
-        String password = etPassword.getText().toString();
+        presenter.loginWithEmail(new AuthRequest(etEmail.getText().toString(), etPassword.getText().toString()));
 
-        AppUtil.setEnableAllViews(llRoot, false);
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        AppUtil.setEnableAllViews(llRoot, true);
-                        if (!task.isSuccessful()) {
-                            Toasty.error(SignInActivity.this, "Email hoặc mật khẩu không đúng!",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            startActivity(new Intent(SignInActivity.this, SplashScreenActivity_.class));
-                        }
-                    }
-                });
+//        firebaseAuth.signInWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        AppUtil.setEnableAllViews(llRoot, true);
+//                        if (!task.isSuccessful()) {
+//                            Toasty.error(SignInActivity.this, "Email hoặc mật khẩu không đúng!",
+//                                    Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            startActivity(new Intent(SignInActivity.this, SplashScreenActivity_.class));
+//                        }
+//                    }
+//                });
     }
 
     @Override
@@ -196,36 +160,53 @@ public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
             float y = ev.getRawY() + v.getTop() - scrcoords[1];
 
             if (x < v.getLeft() || x > v.getRight() || y < v.getTop() || y > v.getBottom())
-                hideKeyboard(this);
+                AppUtil.hideKeyBoard(this);
         }
         return super.dispatchTouchEvent(ev);
     }
 
-    public static void hideKeyboard(Activity activity) {
-        if (activity != null && activity.getWindow() != null && activity.getWindow().getDecorView() != null) {
-            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
-        }
-    }
 
     @Override
     public void showLoading() {
-
+        showHUD();
     }
 
     @Override
     public void hideLoading() {
-
+        hideHUD();
     }
-    
+
     @Override
     public void apiError(Throwable throwable) {
-        
+
     }
-    
+
     @NonNull
     @Override
     public SignInPresenter createPresenter() {
         return presenter;
+    }
+
+    @Override
+    public void onKeyboardVisibilityChanged(boolean isOpen) {
+        if (isOpen) {
+            ivSymbol.startAnimation(animSlideUp);
+            isBtnSignInClick = false;
+        } else {
+            if (!isBtnSignInClick) {
+                ivSymbol.startAnimation(animSlideDown);
+            }
+        }
+    }
+
+    @Override
+    public void signInSuccess(User user) {
+        SplashScreenActivity_.intent(this).start();
+        finish();
+    }
+
+    @Override
+    public void signInFail(Throwable throwable) {
+        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }
