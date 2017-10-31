@@ -22,6 +22,9 @@ import com.dfa.vinatrip.services.default_data.DataService;
 import com.dfa.vinatrip.services.default_data.DefaultDataService;
 import com.dfa.vinatrip.services.default_data.RestDataService;
 import com.dfa.vinatrip.services.filter.ApiErrorFilter;
+import com.dfa.vinatrip.services.friend.DefaultFriendService;
+import com.dfa.vinatrip.services.friend.FriendService;
+import com.dfa.vinatrip.services.friend.RestFriendService;
 import com.dfa.vinatrip.services.location.DefaultLocationService;
 import com.dfa.vinatrip.services.location.LocationService;
 import com.dfa.vinatrip.services.location.RestLocationService;
@@ -141,5 +144,14 @@ public class ApplicationModule {
                 .provideApi(ApiUrls.SERVER_API, RestDataService.class);
 
         return new DefaultDataService(rxNetworkProvider, restDataService);
+    }
+
+    @Provides
+    @ApplicationScope
+    public FriendService provideFriendService(AccountService accountService, NetworkProvider rxNetworkProvider, ApiErrorFilter apiErrorFilter) {
+        RestFriendService restFriendService = rxNetworkProvider.addDefaultHeader()
+                .provideApi(ApiUrls.SERVER_API, RestFriendService.class);
+
+        return new DefaultFriendService(accountService, restFriendService, rxNetworkProvider, apiErrorFilter);
     }
 }

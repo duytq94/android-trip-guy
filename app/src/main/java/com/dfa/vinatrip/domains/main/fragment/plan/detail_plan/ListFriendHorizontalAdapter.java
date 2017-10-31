@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.models.response.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -17,10 +17,10 @@ import java.util.List;
 public class ListFriendHorizontalAdapter extends RecyclerView.Adapter<ListFriendHorizontalAdapter.ProfileViewHolder> {
     private LayoutInflater layoutInflater;
     private Context context;
-    private List<UserFriend> friendInvitedList;
+    private List<User> friendInvitedList;
     private TextView tvFriendNotAvailable;
 
-    public ListFriendHorizontalAdapter(Context context, List<UserFriend> friendInvitedList, TextView tvFriendNotAvailable) {
+    public ListFriendHorizontalAdapter(Context context, List<User> friendInvitedList, TextView tvFriendNotAvailable) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.tvFriendNotAvailable = tvFriendNotAvailable;
@@ -39,9 +39,11 @@ public class ListFriendHorizontalAdapter extends RecyclerView.Adapter<ListFriend
 
     @Override
     public void onBindViewHolder(ProfileViewHolder holder, int position) {
-        final UserFriend userFriend = friendInvitedList.get(position);
+        final User userFriend = friendInvitedList.get(position);
 
-        holder.tvNickname.setText(userFriend.getNickname());
+        if (userFriend.getUsername() != null) {
+            holder.tvNickname.setText(userFriend.getUsername());
+        }
 
         if (!userFriend.getAvatar().equals("")) {
             Picasso.with(context).load(userFriend.getAvatar())

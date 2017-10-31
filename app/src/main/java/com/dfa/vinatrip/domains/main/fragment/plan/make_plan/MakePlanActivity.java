@@ -10,15 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
-import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
+import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.choose_background.ChooseBackgroundPlanActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.User;
 import com.dfa.vinatrip.utils.AppUtil;
@@ -27,8 +26,6 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Length;
@@ -78,8 +75,6 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
     protected TextView tvDateBack;
     @ViewById(R.id.activity_make_plan_tv_friend_not_available)
     protected TextView tvFriendNotAvailable;
-    @ViewById(R.id.activity_make_plan_progressBar)
-    protected ProgressBar progressBar;
     @ViewById(R.id.activity_make_plan_ll_schedule)
     protected LinearLayout llSchedule;
     @ViewById(R.id.activity_make_plan_ll_background)
@@ -87,14 +82,13 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
     @ViewById(R.id.activity_make_plan_civ_background)
     protected CircleImageView civBackground;
 
-    private List<UserFriend> userFriendList;
+    private List<User> userFriendList;
     private InviteFriendAdapter inviteFriendAdapter;
     private Plan plan;
     private Calendar calendar;
     private DatePickerDialog dpdDateGo, dpdDateBack;
-    private List<String> invitedFriendIdList;
-    private List<String> invitedFriendIdListOld;
-    private DatabaseReference databaseReference;
+    private List<Long> invitedFriendIdList;
+    private List<Long> invitedFriendIdListOld;
     private User currentUser;
     private Validator validator;
     private List<PlanSchedule> planScheduleList;
@@ -128,32 +122,8 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
 
     @AfterViews
     public void init() {
-        // Get the current plan when user click to update plan on item recycler
-        if (getIntent().getSerializableExtra("Plan") != null) {
-            currentPlan = (Plan) getIntent().getSerializableExtra("Plan");
-            etTripName.setText(currentPlan.getName());
-            tvDestination.setText(currentPlan.getDestination());
-            tvDateGo.setText(currentPlan.getDateGo());
-            tvDateBack.setText(currentPlan.getDateBack());
-            idBackground = currentPlan.getIdBackground();
-            civBackground.setImageResource(idBackground);
-
-            for (int i = 0; i < currentPlan.getPlanScheduleList().size(); i++) {
-                if (i == 0) {
-//                    tietSchedule.setText(currentPlan.getPlanScheduleList().get(i).getContent());
-                } else {
-//                    TextInputLayout textInputLayout = (TextInputLayout) getLayoutInflater()
-//                            .inflate(R.layout.item_add_schedule, null);
-//                    textInputLayout.setHint("Ngày " + ++countDaySchedule);
-//                    textInputLayout.getEditText().setText(currentPlan.getPlanScheduleList().get(i).getContent());
-//                    llSchedule.addView(textInputLayout);
-                }
-                initViewForUpdatePlan();
-            }
-        } else {
-            initViewForNewPlan();
-            setCurrentDayForView();
-        }
+        initViewForNewPlan();
+        setCurrentDayForView();
     }
 
     public void initViewForNewPlan() {
@@ -171,16 +141,8 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
         plan = new Plan();
         invitedFriendIdList = new ArrayList<>();
 
-        userFriendList = new ArrayList<>();
-//        if (dataService.getUserFriendList().size() != 0) {
-//            tvFriendNotAvailable.setVisibility(View.GONE);
-//            userFriendList.addAll(dataService.getUserFriendList());
-//        }
+        presenter.getListFriend();
 
-        inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList, invitedFriendIdList, currentPlan);
-        rvListFriend.setAdapter(inviteFriendAdapter);
-        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvListFriend.setLayoutManager(manager);
     }
 
     public void initViewForUpdatePlan() {
@@ -191,7 +153,6 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
         validator.setValidationListener(this);
 
         currentUser = presenter.getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
         calendar = Calendar.getInstance();
         plan = new Plan();
         invitedFriendIdList = new ArrayList<>();
@@ -200,12 +161,6 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
             invitedFriendIdList.addAll(currentPlan.getFriendInvitedList());
             invitedFriendIdListOld.addAll(currentPlan.getFriendInvitedList());
         }
-
-        userFriendList = new ArrayList<>();
-//        if (dataService.getUserFriendList().size() != 0) {
-//            tvFriendNotAvailable.setVisibility(View.GONE);
-//            userFriendList.addAll(dataService.getUserFriendList());
-//        }
 
         inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList, invitedFriendIdList, currentPlan);
         rvListFriend.setAdapter(inviteFriendAdapter);
@@ -223,58 +178,6 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
         dateGo = strDate;
         dateBack = strDate;
         initViewListSchedule();
-    }
-
-    public void sendTripPlanToFriends() {
-        // Remove value from old friend be invited
-        if (invitedFriendIdListOld != null) {
-            boolean isExist;
-            for (int i = 0; i < invitedFriendIdListOld.size(); i++) {
-                isExist = false;
-                for (String friendId : invitedFriendIdList) {
-                    if (invitedFriendIdListOld.get(i).equals(friendId)) {
-                        isExist = true;
-                        break;
-                    }
-                }
-                if (!isExist) {
-                    databaseReference.child("Plan").child(invitedFriendIdListOld.get(i)).removeValue();
-                }
-            }
-        }
-
-        if (invitedFriendIdList.size() == 0) {
-            String message;
-            if (currentPlan != null) {
-                message = "Kế hoạch của bạn đã được cập nhật";
-            } else {
-                message = "Kế hoạch của bạn đã được tạo";
-            }
-            Toasty.success(MakePlanActivity.this, message, Toast.LENGTH_SHORT).show();
-            finish();
-        }
-
-        // Add value to new friend be invited
-        for (String friendId : invitedFriendIdList) {
-            databaseReference.child("Plan").child(friendId).child(planId)
-                    .setValue(plan, (databaseError, databaseReference1) -> {
-                        if (databaseError != null) {
-                            Toasty.error(MakePlanActivity.this, "Lỗi đường truyền, bạn hãy gửi lại!",
-                                    Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
-                        } else {
-                            progressBar.setVisibility(View.GONE);
-                            String message;
-                            if (currentPlan != null) {
-                                message = "Kế hoạch của bạn đã được cập nhật";
-                            } else {
-                                message = "Kế hoạch của bạn đã được tạo";
-                            }
-                            Toasty.success(MakePlanActivity.this, message, Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
-                    });
-        }
     }
 
     public void initViewListSchedule() {
@@ -392,41 +295,12 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
     @Override
     public void onValidationSucceeded() {
         nsvRoot.scrollTo(0, nsvRoot.getBottom());
-        progressBar.setVisibility(View.VISIBLE);
         for (int i = 0; i < countDaySchedule; i++) {
             String title = ((EditText) llSchedule.getChildAt(i).findViewById(R.id.item_add_schedule_et_title)).getText().toString();
             String content = ((EditText) llSchedule.getChildAt(i).findViewById(R.id.item_add_schedule_et_content)).getText().toString();
             planScheduleList.add(new PlanSchedule(content, title, timestampGo + MILLISECOND_IN_DAY * i));
         }
 
-        if (currentPlan == null) {
-            // Set id by the time
-            planId = System.currentTimeMillis() + "";
-        } else {
-            // Update to current plan
-            planId = currentPlan.getId();
-        }
-        plan.setId(planId);
-        plan.setName(etTripName.getText().toString());
-        plan.setDestination(tvDestination.getText().toString());
-        plan.setPlanScheduleList(planScheduleList);
-        plan.setDateGo(tvDateGo.getText().toString());
-        plan.setDateBack(tvDateBack.getText().toString());
-//        plan.setUserMakePlan(dataService.getCurrentUser());
-        plan.setFriendInvitedList(invitedFriendIdList);
-        plan.setIdBackground(idBackground);
-
-        // Send data to storage of current user (the user create this trip plan)
-        databaseReference.child("Plan").child(String.valueOf(currentUser.getId())).child(planId)
-                .setValue(plan, (databaseError, databaseReference1) -> {
-                    if (databaseError != null) {
-                        Toasty.error(MakePlanActivity.this, "Lỗi đường truyền, bạn hãy gửi lại!", Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.GONE);
-                    } else {
-                        // Send data to storage of friends be invited
-                        sendTripPlanToFriends();
-                    }
-                });
     }
 
     @Override
@@ -463,5 +337,24 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
     @Override
     public void apiError(Throwable throwable) {
 
+    }
+
+    @Override
+    public void getListFriendSuccess(List<User> friendList) {
+        if (friendList.size() > 0) {
+            tvFriendNotAvailable.setVisibility(View.GONE);
+            userFriendList = new ArrayList<>();
+            userFriendList.addAll(friendList);
+
+            inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList, invitedFriendIdList, currentPlan);
+            rvListFriend.setAdapter(inviteFriendAdapter);
+            LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            rvListFriend.setLayoutManager(manager);
+        }
+    }
+
+    @Override
+    public void getListFriendFail(Throwable throwable) {
+        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

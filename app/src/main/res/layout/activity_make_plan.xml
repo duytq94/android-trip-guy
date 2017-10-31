@@ -307,15 +307,6 @@
                 android:visibility="gone"
                 />
 
-            <ProgressBar
-                android:id="@+id/activity_make_plan_progressBar"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center|bottom"
-                android:layout_marginBottom="20dp"
-                android:visibility="gone"
-                />
-
             <Button
                 android:id="@+id/activity_make_plan_btn_cancel"
                 android:layout_width="match_parent"

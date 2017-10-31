@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.main.fragment.plan.make_plan;
+package com.dfa.vinatrip.domains.main.fragment.plan.make_plan.choose_background;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +16,7 @@ import org.androidannotations.annotations.ViewById;
 public class ChooseBackgroundPlanActivity extends AppCompatActivity {
 
     @ViewById(R.id.activity_choose_background_plan_rv_item)
-    RecyclerView rvItem;
+    protected RecyclerView rvItem;
 
     private ChooseBackgroundPlanAdapter adapter;
     private int[] listBackground;
@@ -24,7 +24,7 @@ public class ChooseBackgroundPlanActivity extends AppCompatActivity {
     private int idBackgroundChosen;
 
     @AfterViews
-    void init() {
+    public void init() {
         listBackground = new int[]{R.drawable.bg_test1, R.drawable.bg_test2, R.drawable.bg_test3,
                 R.drawable.bg_test4, R.drawable.bg_test5, R.drawable.bg_test6};
         listIsPhotoChoose = new boolean[]{false, false, true, false, false, false};
@@ -49,12 +49,12 @@ public class ChooseBackgroundPlanActivity extends AppCompatActivity {
     }
 
     @Click(R.id.activity_choose_background_plan_tv_cancel)
-    void onTvCancelClick() {
+    public void onTvCancelClick() {
         super.onBackPressed();
     }
 
     @Click(R.id.activity_choose_background_plan_tv_choose)
-    void onTvChooseClick() {
+    public void onTvChooseClick() {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("idBackground", idBackgroundChosen);
         setResult(RESULT_OK, returnIntent);

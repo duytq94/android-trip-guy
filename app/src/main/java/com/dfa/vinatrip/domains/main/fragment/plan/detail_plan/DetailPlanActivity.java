@@ -13,7 +13,6 @@ import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.domains.chat.ChatGroupActivity_;
 import com.dfa.vinatrip.domains.location.LocationGroupActivity_;
-import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.User;
@@ -62,8 +61,8 @@ public class DetailPlanActivity extends BaseActivity<DetailPlanView, DetailPlanP
     @ViewById(R.id.activity_detail_plan_rv_schedule)
     protected RecyclerView rvSchedule;
 
-    private List<UserFriend> userFriendList;
-    private List<UserFriend> friendInvitedList;
+    private List<User> userFriendList;
+    private List<User> friendInvitedList;
     private ListFriendHorizontalAdapter listFriendHorizontalAdapter;
     private User currentUser;
     private ScheduleAdapter adapter;
@@ -113,9 +112,9 @@ public class DetailPlanActivity extends BaseActivity<DetailPlanView, DetailPlanP
 //                    currentUser.getAvatar(), currentUser.getEmail(), "true"));
         }
         if (plan.getFriendInvitedList() != null) {
-            for (String friendInvitedId : plan.getFriendInvitedList()) {
-                for (UserFriend userFriend : userFriendList) {
-                    if (userFriend.getFriendId().equals(friendInvitedId)) {
+            for (long friendInvitedId : plan.getFriendInvitedList()) {
+                for (User userFriend : userFriendList) {
+                    if (userFriend.getId() == friendInvitedId) {
                         friendInvitedList.add(userFriend);
                         break;
                     }
@@ -165,7 +164,7 @@ public class DetailPlanActivity extends BaseActivity<DetailPlanView, DetailPlanP
 
     @Click(R.id.activity_detail_plan_ll_chat_group)
     public void onLlChatGroupClick() {
-        ChatGroupActivity_.intent(this).userFriendList((ArrayList<UserFriend>) userFriendList).plan(plan).start();
+        ChatGroupActivity_.intent(this).friendList((ArrayList<User>) userFriendList).plan(plan).start();
     }
 
     @Click(R.id.activity_detail_plan_ll_location_group)
@@ -175,12 +174,12 @@ public class DetailPlanActivity extends BaseActivity<DetailPlanView, DetailPlanP
 
     @Override
     public void showLoading() {
-//        showHUD();
+        showHUD();
     }
 
     @Override
     public void hideLoading() {
-//        hideHUD();
+        hideHUD();
     }
 
     @Override

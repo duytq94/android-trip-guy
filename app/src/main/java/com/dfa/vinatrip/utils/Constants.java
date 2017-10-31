@@ -17,7 +17,7 @@ public class Constants {
     public static final String RECEIVE_MESSAGE = "receive_message";
     public static final String A_USER_JOIN_ROOM = "a_user_join_room";
     public static final String A_USER_LEAVE_ROOM = "a_user_leave_room";
-    public static final String USERNAME = "username";
+    public static final String EMAIL = "email";
     public static final String SEND_MESSAGE = "send_message";
 
     // FireBase storage

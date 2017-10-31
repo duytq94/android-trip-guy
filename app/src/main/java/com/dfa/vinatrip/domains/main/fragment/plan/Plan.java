@@ -9,12 +9,12 @@ import java.util.List;
 public class Plan implements Serializable {
     private String id, name, destination, dateGo, dateBack;
     private int idBackground;
-    private List<String> friendInvitedList;
+    private List<Long> friendInvitedList;
     private List<PlanSchedule> planScheduleList;
     private User userMakePlan;
 
     public Plan(String id, String name, String destination, String dateGo, String dateBack, int idBackground,
-                List<String> friendInvitedList,
+                List<Long> friendInvitedList,
                 List<PlanSchedule> planScheduleList, User userMakePlan) {
         this.id = id;
         this.name = name;
@@ -75,11 +75,11 @@ public class Plan implements Serializable {
         this.idBackground = idBackground;
     }
 
-    public List<String> getFriendInvitedList() {
+    public List<Long> getFriendInvitedList() {
         return friendInvitedList;
     }
 
-    public void setFriendInvitedList(List<String> friendInvitedList) {
+    public void setFriendInvitedList(List<Long> friendInvitedList) {
         this.friendInvitedList = friendInvitedList;
     }
 

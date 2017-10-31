@@ -1,8 +1,8 @@
 package com.dfa.vinatrip.domains.main.fragment.province.province_detail.fragment.food;
 
+import com.beesightsoft.caf.services.schedulers.RxScheduler;
 import com.dfa.vinatrip.base.BasePresenter;
 import com.dfa.vinatrip.services.default_data.DataService;
-import com.dfa.vinatrip.utils.RxHelper;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -25,12 +25,12 @@ public class FoodPresenter extends BasePresenter<FoodView> {
     }
     
     public void getFoods(int province_id, long page, long per_page) {
-        RxHelper.onStop(subscription);
+        RxScheduler.onStop(subscription);
         if (isViewAttached()) {
             getView().showLoading();
         }
         subscription = dataService.getFoods(province_id, page, per_page)
-                .compose(RxHelper.applyIOSchedulers())
+                .compose(RxScheduler.applyIoSchedulers())
                 .doOnTerminate(() -> {
                     if (isViewAttached()) {
                         getView().hideLoading();

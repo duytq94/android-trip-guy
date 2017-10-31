@@ -1,8 +1,8 @@
 package com.dfa.vinatrip.domains.main.fragment.province;
 
+import com.beesightsoft.caf.services.schedulers.RxScheduler;
 import com.dfa.vinatrip.base.BasePresenter;
 import com.dfa.vinatrip.services.default_data.DataService;
-import com.dfa.vinatrip.utils.RxHelper;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -38,12 +38,12 @@ public class ProvincePresenter extends BasePresenter<ProvinceView> {
     }
     
     public void getProvince(long page, long per_page) {
-        RxHelper.onStop(subscription);
+        RxScheduler.onStop(subscription);
         if (isViewAttached()) {
             getView().showLoading();
         }
         subscription = dataService.getProvinces(page, per_page)
-                .compose(RxHelper.applyIOSchedulers())
+                .compose(RxScheduler.applyIoSchedulers())
                 .doOnTerminate(() -> {
                     if (isViewAttached()) {
                         getView().hideLoading();

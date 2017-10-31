@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.main.fragment.plan.make_plan;
+package com.dfa.vinatrip.domains.main.fragment.plan.make_plan.choose_background;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

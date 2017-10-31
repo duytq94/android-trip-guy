@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
+import com.dfa.vinatrip.models.response.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -19,15 +19,15 @@ import java.util.List;
 public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapter.InviteViewHolder> {
     private LayoutInflater layoutInflater;
     private Context context;
-    private List<UserFriend> userFriendList;
-    private List<String> invitedFriendIdList;
+    private List<User> friendList;
+    private List<Long> invitedFriendIdList;
     private Plan currentPlan;
 
-    public InviteFriendAdapter(Context context, List<UserFriend> userFriendList,
-                               List<String> invitedFriendIdList, Plan currentPlan) {
+    public InviteFriendAdapter(Context context, List<User> friendList,
+                               List<Long> invitedFriendIdList, Plan currentPlan) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
-        this.userFriendList = userFriendList;
+        this.friendList = friendList;
         this.invitedFriendIdList = invitedFriendIdList;
         this.currentPlan = currentPlan;
     }
@@ -40,10 +40,12 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
 
     @Override
     public void onBindViewHolder(final InviteViewHolder holder, int position) {
-        final UserFriend userFriend = userFriendList.get(position);
+        final User friend = friendList.get(position);
 
-        holder.tvNickname.setText(userFriend.getNickname());
-        holder.tvEmail.setText(userFriend.getEmail());
+        if (friend.getUsername() != null) {
+            holder.tvNickname.setText(friend.getUsername());
+        }
+        holder.tvEmail.setText(friend.getEmail());
 
         if (currentPlan != null && currentPlan.getFriendInvitedList() != null) {
             holder.btnMakeFriend.setText("Mời");
@@ -51,7 +53,7 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
             holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_neutral);
 
             for (int i = 0; i < currentPlan.getFriendInvitedList().size(); i++) {
-                if (currentPlan.getFriendInvitedList().get(i).equals(userFriend.getFriendId())) {
+                if (currentPlan.getFriendInvitedList().get(i) == friend.getId()) {
                     holder.btnMakeFriend.setText(R.string.invited);
                     holder.btnMakeFriend.setTag("Đã mời");
                     holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_positive);
@@ -64,45 +66,42 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
             holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_neutral);
         }
 
-        holder.btnMakeFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (holder.btnMakeFriend.getTag().toString()) {
-                    case "Mời":
-                        holder.btnMakeFriend.setText(R.string.invited);
-                        holder.btnMakeFriend.setTag("Đã mời");
-                        holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_positive);
-                        invitedFriendIdList.add(userFriend.getFriendId());
-                        break;
+        holder.btnMakeFriend.setOnClickListener(v -> {
+            switch (holder.btnMakeFriend.getTag().toString()) {
+                case "Mời":
+                    holder.btnMakeFriend.setText(R.string.invited);
+                    holder.btnMakeFriend.setTag("Đã mời");
+                    holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_positive);
+                    invitedFriendIdList.add(friend.getId());
+                    break;
 
-                    case "Đã mời":
-                        holder.btnMakeFriend.setText("Mời");
-                        holder.btnMakeFriend.setTag("Mời");
-                        holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_neutral);
-                        for (int i = 0; i < invitedFriendIdList.size(); i++) {
-                            if (invitedFriendIdList.get(i).equals(userFriend.getFriendId())) {
-                                invitedFriendIdList.remove(i);
-                                break;
-                            }
+                case "Đã mời":
+                    holder.btnMakeFriend.setText("Mời");
+                    holder.btnMakeFriend.setTag("Mời");
+                    holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_neutral);
+                    for (int i = 0; i < invitedFriendIdList.size(); i++) {
+                        if (invitedFriendIdList.get(i) == friend.getId()) {
+                            invitedFriendIdList.remove(i);
+                            break;
                         }
-                        break;
-                }
+                    }
+                    break;
             }
         });
 
-        if (userFriend.getAvatar().equals("")) {
+        if (friend.getAvatar() == null) {
             Picasso.with(context).load(R.drawable.ic_avatar).into(holder.ivAvatar);
         } else {
-            Picasso.with(context).load(userFriend.getAvatar())
-                   .placeholder(R.drawable.ic_loading)
-                   .error(R.drawable.photo_not_available)
-                   .into(holder.ivAvatar);
+            Picasso.with(context).load(friend.getAvatar())
+                    .placeholder(R.drawable.ic_loading)
+                    .error(R.drawable.photo_not_available)
+                    .into(holder.ivAvatar);
         }
     }
 
     @Override
     public int getItemCount() {
-        return userFriendList.size();
+        return friendList.size();
     }
 
     public static class InviteViewHolder extends RecyclerView.ViewHolder {

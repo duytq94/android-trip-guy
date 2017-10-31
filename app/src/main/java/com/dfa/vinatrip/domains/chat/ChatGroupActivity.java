@@ -25,11 +25,11 @@ import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.domains.chat.adapter.ChatGroupAdapter;
 import com.dfa.vinatrip.domains.chat.adapter.StickerAdapter;
-import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.TypeMessage;
 import com.dfa.vinatrip.models.TypeSticker;
+import com.dfa.vinatrip.models.response.User;
 import com.dfa.vinatrip.utils.AdapterChatListener;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.KeyboardListener;
@@ -76,12 +76,12 @@ import static com.dfa.vinatrip.models.TypeMessage.sticker;
 import static com.dfa.vinatrip.models.TypeMessage.text;
 import static com.dfa.vinatrip.utils.Constants.A_USER_JOIN_ROOM;
 import static com.dfa.vinatrip.utils.Constants.A_USER_LEAVE_ROOM;
+import static com.dfa.vinatrip.utils.Constants.EMAIL;
 import static com.dfa.vinatrip.utils.Constants.FOLDER_STORAGE_CHAT;
 import static com.dfa.vinatrip.utils.Constants.JOIN_ROOM;
 import static com.dfa.vinatrip.utils.Constants.RECEIVE_MESSAGE;
 import static com.dfa.vinatrip.utils.Constants.SEND_MESSAGE;
 import static com.dfa.vinatrip.utils.Constants.URL_STORAGE;
-import static com.dfa.vinatrip.utils.Constants.USERNAME;
 import static com.sangcomz.fishbun.define.Define.ALBUM_REQUEST_CODE;
 
 @EActivity(R.layout.activity_chat_group)
@@ -92,7 +92,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     protected Plan plan;
 
     @Extra
-    protected ArrayList<UserFriend> userFriendList;
+    protected ArrayList<User> friendList;
 
     @ViewById(R.id.my_toolbar)
     protected Toolbar toolbar;
@@ -183,34 +183,34 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             });
 
             socket.on(A_USER_JOIN_ROOM, args -> {
-                for (int i = 0; i < userFriendList.size(); i++) {
-                    UserFriend userFriend = userFriendList.get(i);
+                for (int i = 0; i < friendList.size(); i++) {
+                    User friend = friendList.get(i);
                     JSONObject jsonObject = (JSONObject) args[0];
-                    String username = "";
+                    String email = "";
                     try {
-                        username = jsonObject.getString(USERNAME);
+                        email = jsonObject.getString(EMAIL);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    if (userFriend.getEmail().equals(username)) {
-                        userFriend.setIsOnline(true);
+                    if (friend.getEmail().equals(email)) {
+//                        friend.setIsOnline(true);
                         break;
                     }
                 }
             });
 
             socket.on(A_USER_LEAVE_ROOM, args -> {
-                for (int i = 0; i < userFriendList.size(); i++) {
-                    UserFriend userFriend = userFriendList.get(i);
+                for (int i = 0; i < friendList.size(); i++) {
+                    User friend = friendList.get(i);
                     JSONObject jsonObject = (JSONObject) args[0];
-                    String username = "";
+                    String email = "";
                     try {
-                        username = jsonObject.getString(USERNAME);
+                        email = jsonObject.getString(EMAIL);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    if (userFriend.getEmail().equals(username)) {
-                        userFriend.setIsOnline(false);
+                    if (friend.getEmail().equals(email)) {
+//                        friend.setIsOnline(false);
                         break;
                     }
                 }
@@ -225,9 +225,9 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
         mapAvatar = new HashMap<>();
         mapNickname = new HashMap<>();
 
-        for (int i = 0; i < userFriendList.size(); i++) {
-            mapAvatar.put(userFriendList.get(i).getEmail(), userFriendList.get(i).getAvatar());
-            mapNickname.put(userFriendList.get(i).getEmail(), userFriendList.get(i).getNickname());
+        for (int i = 0; i < friendList.size(); i++) {
+            mapAvatar.put(friendList.get(i).getEmail(), friendList.get(i).getAvatar());
+            mapNickname.put(friendList.get(i).getEmail(), friendList.get(i).getUsername());
         }
 
         mapSticker = new HashMap<>();
@@ -482,10 +482,10 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     public void getStatusSuccess(List<StatusUserChat> statusUserChatList) {
         for (int i = 0; i < statusUserChatList.size(); i++) {
             StatusUserChat statusUserChat = statusUserChatList.get(i);
-            for (int j = 0; j < userFriendList.size(); j++) {
-                UserFriend userFriend = userFriendList.get(j);
-                if (userFriend.getEmail().equals(statusUserChat.getEmail())) {
-                    userFriend.setIsOnline(statusUserChat.getIsOnline());
+            for (int j = 0; j < friendList.size(); j++) {
+                User friend = friendList.get(j);
+                if (friend.getEmail().equals(statusUserChat.getEmail())) {
+                    friend.setIsOnline(statusUserChat.getIsOnline());
                     break;
                 }
             }
@@ -509,7 +509,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             super.onBackPressed();
             return true;
         } else if (item.getItemId() == R.id.iconInfo) {
-            ShowUserOnlineActivity_.intent(this).userFriendList(userFriendList).start();
+            ShowUserOnlineActivity_.intent(this).friendList(friendList).start();
             return true;
         }
         return false;

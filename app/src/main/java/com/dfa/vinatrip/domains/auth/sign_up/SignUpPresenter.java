@@ -4,7 +4,6 @@ import com.beesightsoft.caf.services.schedulers.RxScheduler;
 import com.dfa.vinatrip.base.BasePresenter;
 import com.dfa.vinatrip.models.request.AuthRequest;
 import com.dfa.vinatrip.services.account.AccountService;
-import com.dfa.vinatrip.utils.RxHelper;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -27,7 +26,7 @@ public class SignUpPresenter extends BasePresenter<SignUpView> {
     }
 
     public void signUp(AuthRequest authRequest) {
-        RxHelper.onStop(subscription);
+        RxScheduler.onStop(subscription);
         if (isViewAttached()) {
             getView().showLoading();
         }

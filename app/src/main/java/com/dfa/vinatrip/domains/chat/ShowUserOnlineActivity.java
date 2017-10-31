@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
+import com.dfa.vinatrip.models.response.User;
 import com.joanzapata.android.BaseAdapterHelper;
 import com.joanzapata.android.QuickAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -28,7 +28,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ShowUserOnlineActivity extends AppCompatActivity {
 
     @Extra
-    protected ArrayList<UserFriend> userFriendList;
+    protected ArrayList<User> friendList;
 
     @ViewById(R.id.my_toolbar)
     protected Toolbar toolbar;
@@ -40,7 +40,7 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
     protected TextView tvCountSum;
 
     private int countCurrent;
-    private QuickAdapter<UserFriend> adapter;
+    private QuickAdapter<User> adapter;
     private ImageLoader imageLoader;
 
     @AfterViews
@@ -49,9 +49,9 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
 
         imageLoader = ImageLoader.getInstance();
 
-        adapter = new QuickAdapter<UserFriend>(this, R.layout.item_user_online) {
+        adapter = new QuickAdapter<User>(this, R.layout.item_user_online) {
             @Override
-            protected void convert(BaseAdapterHelper helper, UserFriend item) {
+            protected void convert(BaseAdapterHelper helper, User item) {
                 ImageView ivIndicator = helper.getView(R.id.item_user_online_iv_indicator);
                 CircleImageView civAvatar = helper.getView(R.id.item_user_online_vertical_civ_avatar);
                 TextView tvNickname = helper.getView(R.id.item_user_online_vertical_tv_nickname);
@@ -59,7 +59,9 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
                 TextView tvType = helper.getView(R.id.item_user_online_tv_type);
 
                 imageLoader.displayImage(item.getAvatar(), civAvatar);
-                tvNickname.setText(item.getNickname());
+                if (item.getUsername() != null) {
+                    tvNickname.setText(item.getUsername());
+                }
                 tvEmail.setText(item.getEmail());
                 if (item.getIsOnline()) {
                     ivIndicator.setVisibility(View.VISIBLE);
@@ -73,10 +75,10 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
         };
         lvUser.setAdapter(adapter);
 
-        adapter.addAll(userFriendList);
+        adapter.addAll(friendList);
         adapter.notifyDataSetChanged();
 
-        tvCountSum.setText(String.valueOf(userFriendList.size()));
+        tvCountSum.setText(String.valueOf(friendList.size()));
         tvCountCurrent.setText(String.valueOf(countCurrent));
     }
 

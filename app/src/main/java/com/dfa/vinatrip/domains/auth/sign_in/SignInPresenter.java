@@ -1,9 +1,9 @@
 package com.dfa.vinatrip.domains.auth.sign_in;
 
+import com.beesightsoft.caf.services.schedulers.RxScheduler;
 import com.dfa.vinatrip.base.BasePresenter;
 import com.dfa.vinatrip.models.request.AuthRequest;
 import com.dfa.vinatrip.services.account.AccountService;
-import com.dfa.vinatrip.utils.RxHelper;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -26,12 +26,12 @@ public class SignInPresenter extends BasePresenter<SignInView> {
     }
 
     public void loginWithEmail(AuthRequest authRequest) {
-        RxHelper.onStop(subscription);
+        RxScheduler.onStop(subscription);
         if (isViewAttached()) {
             getView().showLoading();
         }
         subscription = accountService.login(authRequest)
-                .compose(RxHelper.applyIOSchedulers())
+                .compose(RxScheduler.applyIoSchedulers())
                 .subscribe(user -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
