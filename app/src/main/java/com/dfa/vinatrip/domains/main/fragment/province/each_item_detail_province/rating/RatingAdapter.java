@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.fragment.me.UserProfile;
+import com.dfa.vinatrip.models.response.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -20,9 +20,9 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.RatingView
     private LayoutInflater layoutInflater;
     private Context context;
     private List<UserRating> listUserRatings;
-    private UserProfile currentUser;
+    private User currentUser;
 
-    public RatingAdapter(Context context, List<UserRating> listUserRatings, UserProfile currentUser) {
+    public RatingAdapter(Context context, List<UserRating> listUserRatings, User currentUser) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.listUserRatings = listUserRatings;
@@ -39,11 +39,11 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.RatingView
     public void onBindViewHolder(RatingViewHolder holder, int position) {
         UserRating userRating = listUserRatings.get(position);
 
-        if (currentUser != null && currentUser.getUid().equals(userRating.getUid())) {
-            holder.tvNickname.setText("Tôi");
-        } else {
-            holder.tvNickname.setText(userRating.getNickname());
-        }
+//        if (currentUser != null && currentUser.getUid().equals(userRating.getUid())) {
+//            holder.tvNickname.setText("Tôi");
+//        } else {
+//            holder.tvNickname.setText(userRating.getNickname());
+//        }
 
         holder.tvEmail.setText(userRating.getEmail());
         holder.tvContent.setText(userRating.getContent());

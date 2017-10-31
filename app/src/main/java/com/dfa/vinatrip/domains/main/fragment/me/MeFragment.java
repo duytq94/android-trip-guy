@@ -148,7 +148,7 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
     }
 
     @AfterViews
-    void init() {
+    public void init() {
 
         showAppInfo();
         srlReload.setColorSchemeResources(R.color.colorMain);
@@ -294,7 +294,7 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
     }
 
     @Click(R.id.fragment_me_ll_sign_out)
-    void onLlSignOutClick() {
+    public void onLlSignOutClick() {
         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
         alertDialog.setTitle("Đăng xuất");
         alertDialog.setMessage("Bạn có chắc chắn muốn đăng xuất tài khoản?");
@@ -309,51 +309,33 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
     }
 
     @Click(R.id.fragment_me_ll_update_profile)
-    void onLlUpdateProfileClick() {
-        Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
-
-        // Send notify to inform that llUpdateProfile be clicked
-        String fromView = "llUpdateProfile";
-        intentUpdate.putExtra("FromView", fromView);
-
+    public void onLlUpdateProfileClick() {
         // Make UserProfileDetailActivity notify when it finish
-        startActivityForResult(intentUpdate, REQUEST_UPDATE_INFO);
+        UserProfileDetailActivity_.intent(getActivity()).fromView("llUpdateProfile").startForResult(REQUEST_UPDATE_INFO);
     }
 
     @Click(R.id.fragment_me_tv_make_friend)
-    void onTvMakeFriendClick() {
-        Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
-
-        // Send notify to inform that tvMakeFriend be clicked
-        String fromView = "tvMakeFriend";
-        intentUpdate.putExtra("FromView", fromView);
-
+    public void onTvMakeFriendClick() {
         // Make UserProfileDetailActivity notify when it finish
-        startActivityForResult(intentUpdate, REQUEST_UPDATE_INFO);
+        UserProfileDetailActivity_.intent(getActivity()).fromView("tvMakeFriend").startForResult(REQUEST_UPDATE_INFO);
+
     }
 
     @Click(R.id.fragment_me_tv_view_more_my_friend)
-    void onTvViewMoreMyFriendClick() {
-        Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
-
+    public void onTvViewMoreMyFriendClick() {
         // Send notify to inform that tvViewMore be clicked
-        String fromView = "tvViewMoreMyFriend";
-        intentUpdate.putExtra("FromView", fromView);
-        startActivityForResult(intentUpdate, REQUEST_UPDATE_INFO);
+        UserProfileDetailActivity_.intent(getActivity()).fromView("tvViewMoreMyFriend").startForResult(REQUEST_UPDATE_INFO);
+
     }
 
     @Click(R.id.fragment_me_tv_view_more_my_rating)
-    void onTvViewMoreMyRatingClick() {
-        Intent intentUpdate = new Intent(getActivity(), UserProfileDetailActivity_.class);
-
+    public void onTvViewMoreMyRatingClick() {
         // Send notify to inform that tvViewMore be clicked
-        String fromView = "tvViewMoreMyRating";
-        intentUpdate.putExtra("FromView", fromView);
-        startActivityForResult(intentUpdate, REQUEST_UPDATE_INFO);
+        UserProfileDetailActivity_.intent(getActivity()).fromView("tvViewMoreMyRating").startForResult(REQUEST_UPDATE_INFO);
     }
 
     @Click(R.id.fragment_me_btn_sign_in)
-    void onBtnSignInClick() {
+    public void onBtnSignInClick() {
         SignInActivity_.intent(this).start();
     }
 

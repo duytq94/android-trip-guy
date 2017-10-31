@@ -33,8 +33,6 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -89,7 +87,6 @@ public class UpdateUserProfileFragment extends BaseFragment<UpdateUserProfileVie
     @ViewById(R.id.fragment_update_user_profile_sv_root)
     protected ScrollView svRoot;
 
-    private DatabaseReference databaseReference;
     private StorageReference storageReference;
     private User currentUser;
     private Calendar calendar;
@@ -124,24 +121,29 @@ public class UpdateUserProfileFragment extends BaseFragment<UpdateUserProfileVie
         spnSex.setAdapter(adapter);
 
         currentUser = presenter.getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         calendar = Calendar.getInstance();
 
         if (currentUser != null) {
-            if (!currentUser.getAvatar().equals("")) {
+            if (currentUser.getAvatar() != null) {
                 Picasso.with(getActivity())
                         .load(currentUser.getAvatar())
                         .into(target);
             }
-            etNickname.setText(currentUser.getUsername());
-            tvCity.setText(currentUser.getCity());
-            if (!currentUser.getBirthday().equals("")) {
+            if (currentUser.getUsername() != null) {
+                etNickname.setText(currentUser.getUsername());
+            }
+            if (currentUser.getCity() != null) {
+                tvCity.setText(currentUser.getCity());
+            }
+            if (currentUser.getBirthday() != null) {
                 tvBirthday.setText(currentUser.getBirthday());
             } else {
                 setCurrentDayForView();
             }
-            etIntroduceYourSelf.setText(currentUser.getIntro());
+            if (currentUser.getIntro() != null) {
+                etIntroduceYourSelf.setText(currentUser.getIntro());
+            }
             switch (currentUser.getSex()) {
                 case 0:
                     spnSex.setSelection(0);

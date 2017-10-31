@@ -9,46 +9,43 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
-import com.squareup.picasso.Picasso;
+import com.dfa.vinatrip.models.response.User;
 
 import java.util.List;
 
 public class ListFriendVerticalAdapter extends RecyclerView.Adapter<ListFriendVerticalAdapter.ProfileViewHolder> {
-    private LayoutInflater layoutInflater;
     private Context context;
-    private List<UserFriend> userFriendList;
+    private List<User> friendList;
 
-    public ListFriendVerticalAdapter(Context context, List<UserFriend> userFriendList) {
-        this.layoutInflater = LayoutInflater.from(context);
+    public ListFriendVerticalAdapter(Context context, List<User> friendList) {
         this.context = context;
-        this.userFriendList = userFriendList;
+        this.friendList = friendList;
     }
 
     @Override
     public ProfileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.item_friend_vertical, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_friend_vertical, parent, false);
         return new ProfileViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ProfileViewHolder holder, int position) {
-        final UserFriend userFriend = userFriendList.get(position);
+        final User friend = friendList.get(position);
 
-        holder.tvNickname.setText(userFriend.getNickname());
-        holder.tvEmail.setText(userFriend.getEmail());
-
-        if (!userFriend.getAvatar().equals("")) {
-            Picasso.with(context).load(userFriend.getAvatar())
-                   .placeholder(R.drawable.ic_loading)
-                   .error(R.drawable.photo_not_available)
-                   .into(holder.ivAvatar);
-        }
+//        holder.tvNickname.setText(friend.getNickname());
+//        holder.tvEmail.setText(friend.getEmail());
+//
+//        if (!userFriend.getAvatar().equals("")) {
+//            Picasso.with(context).load(userFriend.getAvatar())
+//                   .placeholder(R.drawable.ic_loading)
+//                   .error(R.drawable.photo_not_available)
+//                   .into(holder.ivAvatar);
+//        }
     }
 
     @Override
     public int getItemCount() {
-        return userFriendList.size();
+        return friendList.size();
     }
 
     public static class ProfileViewHolder extends RecyclerView.ViewHolder {

@@ -154,4 +154,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
 }
 // this line has to put out of dependencies so app can run Google Map
+dependencies {
+    compile 'com.android.support:support-v4:25.+'
+}
 apply plugin: 'com.google.gms.google-services'
