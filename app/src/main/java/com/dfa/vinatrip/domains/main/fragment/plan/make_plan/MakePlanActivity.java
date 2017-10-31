@@ -21,7 +21,6 @@ import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFrien
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.User;
-import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -38,7 +37,6 @@ import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
@@ -62,9 +60,6 @@ import static com.dfa.vinatrip.utils.Constants.REQUEST_BACKGROUND;
 @EActivity(R.layout.activity_make_plan)
 public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresenter>
         implements MakePlanView, Validator.ValidationListener {
-
-    @Bean
-    DataService dataService;
 
     @ViewById(R.id.activity_make_plan_rv_list_friend)
     protected RecyclerView rvListFriend;
@@ -177,10 +172,10 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
         invitedFriendIdList = new ArrayList<>();
 
         userFriendList = new ArrayList<>();
-        if (dataService.getUserFriendList().size() != 0) {
-            tvFriendNotAvailable.setVisibility(View.GONE);
-            userFriendList.addAll(dataService.getUserFriendList());
-        }
+//        if (dataService.getUserFriendList().size() != 0) {
+//            tvFriendNotAvailable.setVisibility(View.GONE);
+//            userFriendList.addAll(dataService.getUserFriendList());
+//        }
 
         inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList, invitedFriendIdList, currentPlan);
         rvListFriend.setAdapter(inviteFriendAdapter);
@@ -207,10 +202,10 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
         }
 
         userFriendList = new ArrayList<>();
-        if (dataService.getUserFriendList().size() != 0) {
-            tvFriendNotAvailable.setVisibility(View.GONE);
-            userFriendList.addAll(dataService.getUserFriendList());
-        }
+//        if (dataService.getUserFriendList().size() != 0) {
+//            tvFriendNotAvailable.setVisibility(View.GONE);
+//            userFriendList.addAll(dataService.getUserFriendList());
+//        }
 
         inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList, invitedFriendIdList, currentPlan);
         rvListFriend.setAdapter(inviteFriendAdapter);

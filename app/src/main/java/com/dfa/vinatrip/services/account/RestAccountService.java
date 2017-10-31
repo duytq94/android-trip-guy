@@ -5,6 +5,7 @@ import com.dfa.vinatrip.models.request.AuthRequest;
 import com.dfa.vinatrip.models.response.User;
 
 import retrofit2.http.Body;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -18,4 +19,7 @@ public interface RestAccountService {
 
     @POST("api/auth/register")
     Observable<RestMessageResponse<User>> signUp(@Body AuthRequest authRequest);
+
+    @POST("api/auth/logout")
+    Observable<RestMessageResponse<String>> signOut(@Header("access-token") String userToken);
 }

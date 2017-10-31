@@ -17,7 +17,6 @@ import com.dfa.vinatrip.domains.auth.sign_in.SignInActivity_;
 import com.dfa.vinatrip.domains.main.fragment.plan.detail_plan.DetailPlanActivity_;
 import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.MakePlanActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
-import com.dfa.vinatrip.utils.AppUtil;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -36,15 +35,15 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
         implements PlanView {
 
     @ViewById(R.id.fragment_plan_rv_plan)
-    RecyclerView rvPlan;
+    protected RecyclerView rvPlan;
     @ViewById(R.id.fragment_plan_srl_reload)
-    SwipeRefreshLayout srlReload;
+    protected SwipeRefreshLayout srlReload;
     @ViewById(R.id.fragment_plan_ll_plan_list_not_available)
-    LinearLayout llPlanListNotAvailable;
+    protected LinearLayout llPlanListNotAvailable;
     @ViewById(R.id.fragment_plan_rl_login)
-    RelativeLayout rlLogin;
+    protected RelativeLayout rlLogin;
     @ViewById(R.id.fragment_plan_rl_not_login)
-    RelativeLayout rlNotLogin;
+    protected RelativeLayout rlNotLogin;
 
     private List<Plan> planList;
     private PlanAdapter planAdapter;
@@ -68,29 +67,23 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
     }
 
     @AfterViews
-    void init() {
+    public void init() {
         planList = new ArrayList<>();
 
-        if (AppUtil.isNetworkConnected(getActivity())) {
-            if (presenter.isLogin()) {
-                initView();
-            } else {
-                rlLogin.setVisibility(View.GONE);
-                rlNotLogin.setVisibility(View.VISIBLE);
-            }
+        if (presenter.isLogin()) {
+            initView();
+        } else {
+            rlLogin.setVisibility(View.GONE);
+            rlNotLogin.setVisibility(View.VISIBLE);
         }
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         srlReload.setOnRefreshListener(() -> {
-            if (AppUtil.isNetworkConnected(getActivity())) {
-                if (presenter.isLogin()) {
-                    planList.clear();
-                    initView();
-                }
-                srlReload.setRefreshing(false);
-            } else {
-                srlReload.setRefreshing(false);
+            if (presenter.isLogin()) {
+                planList.clear();
+                initView();
             }
+            srlReload.setRefreshing(false);
         });
     }
 

@@ -50,7 +50,10 @@ public class DefaultAccountService
 
     @Override
     protected Observable<String> onLogout() {
-        return null;
+        User currentUser = getCurrentUser();
+        return networkProvider
+                .transformResponse(restAccountService.signOut(currentUser.getAccessToken()))
+                .compose(apiErrorFilter.execute());
     }
 
     @Override

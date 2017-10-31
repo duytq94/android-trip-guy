@@ -10,11 +10,9 @@ import android.widget.LinearLayout;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.fragment.province.each_item_detail_province.EachItemProvinceDetailActivity_;
 import com.dfa.vinatrip.domains.main.fragment.province.each_item_detail_province.rating.UserRating;
-import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -25,9 +23,6 @@ import java.util.List;
 
 @EFragment(R.layout.fragment_my_rating)
 public class MyRatingFragment extends Fragment {
-    
-    @Bean
-    DataService dataService;
     
     @ViewById(R.id.fragment_my_rating_rv_list_ratings)
     RecyclerView rvListRatings;
@@ -41,7 +36,7 @@ public class MyRatingFragment extends Fragment {
     @AfterViews
     void onCreateView() {
         myRatingList = new ArrayList<>();
-        myRatingList.addAll(dataService.getMyRatingList());
+//        myRatingList.addAll(dataService.getMyRatingList());
         
         if (myRatingList.size() != 0) {
             rvListRatings.setVisibility(View.VISIBLE);

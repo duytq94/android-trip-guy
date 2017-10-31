@@ -24,15 +24,12 @@ import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFrien
 import com.dfa.vinatrip.domains.main.fragment.province.each_item_detail_province.rating.UserRating;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
-import com.dfa.vinatrip.services.DataService;
-import com.dfa.vinatrip.utils.AppUtil;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
@@ -51,9 +48,6 @@ import static com.dfa.vinatrip.utils.AppUtil.REQUEST_UPDATE_INFO;
 @EFragment(R.layout.fragment_me)
 public class MeFragment extends BaseFragment<MeView, MePresenter>
         implements MeView {
-
-    @Bean
-    DataService dataService;
 
     @ViewById(R.id.fragment_me_tv_nickname)
     protected TextView tvNickname;
@@ -159,24 +153,18 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
         showAppInfo();
         srlReload.setColorSchemeResources(R.color.colorMain);
 
-        if (AppUtil.isNetworkConnected(getActivity())) {
-            if (presenter.getCurrentUser() != null) {
-                initView();
-            } else {
-                rlLogin.setVisibility(View.GONE);
-                rlNotLogin.setVisibility(View.VISIBLE);
-            }
+        if (presenter.getCurrentUser() != null) {
+            initView();
+        } else {
+            rlLogin.setVisibility(View.GONE);
+            rlNotLogin.setVisibility(View.VISIBLE);
         }
 
         srlReload.setOnRefreshListener(() -> {
-            if (AppUtil.isNetworkConnected(getActivity())) {
-                if (presenter.getCurrentUser() != null) {
-                    initView();
-                }
-                srlReload.setRefreshing(false);
-            } else {
-                srlReload.setRefreshing(false);
+            if (presenter.getCurrentUser() != null) {
+                initView();
             }
+            srlReload.setRefreshing(false);
         });
     }
 
@@ -204,43 +192,19 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
         myRatingList = new ArrayList<>();
 
         initLlMyFriend();
-        dataService.setOnChangeUserFriendList(new DataService.OnChangeUserFriendList() {
-            @Override
-            public void onAddFriend() {
-                initLlMyFriend();
-            }
-
-            @Override
-            public void onRemoveFriend() {
-                initLlMyFriend();
-            }
-        });
 
         initLlMyRating();
-        dataService.setOnChangeMyRatingList(new DataService.OnChangeMyRatingList() {
-            @Override
-            public void onUpdateRating() {
-                initLlMyRating();
-            }
-
-            @Override
-            public void onAddRating() {
-                initLlMyRating();
-            }
-        });
 
         initFlInfor();
-        dataService.setOnChangeCurrentUser(() -> initFlInfor());
 
         tvIntroduceYourSelf.setText(presenter.getCurrentUser().getIntro());
         tvBirthday.setText(presenter.getCurrentUser().getBirthday());
         tvEmail.setText(presenter.getCurrentUser().getEmail());
-        tvSex.setText(presenter.getCurrentUser().getSex());
+        tvSex.setText(presenter.getCurrentUser().getStringSex());
     }
 
     public void initLlMyFriend() {
         listUserFriends.clear();
-        listUserFriends.addAll(AppUtil.filterListFriends(dataService.getUserFriendList()));
         UserFriend userFriend;
         switch (listUserFriends.size()) {
             case 0:
@@ -278,7 +242,6 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
 
     public void initLlMyRating() {
         myRatingList.clear();
-        myRatingList.addAll(dataService.getMyRatingList());
         UserRating myRating;
         switch (myRatingList.size()) {
             case 0:
@@ -399,9 +362,7 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
         super.onActivityResult(requestCode, currentUserCode, data);
         // Reload view
         if (requestCode == REQUEST_UPDATE_INFO) {
-            if (AppUtil.isNetworkConnected(getActivity())) {
-                initView();
-            }
+            initView();
         }
     }
 

@@ -22,17 +22,28 @@ public class User extends BaseEntity implements LoginResponse, Serializable {
     @SerializedName("intro")
     private String intro;
     @SerializedName("sex")
-    private Integer sex;
+    private int sex;
     @SerializedName("latitude")
-    private Double latitude;
+    private double latitude;
     @SerializedName("longitude")
-    private Double longitude;
+    private double longitude;
     @SerializedName("accessToken")
     private String accessToken;
     @SerializedName("background")
     private String background;
     @SerializedName("city")
     private String city;
+
+    public User(String username, String avatar, String birthday, String intro, int sex,
+               String background, String city) {
+        this.username = username;
+        this.avatar = avatar;
+        this.birthday = birthday;
+        this.intro = intro;
+        this.sex = sex;
+        this.background = background;
+        this.city = city;
+    }
 
     public String getCity() {
         return city;
@@ -62,15 +73,23 @@ public class User extends BaseEntity implements LoginResponse, Serializable {
         return intro;
     }
 
-    public Integer getSex() {
+    public int getSex() {
         return sex;
     }
 
-    public Double getLatitude() {
+    public String getStringSex() {
+        if (sex == 0) {
+            return "Nam";
+        } else {
+            return "Nữ";
+        }
+    }
+
+    public double getLatitude() {
         return latitude;
     }
 
-    public Double getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
@@ -106,15 +125,15 @@ public class User extends BaseEntity implements LoginResponse, Serializable {
         this.intro = intro;
     }
 
-    public void setSex(Integer sex) {
+    public void setSex(int sex) {
         this.sex = sex;
     }
 
-    public void setLatitude(Double latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public void setLongitude(Double longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 

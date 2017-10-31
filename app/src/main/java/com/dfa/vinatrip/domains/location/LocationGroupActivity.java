@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.domains.location;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,11 +29,10 @@ import android.widget.Toast;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
-import com.dfa.vinatrip.domains.main.fragment.me.UserProfile;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
-import com.dfa.vinatrip.services.DataService;
+import com.dfa.vinatrip.models.response.User;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -49,7 +49,6 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
@@ -79,9 +78,6 @@ import static com.dfa.vinatrip.utils.Constants.REQUEST_PERMISSION_LOCATION;
 public class LocationGroupActivity extends BaseActivity<LocationGroupView, LocationGroupPresenter>
         implements LocationGroupView {
 
-    @Bean
-    DataService dataService;
-
     @Extra
     protected Plan plan;
 
@@ -94,7 +90,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
     private LocationManager locationManager;
     private LocationListener locationListener;
     private Location location;
-    private UserProfile currentUser;
+    private User currentUser;
     private List<UserFriend> userFriendList;
     private List<UserLocation> userLocationList;
     private Map<String, String> mapAvatar;
@@ -133,9 +129,9 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             socket = IO.socket(SERVER_SOCKET_LOCATION);
             socket.connect();
 
-            currentUser = dataService.getCurrentUser();
+            currentUser = presenter.getCurrentUser();
 
-            socket.emit("join_room", dataService.getCurrentUser().getEmail(), plan.getId());
+            socket.emit("join_room", currentUser.getEmail(), plan.getId());
 
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             changeIconLocation();
@@ -217,7 +213,9 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
 
             imageLoader = ImageLoader.getInstance();
 
-            userFriendList = dataService.getUserFriendList();
+//            userFriendList = dataService.getUserFriendList();
+            // TODO get list friend
+
             mapAvatar = new HashMap<>();
             for (int i = 0; i < userFriendList.size(); i++) {
                 mapAvatar.put(userFriendList.get(i).getEmail(), userFriendList.get(i).getAvatar());
@@ -260,6 +258,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
         };
     }
 
+    @SuppressLint("MissingPermission")
     public void getCurrentUserLocation() {
         List<String> listProviders = locationManager.getAllProviders();
         for (String provider : listProviders) {
@@ -374,6 +373,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
         }
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onResume() {
         super.onResume();

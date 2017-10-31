@@ -1,10 +1,8 @@
 package com.dfa.vinatrip.base;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.view.View;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 
 import com.dfa.vinatrip.R;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
@@ -22,14 +20,6 @@ import org.androidannotations.annotations.UiThread;
 public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>> extends MvpActivity<V, P> {
 
     private Dialog progressDialogLoading;
-
-    public void hideKeyBoard() {
-        View currentView = this.getCurrentFocus();
-        if (currentView != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(currentView.getWindowToken(), 0);
-        }
-    }
     
     @UiThread
     public void showHUD() {

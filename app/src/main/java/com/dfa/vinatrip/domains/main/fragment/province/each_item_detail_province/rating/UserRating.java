@@ -1,37 +1,10 @@
 package com.dfa.vinatrip.domains.main.fragment.province.each_item_detail_province.rating;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.Serializable;
 
-public class UserRating implements Parcelable {
+public class UserRating implements Serializable {
     private String uid, nickname, avatar, email, content, numStars, date, locationName, locationProvince,
             locationPhoto, type;
-
-    protected UserRating(Parcel in) {
-        uid = in.readString();
-        nickname = in.readString();
-        avatar = in.readString();
-        email = in.readString();
-        content = in.readString();
-        numStars = in.readString();
-        date = in.readString();
-        locationName = in.readString();
-        locationProvince = in.readString();
-        locationPhoto = in.readString();
-        type = in.readString();
-    }
-
-    public static final Creator<UserRating> CREATOR = new Creator<UserRating>() {
-        @Override
-        public UserRating createFromParcel(Parcel in) {
-            return new UserRating(in);
-        }
-
-        @Override
-        public UserRating[] newArray(int size) {
-            return new UserRating[size];
-        }
-    };
 
     public String getUid() {
         return uid;
@@ -75,47 +48,6 @@ public class UserRating implements Parcelable {
 
     public String getType() {
         return type;
-    }
-
-    public UserRating() {
-
-    }
-
-    public UserRating(String uid, String nickname, String avatar, String email, String content, String numStars,
-                      String date, String locationName, String locationProvince, String locationPhoto,
-                      String type) {
-
-        this.uid = uid;
-        this.nickname = nickname;
-        this.avatar = avatar;
-        this.email = email;
-        this.content = content;
-        this.numStars = numStars;
-        this.date = date;
-        this.locationName = locationName;
-        this.locationProvince = locationProvince;
-        this.locationPhoto = locationPhoto;
-        this.type = type;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(uid);
-        parcel.writeString(nickname);
-        parcel.writeString(avatar);
-        parcel.writeString(email);
-        parcel.writeString(content);
-        parcel.writeString(numStars);
-        parcel.writeString(date);
-        parcel.writeString(locationName);
-        parcel.writeString(locationProvince);
-        parcel.writeString(locationPhoto);
-        parcel.writeString(type);
     }
 }
 

@@ -11,12 +11,9 @@ import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -25,29 +22,28 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.fragment.me.UserProfile;
-import com.dfa.vinatrip.services.DataService;
+import com.dfa.vinatrip.base.BaseFragment;
+import com.dfa.vinatrip.infrastructures.ActivityModule;
+import com.dfa.vinatrip.models.response.User;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OnActivityResult;
@@ -58,6 +54,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import es.dmoral.toasty.Toasty;
 import jp.wasabeef.blurry.Blurry;
 
@@ -67,54 +65,57 @@ import static com.dfa.vinatrip.utils.AppUtil.REQUEST_PLACE_AUTO_COMPLETE;
 import static com.dfa.vinatrip.utils.AppUtil.exifToDegrees;
 
 @EFragment(R.layout.fragment_update_user_profile)
-public class UpdateUserProfileFragment extends Fragment {
-
-    @Bean
-    DataService dataService;
+public class UpdateUserProfileFragment extends BaseFragment<UpdateUserProfileView, UpdateUserProfilePresenter>
+        implements UpdateUserProfileView {
 
     @ViewById(R.id.fragment_update_user_profile_tv_percent)
-    TextView tvPercent;
-
+    protected TextView tvPercent;
     @ViewById(R.id.fragment_update_user_profile_et_nickname)
-    EditText etNickname;
-
+    protected EditText etNickname;
     @ViewById(R.id.fragment_update_user_profile_tv_city)
-    TextView tvCity;
-
+    protected TextView tvCity;
     @ViewById(R.id.fragment_update_user_profile_et_introduce_your_self)
-    EditText etIntroduceYourSelf;
-
+    protected EditText etIntroduceYourSelf;
     @ViewById(R.id.fragment_update_user_profile_iv_avatar)
-    ImageView ivAvatar;
-
+    protected ImageView ivAvatar;
     @ViewById(R.id.fragment_update_user_profile_iv_blur_avatar)
-    ImageView ivBlurAvatar;
-
+    protected ImageView ivBlurAvatar;
     @ViewById(R.id.fragment_update_user_profile_progressBar)
-    ProgressBar progressBar;
-
+    protected ProgressBar progressBar;
     @ViewById(R.id.fragment_update_user_profile_spn_sex)
-    Spinner spnSex;
-
+    protected Spinner spnSex;
     @ViewById(R.id.fragment_update_user_profile_tv_birthday)
-    TextView tvBirthday;
-
+    protected TextView tvBirthday;
     @ViewById(R.id.fragment_update_user_profile_sv_root)
-    ScrollView svRoot;
+    protected ScrollView svRoot;
 
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
-    private UserProfile currentUser;
+    private User currentUser;
     private Calendar calendar;
     private Uri uri;
     private Bitmap adjustedBitmap;
 
-    @AfterViews
-    void init() {
-        setContentViews();
+    @App
+    protected MainApplication application;
+    @Inject
+    protected UpdateUserProfilePresenter presenter;
+
+    @AfterInject
+    protected void initInject() {
+        DaggerUpdateUserProfileComponent.builder()
+                .applicationComponent(application.getApplicationComponent())
+                .activityModule(new ActivityModule(getActivity()))
+                .build().inject(this);
     }
 
-    public void setContentViews() {
+    @Override
+    public UpdateUserProfilePresenter createPresenter() {
+        return presenter;
+    }
+
+    @AfterViews
+    public void init() {
         adjustedBitmap = null;
 
         ArrayAdapter<CharSequence> adapter =
@@ -122,7 +123,7 @@ public class UpdateUserProfileFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnSex.setAdapter(adapter);
 
-        currentUser = dataService.getCurrentUser();
+        currentUser = presenter.getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         calendar = Calendar.getInstance();
@@ -133,19 +134,19 @@ public class UpdateUserProfileFragment extends Fragment {
                         .load(currentUser.getAvatar())
                         .into(target);
             }
-            etNickname.setText(currentUser.getNickname());
+            etNickname.setText(currentUser.getUsername());
             tvCity.setText(currentUser.getCity());
             if (!currentUser.getBirthday().equals("")) {
                 tvBirthday.setText(currentUser.getBirthday());
             } else {
                 setCurrentDayForView();
             }
-            etIntroduceYourSelf.setText(currentUser.getIntroduceYourSelf());
+            etIntroduceYourSelf.setText(currentUser.getIntro());
             switch (currentUser.getSex()) {
-                case "Nam":
+                case 0:
                     spnSex.setSelection(0);
                     break;
-                case "Nữ":
+                case 1:
                     spnSex.setSelection(1);
                     break;
                 default:
@@ -180,105 +181,68 @@ public class UpdateUserProfileFragment extends Fragment {
         storageReference = FirebaseStorage.getInstance()
                 .getReferenceFromUrl("gs://tripguy-10864.appspot.com")
                 .child("AvatarProfileUser")
-                .child(currentUser.getUid() + ".jpg");
+                .child(currentUser.getId() + ".jpg");
 
         UploadTask uploadTask = storageReference.putBytes(byteArrayPhoto);
         uploadTask
-                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        long progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                        if (isAdded()) {
-                            tvPercent.setText(progress + "%");
-                        }
+                .addOnProgressListener(taskSnapshot -> {
+                    long progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    if (isAdded()) {
+                        tvPercent.setText(progress + "%");
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
+                .addOnFailureListener(exception -> {
+                    progressBar.setVisibility(View.GONE);
+                    AppUtil.setEnableAllViews(svRoot, true);
+                    tvPercent.setVisibility(View.GONE);
+                    Toasty.error(getActivity(),
+                            "Cập nhật không thành công\nBạn vui lòng thử lại",
+                            Toast.LENGTH_SHORT).show();
+                })
+                .addOnSuccessListener(taskSnapshot -> {
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    String linkAvatar;
+                    if (downloadUrl == null) linkAvatar = currentUser.getAvatar();
+                    else {
+                        linkAvatar = downloadUrl.toString();
+                    }
+
+                    if (isAdded()) {
+                        User newUserProfile =
+                                new User(etNickname.getText().toString(),
+                                        linkAvatar,
+                                        tvBirthday.getText().toString(),
+                                        etIntroduceYourSelf.getText().toString(),
+                                        spnSex.getSelectedItemPosition(),
+                                        "",
+                                        tvCity.getText().toString());
+                        //TODO post new user profile
                         progressBar.setVisibility(View.GONE);
                         AppUtil.setEnableAllViews(svRoot, true);
                         tvPercent.setVisibility(View.GONE);
-                        Toasty.error(getActivity(),
-                                "Cập nhật không thành công\nBạn vui lòng thử lại",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        String linkAvatar;
-                        if (downloadUrl == null) linkAvatar = currentUser.getAvatar();
-                        else {
-                            linkAvatar = downloadUrl.toString();
-                        }
-
-                        if (isAdded()) {
-                            UserProfile newUserProfile =
-                                    new UserProfile(etNickname.getText().toString(),
-                                            linkAvatar,
-                                            etIntroduceYourSelf.getText().toString(),
-                                            tvCity.getText().toString(),
-                                            tvBirthday.getText().toString(),
-                                            currentUser.getUid(),
-                                            spnSex.getSelectedItem().toString(),
-                                            currentUser.getEmail());
-                            databaseReference.child("UserProfile").child(currentUser.getUid())
-                                    .setValue(newUserProfile);
-                            dataService.updateInforCurrentUser(newUserProfile);
-                            progressBar.setVisibility(View.GONE);
-                            AppUtil.setEnableAllViews(svRoot, true);
-                            tvPercent.setVisibility(View.GONE);
-                            Toasty.success(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                            getActivity().finish();
-                        }
+                        Toasty.success(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                        getActivity().finish();
                     }
                 });
     }
 
-    @Click
-    void fragment_update_user_profile_btn_done() {
+    @Click(R.id.fragment_update_user_profile_btn_done)
+    public void onBtnDoneClick() {
         // Check if user update info but don't update avatar
         if (uri == null) {
-            final UserProfile newUserProfile =
-                    new UserProfile(etNickname.getText().toString(),
-                            currentUser.getAvatar(),
-                            etIntroduceYourSelf.getText().toString(),
-                            tvCity.getText().toString(),
-                            tvBirthday.getText().toString(),
-                            currentUser.getUid(),
-                            spnSex.getSelectedItem().toString(),
-                            currentUser.getEmail());
-
-            databaseReference.child("UserProfile").child(currentUser.getUid())
-                    .setValue(newUserProfile, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(DatabaseError databaseError,
-                                               DatabaseReference databaseReference) {
-                            if (databaseError != null) {
-                                Toasty.error(getActivity(), "Lỗi đường truyền, bạn hãy gửi lại!",
-                                        Toast.LENGTH_SHORT).show();
-                            } else {
-                                dataService.updateInforCurrentUser(newUserProfile);
-                                Toasty.success(getActivity(), "Cập nhật thành công!", Toast.LENGTH_SHORT)
-                                        .show();
-                                getActivity().finish();
-                            }
-                        }
-                    });
+            //TODO update info
         } else {
             uploadUserAvatar();
         }
     }
 
-    @Click
-    void fragment_update_user_profile_btn_cancel() {
+    @Click(R.id.fragment_update_user_profile_btn_cancel)
+    public void onBtnCancelClick() {
         getActivity().finish();
     }
 
-    @Click
-    void fragment_update_user_profile_iv_change_avatar() {
+    @Click(R.id.fragment_update_user_profile_iv_change_avatar)
+    public void onIvChangeAvatarClick() {
         askPermission();
         if (checkPermission()) {
             Intent intentToLibrary = new Intent();
@@ -288,15 +252,12 @@ public class UpdateUserProfileFragment extends Fragment {
         }
     }
 
-    @Click
-    void fragment_update_user_profile_ll_birthday() {
+    @Click(R.id.fragment_update_user_profile_ll_birthday)
+    public void onLlBirthdayClick() {
         // When date be set
-        DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                tvBirthday.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-                calendar.set(year, month, dayOfMonth);
-            }
+        DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+            tvBirthday.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+            calendar.set(year, month, dayOfMonth);
         };
 
         // Set current position time when start dialog
@@ -310,7 +271,7 @@ public class UpdateUserProfileFragment extends Fragment {
     }
 
     @Click(R.id.fragment_update_user_profile_ll_city)
-    void onLlCityClick() {
+    public void onLlCityClick() {
         try {
             AutocompleteFilter typeFilter = new AutocompleteFilter.Builder().setCountry("VN").build();
             Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
@@ -322,7 +283,7 @@ public class UpdateUserProfileFragment extends Fragment {
     }
 
     @OnActivityResult(REQUEST_PICK_IMAGE)
-    void onResultImage(int resultCode, Intent data) {
+    public void onResultImage(int resultCode, Intent data) {
         if (resultCode == RESULT_OK && data != null) {
             uri = data.getData();
 
@@ -336,7 +297,7 @@ public class UpdateUserProfileFragment extends Fragment {
     }
 
     @OnActivityResult(REQUEST_PLACE_AUTO_COMPLETE)
-    void onResultPlace(int resultCode, Intent data) {
+    public void onResultPlace(int resultCode, Intent data) {
         if (resultCode == RESULT_OK && data != null) {
             Place place = PlaceAutocomplete.getPlace(getActivity(), data);
             tvCity.setText(place.getAddress());
@@ -408,5 +369,19 @@ public class UpdateUserProfileFragment extends Fragment {
                         PackageManager.PERMISSION_GRANTED;
     }
 
+    @Override
+    public void showLoading() {
+        showHUD();
+    }
+
+    @Override
+    public void hideLoading() {
+        hideHUD();
+    }
+
+    @Override
+    public void apiError(Throwable throwable) {
+
+    }
 
 }

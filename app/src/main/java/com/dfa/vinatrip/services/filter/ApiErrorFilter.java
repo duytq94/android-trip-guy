@@ -48,7 +48,7 @@ public class ApiErrorFilter implements InterceptFilter {
                                     case ErrorCodes.HTTP_TIMEOUT_ERROR:
                                         exceptionResult = ApiThrowable.from(
                                                 ErrorCodes.NETWORK_NOT_AVAILABLE_ERROR,
-                                                "The internet connection appears tobe offline.");
+                                                "Internet connection is offline.");
                                         break;
                                     case ERROR_OAUTH2_TOKEN_INVALID:
                                     case ERROR_OAUTH2_TOKEN_NOT_BE_VERIFIED:

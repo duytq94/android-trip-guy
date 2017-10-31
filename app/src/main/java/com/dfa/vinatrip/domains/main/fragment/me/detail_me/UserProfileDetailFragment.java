@@ -14,7 +14,7 @@ import com.dfa.vinatrip.domains.main.fragment.me.detail_me.my_rating.MyRatingFra
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.my_rating.MyRatingFragment_;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.update_profile.UpdateUserProfileFragment;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.update_profile.UpdateUserProfileFragment_;
-import com.dfa.vinatrip.services.DataService;
+import com.dfa.vinatrip.services.default_data.DataService;
 import com.dfa.vinatrip.widgets.ViewPagerSwipeFragmentAdapter;
 
 import org.androidannotations.annotations.AfterViews;
@@ -24,9 +24,6 @@ import org.androidannotations.annotations.ViewById;
 
 @EFragment(R.layout.fragment_user_profile_detail)
 public class UserProfileDetailFragment extends Fragment {
-    
-    @Bean
-    DataService dataService;
     
     @ViewById(R.id.fragment_user_profile_detail_vp_user_profile_detail)
     ViewPager vpMeDetail;
@@ -46,7 +43,7 @@ public class UserProfileDetailFragment extends Fragment {
         // Get the FromView from UserProfileDetailActivity
         fromView = getArguments().getBundle("bdFromView").getString("FromView");
         
-        setupViewPager(vpMeDetail, dataService.getCurrentUser());
+//        setupViewPager(vpMeDetail, dataService.getCurrentUser());
         
         tlMenu.setupWithViewPager(vpMeDetail);
         

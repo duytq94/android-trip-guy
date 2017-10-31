@@ -7,7 +7,6 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +19,7 @@ import com.dfa.vinatrip.domains.main.fragment.province.adapter.RecyclerProvinceA
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.Province;
 import com.dfa.vinatrip.utils.AppUtil;
+import com.dfa.vinatrip.widgets.EndlessRecyclerViewScrollListener;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -52,12 +52,10 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
     protected RecyclerView rcvProvince;
 
     private List<String> banners;
-    private PagerBannerAdapter pagerBannerAdapter;
+    private PagerBannerAdapter bannerAdapter;
 
     private List<Province> provinceList;
-    private RecyclerProvinceAdapter recyclerProvinceAdapter;
-    private int page = 1;
-    private int per_page = 10;
+    private RecyclerProvinceAdapter provinceAdapter;
 
     @AfterInject
     protected void initInject() {
@@ -73,35 +71,33 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
         firstSetup();
 
         presenter.getBanner();
-        presenter.getProvince(page, per_page);
-
-        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                Log.e("test", scrollX + " " + scrollY + " " + oldScrollX + " " + oldScrollY);
-            }
-        });
-
-        nestedScrollView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-            @Override
-            public void onSystemUiVisibilityChange(int i) {
-                Log.e("test", " " + i);
-            }
-        });
+        presenter.getProvince(1, 10);
 
         srlReload.setColorSchemeResources(R.color.colorMain);
+        srlReload.setOnRefreshListener(() -> {
+            presenter.getProvince(1, 10);
+            srlReload.setRefreshing(false);
+        });
     }
 
     public void firstSetup() {
         provinceList = new ArrayList<>();
-        recyclerProvinceAdapter = new RecyclerProvinceAdapter(getContext(), provinceList);
+        provinceAdapter = new RecyclerProvinceAdapter(getContext(), provinceList);
         rcvProvince.setHasFixedSize(true);
-        rcvProvince.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        rcvProvince.setAdapter(recyclerProvinceAdapter);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        rcvProvince.setLayoutManager(layoutManager);
+        rcvProvince.setAdapter(provinceAdapter);
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                presenter.getProvince(page, 10);
+            }
+        };
+        rcvProvince.addOnScrollListener(scrollListener);
 
         banners = new ArrayList<>();
-        pagerBannerAdapter = new PagerBannerAdapter(getContext(), banners);
-        vpBanner.setAdapter(pagerBannerAdapter);
+        bannerAdapter = new PagerBannerAdapter(getContext(), banners);
+        vpBanner.setAdapter(bannerAdapter);
         vpBanner.setPageTransformer(true, new ViewPager.PageTransformer() {
             static final float MIN_SCALE = 0.75f;
 
@@ -152,7 +148,7 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
     @Override
     public void getBannerSuccess(List<String> banners) {
         this.banners.addAll(banners);
-        pagerBannerAdapter.notifyDataSetChanged();
+        bannerAdapter.notifyDataSetChanged();
 
         for (int i = 0; i < this.banners.size(); i++) {
             LinearLayout.LayoutParams layoutParams =
@@ -198,6 +194,6 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
     @Override
     public void getProvinceSuccess(List<Province> provinces) {
         provinceList.addAll(provinces);
-        recyclerProvinceAdapter.notifyDataSetChanged();
+        provinceAdapter.notifyDataSetChanged();
     }
 }

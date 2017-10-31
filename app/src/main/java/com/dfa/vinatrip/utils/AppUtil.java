@@ -8,7 +8,6 @@ import android.content.IntentSender;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ExifInterface;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -61,12 +60,6 @@ public class AppUtil {
 
     public Context getContext() {
         return context;
-    }
-
-    public static boolean isNetworkConnected(Context context) {
-        ConnectivityManager connectivityManager =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return connectivityManager.getActiveNetworkInfo() != null;
     }
 
     public static int exifToDegrees(int exifOrientation) {

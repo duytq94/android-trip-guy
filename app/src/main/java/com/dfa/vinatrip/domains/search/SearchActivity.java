@@ -13,11 +13,9 @@ import android.view.View;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.fragment.province.Province;
-import com.dfa.vinatrip.services.DataService;
 import com.dfa.vinatrip.utils.RecyclerItemClickListener;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
@@ -26,9 +24,6 @@ import java.util.List;
 
 @EActivity(R.layout.activity_search)
 public class SearchActivity extends AppCompatActivity {
-    
-    @Bean
-    DataService dataService;
     
     @ViewById(R.id.my_toolbar)
     protected Toolbar toolbar;
@@ -48,7 +43,9 @@ public class SearchActivity extends AppCompatActivity {
     void init() {
         setupActionBar();
         
-        provinceList = dataService.getProvinceList();
+//        provinceList = dataService.getProvinceList();
+        //TODO search province
+
         searchProvinceAdapter = new SearchProvinceAdapter(this, provinceList);
         rvResult.setAdapter(searchProvinceAdapter);
         
