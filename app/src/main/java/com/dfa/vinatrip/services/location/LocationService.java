@@ -11,6 +11,6 @@ import rx.Observable;
  */
 
 public interface LocationService {
-    Observable<List<UserLocation>> getLastLocation(String groupId);
+    Observable<List<UserLocation>> getLastLocation(long groupId);
 
 }

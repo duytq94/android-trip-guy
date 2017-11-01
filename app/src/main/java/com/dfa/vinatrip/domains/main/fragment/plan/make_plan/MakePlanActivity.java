@@ -88,12 +88,8 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
     private Calendar calendar;
     private DatePickerDialog dpdDateGo, dpdDateBack;
     private List<Long> invitedFriendIdList;
-    private List<Long> invitedFriendIdListOld;
-    private User currentUser;
     private Validator validator;
     private List<PlanSchedule> planScheduleList;
-    private String planId;
-    private Plan currentPlan;
     private int idBackground;
 
     private String dateGo = "";
@@ -136,36 +132,10 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
         validator = new Validator(this);
         validator.setValidationListener(this);
 
-        currentUser = presenter.getCurrentUser();
         calendar = Calendar.getInstance();
-        plan = new Plan();
         invitedFriendIdList = new ArrayList<>();
 
         presenter.getListFriend();
-
-    }
-
-    public void initViewForUpdatePlan() {
-        countDaySchedule = 1;
-        planScheduleList = new ArrayList<>();
-
-        validator = new Validator(this);
-        validator.setValidationListener(this);
-
-        currentUser = presenter.getCurrentUser();
-        calendar = Calendar.getInstance();
-        plan = new Plan();
-        invitedFriendIdList = new ArrayList<>();
-        invitedFriendIdListOld = new ArrayList<>();
-        if (currentPlan.getFriendInvitedList() != null) {
-            invitedFriendIdList.addAll(currentPlan.getFriendInvitedList());
-            invitedFriendIdListOld.addAll(currentPlan.getFriendInvitedList());
-        }
-
-        inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList, invitedFriendIdList, currentPlan);
-        rvListFriend.setAdapter(inviteFriendAdapter);
-        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvListFriend.setLayoutManager(manager);
     }
 
     public void setCurrentDayForView() {
@@ -301,6 +271,16 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
             planScheduleList.add(new PlanSchedule(content, title, timestampGo + MILLISECOND_IN_DAY * i));
         }
 
+        plan = new Plan(etTripName.getText().toString(),
+                tvDestination.getText().toString(),
+                dateGo,
+                dateBack,
+                idBackground,
+                invitedFriendIdList,
+                planScheduleList,
+                presenter.getCurrentUser());
+
+        presenter.createPlan(plan);
     }
 
     @Override
@@ -326,12 +306,12 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
 
     @Override
     public void showLoading() {
-//        showHUD();
+        showHUD();
     }
 
     @Override
     public void hideLoading() {
-//        hideHUD();
+        hideHUD();
     }
 
     @Override
@@ -346,7 +326,7 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
             userFriendList = new ArrayList<>();
             userFriendList.addAll(friendList);
 
-            inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList, invitedFriendIdList, currentPlan);
+            inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList, invitedFriendIdList, null);
             rvListFriend.setAdapter(inviteFriendAdapter);
             LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             rvListFriend.setLayoutManager(manager);
@@ -355,6 +335,17 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
 
     @Override
     public void getListFriendFail(Throwable throwable) {
+        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void createPlanSuccess(String message) {
+        Toast.makeText(this, "Kế hoạch của bạn được tạo thành công", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void createPlanFail(Throwable throwable) {
         Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

@@ -25,7 +25,6 @@ public class DefaultTrendService implements TrendService {
         this.apiErrorFilter = apiErrorFilter;
     }
 
-
     @Override
     public Observable<List<Trend>> getTrend(String where, int page, int pageSize) {
         return networkProvider

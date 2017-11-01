@@ -2,21 +2,34 @@ package com.dfa.vinatrip.domains.main.fragment.plan;
 
 import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.PlanSchedule;
 import com.dfa.vinatrip.models.response.User;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
 
 public class Plan implements Serializable {
-    private String id, name, destination, dateGo, dateBack;
+    @SerializedName("id")
+    private long id;
+    @SerializedName("name")
+    private String name;
+    @SerializedName("destination")
+    private String destination;
+    @SerializedName("date_go")
+    private String dateGo;
+    @SerializedName("date_back")
+    private String dateBack;
+    @SerializedName("id_background")
     private int idBackground;
-    private List<Long> friendInvitedList;
+    @SerializedName("plan_schedule_list")
     private List<PlanSchedule> planScheduleList;
+    @SerializedName("user_make_plan")
     private User userMakePlan;
 
-    public Plan(String id, String name, String destination, String dateGo, String dateBack, int idBackground,
+    private List<Long> friendInvitedList;
+
+    public Plan(String name, String destination, String dateGo, String dateBack, int idBackground,
                 List<Long> friendInvitedList,
                 List<PlanSchedule> planScheduleList, User userMakePlan) {
-        this.id = id;
         this.name = name;
         this.destination = destination;
         this.dateGo = dateGo;
@@ -27,11 +40,11 @@ public class Plan implements Serializable {
         this.userMakePlan = userMakePlan;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -99,7 +112,4 @@ public class Plan implements Serializable {
         this.userMakePlan = userMakePlan;
     }
 
-    public Plan() {
-
-    }
 }

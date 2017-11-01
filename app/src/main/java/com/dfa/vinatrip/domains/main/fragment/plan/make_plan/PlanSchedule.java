@@ -1,14 +1,16 @@
 package com.dfa.vinatrip.domains.main.fragment.plan.make_plan;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class PlanSchedule implements Serializable {
+    @SerializedName("content")
     private String content;
+    @SerializedName("title")
     private String title;
+    @SerializedName("timestamp")
     private long timestamp;
-
-    public PlanSchedule() {
-    }
 
     public PlanSchedule(String content, String title, long timestamp) {
         this.content = content;

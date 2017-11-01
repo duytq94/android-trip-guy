@@ -16,6 +16,6 @@ import rx.Observable;
 public interface RestLocationService {
     @GET("last_location/{groupId}")
     Observable<RestMessageResponse<List<UserLocation>>> getLastLocation(
-            @Path("groupId") String groupId
+            @Path("groupId") long groupId
     );
 }

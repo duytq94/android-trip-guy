@@ -26,7 +26,7 @@ public class DefaultLocationService implements LocationService {
     }
 
     @Override
-    public Observable<List<UserLocation>> getLastLocation(String groupId) {
+    public Observable<List<UserLocation>> getLastLocation(long groupId) {
         return networkProvider
                 .transformResponse(restLocationService.getLastLocation(groupId))
                 .compose(apiErrorFilter.execute());

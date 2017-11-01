@@ -15,11 +15,11 @@ public class BaseMessage {
     @SerializedName("from_user")
     private String from;
     @SerializedName("to_group")
-    private String to;
+    private long to;
     @SerializedName("type_message")
     private TypeMessage typeMessage;
 
-    public BaseMessage(String content, long timestamp, String from, String to, TypeMessage typeMessage) {
+    public BaseMessage(String content, long timestamp, String from, long to, TypeMessage typeMessage) {
         this.content = content;
         this.timestamp = timestamp;
         this.from = from;
@@ -59,11 +59,11 @@ public class BaseMessage {
         this.from = from;
     }
 
-    public String getTo() {
+    public long getTo() {
         return to;
     }
 
-    public void setTo(String to) {
+    public void setTo(long to) {
         this.to = to;
     }
 }

@@ -209,22 +209,22 @@ public class UpdateUserProfileFragment extends BaseFragment<UpdateUserProfileVie
                         linkAvatar = downloadUrl.toString();
                     }
 
-                    if (isAdded()) {
-                        User newUserProfile =
-                                new User(etNickname.getText().toString(),
-                                        linkAvatar,
-                                        tvBirthday.getText().toString(),
-                                        etIntroduceYourSelf.getText().toString(),
-                                        spnSex.getSelectedItemPosition(),
-                                        "",
-                                        tvCity.getText().toString());
-                        //TODO post new user profile
-                        progressBar.setVisibility(View.GONE);
-                        AppUtil.setEnableAllViews(svRoot, true);
-                        tvPercent.setVisibility(View.GONE);
-                        Toasty.success(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                        getActivity().finish();
-                    }
+//                    if (isAdded()) {
+//                        User newUserProfile =
+//                                new User(etNickname.getText().toString(),
+//                                        linkAvatar,
+//                                        tvBirthday.getText().toString(),
+//                                        etIntroduceYourSelf.getText().toString(),
+//                                        spnSex.getSelectedItemPosition(),
+//                                        "",
+//                                        tvCity.getText().toString());
+//                        //TODO post new user profile
+//                        progressBar.setVisibility(View.GONE);
+//                        AppUtil.setEnableAllViews(svRoot, true);
+//                        tvPercent.setVisibility(View.GONE);
+//                        Toasty.success(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+//                        getActivity().finish();
+//                    }
                 });
     }
 

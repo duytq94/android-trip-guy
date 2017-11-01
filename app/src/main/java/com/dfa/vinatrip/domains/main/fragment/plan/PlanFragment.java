@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
@@ -25,7 +26,6 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -68,10 +68,8 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
 
     @AfterViews
     public void init() {
-        planList = new ArrayList<>();
-
         if (presenter.isLogin()) {
-            initView();
+            presenter.getPlan();
         } else {
             rlLogin.setVisibility(View.GONE);
             rlNotLogin.setVisibility(View.VISIBLE);
@@ -81,7 +79,7 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
         srlReload.setOnRefreshListener(() -> {
             if (presenter.isLogin()) {
                 planList.clear();
-                initView();
+                presenter.getPlan();
             }
             srlReload.setRefreshing(false);
         });
@@ -161,6 +159,12 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
 
     @Override
     public void apiError(Throwable throwable) {
+        Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public void getPlanSuccess(List<Plan> planList) {
+        this.planList = planList;
+        initView();
     }
 }

@@ -79,7 +79,7 @@
             android:name=".domains.search.SearchActivity_"
             android:windowSoftInputMode="adjustNothing"/>
         <activity
-            android:name=".domains.main.fragment.plan.make_plan.ChooseBackgroundPlanActivity_"
+            android:name=".domains.main.fragment.plan.make_plan.choose_background.ChooseBackgroundPlanActivity_"
             android:windowSoftInputMode="adjustNothing"/>
         <activity
             android:name=".domains.chat.ChatGroupActivity_"

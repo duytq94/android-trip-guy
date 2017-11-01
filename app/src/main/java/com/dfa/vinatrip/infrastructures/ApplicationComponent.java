@@ -7,6 +7,7 @@ import com.dfa.vinatrip.services.deal.DealService;
 import com.dfa.vinatrip.services.default_data.DataService;
 import com.dfa.vinatrip.services.friend.FriendService;
 import com.dfa.vinatrip.services.location.LocationService;
+import com.dfa.vinatrip.services.plan.PlanService;
 import com.dfa.vinatrip.services.trend.TrendService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -35,4 +36,6 @@ public interface ApplicationComponent {
     DataService dataService();
 
     FriendService friendService();
+
+    PlanService planService();
 }

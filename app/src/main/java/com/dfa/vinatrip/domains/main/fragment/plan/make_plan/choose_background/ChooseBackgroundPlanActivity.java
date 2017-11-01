@@ -30,7 +30,7 @@ public class ChooseBackgroundPlanActivity extends AppCompatActivity {
         listIsPhotoChoose = new boolean[]{false, false, true, false, false, false};
         idBackgroundChosen = R.drawable.bg_test3;
 
-        adapter = new ChooseBackgroundPlanAdapter(this, listBackground, listIsPhotoChoose);
+        adapter = new ChooseBackgroundPlanAdapter(listBackground, listIsPhotoChoose);
         adapter.setOnItemClick(position -> {
             for (int i = 0; i < listIsPhotoChoose.length; i++) {
                 if (i != position) {

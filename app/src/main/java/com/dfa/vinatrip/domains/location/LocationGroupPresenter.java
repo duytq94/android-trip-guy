@@ -29,15 +29,11 @@ public class LocationGroupPresenter extends BasePresenter<LocationGroupView> {
         this.accountService = accountService;
     }
 
-    public boolean isLogin() {
-        return accountService.loadFromStorage();
-    }
-
     public User getCurrentUser() {
         return accountService.getCurrentUser();
     }
 
-    public void getLastLocation(String groupId) {
+    public void getLastLocation(long groupId) {
         RxScheduler.onStop(subscriptionGetLastLocation);
         if (isViewAttached()) {
             getView().showLoading();

@@ -27,14 +27,14 @@ public class DefaultChatService implements ChatService {
     }
 
     @Override
-    public Observable<List<BaseMessage>> getHistory(String groupId, int page, int pageSize) {
+    public Observable<List<BaseMessage>> getHistory(long groupId, int page, int pageSize) {
         return networkProvider
                 .transformResponse(restChatService.getHistory(groupId, page, pageSize))
                 .compose(apiErrorFilter.execute());
     }
 
     @Override
-    public Observable<List<StatusUserChat>> getStatus(String groupId) {
+    public Observable<List<StatusUserChat>> getStatus(long groupId) {
         return networkProvider
                 .transformResponse(restChatService.getStatus(groupId))
                 .compose(apiErrorFilter.execute());

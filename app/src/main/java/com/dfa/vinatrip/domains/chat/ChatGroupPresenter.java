@@ -34,7 +34,7 @@ public class ChatGroupPresenter extends BasePresenter<ChatGroupView> {
         return accountService.getCurrentUser();
     }
 
-    public void getHistory(String groupId, int page, int pageSize) {
+    public void getHistory(long groupId, int page, int pageSize) {
         RxScheduler.onStop(subscriptionGetHistory);
         if (isViewAttached()) {
             getView().showLoading();
@@ -54,7 +54,7 @@ public class ChatGroupPresenter extends BasePresenter<ChatGroupView> {
                 });
     }
 
-    public void getStatus(String groupId) {
+    public void getStatus(long groupId) {
         RxScheduler.onStop(subscriptionGetStatus);
         subscriptionGetStatus = chatService.getStatus(groupId)
                 .compose(RxScheduler.applyIoSchedulers())
