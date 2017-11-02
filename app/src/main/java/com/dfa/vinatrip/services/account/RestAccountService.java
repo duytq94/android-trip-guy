@@ -7,6 +7,7 @@ import com.dfa.vinatrip.models.response.User;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import rx.Observable;
 
 /**
@@ -22,4 +23,7 @@ public interface RestAccountService {
 
     @POST("api/auth/logout")
     Observable<RestMessageResponse<String>> signOut(@Header("access-token") String userToken);
+
+    @PUT("api/user/edit")
+    Observable<RestMessageResponse<User>> editProfile(@Header("access-token") String userToken, @Body User user);
 }

@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.domains.main.fragment.plan;
 
 import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.PlanSchedule;
-import com.dfa.vinatrip.models.response.User;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -22,22 +21,52 @@ public class Plan implements Serializable {
     private int idBackground;
     @SerializedName("plan_schedule_list")
     private List<PlanSchedule> planScheduleList;
-    @SerializedName("user_make_plan")
-    private User userMakePlan;
+    @SerializedName("id_user_make_plan")
+    private long idUserMakePlan;
+    @SerializedName("avatar_user_make_plan")
+    private String avatarUserMakePlan;
+    @SerializedName("username_user_make_plan")
+    private String usernameUserMakePlan;
 
     private List<Long> friendInvitedList;
 
     public Plan(String name, String destination, String dateGo, String dateBack, int idBackground,
-                List<Long> friendInvitedList,
-                List<PlanSchedule> planScheduleList, User userMakePlan) {
+                List<PlanSchedule> planScheduleList, long idUserMakePlan, String avatarUserMakePlan,
+                String usernameUserMakePlan, List<Long> friendInvitedList) {
         this.name = name;
         this.destination = destination;
         this.dateGo = dateGo;
         this.dateBack = dateBack;
         this.idBackground = idBackground;
-        this.friendInvitedList = friendInvitedList;
         this.planScheduleList = planScheduleList;
-        this.userMakePlan = userMakePlan;
+        this.idUserMakePlan = idUserMakePlan;
+        this.avatarUserMakePlan = avatarUserMakePlan;
+        this.usernameUserMakePlan = usernameUserMakePlan;
+        this.friendInvitedList = friendInvitedList;
+    }
+
+    public long getIdUserMakePlan() {
+        return idUserMakePlan;
+    }
+
+    public void setIdUserMakePlan(long idUserMakePlan) {
+        this.idUserMakePlan = idUserMakePlan;
+    }
+
+    public String getAvatarUserMakePlan() {
+        return avatarUserMakePlan;
+    }
+
+    public void setAvatarUserMakePlan(String avatarUserMakePlan) {
+        this.avatarUserMakePlan = avatarUserMakePlan;
+    }
+
+    public String getUsernameUserMakePlan() {
+        return usernameUserMakePlan;
+    }
+
+    public void setUsernameUserMakePlan(String usernameUserMakePlan) {
+        this.usernameUserMakePlan = usernameUserMakePlan;
     }
 
     public long getId() {
@@ -104,12 +133,5 @@ public class Plan implements Serializable {
         this.planScheduleList = planScheduleList;
     }
 
-    public User getUserMakePlan() {
-        return userMakePlan;
-    }
-
-    public void setUserMakePlan(User userMakePlan) {
-        this.userMakePlan = userMakePlan;
-    }
 
 }

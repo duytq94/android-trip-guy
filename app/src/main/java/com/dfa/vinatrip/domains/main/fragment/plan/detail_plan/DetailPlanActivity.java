@@ -18,7 +18,6 @@ import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.PlanSchedule;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.User;
-import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -93,41 +92,40 @@ public class DetailPlanActivity extends BaseActivity<DetailPlanView, DetailPlanP
         currentUser = presenter.getCurrentUser();
         setupAppBar();
         presenter.getPlanSchedule(plan.getId());
-        setupAdapterSchedule();
     }
 
     public void initView() {
-        Picasso.with(this).load(plan.getUserMakePlan().getAvatar()).into(civAvatar);
-        if (currentUser.getId() == plan.getUserMakePlan().getId()) {
-            tvNickname.setText("Tôi");
-        } else {
-            tvNickname.setText(plan.getUserMakePlan().getUsername());
-        }
-        tvEmail.setText(plan.getUserMakePlan().getEmail());
+//        Picasso.with(this).load(plan.getUserMakePlan().getAvatar()).into(civAvatar);
+//        if (currentUser.getId() == plan.getUserMakePlan().getId()) {
+//            tvNickname.setText("Tôi");
+//        } else {
+//            tvNickname.setText(plan.getUserMakePlan().getUsername());
+//        }
+//        tvEmail.setText(plan.getUserMakePlan().getEmail());
 
         // Filter the friends be invited from List friend
 //        userFriendList = dataService.getUserFriendList();
-        friendInvitedList = new ArrayList<>();
+//        friendInvitedList = new ArrayList<>();
         // Add the current user to friendInvitedList (if they're not the user make this plan)
-        if (currentUser.getId() != plan.getUserMakePlan().getId()) {
+//        if (currentUser.getId() != plan.getUserMakePlan().getId()) {
 //            friendInvitedList.add(new UserFriend(currentUser.getId(), "Tôi",
 //                    currentUser.getAvatar(), currentUser.getEmail(), "true"));
-        }
-        if (plan.getFriendInvitedList() != null) {
-            for (long friendInvitedId : plan.getFriendInvitedList()) {
-                for (User userFriend : userFriendList) {
-                    if (userFriend.getId() == friendInvitedId) {
-                        friendInvitedList.add(userFriend);
-                        break;
-                    }
-                }
-            }
-        }
+//        }
+//        if (plan.getFriendInvitedList() != null) {
+//            for (long friendInvitedId : plan.getFriendInvitedList()) {
+//                for (User userFriend : userFriendList) {
+//                    if (userFriend.getId() == friendInvitedId) {
+//                        friendInvitedList.add(userFriend);
+//                        break;
+//                    }
+//                }
+//            }
+//        }
 
-        listFriendHorizontalAdapter = new ListFriendHorizontalAdapter(this, friendInvitedList, tvFriendNotAvailable);
-        rvFriendJoin.setAdapter(listFriendHorizontalAdapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        rvFriendJoin.setLayoutManager(layoutManager);
+//        listFriendHorizontalAdapter = new ListFriendHorizontalAdapter(this, friendInvitedList, tvFriendNotAvailable);
+//        rvFriendJoin.setAdapter(listFriendHorizontalAdapter);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+//        rvFriendJoin.setLayoutManager(layoutManager);
 
         tvDestination.setText(plan.getDestination());
         tvDateGo.setText(plan.getDateGo());
@@ -193,6 +191,7 @@ public class DetailPlanActivity extends BaseActivity<DetailPlanView, DetailPlanP
     public void getPlanScheduleSuccess(List<PlanSchedule> planScheduleList) {
         if (planScheduleList.size() > 0) {
             plan.setPlanScheduleList(planScheduleList);
+            setupAdapterSchedule();
         }
         initView();
     }

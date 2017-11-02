@@ -16,7 +16,6 @@ import android.provider.MediaStore;
 import android.text.format.DateUtils;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
@@ -71,17 +70,6 @@ public class AppUtil {
             return 270;
         }
         return 0;
-    }
-
-    public static void setEnableAllViews(View view, boolean enabled) {
-        view.setEnabled(enabled);
-        if (view instanceof ViewGroup) {
-            ViewGroup viewGroup = (ViewGroup) view;
-            for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                View child = viewGroup.getChildAt(i);
-                setEnableAllViews(child, enabled);
-            }
-        }
     }
 
     // Filter the friend has accepted (because some friend not accepted yet)

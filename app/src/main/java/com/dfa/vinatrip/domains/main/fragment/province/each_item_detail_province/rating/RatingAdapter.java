@@ -71,7 +71,6 @@ public class RatingAdapter extends RecyclerView.Adapter<RatingAdapter.RatingView
         holder.tvNumStars.setText(Html.fromHtml(rate));
 
         Picasso.with(context).load(listUserRatings.get(position).getAvatar())
-               .placeholder(R.drawable.ic_loading)
                .error(R.drawable.photo_not_available)
                .into(holder.ivAvatar);
     }

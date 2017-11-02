@@ -91,6 +91,7 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
     private Validator validator;
     private List<PlanSchedule> planScheduleList;
     private int idBackground;
+    private User currentUser;
 
     private String dateGo = "";
     private String dateBack = "";
@@ -118,6 +119,7 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
 
     @AfterViews
     public void init() {
+        currentUser = presenter.getCurrentUser();
         initViewForNewPlan();
         setCurrentDayForView();
     }
@@ -276,9 +278,11 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
                 dateGo,
                 dateBack,
                 idBackground,
-                invitedFriendIdList,
                 planScheduleList,
-                presenter.getCurrentUser());
+                currentUser.getId(),
+                currentUser.getAvatar(),
+                currentUser.getUsername(),
+                invitedFriendIdList);
 
         presenter.createPlan(plan);
     }

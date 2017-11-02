@@ -247,24 +247,6 @@
                     style="?android:attr/borderlessButtonStyle"
                     />
 
-                <TextView
-                    android:id="@+id/fragment_update_user_profile_tv_percent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="@color/colorMain"
-                    android:visibility="gone"
-                    />
-
-                <ProgressBar
-                    android:id="@+id/fragment_update_user_profile_progressBar"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center|bottom"
-                    android:layout_marginBottom="20dp"
-                    android:visibility="gone"
-                    />
-
                 <Button
                     android:id="@+id/fragment_update_user_profile_btn_cancel"
                     android:layout_width="wrap_content"

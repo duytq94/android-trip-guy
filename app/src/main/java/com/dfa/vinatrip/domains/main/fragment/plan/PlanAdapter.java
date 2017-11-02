@@ -60,33 +60,26 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
         holder.tvDestination.setText(plan.getDestination());
         holder.tvDate.setText(plan.getDateGo() + " " + Html.fromHtml("&#10132;") + " " + plan.getDateBack());
 
-        if (plan.getUserMakePlan().getId() == (currentUser.getId())) {
+        if (plan.getIdUserMakePlan() == currentUser.getId()) {
             holder.tvUserName.setText("Tôi");
             holder.tvUpdate.setVisibility(View.VISIBLE);
 
-            holder.tvUpdate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onUpdateOrRemoveClick.onUpdate(position);
-                }
-            });
+            holder.tvUpdate.setOnClickListener(view -> onUpdateOrRemoveClick.onUpdate(position));
         } else {
             holder.tvUpdate.setVisibility(View.GONE);
             holder.tvUpdate.setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray));
-            holder.tvUserName.setText(plan.getUserMakePlan().getUsername());
+            holder.tvUserName.setText(plan.getUsernameUserMakePlan());
         }
 
-        holder.tvRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onUpdateOrRemoveClick.onRemove(position);
-            }
-        });
+        holder.tvRemove.setOnClickListener(view -> onUpdateOrRemoveClick.onRemove(position));
 
-        Picasso.with(context).load(plan.getUserMakePlan().getAvatar())
-                .placeholder(R.drawable.ic_loading)
-                .error(R.drawable.photo_not_available)
-                .into(holder.ivAvatar);
+        if (plan.getAvatarUserMakePlan() != null) {
+            Picasso.with(context).load(plan.getAvatarUserMakePlan())
+                    .error(R.drawable.photo_not_available)
+                    .into(holder.ivAvatar);
+        } else {
+            holder.ivAvatar.setImageResource(R.drawable.ic_avatar);
+        }
 
         holder.ivBackground.setImageResource(plan.getIdBackground());
     }

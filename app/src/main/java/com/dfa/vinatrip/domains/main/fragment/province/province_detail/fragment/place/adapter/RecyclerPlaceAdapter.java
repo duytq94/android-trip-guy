@@ -40,7 +40,6 @@ public class RecyclerPlaceAdapter extends RecyclerView.Adapter<RecyclerPlaceAdap
         holder.tvPlaceName.setText(place.getName());
 
         Picasso.with(context).load(place.getAvatar())
-                .placeholder(R.drawable.ic_loading)
                 .error(R.drawable.photo_not_available)
                 .into(holder.ivPlaceAvatar);
     }

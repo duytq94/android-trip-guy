@@ -20,7 +20,6 @@ import com.dfa.vinatrip.models.request.AuthRequest;
 import com.dfa.vinatrip.models.response.User;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.KeyboardListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
@@ -50,6 +49,7 @@ public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
     @Email
     @ViewById(R.id.activity_sign_in_et_email)
     protected EditText etEmail;
+    @NotEmpty
     @Password
     @ViewById(R.id.activity_sign_in_et_password)
     protected EditText etPassword;
@@ -59,7 +59,6 @@ public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
     protected ImageView ivSymbol;
 
     private Validator validator;
-    private FirebaseAuth firebaseAuth;
     private Animation animSlideUp;
     private Animation animSlideDown;
 
@@ -83,27 +82,11 @@ public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
 
         validator = new Validator(this);
         validator.setValidationListener(this);
-
-        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     public void onValidationSucceeded() {
         presenter.loginWithEmail(new AuthRequest(etEmail.getText().toString(), etPassword.getText().toString()));
-
-//        firebaseAuth.signInWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        AppUtil.setEnableAllViews(llRoot, true);
-//                        if (!task.isSuccessful()) {
-//                            Toasty.error(SignInActivity.this, "Email hoặc mật khẩu không đúng!",
-//                                    Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            startActivity(new Intent(SignInActivity.this, SplashScreenActivity_.class));
-//                        }
-//                    }
-//                });
     }
 
     @Override

@@ -14,4 +14,6 @@ import rx.Observable;
 
 public interface AccountService extends AuthenticationManager<User, AuthRequest, SignInSocialRequest> {
     Observable<User> signUp(AuthRequest authRequest);
+
+    Observable<User> editProfile(User user);
 }

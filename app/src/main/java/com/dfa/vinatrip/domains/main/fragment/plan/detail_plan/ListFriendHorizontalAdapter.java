@@ -47,7 +47,6 @@ public class ListFriendHorizontalAdapter extends RecyclerView.Adapter<ListFriend
 
         if (!userFriend.getAvatar().equals("")) {
             Picasso.with(context).load(userFriend.getAvatar())
-                    .placeholder(R.drawable.ic_loading)
                     .error(R.drawable.photo_not_available)
                     .into(holder.civAvatar);
         }

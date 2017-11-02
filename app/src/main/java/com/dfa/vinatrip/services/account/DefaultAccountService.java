@@ -61,4 +61,11 @@ public class DefaultAccountService
                 .transformResponse(restAccountService.signUp(authRequest))
                 .compose(apiErrorFilter.execute());
     }
+
+    @Override
+    public Observable<User> editProfile(User user) {
+        return networkProvider
+                .transformResponse(restAccountService.editProfile(getCurrentUser().getAccessToken(), user))
+                .compose(apiErrorFilter.execute());
+    }
 }

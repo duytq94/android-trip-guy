@@ -23,6 +23,7 @@ public class Constants {
     // FireBase storage
     public static final String URL_STORAGE = "gs://tripguy-10864.appspot.com";
     public static final String FOLDER_STORAGE_CHAT = "Chat";
+    public static final String FOLDER_AVATAR_USER = "AvatarProfileUser";
 
     // Trend
     public static final String MY_TOUR = "mytour";

@@ -35,7 +35,6 @@ public class ProvinceFoodPhotoAdapter extends RecyclerView.Adapter<ProvinceFoodP
         // All provincePhoto will the same scale
         holder.ivPhoto.setScaleType(ImageView.ScaleType.FIT_XY);
         Picasso.with(context).load(listUrlPhotos.get(position))
-                .placeholder(R.drawable.ic_loading)
                 .error(R.drawable.photo_not_available)
                 .into(holder.ivPhoto);
     }

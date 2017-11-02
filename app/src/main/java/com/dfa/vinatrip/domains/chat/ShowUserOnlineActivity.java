@@ -4,7 +4,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -63,14 +62,14 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
                     tvNickname.setText(item.getUsername());
                 }
                 tvEmail.setText(item.getEmail());
-                if (item.getIsOnline()) {
-                    ivIndicator.setVisibility(View.VISIBLE);
-                    tvType.setText("Online");
-                    countCurrent++;
-                } else {
-                    ivIndicator.setVisibility(View.GONE);
-                    tvType.setText("Offline");
-                }
+//                if (item.getIsOnline()) {
+//                    ivIndicator.setVisibility(View.VISIBLE);
+//                    tvType.setText("Online");
+//                    countCurrent++;
+//                } else {
+//                    ivIndicator.setVisibility(View.GONE);
+//                    tvType.setText("Offline");
+//                }
             }
         };
         lvUser.setAdapter(adapter);

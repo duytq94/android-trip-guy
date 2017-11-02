@@ -485,7 +485,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             for (int j = 0; j < friendList.size(); j++) {
                 User friend = friendList.get(j);
                 if (friend.getEmail().equals(statusUserChat.getEmail())) {
-                    friend.setIsOnline(statusUserChat.getIsOnline());
+//                    friend.setIsOnline(statusUserChat.getIsOnline());
                     break;
                 }
             }

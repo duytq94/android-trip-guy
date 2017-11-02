@@ -41,7 +41,6 @@ public class RecyclerHotelAdapter extends RecyclerView.Adapter<RecyclerHotelAdap
         holder.tvHotelName.setText(hotel.getName());
 
         Picasso.with(context).load(hotel.getAvatar())
-                .placeholder(R.drawable.ic_loading)
                 .error(R.drawable.photo_not_available)
                 .into(holder.ivHotelAvatar);
     }

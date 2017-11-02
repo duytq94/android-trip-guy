@@ -33,8 +33,6 @@ public class User extends BaseEntity implements LoginResponse, Serializable {
     private String background;
     @SerializedName("city")
     private String city;
-    @SerializedName("isOnline")
-    private boolean isOnline;
 
     public User(String username, String avatar, String birthday, String intro, int sex,
                 String background, String city) {
@@ -45,14 +43,6 @@ public class User extends BaseEntity implements LoginResponse, Serializable {
         this.sex = sex;
         this.background = background;
         this.city = city;
-    }
-
-    public boolean getIsOnline() {
-        return isOnline;
-    }
-
-    public void setIsOnline(boolean online) {
-        isOnline = online;
     }
 
     public String getCity() {
@@ -88,10 +78,12 @@ public class User extends BaseEntity implements LoginResponse, Serializable {
     }
 
     public String getStringSex() {
-        if (sex == 0) {
+        if (sex == 1) {
             return "Nam";
-        } else {
+        } else if (sex == 2) {
             return "Nữ";
+        } else {
+            return "Khác";
         }
     }
 

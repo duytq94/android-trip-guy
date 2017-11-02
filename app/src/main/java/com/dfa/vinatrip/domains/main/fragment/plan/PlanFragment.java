@@ -70,6 +70,8 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
     public void init() {
         if (presenter.isLogin()) {
             presenter.getPlan();
+            rlLogin.setVisibility(View.VISIBLE);
+            rlNotLogin.setVisibility(View.GONE);
         } else {
             rlLogin.setVisibility(View.GONE);
             rlNotLogin.setVisibility(View.VISIBLE);
@@ -78,7 +80,9 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
         srlReload.setColorSchemeResources(R.color.colorMain);
         srlReload.setOnRefreshListener(() -> {
             if (presenter.isLogin()) {
-                planList.clear();
+                if (planList != null) {
+                    planList.clear();
+                }
                 presenter.getPlan();
             }
             srlReload.setRefreshing(false);
@@ -164,7 +168,12 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
 
     @Override
     public void getPlanSuccess(List<Plan> planList) {
-        this.planList = planList;
-        initView();
+        if (planList.size() > 0) {
+            llPlanListNotAvailable.setVisibility(View.GONE);
+            this.planList = planList;
+            initView();
+        } else {
+            llPlanListNotAvailable.setVisibility(View.VISIBLE);
+        }
     }
 }
