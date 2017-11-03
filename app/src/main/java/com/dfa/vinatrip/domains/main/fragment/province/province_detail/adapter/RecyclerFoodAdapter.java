@@ -37,10 +37,10 @@ public class RecyclerFoodAdapter extends RecyclerView.Adapter<RecyclerFoodAdapte
     
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        FoodResponse Food = foodResponses.get(position);
+        FoodResponse food = foodResponses.get(position);
         
-        holder.tvFoodName.setText(Food.getName());
-        Picasso.with(context).load(Food.getAvatar())
+        holder.tvFoodName.setText(food.getName());
+        Picasso.with(context).load(food.getAvatar())
                 .placeholder(R.drawable.ic_loading)
                 .error(R.drawable.photo_not_available)
                 .into(holder.ivFoodAvatar);

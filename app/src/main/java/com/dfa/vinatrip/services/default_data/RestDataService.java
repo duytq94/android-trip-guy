@@ -5,6 +5,7 @@ import com.dfa.vinatrip.models.response.Province;
 import com.dfa.vinatrip.models.response.food.FoodResponse;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
 import com.dfa.vinatrip.models.response.place.PlaceResponse;
+import com.dfa.vinatrip.models.response.province_image.ProvinceImageResponse;
 
 import java.util.List;
 
@@ -38,6 +39,12 @@ public interface RestDataService {
     
     @GET("api/province/{province_id}/places")
     Observable<RestMessageResponse<List<PlaceResponse>>> getPlaces(
+            @Path("province_id") int province_id,
+            @Query("page") long page,
+            @Query("per_page") long per_page);
+    
+    @GET("api/province/{province_id}/images")
+    Observable<RestMessageResponse<List<ProvinceImageResponse>>> getImages(
             @Path("province_id") int province_id,
             @Query("page") long page,
             @Query("per_page") long per_page);
