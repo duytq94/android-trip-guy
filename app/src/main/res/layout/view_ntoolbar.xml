@@ -1,31 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v7.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_ntoolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/actionBarSize"
+    app:contentInsetEnd="0dp"
+    app:contentInsetLeft="0dp"
+    app:contentInsetRight="0dp"
+    app:contentInsetStart="0dp"
+    tools:ignore="MissingPrefix">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/view_ntoolbar_ll_root"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/colorMain"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/view_ntoolbar_iv_left_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/bg_ntoolbar_icon_click"
+                android:clickable="true"
+                android:padding="7dp"
+                android:src="@drawable/ic_arrow_back_white_24dp"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/view_ntoolbar_civ_app_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:padding="5dp"
+                android:src="@drawable/ic_symbol"/>
+
+            <TextView
+                android:id="@+id/view_ntoolbar_tv_title"
+                fontPath="fonts/HelveticaNeue.ttf"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="TripGuy"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/text_large"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:id="@+id/view_ntoolbar_iv_right_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/bg_ntoolbar_icon_click"
+                android:clickable="true"
+                android:padding="7dp"
+                android:src="@drawable/ic_info"/>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view_ntoolbar_view_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/bg_shadow_toolbar"
+            android:visibility="gone"/>
+    </LinearLayout>
+</android.support.v7.widget.Toolbar>
+
+    <!--
+        <?xml version="1.0" encoding="utf-8"?>
+    <android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/view_ntoolbar"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/actionBarSize"
     android:orientation="vertical"
+    app:contentInsetEnd="0dp"
+    app:contentInsetLeft="0dp"
+    app:contentInsetRight="0dp"
+    app:contentInsetStart="0dp"
     tools:ignore="MissingPrefix">
 
-    <LinearLayout
-        android:id="@+id/view_ntoolbar_ll_root"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/colorMain"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:background="@color/colorMain">
 
         <ImageView
             android:id="@+id/view_ntoolbar_iv_left_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
             android:background="@drawable/bg_ntoolbar_icon_click"
             android:clickable="true"
-            android:padding="7dp"
+            android:padding="9dp"
             android:src="@drawable/ic_arrow_back_white_24dp"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -33,18 +120,19 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/view_ntoolbar_iv_left_icon"
             android:padding="5dp"
             android:src="@drawable/ic_symbol"/>
 
         <TextView
             android:id="@+id/view_ntoolbar_tv_title"
             fontPath="fonts/HelveticaNeue.ttf"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_weight="1"
+            android:layout_toRightOf="@+id/view_ntoolbar_civ_app_icon"
             android:singleLine="true"
             android:text="TripGuy"
             android:textColor="#ffffff"
@@ -56,12 +144,13 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:background="@drawable/bg_ntoolbar_icon_click"
             android:clickable="true"
             android:padding="7dp"
             android:src="@drawable/ic_info"/>
-    </LinearLayout>
+    </RelativeLayout>
 
     <View
         android:id="@+id/view_ntoolbar_view_shadow"
@@ -69,4 +158,6 @@
         android:layout_height="5dp"
         android:background="@drawable/bg_shadow_toolbar"
         android:visibility="gone"/>
-</LinearLayout>
+    </android.support.v7.widget.Toolbar>
+    -->
+
