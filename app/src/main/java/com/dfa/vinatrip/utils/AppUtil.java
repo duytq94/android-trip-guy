@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.dfa.vinatrip.utils.Constants.FORMAT_DAY_VN;
 import static com.dfa.vinatrip.utils.Constants.MILLISECOND_IN_DAY;
 
 /**
@@ -279,7 +280,7 @@ public class AppUtil {
     public static long stringDateToTimestamp(String date) {
         Date localTime;
         try {
-            localTime = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(date);
+            localTime = new SimpleDateFormat(FORMAT_DAY_VN, Locale.getDefault()).parse(date);
             return localTime.getTime();
         } catch (java.text.ParseException e) {
             return 0;

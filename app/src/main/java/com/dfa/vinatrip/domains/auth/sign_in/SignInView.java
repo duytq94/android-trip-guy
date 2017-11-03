@@ -9,6 +9,4 @@ import com.dfa.vinatrip.models.response.User;
 
 public interface SignInView extends BaseMvpView {
     void signInSuccess(User user);
-
-    void signInFail(Throwable throwable);
 }

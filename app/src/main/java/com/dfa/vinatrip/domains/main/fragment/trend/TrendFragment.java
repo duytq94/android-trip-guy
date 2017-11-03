@@ -116,17 +116,12 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
 
     @Override
     public void apiError(Throwable throwable) {
-
+        Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public TrendPresenter createPresenter() {
         return presenter;
-    }
-
-    @Override
-    public void getDataFail(Throwable throwable) {
-        Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

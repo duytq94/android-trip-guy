@@ -24,6 +24,7 @@ import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFrien
 import com.dfa.vinatrip.domains.main.fragment.province.each_item_detail_province.rating.UserRating;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
+import com.dfa.vinatrip.models.response.User;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -128,6 +129,7 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
 
     private List<UserFriend> listUserFriends;
     private List<UserRating> myRatingList;
+    private User currentUser;
 
     @App
     protected MainApplication application;
@@ -149,11 +151,11 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
 
     @AfterViews
     public void init() {
-
         showAppInfo();
         srlReload.setColorSchemeResources(R.color.colorMain);
 
         if (presenter.getCurrentUser() != null) {
+            currentUser = presenter.getCurrentUser();
             initView();
         } else {
             rlLogin.setVisibility(View.GONE);
@@ -162,6 +164,7 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
 
         srlReload.setOnRefreshListener(() -> {
             if (presenter.getCurrentUser() != null) {
+                currentUser = presenter.getCurrentUser();
                 initView();
             }
             srlReload.setRefreshing(false);
@@ -192,15 +195,17 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
         myRatingList = new ArrayList<>();
 
         initLlMyFriend();
-
         initLlMyRating();
 
-        initFlInfor();
-
-        tvIntroduceYourSelf.setText(presenter.getCurrentUser().getIntro());
-        tvBirthday.setText(presenter.getCurrentUser().getBirthday());
-        tvEmail.setText(presenter.getCurrentUser().getEmail());
-        tvSex.setText(presenter.getCurrentUser().getStringSex());
+        tvIntroduceYourSelf.setText(currentUser.getIntro());
+        tvBirthday.setText(currentUser.getBirthday());
+        tvEmail.setText(currentUser.getEmail());
+        tvSex.setText(currentUser.getStringSex());
+        tvCity.setText(currentUser.getCity());
+        tvNickname.setText(currentUser.getUsername());
+        Picasso.with(getActivity())
+                .load(presenter.getCurrentUser().getAvatar())
+                .into(target);
     }
 
     public void initLlMyFriend() {
@@ -276,20 +281,6 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
                 tvContent2.setText(myRating.getContent());
 
                 break;
-        }
-    }
-
-    public void initFlInfor() {
-        if (presenter.getCurrentUser().getUsername() != null) {
-            tvNickname.setText(presenter.getCurrentUser().getUsername());
-        }
-        if (presenter.getCurrentUser().getCity() != null) {
-            tvCity.setText(presenter.getCurrentUser().getCity());
-        }
-        if (presenter.getCurrentUser().getAvatar() != null) {
-            Picasso.with(getActivity())
-                    .load(presenter.getCurrentUser().getAvatar())
-                    .into(target);
         }
     }
 
@@ -382,17 +373,12 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
 
     @Override
     public void apiError(Throwable throwable) {
-
+        Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void signOutSuccess() {
         SplashScreenActivity_.intent(getActivity()).start();
         getActivity().finish();
-    }
-
-    @Override
-    public void signOutFail(Throwable throwable) {
-        Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

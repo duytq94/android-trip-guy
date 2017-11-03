@@ -11,7 +11,11 @@ import rx.Observable;
  */
 
 public interface FriendService {
-    Observable<List<User>> getListFriend();
+    Observable<List<User>> getListFriend(int page, int pageSize);
 
-    Observable<List<User>> getListFriendReceive();
+    Observable<List<User>> getListFriendReceive(int page, int pageSize);
+
+    Observable<List<User>> getListFriendRequest(int page, int pageSize);
+
+    Observable<List<User>> getListUser(int page, int pageSize);
 }

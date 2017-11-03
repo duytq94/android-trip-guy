@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend;
+package com.dfa.vinatrip.domains.main.fragment.me.detail_me.friend_receive;
 
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
@@ -18,17 +18,16 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
-import static com.dfa.vinatrip.utils.Constants.CANCEL_REQUEST;
-import static com.dfa.vinatrip.utils.Constants.MAKE_REQUEST;
+import static com.dfa.vinatrip.utils.Constants.CANCEL_FRIEND;
 
-public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ProfileViewHolder> {
+public class ListFriendReceiveAdapter extends RecyclerView.Adapter<ListFriendReceiveAdapter.ProfileViewHolder> {
 
     private List<User> userList;
     private ImageLoader imageLoader;
     private DisplayImageOptions imageOptions;
     private AdapterUserListener adapterUserListener;
 
-    public ListUserAdapter(AdapterUserListener adapterUserListener) {
+    public ListFriendReceiveAdapter(AdapterUserListener adapterUserListener) {
         this.imageLoader = ImageLoader.getInstance();
         this.imageOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.ic_avatar)
@@ -55,27 +54,19 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.Profil
     @Override
     public void onBindViewHolder(ProfileViewHolder holder, int position) {
         User user = userList.get(position);
-        if (user.getStatusFriend() == 1 || user.getStatusFriend() == 2) {
-            holder.llRoot.setVisibility(View.VISIBLE);
-            holder.tvNickname.setText(user.getUsername());
-            holder.tvEmail.setText(user.getEmail());
-            if (user.getAvatar() != null) {
-                imageLoader.displayImage(user.getAvatar(), holder.ivAvatar, imageOptions);
-            }
-            holder.tvSex.setText(user.getStringSex());
-            if (user.getStatusFriend() == 1) {
-                holder.btnAction.setText(R.string.request);
-                holder.btnAction.setTag(MAKE_REQUEST);
-            } else {
-                holder.btnAction.setText(R.string.sent);
-                holder.btnAction.setTag(CANCEL_REQUEST);
-            }
-            holder.btnAction.setOnClickListener(v -> {
-                adapterUserListener.onBtnActionClick(position, holder.btnAction.getTag().toString());
-            });
-        } else {
-            holder.llRoot.setVisibility(View.GONE);
+
+        holder.llRoot.setVisibility(View.VISIBLE);
+        holder.tvNickname.setText(user.getUsername());
+        holder.tvEmail.setText(user.getEmail());
+        if (user.getAvatar() != null) {
+            imageLoader.displayImage(user.getAvatar(), holder.ivAvatar, imageOptions);
         }
+        holder.tvSex.setText(user.getStringSex());
+        holder.btnAction.setText(R.string.friend);
+        holder.btnAction.setTag(CANCEL_FRIEND);
+        holder.btnAction.setOnClickListener(v -> {
+            adapterUserListener.onBtnActionClick(position, holder.btnAction.getTag().toString());
+        });
     }
 
     @Override

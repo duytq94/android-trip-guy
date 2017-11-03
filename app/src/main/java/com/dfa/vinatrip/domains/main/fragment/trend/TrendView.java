@@ -9,7 +9,5 @@ import java.util.List;
  */
 
 public interface TrendView extends BaseMvpView {
-    void getDataFail(Throwable throwable);
-
     void getTrendSuccess(List<Trend> trendList, int page);
 }

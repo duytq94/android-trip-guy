@@ -56,6 +56,11 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
     @Inject
     protected DealPresenter presenter;
 
+    @Override
+    public DealPresenter createPresenter() {
+        return presenter;
+    }
+
     @AfterInject
     void initInject() {
         DaggerDealComponent.builder()
@@ -198,11 +203,6 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
 
     @Override
     public void apiError(Throwable throwable) {
-
-    }
-
-    @Override
-    public void getDataFail(Throwable throwable) {
         Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
@@ -224,10 +224,5 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
                 rvItem.setVisibility(View.GONE);
             }
         }
-    }
-
-    @Override
-    public DealPresenter createPresenter() {
-        return presenter;
     }
 }

@@ -40,7 +40,7 @@ public class TrendPresenter extends BasePresenter<TrendView> {
                 }, throwable -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().getDataFail(throwable);
+                        getView().apiError(throwable);
                     }
                 });
     }

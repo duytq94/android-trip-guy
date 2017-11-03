@@ -9,8 +9,5 @@ import java.util.List;
  */
 
 public interface LocationGroupView extends BaseMvpView {
-
     void getLastLocationSuccess(List<UserLocation> userLocationList);
-
-    void getDataFail(Throwable throwable);
 }

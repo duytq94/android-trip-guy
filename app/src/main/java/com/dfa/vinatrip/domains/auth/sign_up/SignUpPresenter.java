@@ -41,7 +41,7 @@ public class SignUpPresenter extends BasePresenter<SignUpView> {
                 }, throwable -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().signUpFail(throwable);
+                        getView().apiError(throwable);
                     }
                 });
     }

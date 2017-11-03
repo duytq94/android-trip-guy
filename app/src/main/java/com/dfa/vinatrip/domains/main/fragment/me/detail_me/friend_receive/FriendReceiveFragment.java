@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.main.fragment.me.detail_me.my_friend;
+package com.dfa.vinatrip.domains.main.fragment.me.detail_me.friend_receive;
 
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +10,6 @@ import android.widget.Toast;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseFragment;
-import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.ListUserAdapter;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.User;
 import com.dfa.vinatrip.utils.AdapterUserListener;
@@ -26,47 +25,52 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-@EFragment(R.layout.fragment_my_friend)
-public class MyFriendFragment extends BaseFragment<MyFriendView, MyFriendPresenter>
-        implements MyFriendView, AdapterUserListener {
+@EFragment(R.layout.fragment_friend_receive)
+public class FriendReceiveFragment extends BaseFragment<FriendReceiveView, FriendReceivePresenter>
+        implements FriendReceiveView, AdapterUserListener {
 
-    @ViewById(R.id.fragment_my_friend_rv_list_friends)
-    RecyclerView rvListFriends;
-    @ViewById(R.id.fragment_my_friend_ll_friend_not_available)
-    LinearLayout llFriendNotAvailable;
+    @ViewById(R.id.fragment_friend_receive_rv_list_friend_receive)
+    protected RecyclerView rvListFriendReceive;
+    @ViewById(R.id.fragment_friend_receive_ll_friend_receive_not_available)
+    protected LinearLayout llFriendReceiveNotAvailable;
 
-    private List<User> friendList;
-    private ListUserAdapter adapter;
+    private List<User> friendReceiveList;
+    private ListFriendReceiveAdapter adapter;
 
     @App
     protected MainApplication application;
     @Inject
-    protected MyFriendPresenter presenter;
+    protected FriendReceivePresenter presenter;
 
     @AfterInject
     protected void initInject() {
-        DaggerMyFriendComponent.builder()
+        DaggerFriendReceiveComponent.builder()
                 .applicationComponent(application.getApplicationComponent())
                 .activityModule(new ActivityModule(getActivity()))
                 .build().inject(this);
     }
 
     @Override
-    public MyFriendPresenter createPresenter() {
+    public FriendReceivePresenter createPresenter() {
         return presenter;
     }
 
     @AfterViews
     public void init() {
-        friendList = new ArrayList<>();
-        adapter = new ListUserAdapter(this);
+        friendReceiveList = new ArrayList<>();
+        adapter = new ListFriendReceiveAdapter(this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        DividerItemDecoration decoration = new DividerItemDecoration(rvListFriends.getContext(), layoutManager.getOrientation());
-        rvListFriends.addItemDecoration(decoration);
-        rvListFriends.setLayoutManager(layoutManager);
+        DividerItemDecoration decoration = new DividerItemDecoration(rvListFriendReceive.getContext(), layoutManager.getOrientation());
+        rvListFriendReceive.addItemDecoration(decoration);
+        rvListFriendReceive.setLayoutManager(layoutManager);
 
-        presenter.getListFriend(1, 10);
+        presenter.getListFriendReceive(1, 10);
+    }
+
+    @Override
+    public void onBtnActionClick(int position, String command) {
+
     }
 
     @Override
@@ -85,19 +89,14 @@ public class MyFriendFragment extends BaseFragment<MyFriendView, MyFriendPresent
     }
 
     @Override
-    public void getListFriendSuccess(List<User> friendList) {
-        if (friendList.size() == 0) {
-            llFriendNotAvailable.setVisibility(View.VISIBLE);
+    public void getListFriendReceiveSuccess(List<User> friendReceiveList) {
+        if (friendReceiveList.size() == 0) {
+            llFriendReceiveNotAvailable.setVisibility(View.VISIBLE);
         } else {
-            llFriendNotAvailable.setVisibility(View.GONE);
-            this.friendList.addAll(friendList);
-            adapter.setListUser(this.friendList);
+            llFriendReceiveNotAvailable.setVisibility(View.GONE);
+            this.friendReceiveList.addAll(friendReceiveList);
+            adapter.setListUser(this.friendReceiveList);
             adapter.notifyDataSetChanged();
         }
-    }
-
-    @Override
-    public void onBtnActionClick(int position, String command) {
-
     }
 }

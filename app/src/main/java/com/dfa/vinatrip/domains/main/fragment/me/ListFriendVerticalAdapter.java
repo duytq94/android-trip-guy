@@ -17,7 +17,7 @@ public class ListFriendVerticalAdapter extends RecyclerView.Adapter<ListFriendVe
     private Context context;
     private List<User> friendList;
 
-    public ListFriendVerticalAdapter(Context context, List<User> friendList) {
+    public ListFriendVerticalAdapter(Context context) {
         this.context = context;
         this.friendList = friendList;
     }

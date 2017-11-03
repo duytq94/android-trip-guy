@@ -21,7 +21,6 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
     private Context context;
     private List<User> friendList;
     private List<Long> invitedFriendIdList;
-    private Plan currentPlan;
 
     public InviteFriendAdapter(Context context, List<User> friendList,
                                List<Long> invitedFriendIdList, Plan currentPlan) {
@@ -29,7 +28,6 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
         this.context = context;
         this.friendList = friendList;
         this.invitedFriendIdList = invitedFriendIdList;
-        this.currentPlan = currentPlan;
     }
 
     @Override
@@ -47,38 +45,23 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
         }
         holder.tvEmail.setText(friend.getEmail());
 
-        if (currentPlan != null && currentPlan.getFriendInvitedList() != null) {
-            holder.btnMakeFriend.setText("Mời");
-            holder.btnMakeFriend.setTag("Mời");
-            holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_neutral);
+        holder.btnAction.setText("Mời");
+        holder.btnAction.setTag("Mời");
+        holder.btnAction.setBackgroundResource(R.drawable.btn_neutral);
 
-            for (int i = 0; i < currentPlan.getFriendInvitedList().size(); i++) {
-                if (currentPlan.getFriendInvitedList().get(i) == friend.getId()) {
-                    holder.btnMakeFriend.setText(R.string.invited);
-                    holder.btnMakeFriend.setTag("Đã mời");
-                    holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_positive);
-                    break;
-                }
-            }
-        } else {
-            holder.btnMakeFriend.setText("Mời");
-            holder.btnMakeFriend.setTag("Mời");
-            holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_neutral);
-        }
-
-        holder.btnMakeFriend.setOnClickListener(v -> {
-            switch (holder.btnMakeFriend.getTag().toString()) {
+        holder.btnAction.setOnClickListener(v -> {
+            switch (holder.btnAction.getTag().toString()) {
                 case "Mời":
-                    holder.btnMakeFriend.setText(R.string.invited);
-                    holder.btnMakeFriend.setTag("Đã mời");
-                    holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_positive);
+                    holder.btnAction.setText(R.string.invited);
+                    holder.btnAction.setTag("Đã mời");
+                    holder.btnAction.setBackgroundResource(R.drawable.btn_positive);
                     invitedFriendIdList.add(friend.getId());
                     break;
 
                 case "Đã mời":
-                    holder.btnMakeFriend.setText("Mời");
-                    holder.btnMakeFriend.setTag("Mời");
-                    holder.btnMakeFriend.setBackgroundResource(R.drawable.btn_neutral);
+                    holder.btnAction.setText("Mời");
+                    holder.btnAction.setTag("Mời");
+                    holder.btnAction.setBackgroundResource(R.drawable.btn_neutral);
                     for (int i = 0; i < invitedFriendIdList.size(); i++) {
                         if (invitedFriendIdList.get(i) == friend.getId()) {
                             invitedFriendIdList.remove(i);
@@ -106,7 +89,7 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
     public static class InviteViewHolder extends RecyclerView.ViewHolder {
         private TextView tvNickname, tvEmail, tvSex;
         private ImageView ivAvatar;
-        private Button btnMakeFriend;
+        private Button btnAction;
 
         public InviteViewHolder(View itemView) {
             super(itemView);
@@ -114,7 +97,7 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
             tvEmail = (TextView) itemView.findViewById(R.id.item_user_profile_tv_email);
             tvSex = (TextView) itemView.findViewById(R.id.item_user_profile_tv_sex);
             ivAvatar = (ImageView) itemView.findViewById(R.id.item_user_profile_iv_avatar);
-            btnMakeFriend = (Button) itemView.findViewById(R.id.item_user_profile_btn_make_friend);
+            btnAction = (Button) itemView.findViewById(R.id.item_user_profile_btn_action);
         }
     }
 }

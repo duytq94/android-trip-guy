@@ -1,6 +1,5 @@
 package com.dfa.vinatrip.domains.chat.adapter;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -43,10 +42,9 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Map<String, String> mapAvatar;
     private Map<String, String> mapNickname;
     private Map<String, Integer> mapSticker;
-    private Context context;
 
     public ChatGroupAdapter(String currentUser, List<BaseMessage> baseMessageList, Map<String, String> mapAvatar,
-                            Map<String, String> mapNickname, Map<String, Integer> mapSticker, Context context) {
+                            Map<String, String> mapNickname, Map<String, Integer> mapSticker, AdapterChatListener adapterChatListener) {
         setHasStableIds(true);
         this.currentUser = currentUser;
         this.imageLoader = ImageLoader.getInstance();
@@ -72,8 +70,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.mapAvatar = mapAvatar;
         this.mapNickname = mapNickname;
         this.mapSticker = mapSticker;
-        this.adapterChatListener = (AdapterChatListener) context;
-        this.context = context;
+        this.adapterChatListener = adapterChatListener;
     }
 
     @Override
@@ -145,7 +142,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     messageHolder.psivPhotoLeft.setVisibility(View.GONE);
                     messageHolder.ivStickerLeft.setVisibility(View.VISIBLE);
 
-                    Glide.with(context).load(mapSticker.get(baseMessage.getContent())).into(messageHolder.ivStickerLeft);
+                    Glide.with(messageHolder.itemView.getContext()).load(mapSticker.get(baseMessage.getContent())).into(messageHolder.ivStickerLeft);
                     break;
             }
 
@@ -245,7 +242,7 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     messageHolder.psivPhotoRight.setVisibility(View.GONE);
                     messageHolder.ivStickerRight.setVisibility(View.VISIBLE);
 
-                    Glide.with(context).load(mapSticker.get(baseMessage.getContent())).into(messageHolder.ivStickerRight);
+                    Glide.with(messageHolder.itemView.getContext()).load(mapSticker.get(baseMessage.getContent())).into(messageHolder.ivStickerRight);
                     break;
             }
         }

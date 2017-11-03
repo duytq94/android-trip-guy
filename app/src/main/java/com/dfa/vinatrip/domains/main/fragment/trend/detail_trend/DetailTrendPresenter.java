@@ -36,7 +36,7 @@ public class DetailTrendPresenter extends BasePresenter<DetailTrendView> {
                     }
                 }, throwable -> {
                     if (isViewAttached()) {
-                        getView().getDataFail(throwable);
+                        getView().apiError(throwable);
                     }
                 });
     }

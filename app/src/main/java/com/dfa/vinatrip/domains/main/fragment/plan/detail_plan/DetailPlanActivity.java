@@ -184,7 +184,7 @@ public class DetailPlanActivity extends BaseActivity<DetailPlanView, DetailPlanP
 
     @Override
     public void apiError(Throwable throwable) {
-
+        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -194,10 +194,5 @@ public class DetailPlanActivity extends BaseActivity<DetailPlanView, DetailPlanP
             setupAdapterSchedule();
         }
         initView();
-    }
-
-    @Override
-    public void getPlanScheduleFail(Throwable throwable) {
-        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

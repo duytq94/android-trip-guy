@@ -42,9 +42,15 @@ public class UpdateUserProfilePresenter extends BasePresenter<UpdateUserProfileV
         subscription = accountService.editProfile(user)
                 .compose(RxScheduler.applyIoSchedulers())
                 .subscribe(newUser -> {
-                    getView().editProfileSuccess(newUser);
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                        getView().editProfileSuccess(newUser);
+                    }
                 }, throwable -> {
-                    getView().apiError(throwable);
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                        getView().apiError(throwable);
+                    }
                 });
     }
 }

@@ -12,9 +12,5 @@ import java.util.List;
 public interface MakePlanView extends BaseMvpView {
     void getListFriendSuccess(List<User> friendList);
 
-    void getListFriendFail(Throwable throwable);
-
     void createPlanSuccess(String message);
-
-    void createPlanFail(Throwable throwable);
 }

@@ -48,7 +48,7 @@ public class LocationGroupPresenter extends BasePresenter<LocationGroupView> {
                 }, throwable -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().getDataFail(throwable);
+                        getView().apiError(throwable);
                     }
                 });
     }

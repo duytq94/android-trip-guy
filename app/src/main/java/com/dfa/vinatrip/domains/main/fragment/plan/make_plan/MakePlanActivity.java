@@ -51,6 +51,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 
 import static com.dfa.vinatrip.utils.AppUtil.REQUEST_PLACE_AUTO_COMPLETE;
+import static com.dfa.vinatrip.utils.Constants.FORMAT_DAY_VN;
 import static com.dfa.vinatrip.utils.Constants.MILLISECOND_IN_DAY;
 import static com.dfa.vinatrip.utils.Constants.REQUEST_BACKGROUND;
 
@@ -137,13 +138,13 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
         calendar = Calendar.getInstance();
         invitedFriendIdList = new ArrayList<>();
 
-        presenter.getListFriend();
+        presenter.getListFriend(1, Integer.MAX_VALUE);
     }
 
     public void setCurrentDayForView() {
         // Set current day for tvBirthday
         SimpleDateFormat simpleDateFormat;
-        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        simpleDateFormat = new SimpleDateFormat(FORMAT_DAY_VN, Locale.getDefault());
         String strDate = simpleDateFormat.format(calendar.getTime());
         tvDateGo.setText(strDate);
         tvDateBack.setText(strDate);
@@ -167,7 +168,7 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
 
             etTitle.setHint(String.format("Ngày %s...", i + 1));
             etContent.setHint(String.format("Lịch trình ngày %s...", i + 1));
-            tvDate.setText(AppUtil.formatTime("dd/MM/yyyy", timestampGo + MILLISECOND_IN_DAY * i));
+            tvDate.setText(AppUtil.formatTime(FORMAT_DAY_VN, timestampGo + MILLISECOND_IN_DAY * i));
             llSchedule.addView(llRoot);
         }
     }
@@ -320,7 +321,7 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
 
     @Override
     public void apiError(Throwable throwable) {
-
+        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -334,12 +335,9 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
             rvListFriend.setAdapter(inviteFriendAdapter);
             LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             rvListFriend.setLayoutManager(manager);
+        } else {
+            tvFriendNotAvailable.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void getListFriendFail(Throwable throwable) {
-        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -348,8 +346,4 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
         finish();
     }
 
-    @Override
-    public void createPlanFail(Throwable throwable) {
-        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
-    }
 }

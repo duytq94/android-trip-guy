@@ -14,6 +14,7 @@ import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.domains.auth.reset_password.ResetPasswordActivity_;
+import com.dfa.vinatrip.domains.auth.sign_up.SignUpActivity_;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.request.AuthRequest;
@@ -66,7 +67,7 @@ public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
     private boolean isBtnSignInClick = false;
 
     @AfterInject
-    void initInject() {
+    protected void initInject() {
         DaggerSignInComponent.builder()
                 .applicationComponent(mainApplication.getApplicationComponent())
                 .activityModule(new ActivityModule(this))
@@ -112,19 +113,19 @@ public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
     }
 
     @Click(R.id.activity_sign_in_btn_sign_up)
-    void btnSignUpClicked() {
-        SignInActivity_.intent(this).start();
+    public void btnSignUpClicked() {
+        SignUpActivity_.intent(this).start();
         finish();
     }
 
     @Click(R.id.activity_sign_in_btn_sign_in)
-    void btnSignInClicked() {
+    public void btnSignInClicked() {
         isBtnSignInClick = true;
         validator.validate();
     }
 
     @Click(R.id.activity_sign_in_btn_reset_password)
-    void btnResetPassword() {
+    public void btnResetPassword() {
         ResetPasswordActivity_.intent(this).start();
         finish();
     }
@@ -161,7 +162,7 @@ public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
 
     @Override
     public void apiError(Throwable throwable) {
-
+        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @NonNull
@@ -186,10 +187,5 @@ public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
     public void signInSuccess(User user) {
         SplashScreenActivity_.intent(this).start();
         finish();
-    }
-
-    @Override
-    public void signInFail(Throwable throwable) {
-        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

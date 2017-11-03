@@ -73,10 +73,13 @@
     <string name="btn_remove">Xóa &#8593;</string>
     <string name="comment_not_available">Hiện chưa có đánh giá nào</string>
     <string name="friend_not_available">Hiện chưa có bạn bè nào</string>
+
+    <string name="request"> Kết bạn</string>
     <string name="friend">&#10004; Bạn bè</string>
     <string name="sent">&#10148; Đã gửi</string>
     <string name="agree">&#9873; Đồng ý</string>
     <string name="invited">&#10004; Đã mời</string>
+
     <string name="update_plan">Chỉnh sửa &#10148;</string>
     <string name="remove_plan">Xóa &#10006;</string>
     <string name="trip_plan">Kế hoạch chuyến đi</string>

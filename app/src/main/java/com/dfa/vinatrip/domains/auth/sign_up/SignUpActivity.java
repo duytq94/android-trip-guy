@@ -21,7 +21,6 @@ import com.dfa.vinatrip.models.request.AuthRequest;
 import com.dfa.vinatrip.models.response.User;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.KeyboardListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
@@ -59,7 +58,6 @@ public class SignUpActivity extends BaseActivity<SignUpView, SignUpPresenter>
     protected ImageView ivSymbol;
 
     private Validator validator;
-    private FirebaseAuth firebaseAuth;
     private Animation animSlideUp;
     private Animation animSlideDown;
 
@@ -75,8 +73,6 @@ public class SignUpActivity extends BaseActivity<SignUpView, SignUpPresenter>
 
         validator = new Validator(this);
         validator.setValidationListener(this);
-
-        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Click(R.id.activity_sign_up_btn_sign_up)
@@ -146,44 +142,6 @@ public class SignUpActivity extends BaseActivity<SignUpView, SignUpPresenter>
     public void onValidationSucceeded() {
         AuthRequest authRequest = new AuthRequest(etEmail.getText().toString(), etPassword.getText().toString());
         presenter.signUp(authRequest);
-
-//        firebaseAuth.createUserWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (!task.isSuccessful()) {
-//                            try {
-//                                throw task.getException();
-//                            } catch (FirebaseAuthInvalidCredentialsException e) {
-//                                Toasty.error(SignUpActivity.this,
-//                                        "Email không hợp lệ!",
-//                                        Toast.LENGTH_SHORT).show();
-//                            } catch (FirebaseAuthUserCollisionException e) {
-//                                Toasty.error(SignUpActivity.this,
-//                                        "Email đã được đăng ký!",
-//                                        Toast.LENGTH_SHORT).show();
-//                            } catch (Exception e) {
-//                            }
-//                        } else {
-//                            // Create first database for user with empty data
-//                            FirebaseUser firebaseUser =
-//                                    FirebaseAuth.getInstance().getCurrentUser();
-//                            if (firebaseUser != null) {
-//                                // Add empty profile for user
-//                                UserProfile userProfile
-//                                        = new UserProfile("", "", "", "", "", "", "",
-//                                        firebaseUser.getEmail());
-//                                DatabaseReference databaseReference =
-//                                        FirebaseDatabase.getInstance().getReference();
-//                                databaseReference.child("UserProfile")
-//                                        .child(firebaseUser.getUid())
-//                                        .setValue(userProfile);
-//                            }
-//                            startActivity(new Intent(SignUpActivity.this, SplashScreenActivity_.class));
-//                            finish();
-//                        }
-//                    }
-//                });
     }
 
     @Override
@@ -232,17 +190,12 @@ public class SignUpActivity extends BaseActivity<SignUpView, SignUpPresenter>
 
     @Override
     public void apiError(Throwable throwable) {
-
+        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void signUpSuccess(User user) {
         SplashScreenActivity_.intent(this).start();
         finish();
-    }
-
-    @Override
-    public void signUpFail(Throwable throwable) {
-        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

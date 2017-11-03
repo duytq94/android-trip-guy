@@ -9,6 +9,4 @@ import com.dfa.vinatrip.models.response.User;
 
 public interface SignUpView extends BaseMvpView {
     void signUpSuccess(User user);
-
-    void signUpFail(Throwable throwable);
 }

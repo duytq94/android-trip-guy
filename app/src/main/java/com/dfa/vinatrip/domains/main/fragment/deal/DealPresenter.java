@@ -40,7 +40,7 @@ public class DealPresenter extends BasePresenter<DealView> {
                 }, throwable -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().getDataFail(throwable);
+                        getView().apiError(throwable);
                     }
                 });
     }

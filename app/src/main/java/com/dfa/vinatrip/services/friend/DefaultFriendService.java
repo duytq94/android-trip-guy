@@ -29,16 +29,30 @@ public class DefaultFriendService implements FriendService {
     }
 
     @Override
-    public Observable<List<User>> getListFriend() {
+    public Observable<List<User>> getListFriend(int page, int pageSize) {
         return networkProvider
-                .transformResponse(restFriendService.getListFriend(accountService.getCurrentUser().getAccessToken()))
+                .transformResponse(restFriendService.getListFriend(accountService.getCurrentUser().getAccessToken(), page, pageSize))
                 .compose(apiErrorFilter.execute());
     }
 
     @Override
-    public Observable<List<User>> getListFriendReceive() {
+    public Observable<List<User>> getListFriendReceive(int page, int pageSize) {
         return networkProvider
-                .transformResponse(restFriendService.getListFriendReceive(accountService.getCurrentUser().getAccessToken()))
+                .transformResponse(restFriendService.getListFriendReceive(accountService.getCurrentUser().getAccessToken(), page, pageSize))
+                .compose(apiErrorFilter.execute());
+    }
+
+    @Override
+    public Observable<List<User>> getListFriendRequest(int page, int pageSize) {
+        return networkProvider
+                .transformResponse(restFriendService.getListFriendRequest(accountService.getCurrentUser().getAccessToken(), page, pageSize))
+                .compose(apiErrorFilter.execute());
+    }
+
+    @Override
+    public Observable<List<User>> getListUser(int page, int pageSize) {
+        return networkProvider
+                .transformResponse(restFriendService.getListUser(accountService.getCurrentUser().getAccessToken(), page, pageSize))
                 .compose(apiErrorFilter.execute());
     }
 }

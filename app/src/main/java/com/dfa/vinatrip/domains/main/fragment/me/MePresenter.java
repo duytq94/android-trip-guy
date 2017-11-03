@@ -46,7 +46,7 @@ public class MePresenter extends BasePresenter<MeView> {
                         getView().signOutSuccess();
                     }
                 }, throwable -> {
-                    getView().signOutFail(throwable);
+                    getView().apiError(throwable);
                 });
     }
 }

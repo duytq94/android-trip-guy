@@ -33,6 +33,8 @@ public class User extends BaseEntity implements LoginResponse, Serializable {
     private String background;
     @SerializedName("city")
     private String city;
+    @SerializedName("status_friend")
+    private int statusFriend;
 
     public User(String username, String avatar, String birthday, String intro, int sex,
                 String background, String city) {
@@ -43,6 +45,14 @@ public class User extends BaseEntity implements LoginResponse, Serializable {
         this.sex = sex;
         this.background = background;
         this.city = city;
+    }
+
+    public int getStatusFriend() {
+        return statusFriend;
+    }
+
+    public void setStatusFriend(int statusFriend) {
+        this.statusFriend = statusFriend;
     }
 
     public String getCity() {

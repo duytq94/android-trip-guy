@@ -38,12 +38,12 @@ public class MakePlanPresenter extends BasePresenter<MakePlanView> {
         return accountService.getCurrentUser();
     }
 
-    public void getListFriend() {
+    public void getListFriend(int page, int pageSize) {
         RxScheduler.onStop(subscription);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription = friendService.getListFriend()
+        subscription = friendService.getListFriend(page, pageSize)
                 .compose(RxScheduler.applyIoSchedulers())
                 .subscribe(friendList -> {
                     if (isViewAttached()) {
@@ -53,7 +53,7 @@ public class MakePlanPresenter extends BasePresenter<MakePlanView> {
                 }, throwable -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().getListFriendFail(throwable);
+                        getView().apiError(throwable);
                     }
                 });
     }
@@ -73,7 +73,7 @@ public class MakePlanPresenter extends BasePresenter<MakePlanView> {
                 }, throwable -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().getListFriendFail(throwable);
+                        getView().apiError(throwable);
                     }
                 });
     }

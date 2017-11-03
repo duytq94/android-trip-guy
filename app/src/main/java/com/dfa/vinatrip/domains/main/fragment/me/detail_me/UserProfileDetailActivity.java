@@ -15,6 +15,8 @@ import android.widget.EditText;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
+import com.dfa.vinatrip.domains.main.fragment.me.detail_me.friend_receive.FriendReceiveFragment;
+import com.dfa.vinatrip.domains.main.fragment.me.detail_me.friend_receive.FriendReceiveFragment_;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.MakeFriendFragment;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.MakeFriendFragment_;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.my_friend.MyFriendFragment;
@@ -77,15 +79,18 @@ public class UserProfileDetailActivity extends BaseActivity<UserProfileDetailVie
 
         UpdateUserProfileFragment updateUserProfileFragment = new UpdateUserProfileFragment_();
         MakeFriendFragment makeFriendFragment = new MakeFriendFragment_();
+        FriendReceiveFragment friendReceiveFragment = new FriendReceiveFragment_();
         MyFriendFragment myFriendFragment = new MyFriendFragment_();
         MyRatingFragment myRatingFragment = new MyRatingFragment_();
 
         adapter.addFragment(updateUserProfileFragment, "CHỈNH SỬA");
         adapter.addFragment(makeFriendFragment, "THÊM BẠN");
+        adapter.addFragment(friendReceiveFragment, "LỜI MỜI");
         adapter.addFragment(myFriendFragment, "BẠN TÔI");
         adapter.addFragment(myRatingFragment, "ĐÁNH GIÁ");
 
         viewpager.setAdapter(adapter);
+        viewpager.setOffscreenPageLimit(adapter.getCount());
 
         tlMenu.setupWithViewPager(viewpager);
 

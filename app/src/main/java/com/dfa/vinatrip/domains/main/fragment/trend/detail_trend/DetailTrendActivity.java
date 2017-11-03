@@ -184,17 +184,12 @@ public class DetailTrendActivity extends BaseActivity<DetailTrendView, DetailTre
 
     @Override
     public void apiError(Throwable throwable) {
-
+        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void updateTrendCountSuccess(String message) {
 
-    }
-
-    @Override
-    public void getDataFail(Throwable throwable) {
-        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @NonNull

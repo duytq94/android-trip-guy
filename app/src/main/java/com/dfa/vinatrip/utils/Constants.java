@@ -28,6 +28,12 @@ public class Constants {
     // Trend
     public static final String MY_TOUR = "mytour";
 
-    // Second in one day
+    // Time
     public static final int MILLISECOND_IN_DAY = 86400000;
+    public static final String FORMAT_DAY_VN = "dd/MM/yyyy";
+
+    // Friend
+    public static final String MAKE_REQUEST = "MakeRequest";
+    public static final String CANCEL_REQUEST = "CancelRequest";
+    public static final String CANCEL_FRIEND = "CancelFriend";
 }

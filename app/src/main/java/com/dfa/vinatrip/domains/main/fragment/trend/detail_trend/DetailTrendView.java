@@ -8,6 +8,4 @@ import com.dfa.vinatrip.base.BaseMvpView;
 
 public interface DetailTrendView extends BaseMvpView {
     void updateTrendCountSuccess(String message);
-
-    void getDataFail(Throwable throwable);
 }

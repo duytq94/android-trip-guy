@@ -48,7 +48,7 @@ public class DetailPlanPresenter extends BasePresenter<DetailPlanView> {
                 }, throwable -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().getPlanScheduleFail(throwable);
+                        getView().apiError(throwable);
                     }
                 });
     }

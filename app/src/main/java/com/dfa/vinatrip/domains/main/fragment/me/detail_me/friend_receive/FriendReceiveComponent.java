@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.main.fragment.me.detail_me.friend_request;
+package com.dfa.vinatrip.domains.main.fragment.me.detail_me.friend_receive;
 
 import android.app.Activity;
 
@@ -14,8 +14,8 @@ import dagger.Component;
 
 @ActivityScope
 @Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
-public interface FriendRequestComponent {
+public interface FriendReceiveComponent {
     Activity activity();
 
-    void inject(FriendRequestFragment friendRequestFragment);
+    void inject(FriendReceiveFragment friendReceiveFragment);
 }

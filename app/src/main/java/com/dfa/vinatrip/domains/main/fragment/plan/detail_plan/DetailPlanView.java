@@ -11,6 +11,4 @@ import java.util.List;
 
 public interface DetailPlanView extends BaseMvpView {
     void getPlanScheduleSuccess(List<PlanSchedule> planScheduleList);
-
-    void getPlanScheduleFail(Throwable throwable);
 }

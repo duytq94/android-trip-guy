@@ -8,5 +8,5 @@ import com.dfa.vinatrip.models.response.User;
  */
 
 public interface UpdateUserProfileView extends BaseMvpView {
-    public void editProfileSuccess(User newUser);
+    void editProfileSuccess(User newUser);
 }

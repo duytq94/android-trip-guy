@@ -16,6 +16,7 @@ import com.dfa.vinatrip.utils.AppUtil;
 
 import java.util.List;
 
+import static com.dfa.vinatrip.utils.Constants.FORMAT_DAY_VN;
 import static com.dfa.vinatrip.utils.Constants.MILLISECOND_IN_DAY;
 
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ScheduleHolder> {
@@ -39,7 +40,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         PlanSchedule planSchedule = planScheduleList.get(position);
         holder.tvTitle.setText(planSchedule.getTitle());
         holder.tvContent.setText(planSchedule.getContent());
-        holder.tvDate.setText(AppUtil.formatTime("dd/MM/yyyy", planSchedule.getTimestamp()));
+        holder.tvDate.setText(AppUtil.formatTime(FORMAT_DAY_VN, planSchedule.getTimestamp()));
         if (AppUtil.getDateType(planSchedule.getTimestamp()) == 0) {
             holder.ivCircle.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_circle_timeline_green));
             holder.tvTitle.setTextColor(ContextCompat.getColor(context, R.color.colorMain));

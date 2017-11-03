@@ -426,7 +426,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
 
     @Override
     public void apiError(Throwable throwable) {
-
+        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -466,10 +466,5 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
                 e.printStackTrace();
             }
         });
-    }
-
-    @Override
-    public void getDataFail(Throwable throwable) {
-        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

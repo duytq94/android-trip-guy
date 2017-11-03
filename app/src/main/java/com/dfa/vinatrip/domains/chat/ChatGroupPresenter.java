@@ -49,7 +49,7 @@ public class ChatGroupPresenter extends BasePresenter<ChatGroupView> {
                 }, throwable -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().getDataFail(throwable);
+                        getView().apiError(throwable);
                     }
                 });
     }
@@ -64,7 +64,7 @@ public class ChatGroupPresenter extends BasePresenter<ChatGroupView> {
                     }
                 }, throwable -> {
                     if (isViewAttached()) {
-                        getView().getDataFail(throwable);
+                        getView().apiError(throwable);
                     }
                 });
     }

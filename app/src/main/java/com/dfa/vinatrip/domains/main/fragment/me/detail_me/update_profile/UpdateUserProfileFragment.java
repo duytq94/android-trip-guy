@@ -59,6 +59,8 @@ import static android.app.Activity.RESULT_OK;
 import static com.dfa.vinatrip.utils.AppUtil.REQUEST_PLACE_AUTO_COMPLETE;
 import static com.dfa.vinatrip.utils.AppUtil.exifToDegrees;
 import static com.dfa.vinatrip.utils.Constants.FOLDER_AVATAR_USER;
+import static com.dfa.vinatrip.utils.Constants.FORMAT_DAY_VN;
+import static com.dfa.vinatrip.utils.Constants.URL_STORAGE;
 import static com.sangcomz.fishbun.define.Define.ALBUM_REQUEST_CODE;
 
 @EFragment(R.layout.fragment_update_user_profile)
@@ -82,7 +84,6 @@ public class UpdateUserProfileFragment extends BaseFragment<UpdateUserProfileVie
     @ViewById(R.id.fragment_update_user_profile_sv_root)
     protected ScrollView svRoot;
 
-    private StorageReference storageReference;
     private User currentUser;
     private Calendar calendar;
     private Bitmap adjustedBitmap;
@@ -141,10 +142,10 @@ public class UpdateUserProfileFragment extends BaseFragment<UpdateUserProfileVie
                 etIntroduceYourSelf.setText(currentUser.getIntro());
             }
             switch (currentUser.getSex()) {
-                case 0:
+                case 1:
                     spnSex.setSelection(0);
                     break;
-                case 1:
+                case 2:
                     spnSex.setSelection(1);
                     break;
                 default:
@@ -159,7 +160,7 @@ public class UpdateUserProfileFragment extends BaseFragment<UpdateUserProfileVie
     public void setCurrentDayForView() {
         // Set current day for tvBirthday
         SimpleDateFormat simpleDateFormat;
-        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        simpleDateFormat = new SimpleDateFormat(FORMAT_DAY_VN, Locale.getDefault());
         String strDate = simpleDateFormat.format(calendar.getTime());
         tvBirthday.setText(strDate);
     }
@@ -168,28 +169,29 @@ public class UpdateUserProfileFragment extends BaseFragment<UpdateUserProfileVie
     public void onBtnDoneClick() {
         svRoot.scrollTo(0, svRoot.getBottom());
 
-        if (photo.get(0) != null) {
+        if (photo.size() > 0 && photo.get(0) != null) {
             showHUD();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             adjustedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] byteArrayPhoto = baos.toByteArray();
 
             // Get the path and name photo be upload
-            storageReference = FirebaseStorage.getInstance()
-                    .getReferenceFromUrl("gs://tripguy-10864.appspot.com")
+            StorageReference storageReference = FirebaseStorage.getInstance()
+                    .getReferenceFromUrl(URL_STORAGE)
                     .child(FOLDER_AVATAR_USER)
-                    .child(currentUser.getId() + ".jpg");
+                    .child(String.format("%s.jpg", currentUser.getId()));
 
             UploadTask uploadTask = storageReference.putBytes(byteArrayPhoto);
-            uploadTask.addOnSuccessListener(taskSnapshot -> {
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                if (downloadUrl == null) {
-                    linkNewAvatar = currentUser.getAvatar();
-                } else {
-                    linkNewAvatar = downloadUrl.toString();
-                }
-                sendNewUser();
-            })
+            uploadTask
+                    .addOnSuccessListener(taskSnapshot -> {
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        if (downloadUrl == null) {
+                            linkNewAvatar = currentUser.getAvatar();
+                        } else {
+                            linkNewAvatar = downloadUrl.toString();
+                        }
+                        sendNewUser();
+                    })
                     .addOnFailureListener(e -> {
                         sendNewUser();
                     });
@@ -205,7 +207,7 @@ public class UpdateUserProfileFragment extends BaseFragment<UpdateUserProfileVie
                 etIntroduceYourSelf.getText().toString(),
                 spnSex.getSelectedItemPosition() + 1,
                 null,
-                null);
+                tvCity.getText().toString());
         presenter.editProfile(newUser);
     }
 

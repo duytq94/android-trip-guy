@@ -11,6 +11,4 @@ import java.util.List;
 
 public interface MakeFriendView extends BaseMvpView {
     void getListUserSuccess(List<User> userList);
-
-    void getListUserFail(Throwable throwable);
 }

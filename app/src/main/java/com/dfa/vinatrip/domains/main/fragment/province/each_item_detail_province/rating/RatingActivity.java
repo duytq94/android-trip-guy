@@ -41,6 +41,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.dfa.vinatrip.utils.Constants.FORMAT_DAY_VN;
+
 @EActivity(R.layout.activity_rating)
 public class RatingActivity extends BaseActivity<RatingView, RatingPresenter>
         implements RatingView, Validator.ValidationListener {
@@ -213,7 +215,7 @@ public class RatingActivity extends BaseActivity<RatingView, RatingPresenter>
     @Override
     public void onValidationSucceeded() {
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(FORMAT_DAY_VN);
         String date = simpleDateFormat.format(calendar.getTime());
 
         //TODO post current user rating

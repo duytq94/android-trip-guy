@@ -463,7 +463,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
 
     @Override
     public void apiError(Throwable throwable) {
-
+        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -490,11 +490,6 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 }
             }
         }
-    }
-
-    @Override
-    public void getDataFail(Throwable throwable) {
-        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

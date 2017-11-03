@@ -40,7 +40,7 @@ public class SignInPresenter extends BasePresenter<SignInView> {
                 }, throwable -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().signInFail(throwable);
+                        getView().apiError(throwable);
                     }
                 });
     }
