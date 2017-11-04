@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.main.province.each_item_detail_province.each_province_destination;
+package com.dfa.vinatrip.domains.main.fragment.province.each_item_detail_province.each_province_destination;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +25,7 @@ public class ProvinceDestinationPhotoAdapter extends RecyclerView.Adapter<Provin
 
     @Override
     public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.item_province_detail_photo, parent, false);
+        View view = layoutInflater.inflate(R.layout.item_province_detail_it_photo, parent, false);
         return new PhotoViewHolder(view);
     }
 
@@ -49,7 +49,7 @@ public class ProvinceDestinationPhotoAdapter extends RecyclerView.Adapter<Provin
 
         public PhotoViewHolder(View itemView) {
             super(itemView);
-            ivPhoto = (ImageView) itemView.findViewById(R.id.item_province_detail_photo_iv_photos);
+            ivPhoto = (ImageView) itemView.findViewById(R.id.item_province_detail_it_photo_iv_photos);
         }
     }
 }

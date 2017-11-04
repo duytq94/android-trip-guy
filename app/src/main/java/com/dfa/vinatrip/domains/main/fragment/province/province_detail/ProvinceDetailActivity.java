@@ -12,10 +12,14 @@ import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.custom_view.NToolbar;
 import com.dfa.vinatrip.domains.main.fragment.province.province_detail.adapter.RecyclerFoodAdapter;
 import com.dfa.vinatrip.domains.main.fragment.province.province_detail.adapter.RecyclerHotelAdapter;
+import com.dfa.vinatrip.domains.main.fragment.province.province_detail.adapter.RecyclerImageAdapter;
+import com.dfa.vinatrip.domains.main.fragment.province.province_detail.adapter.RecyclerPlaceAdapter;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.Province;
 import com.dfa.vinatrip.models.response.food.FoodResponse;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
+import com.dfa.vinatrip.models.response.place.PlaceResponse;
+import com.dfa.vinatrip.models.response.province_image.ProvinceImageResponse;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -48,6 +52,10 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
     protected RecyclerView rcvHotels;
     @ViewById(R.id.activity_province_detail_rcv_food)
     protected RecyclerView rcvFoods;
+    @ViewById(R.id.activity_province_detail_rcv_place)
+    protected RecyclerView rcvPlaces;
+    @ViewById(R.id.activity_province_detail_rcv_image)
+    protected RecyclerView rcvImages;
     
     @StringArrayRes(R.array.province_detail_tab_pager)
     protected String[] tabPager;
@@ -64,6 +72,16 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
     private int food_per_page = 5;
     private List<FoodResponse> foodResponses;
     private RecyclerFoodAdapter foodAdapter;
+    
+    private int place_page = 1;
+    private int place_per_page = 5;
+    private List<PlaceResponse> placeResponses;
+    private RecyclerPlaceAdapter placeAdapter;
+    
+    private int image_page = 1;
+    private int image_per_page = 10;
+    private List<ProvinceImageResponse> imageResponses;
+    private RecyclerImageAdapter imageAdapter;
     
     @AfterInject
     void initInject() {
@@ -95,8 +113,22 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
         rcvFoods.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rcvFoods.setAdapter(foodAdapter);
         
+        placeResponses = new ArrayList<>();
+        placeAdapter = new RecyclerPlaceAdapter(this, placeResponses);
+        rcvPlaces.setHasFixedSize(true);
+        rcvPlaces.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rcvPlaces.setAdapter(placeAdapter);
+        
+        imageResponses = new ArrayList<>();
+        imageAdapter = new RecyclerImageAdapter(this, imageResponses);
+        rcvImages.setHasFixedSize(true);
+        rcvImages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rcvImages.setAdapter(imageAdapter);
+        
         presenter.getHotels(province.getId(), hotel_page, hotel_per_page);
         presenter.getFoods(province.getId(), food_page, food_per_page);
+        presenter.getPlaces(province.getId(), place_page, place_per_page);
+        presenter.getImages(province.getId(), image_page, image_per_page);
     }
     
     @Override
@@ -135,5 +167,17 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
     public void getFoodsSuccess(List<FoodResponse> foodResponses) {
         this.foodResponses.addAll(foodResponses);
         this.foodAdapter.notifyDataSetChanged();
+    }
+    
+    @Override
+    public void getPlacesSuccess(List<PlaceResponse> placeResponses) {
+        this.placeResponses.addAll(placeResponses);
+        this.placeAdapter.notifyDataSetChanged();
+    }
+    
+    @Override
+    public void getImagesSuccess(List<ProvinceImageResponse> provinceImageResponses) {
+        this.imageResponses.addAll(provinceImageResponses);
+        this.imageAdapter.notifyDataSetChanged();
     }
 }

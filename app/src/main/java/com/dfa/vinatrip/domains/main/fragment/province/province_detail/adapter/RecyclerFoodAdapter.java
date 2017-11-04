@@ -22,41 +22,41 @@ import java.util.List;
 public class RecyclerFoodAdapter extends RecyclerView.Adapter<RecyclerFoodAdapter.ViewHolder> {
     private Context context;
     private List<FoodResponse> foodResponses;
-    
+
     public RecyclerFoodAdapter(Context context, List<FoodResponse> foodResponses) {
         this.context = context;
         this.foodResponses = foodResponses;
     }
-    
+
     @Override
     public RecyclerFoodAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.item_province_detail_it_food, parent, false);
         return new ViewHolder(view);
     }
-    
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        FoodResponse Food = foodResponses.get(position);
-        
-        holder.tvFoodName.setText(Food.getName());
-        Picasso.with(context).load(Food.getAvatar())
+        FoodResponse food = foodResponses.get(position);
+
+        holder.tvFoodName.setText(food.getName());
+        Picasso.with(context).load(food.getAvatar())
                 .error(R.drawable.photo_not_available)
                 .into(holder.ivFoodAvatar);
     }
-    
+
     @Override
     public int getItemCount() {
         return foodResponses.size();
     }
-    
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivFoodAvatar;
         private TextView tvFoodName;
         private SimpleRatingBar srbFoodRate;
         private TextView tvFoodReviews;
         private TextView tvFoodDistance;
-        
+
         public ViewHolder(View itemView) {
             super(itemView);
             ivFoodAvatar = (ImageView) itemView.findViewById(R.id.item_province_detail_it_food_iv_image);
