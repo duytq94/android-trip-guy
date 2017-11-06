@@ -10,5 +10,5 @@ import java.util.List;
  */
 
 public interface FriendReceiveView extends BaseMvpView {
-    void getListFriendReceiveSuccess(List<User> userList);
+    void getListFriendReceiveSuccess(List<User> userList, int page);
 }

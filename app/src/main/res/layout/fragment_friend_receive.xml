@@ -1,41 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_friend_receive_srl_reload"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment_friend_receive_rv_list_friend_receive"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/recycler_view_padding"
-        />
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/fragment_friend_receive_ll_friend_receive_not_available"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingBottom="50dp"
-        android:visibility="gone"
-        >
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_me_gray"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_friend_receive_rv_list_friend_receive"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Hiện chưa có lời đề nghị kết bạn nào"
-            android:textSize="@dimen/text_large"
+            android:padding="@dimen/recycler_view_padding"
             />
+
+        <LinearLayout
+            android:id="@+id/fragment_friend_receive_ll_friend_receive_not_available"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="50dp"
+            android:visibility="gone"
+            >
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_me_gray"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Hiện chưa có lời đề nghị kết bạn nào"
+                android:textSize="@dimen/text_large"
+                />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

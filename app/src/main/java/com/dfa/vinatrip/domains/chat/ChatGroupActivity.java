@@ -79,6 +79,7 @@ import static com.dfa.vinatrip.utils.Constants.A_USER_LEAVE_ROOM;
 import static com.dfa.vinatrip.utils.Constants.EMAIL;
 import static com.dfa.vinatrip.utils.Constants.FOLDER_STORAGE_CHAT;
 import static com.dfa.vinatrip.utils.Constants.JOIN_ROOM;
+import static com.dfa.vinatrip.utils.Constants.PAGE_SIZE;
 import static com.dfa.vinatrip.utils.Constants.RECEIVE_MESSAGE;
 import static com.dfa.vinatrip.utils.Constants.SEND_MESSAGE;
 import static com.dfa.vinatrip.utils.Constants.URL_STORAGE;
@@ -170,7 +171,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             setupPhotoAdapter();
             setupStickerAdapter();
 
-            presenter.getHistory(plan.getId(), 1, 10);
+            presenter.getHistory(plan.getId(), 1, PAGE_SIZE);
             presenter.getStatus(plan.getId());
 
             socket.on(RECEIVE_MESSAGE, args -> {
@@ -333,7 +334,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
         ToplessRecyclerViewScrollListener scrollListener = new ToplessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                presenter.getHistory(plan.getId(), page, 10);
+                presenter.getHistory(plan.getId(), page, PAGE_SIZE);
             }
         };
 

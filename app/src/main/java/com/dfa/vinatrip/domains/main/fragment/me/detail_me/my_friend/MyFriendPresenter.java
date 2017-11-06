@@ -40,10 +40,10 @@ public class MyFriendPresenter extends BasePresenter<MyFriendView> {
         }
         subscription = friendService.getListFriend(page, pageSize)
                 .compose(RxScheduler.applyIoSchedulers())
-                .subscribe(userList -> {
+                .subscribe(friendList -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().getListFriendSuccess(userList);
+                        getView().getListFriendSuccess(friendList, page);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {

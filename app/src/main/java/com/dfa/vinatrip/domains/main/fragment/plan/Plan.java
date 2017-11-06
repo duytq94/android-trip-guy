@@ -27,12 +27,12 @@ public class Plan implements Serializable {
     private String avatarUserMakePlan;
     @SerializedName("username_user_make_plan")
     private String usernameUserMakePlan;
-
-    private List<Long> friendInvitedList;
+    @SerializedName("invited_friend_list")
+    private List<UserInPlan> invitedFriendList;
 
     public Plan(String name, String destination, String dateGo, String dateBack, int idBackground,
                 List<PlanSchedule> planScheduleList, long idUserMakePlan, String avatarUserMakePlan,
-                String usernameUserMakePlan, List<Long> friendInvitedList) {
+                String usernameUserMakePlan, List<UserInPlan> invitedFriendList) {
         this.name = name;
         this.destination = destination;
         this.dateGo = dateGo;
@@ -42,7 +42,7 @@ public class Plan implements Serializable {
         this.idUserMakePlan = idUserMakePlan;
         this.avatarUserMakePlan = avatarUserMakePlan;
         this.usernameUserMakePlan = usernameUserMakePlan;
-        this.friendInvitedList = friendInvitedList;
+        this.invitedFriendList = invitedFriendList;
     }
 
     public long getIdUserMakePlan() {
@@ -117,12 +117,12 @@ public class Plan implements Serializable {
         this.idBackground = idBackground;
     }
 
-    public List<Long> getFriendInvitedList() {
-        return friendInvitedList;
+    public List<UserInPlan> getFriendInvitedList() {
+        return invitedFriendList;
     }
 
-    public void setFriendInvitedList(List<Long> friendInvitedList) {
-        this.friendInvitedList = friendInvitedList;
+    public void setFriendInvitedList(List<UserInPlan> friendInvitedList) {
+        this.invitedFriendList = friendInvitedList;
     }
 
     public List<PlanSchedule> getPlanScheduleList() {

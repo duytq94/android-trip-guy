@@ -32,6 +32,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.dfa.vinatrip.utils.Constants.PAGE_SIZE;
+
 @EFragment(R.layout.fragment_province)
 public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresenter>
         implements ProvinceView {
@@ -71,11 +73,11 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
         firstSetup();
 
         presenter.getBanner();
-        presenter.getProvince(1, 10);
+        presenter.getProvince(1, PAGE_SIZE);
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         srlReload.setOnRefreshListener(() -> {
-            presenter.getProvince(1, 10);
+            presenter.getProvince(1, PAGE_SIZE);
             srlReload.setRefreshing(false);
         });
     }
@@ -90,7 +92,7 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                presenter.getProvince(page, 10);
+                presenter.getProvince(page, PAGE_SIZE);
             }
         };
         rcvProvince.addOnScrollListener(scrollListener);

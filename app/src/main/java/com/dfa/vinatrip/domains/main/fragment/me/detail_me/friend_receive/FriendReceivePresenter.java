@@ -44,7 +44,7 @@ public class FriendReceivePresenter extends BasePresenter<FriendReceiveView> {
                 .subscribe(userList -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().getListFriendReceiveSuccess(userList);
+                        getView().getListFriendReceiveSuccess(userList, page);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {

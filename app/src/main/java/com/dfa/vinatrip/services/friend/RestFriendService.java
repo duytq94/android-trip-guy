@@ -2,11 +2,13 @@ package com.dfa.vinatrip.services.friend;
 
 import com.beesightsoft.caf.services.common.RestMessageResponse;
 import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.FriendResponse;
 
 import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -41,5 +43,10 @@ public interface RestFriendService {
             @Header("access-token") String userToken,
             @Query("page") int page,
             @Query("per_page") int pageSize
+    );
+
+    @POST("api/friend/{peerId}/request")
+    Observable<RestMessageResponse<FriendResponse>> addFriendRequest(
+            @Header("access-token") String userToken
     );
 }

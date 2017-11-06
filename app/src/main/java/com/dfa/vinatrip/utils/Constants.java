@@ -12,6 +12,8 @@ public class Constants {
     public static final int REQUEST_PERMISSION_LOCATION = 2;
     public static final int REQUEST_BACKGROUND = 1;
 
+    public static final int PAGE_SIZE = 10;
+
     // Chat
     public static final String JOIN_ROOM = "join_room";
     public static final String RECEIVE_MESSAGE = "receive_message";

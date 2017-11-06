@@ -43,7 +43,27 @@ public class MakeFriendPresenter extends BasePresenter<MakeFriendView> {
                 .subscribe(userList -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().getListUserSuccess(userList);
+                        getView().getListUserSuccess(userList, page);
+                    }
+                }, throwable -> {
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                        getView().apiError(throwable);
+                    }
+                });
+    }
+
+    public void addFriendRequest(long peerId) {
+        RxScheduler.onStop(subscription);
+        if (isViewAttached()) {
+            getView().showLoading();
+        }
+        subscription = friendService.addFriendRequest(peerId)
+                .compose(RxScheduler.applyIoSchedulers())
+                .subscribe(friendResponse -> {
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                        getView().addFriendRequestSuccess(friendResponse);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {

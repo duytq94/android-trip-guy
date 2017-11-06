@@ -22,7 +22,7 @@ import static com.dfa.vinatrip.utils.Constants.CANCEL_FRIEND;
 
 public class ListFriendReceiveAdapter extends RecyclerView.Adapter<ListFriendReceiveAdapter.ProfileViewHolder> {
 
-    private List<User> userList;
+    private List<User> friendReceiveList;
     private ImageLoader imageLoader;
     private DisplayImageOptions imageOptions;
     private AdapterUserListener adapterUserListener;
@@ -41,8 +41,8 @@ public class ListFriendReceiveAdapter extends RecyclerView.Adapter<ListFriendRec
         this.adapterUserListener = adapterUserListener;
     }
 
-    public void setListUser(List<User> userList) {
-        this.userList = userList;
+    public void setFriendReceiveList(List<User> friendReceiveList) {
+        this.friendReceiveList = friendReceiveList;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ListFriendReceiveAdapter extends RecyclerView.Adapter<ListFriendRec
 
     @Override
     public void onBindViewHolder(ProfileViewHolder holder, int position) {
-        User user = userList.get(position);
+        User user = friendReceiveList.get(position);
 
         holder.llRoot.setVisibility(View.VISIBLE);
         holder.tvNickname.setText(user.getUsername());
@@ -71,8 +71,8 @@ public class ListFriendReceiveAdapter extends RecyclerView.Adapter<ListFriendRec
 
     @Override
     public int getItemCount() {
-        if (userList != null) {
-            return userList.size();
+        if (friendReceiveList != null) {
+            return friendReceiveList.size();
         }
         return 0;
     }

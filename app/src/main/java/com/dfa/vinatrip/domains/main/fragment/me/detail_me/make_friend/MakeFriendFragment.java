@@ -11,6 +11,7 @@ import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseFragment;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.FriendResponse;
 import com.dfa.vinatrip.utils.AdapterUserListener;
 import com.dfa.vinatrip.widgets.EndlessRecyclerViewScrollListener;
 
@@ -25,12 +26,16 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.dfa.vinatrip.utils.Constants.CANCEL_REQUEST;
+import static com.dfa.vinatrip.utils.Constants.MAKE_REQUEST;
+import static com.dfa.vinatrip.utils.Constants.PAGE_SIZE;
+
 @EFragment(R.layout.fragment_make_friend)
 public class MakeFriendFragment extends BaseFragment<MakeFriendView, MakeFriendPresenter>
         implements MakeFriendView, AdapterUserListener {
 
-    @ViewById(R.id.fragment_make_friend_rv_list_friends)
-    protected RecyclerView rvListFriend;
+    @ViewById(R.id.fragment_make_friend_rv_list_user)
+    protected RecyclerView rvListUser;
     @ViewById(R.id.fragment_make_friend_srl_reload)
     protected SwipeRefreshLayout srlReload;
 
@@ -60,27 +65,30 @@ public class MakeFriendFragment extends BaseFragment<MakeFriendView, MakeFriendP
         userList = new ArrayList<>();
         adapter = new ListUserAdapter(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvListFriend.setLayoutManager(layoutManager);
-        DividerItemDecoration decoration = new DividerItemDecoration(rvListFriend.getContext(), layoutManager.getOrientation());
-        rvListFriend.addItemDecoration(decoration);
-        rvListFriend.setAdapter(adapter);
-        rvListFriend.setHasFixedSize(true);
+        DividerItemDecoration decoration = new DividerItemDecoration(rvListUser.getContext(), layoutManager.getOrientation());
+        rvListUser.setLayoutManager(layoutManager);
+        rvListUser.addItemDecoration(decoration);
+
+        rvListUser.setAdapter(adapter);
+        rvListUser.setHasFixedSize(true);
 
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                presenter.getListUser(page, 10);
+                if (totalItemsCount >= PAGE_SIZE) {
+                    presenter.getListUser(page, PAGE_SIZE);
+                }
             }
         };
-        rvListFriend.addOnScrollListener(scrollListener);
+        rvListUser.addOnScrollListener(scrollListener);
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         srlReload.setOnRefreshListener(() -> {
-            presenter.getListUser(1, 10);
+            presenter.getListUser(1, PAGE_SIZE);
             srlReload.setRefreshing(false);
         });
 
-        presenter.getListUser(1, 10);
+        presenter.getListUser(1, PAGE_SIZE);
     }
 
     @Override
@@ -99,9 +107,11 @@ public class MakeFriendFragment extends BaseFragment<MakeFriendView, MakeFriendP
     }
 
     @Override
-    public void getListUserSuccess(List<User> userList) {
+    public void getListUserSuccess(List<User> userList, int page) {
         if (userList.size() > 0) {
-            this.userList.clear();
+            if (page == 1) {
+                this.userList.clear();
+            }
             this.userList.addAll(userList);
             adapter.setListUser(this.userList);
             adapter.notifyDataSetChanged();
@@ -109,7 +119,22 @@ public class MakeFriendFragment extends BaseFragment<MakeFriendView, MakeFriendP
     }
 
     @Override
-    public void onBtnActionClick(int position, String command) {
+    public void addFriendRequestSuccess(FriendResponse friendResponse) {
+        if (friendResponse != null) {
 
+        }
+    }
+
+    @Override
+    public void onBtnActionClick(int position, String command) {
+        switch (command) {
+            case MAKE_REQUEST:
+                presenter.addFriendRequest(userList.get(position).getId());
+                break;
+
+            case CANCEL_REQUEST:
+
+                break;
+        }
     }
 }

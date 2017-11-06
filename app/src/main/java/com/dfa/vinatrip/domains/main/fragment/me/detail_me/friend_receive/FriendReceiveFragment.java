@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.domains.main.fragment.me.detail_me.friend_receive;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import com.dfa.vinatrip.base.BaseFragment;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.User;
 import com.dfa.vinatrip.utils.AdapterUserListener;
+import com.dfa.vinatrip.widgets.EndlessRecyclerViewScrollListener;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -25,6 +27,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.dfa.vinatrip.utils.Constants.PAGE_SIZE;
+
 @EFragment(R.layout.fragment_friend_receive)
 public class FriendReceiveFragment extends BaseFragment<FriendReceiveView, FriendReceivePresenter>
         implements FriendReceiveView, AdapterUserListener {
@@ -33,6 +37,8 @@ public class FriendReceiveFragment extends BaseFragment<FriendReceiveView, Frien
     protected RecyclerView rvListFriendReceive;
     @ViewById(R.id.fragment_friend_receive_ll_friend_receive_not_available)
     protected LinearLayout llFriendReceiveNotAvailable;
+    @ViewById(R.id.fragment_friend_receive_srl_reload)
+    protected SwipeRefreshLayout srlReload;
 
     private List<User> friendReceiveList;
     private ListFriendReceiveAdapter adapter;
@@ -65,7 +71,26 @@ public class FriendReceiveFragment extends BaseFragment<FriendReceiveView, Frien
         rvListFriendReceive.addItemDecoration(decoration);
         rvListFriendReceive.setLayoutManager(layoutManager);
 
-        presenter.getListFriendReceive(1, 10);
+        rvListFriendReceive.setAdapter(adapter);
+        rvListFriendReceive.setHasFixedSize(true);
+
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                if (totalItemsCount >= PAGE_SIZE) {
+                    presenter.getListFriendReceive(page, PAGE_SIZE);
+                }
+            }
+        };
+        rvListFriendReceive.addOnScrollListener(scrollListener);
+
+        srlReload.setColorSchemeResources(R.color.colorMain);
+        srlReload.setOnRefreshListener(() -> {
+            presenter.getListFriendReceive(1, PAGE_SIZE);
+            srlReload.setRefreshing(false);
+        });
+
+        presenter.getListFriendReceive(1, PAGE_SIZE);
     }
 
     @Override
@@ -89,14 +114,19 @@ public class FriendReceiveFragment extends BaseFragment<FriendReceiveView, Frien
     }
 
     @Override
-    public void getListFriendReceiveSuccess(List<User> friendReceiveList) {
-        if (friendReceiveList.size() == 0) {
-            llFriendReceiveNotAvailable.setVisibility(View.VISIBLE);
-        } else {
+    public void getListFriendReceiveSuccess(List<User> friendReceiveList, int page) {
+        if (friendReceiveList.size() > 0) {
             llFriendReceiveNotAvailable.setVisibility(View.GONE);
+            if (page == 1) {
+                this.friendReceiveList.clear();
+            }
             this.friendReceiveList.addAll(friendReceiveList);
-            adapter.setListUser(this.friendReceiveList);
+            adapter.setFriendReceiveList(this.friendReceiveList);
             adapter.notifyDataSetChanged();
+        } else {
+            if (page == 1) {
+                llFriendReceiveNotAvailable.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

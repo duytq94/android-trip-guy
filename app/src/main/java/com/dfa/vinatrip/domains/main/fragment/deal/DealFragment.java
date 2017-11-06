@@ -27,6 +27,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.dfa.vinatrip.utils.Constants.PAGE_SIZE;
+
 @EFragment(R.layout.fragment_deal)
 public class DealFragment extends BaseFragment<DealView, DealPresenter>
         implements DealView {
@@ -74,7 +76,7 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
         setupAdapter();
         setupSearch();
         setupSpinner();
-        presenter.getDeal(strQuery, priceMin, priceMax, dayMin, dayMax, 1, 10);
+        presenter.getDeal(strQuery, priceMin, priceMax, dayMin, dayMax, 1, PAGE_SIZE);
     }
 
     public void setupAdapter() {
@@ -88,14 +90,14 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                presenter.getDeal(strQuery, priceMin, priceMax, dayMin, dayMax, page, 10);
+                presenter.getDeal(strQuery, priceMin, priceMax, dayMin, dayMax, page, PAGE_SIZE);
             }
         };
         rvItem.addOnScrollListener(scrollListener);
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         srlReload.setOnRefreshListener(() -> {
-            presenter.getDeal(strQuery, priceMin, priceMax, dayMin, dayMax, 1, 10);
+            presenter.getDeal(strQuery, priceMin, priceMax, dayMin, dayMax, 1, PAGE_SIZE);
             srlReload.setRefreshing(false);
         });
     }
@@ -107,7 +109,7 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
             @Override
             public boolean onQueryTextSubmit(String query) {
                 strQuery = query;
-                presenter.getDeal(strQuery, priceMin, priceMax, dayMin, dayMax, 1, 10);
+                presenter.getDeal(strQuery, priceMin, priceMax, dayMin, dayMax, 1, PAGE_SIZE);
                 return false;
             }
 

@@ -44,11 +44,11 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
             holder.tvNickname.setText(friend.getUsername());
         }
         holder.tvEmail.setText(friend.getEmail());
+        holder.tvSex.setText(friend.getStringSex());
 
         holder.btnAction.setText("Mời");
         holder.btnAction.setTag("Mời");
         holder.btnAction.setBackgroundResource(R.drawable.btn_neutral);
-
         holder.btnAction.setOnClickListener(v -> {
             switch (holder.btnAction.getTag().toString()) {
                 case "Mời":
@@ -76,7 +76,7 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
             Picasso.with(context).load(R.drawable.ic_avatar).into(holder.ivAvatar);
         } else {
             Picasso.with(context).load(friend.getAvatar())
-                    .error(R.drawable.photo_not_available)
+                    .error(R.drawable.ic_avatar)
                     .into(holder.ivAvatar);
         }
     }

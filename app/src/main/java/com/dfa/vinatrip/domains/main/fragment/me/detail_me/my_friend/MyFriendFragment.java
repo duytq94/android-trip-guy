@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.domains.main.fragment.me.detail_me.my_friend;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,10 +11,10 @@ import android.widget.Toast;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseFragment;
-import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.ListUserAdapter;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.User;
 import com.dfa.vinatrip.utils.AdapterUserListener;
+import com.dfa.vinatrip.widgets.EndlessRecyclerViewScrollListener;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -26,17 +27,21 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.dfa.vinatrip.utils.Constants.PAGE_SIZE;
+
 @EFragment(R.layout.fragment_my_friend)
 public class MyFriendFragment extends BaseFragment<MyFriendView, MyFriendPresenter>
         implements MyFriendView, AdapterUserListener {
 
-    @ViewById(R.id.fragment_my_friend_rv_list_friends)
-    RecyclerView rvListFriends;
+    @ViewById(R.id.fragment_my_friend_rv_list_friend)
+    protected RecyclerView rvListFriend;
     @ViewById(R.id.fragment_my_friend_ll_friend_not_available)
-    LinearLayout llFriendNotAvailable;
+    protected LinearLayout llFriendNotAvailable;
+    @ViewById(R.id.fragment_my_friend_srl_reload)
+    protected SwipeRefreshLayout srlReload;
 
     private List<User> friendList;
-    private ListUserAdapter adapter;
+    private ListFriendAdapter adapter;
 
     @App
     protected MainApplication application;
@@ -59,14 +64,33 @@ public class MyFriendFragment extends BaseFragment<MyFriendView, MyFriendPresent
     @AfterViews
     public void init() {
         friendList = new ArrayList<>();
-        adapter = new ListUserAdapter(this);
+        adapter = new ListFriendAdapter(this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        DividerItemDecoration decoration = new DividerItemDecoration(rvListFriends.getContext(), layoutManager.getOrientation());
-        rvListFriends.addItemDecoration(decoration);
-        rvListFriends.setLayoutManager(layoutManager);
+        DividerItemDecoration decoration = new DividerItemDecoration(rvListFriend.getContext(), layoutManager.getOrientation());
+        rvListFriend.addItemDecoration(decoration);
+        rvListFriend.setLayoutManager(layoutManager);
 
-        presenter.getListFriend(1, 10);
+        rvListFriend.setAdapter(adapter);
+        rvListFriend.setHasFixedSize(true);
+
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                if (totalItemsCount >= PAGE_SIZE) {
+                    presenter.getListFriend(page, PAGE_SIZE);
+                }
+            }
+        };
+        rvListFriend.addOnScrollListener(scrollListener);
+
+        srlReload.setColorSchemeResources(R.color.colorMain);
+        srlReload.setOnRefreshListener(() -> {
+            presenter.getListFriend(1, PAGE_SIZE);
+            srlReload.setRefreshing(false);
+        });
+
+        presenter.getListFriend(1, PAGE_SIZE);
     }
 
     @Override
@@ -85,14 +109,19 @@ public class MyFriendFragment extends BaseFragment<MyFriendView, MyFriendPresent
     }
 
     @Override
-    public void getListFriendSuccess(List<User> friendList) {
-        if (friendList.size() == 0) {
-            llFriendNotAvailable.setVisibility(View.VISIBLE);
-        } else {
+    public void getListFriendSuccess(List<User> friendList, int page) {
+        if (friendList.size() > 0) {
             llFriendNotAvailable.setVisibility(View.GONE);
+            if (page == 1) {
+                this.friendList.clear();
+            }
             this.friendList.addAll(friendList);
-            adapter.setListUser(this.friendList);
+            adapter.setListFriend(this.friendList);
             adapter.notifyDataSetChanged();
+        } else {
+            if (page == 1) {
+                llFriendNotAvailable.setVisibility(View.VISIBLE);
+            }
         }
     }
 

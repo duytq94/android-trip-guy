@@ -24,6 +24,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.dfa.vinatrip.utils.Constants.PAGE_SIZE;
+
 @EFragment(R.layout.fragment_trend)
 public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> implements TrendView {
 
@@ -57,7 +59,7 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
     public void init() {
         setupAdapter();
         setupSearch();
-        presenter.getTrend(strQuery, 1, 10);
+        presenter.getTrend(strQuery, 1, PAGE_SIZE);
     }
 
     public void setupAdapter() {
@@ -71,14 +73,14 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                presenter.getTrend(strQuery, page, 10);
+                presenter.getTrend(strQuery, page, PAGE_SIZE);
             }
         };
         rvItem.addOnScrollListener(scrollListener);
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         srlReload.setOnRefreshListener(() -> {
-            presenter.getTrend(strQuery, 1, 10);
+            presenter.getTrend(strQuery, 1, PAGE_SIZE);
             srlReload.setRefreshing(false);
         });
     }
@@ -90,7 +92,7 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
             @Override
             public boolean onQueryTextSubmit(String query) {
                 strQuery = query;
-                presenter.getTrend(strQuery, 1, 10);
+                presenter.getTrend(strQuery, 1, PAGE_SIZE);
                 return false;
             }
 
@@ -111,7 +113,7 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
 
     @Override
     public void hideLoading() {
-//        hideHUD();
+        hideHUD();
     }
 
     @Override

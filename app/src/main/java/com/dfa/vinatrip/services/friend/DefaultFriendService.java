@@ -2,6 +2,7 @@ package com.dfa.vinatrip.services.friend;
 
 import com.beesightsoft.caf.services.network.NetworkProvider;
 import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.FriendResponse;
 import com.dfa.vinatrip.services.account.AccountService;
 import com.dfa.vinatrip.services.filter.ApiErrorFilter;
 
@@ -53,6 +54,13 @@ public class DefaultFriendService implements FriendService {
     public Observable<List<User>> getListUser(int page, int pageSize) {
         return networkProvider
                 .transformResponse(restFriendService.getListUser(accountService.getCurrentUser().getAccessToken(), page, pageSize))
+                .compose(apiErrorFilter.execute());
+    }
+
+    @Override
+    public Observable<FriendResponse> addFriendRequest(long peerId) {
+        return networkProvider
+                .transformResponse(restFriendService.addFriendRequest(accountService.getCurrentUser().getAccessToken()))
                 .compose(apiErrorFilter.execute());
     }
 }
