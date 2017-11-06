@@ -11,11 +11,11 @@ import com.dfa.vinatrip.custom_view.NToolbar;
  */
 
 public interface MainCallbackListener {
-    boolean setup(AppCompatActivity activity, String title);
+    void setup(AppCompatActivity activity, String title);
 
-    boolean setup(AppCompatActivity activity, String title, @DrawableRes int icLeft);
+    void setup(AppCompatActivity activity, String title, @DrawableRes int icLeft);
 
-    boolean setup(AppCompatActivity activity, String title, @DrawableRes int icLeft, @DrawableRes int icRight);
+    void setup(AppCompatActivity activity, String title, @DrawableRes int icLeft, @DrawableRes int icRight);
 
     NToolbar showAppIcon();
 
