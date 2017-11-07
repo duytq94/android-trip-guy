@@ -23,6 +23,8 @@ public class Plan implements Serializable {
     private List<PlanSchedule> planScheduleList;
     @SerializedName("id_user_make_plan")
     private long idUserMakePlan;
+    @SerializedName("email_user_make_plan")
+    private String emailUserMakePlan;
     @SerializedName("avatar_user_make_plan")
     private String avatarUserMakePlan;
     @SerializedName("username_user_make_plan")
@@ -31,8 +33,8 @@ public class Plan implements Serializable {
     private List<UserInPlan> invitedFriendList;
 
     public Plan(String name, String destination, String dateGo, String dateBack, int idBackground,
-                List<PlanSchedule> planScheduleList, long idUserMakePlan, String avatarUserMakePlan,
-                String usernameUserMakePlan, List<UserInPlan> invitedFriendList) {
+                List<PlanSchedule> planScheduleList, long idUserMakePlan, String emailUserMakePlan,
+                String avatarUserMakePlan, String usernameUserMakePlan, List<UserInPlan> invitedFriendList) {
         this.name = name;
         this.destination = destination;
         this.dateGo = dateGo;
@@ -40,8 +42,25 @@ public class Plan implements Serializable {
         this.idBackground = idBackground;
         this.planScheduleList = planScheduleList;
         this.idUserMakePlan = idUserMakePlan;
+        this.emailUserMakePlan = emailUserMakePlan;
         this.avatarUserMakePlan = avatarUserMakePlan;
         this.usernameUserMakePlan = usernameUserMakePlan;
+        this.invitedFriendList = invitedFriendList;
+    }
+
+    public String getEmailUserMakePlan() {
+        return emailUserMakePlan;
+    }
+
+    public void setEmailUserMakePlan(String emailUserMakePlan) {
+        this.emailUserMakePlan = emailUserMakePlan;
+    }
+
+    public List<UserInPlan> getInvitedFriendList() {
+        return invitedFriendList;
+    }
+
+    public void setInvitedFriendList(List<UserInPlan> invitedFriendList) {
         this.invitedFriendList = invitedFriendList;
     }
 
@@ -115,14 +134,6 @@ public class Plan implements Serializable {
 
     public void setIdBackground(int idBackground) {
         this.idBackground = idBackground;
-    }
-
-    public List<UserInPlan> getFriendInvitedList() {
-        return invitedFriendList;
-    }
-
-    public void setFriendInvitedList(List<UserInPlan> friendInvitedList) {
-        this.invitedFriendList = friendInvitedList;
     }
 
     public List<PlanSchedule> getPlanScheduleList() {

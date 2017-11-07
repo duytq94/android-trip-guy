@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class UserInPlan {
-    @SerializedName("id")
+    @SerializedName("id_user")
     private long id;
     @SerializedName("email")
     private String email;

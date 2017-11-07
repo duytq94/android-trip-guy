@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.joanzapata.android.BaseAdapterHelper;
 import com.joanzapata.android.QuickAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -27,7 +27,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ShowUserOnlineActivity extends AppCompatActivity {
 
     @Extra
-    protected ArrayList<User> friendList;
+    protected ArrayList<UserInPlan> userInPlanList;
 
     @ViewById(R.id.my_toolbar)
     protected Toolbar toolbar;
@@ -39,7 +39,7 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
     protected TextView tvCountSum;
 
     private int countCurrent;
-    private QuickAdapter<User> adapter;
+    private QuickAdapter<UserInPlan> adapter;
     private ImageLoader imageLoader;
 
     @AfterViews
@@ -48,9 +48,9 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
 
         imageLoader = ImageLoader.getInstance();
 
-        adapter = new QuickAdapter<User>(this, R.layout.item_user_online) {
+        adapter = new QuickAdapter<UserInPlan>(this, R.layout.item_user_online) {
             @Override
-            protected void convert(BaseAdapterHelper helper, User item) {
+            protected void convert(BaseAdapterHelper helper, UserInPlan item) {
                 ImageView ivIndicator = helper.getView(R.id.item_user_online_iv_indicator);
                 CircleImageView civAvatar = helper.getView(R.id.item_user_online_vertical_civ_avatar);
                 TextView tvNickname = helper.getView(R.id.item_user_online_vertical_tv_nickname);
@@ -74,10 +74,10 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
         };
         lvUser.setAdapter(adapter);
 
-        adapter.addAll(friendList);
+        adapter.addAll(userInPlanList);
         adapter.notifyDataSetChanged();
 
-        tvCountSum.setText(String.valueOf(friendList.size()));
+        tvCountSum.setText(String.valueOf(userInPlanList.size()));
         tvCountCurrent.setText(String.valueOf(countCurrent));
     }
 

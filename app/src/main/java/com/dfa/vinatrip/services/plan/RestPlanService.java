@@ -2,6 +2,7 @@ package com.dfa.vinatrip.services.plan;
 
 import com.beesightsoft.caf.services.common.RestMessageResponse;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
+import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.PlanSchedule;
 
 import java.util.List;
@@ -29,6 +30,11 @@ public interface RestPlanService {
 
     @GET("planSchedule/{planId}")
     Observable<RestMessageResponse<List<PlanSchedule>>> getPlanSchedule(
+            @Path("planId") long planId
+    );
+
+    @GET("planUser/{planId}")
+    Observable<RestMessageResponse<List<UserInPlan>>> getPlanUser(
             @Path("planId") long planId
     );
 }

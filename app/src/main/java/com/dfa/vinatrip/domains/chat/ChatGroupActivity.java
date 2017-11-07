@@ -26,10 +26,10 @@ import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.domains.chat.adapter.ChatGroupAdapter;
 import com.dfa.vinatrip.domains.chat.adapter.StickerAdapter;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
+import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.TypeMessage;
 import com.dfa.vinatrip.models.TypeSticker;
-import com.dfa.vinatrip.models.response.User;
 import com.dfa.vinatrip.utils.AdapterChatListener;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.KeyboardListener;
@@ -91,9 +91,6 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
 
     @Extra
     protected Plan plan;
-
-    @Extra
-    protected ArrayList<User> friendList;
 
     @ViewById(R.id.my_toolbar)
     protected Toolbar toolbar;
@@ -184,8 +181,8 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             });
 
             socket.on(A_USER_JOIN_ROOM, args -> {
-                for (int i = 0; i < friendList.size(); i++) {
-                    User friend = friendList.get(i);
+                for (int i = 0; i < plan.getInvitedFriendList().size(); i++) {
+                    UserInPlan userInPlan = plan.getInvitedFriendList().get(i);
                     JSONObject jsonObject = (JSONObject) args[0];
                     String email = "";
                     try {
@@ -193,7 +190,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    if (friend.getEmail().equals(email)) {
+                    if (userInPlan.getEmail().equals(email)) {
 //                        friend.setIsOnline(true);
                         break;
                     }
@@ -201,8 +198,8 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             });
 
             socket.on(A_USER_LEAVE_ROOM, args -> {
-                for (int i = 0; i < friendList.size(); i++) {
-                    User friend = friendList.get(i);
+                for (int i = 0; i < plan.getInvitedFriendList().size(); i++) {
+                    UserInPlan userInPlan = plan.getInvitedFriendList().get(i);
                     JSONObject jsonObject = (JSONObject) args[0];
                     String email = "";
                     try {
@@ -210,7 +207,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    if (friend.getEmail().equals(email)) {
+                    if (userInPlan.getEmail().equals(email)) {
 //                        friend.setIsOnline(false);
                         break;
                     }
@@ -226,9 +223,9 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
         mapAvatar = new HashMap<>();
         mapNickname = new HashMap<>();
 
-        for (int i = 0; i < friendList.size(); i++) {
-            mapAvatar.put(friendList.get(i).getEmail(), friendList.get(i).getAvatar());
-            mapNickname.put(friendList.get(i).getEmail(), friendList.get(i).getUsername());
+        for (int i = 0; i < plan.getInvitedFriendList().size(); i++) {
+            mapAvatar.put(plan.getInvitedFriendList().get(i).getEmail(), plan.getInvitedFriendList().get(i).getAvatar());
+            mapNickname.put(plan.getInvitedFriendList().get(i).getEmail(), plan.getInvitedFriendList().get(i).getUsername());
         }
 
         mapSticker = new HashMap<>();
@@ -483,9 +480,9 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     public void getStatusSuccess(List<StatusUserChat> statusUserChatList) {
         for (int i = 0; i < statusUserChatList.size(); i++) {
             StatusUserChat statusUserChat = statusUserChatList.get(i);
-            for (int j = 0; j < friendList.size(); j++) {
-                User friend = friendList.get(j);
-                if (friend.getEmail().equals(statusUserChat.getEmail())) {
+            for (int j = 0; j < plan.getInvitedFriendList().size(); j++) {
+                UserInPlan userInPlan = plan.getInvitedFriendList().get(j);
+                if (userInPlan.getEmail().equals(statusUserChat.getEmail())) {
 //                    friend.setIsOnline(statusUserChat.getIsOnline());
                     break;
                 }
@@ -505,7 +502,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             super.onBackPressed();
             return true;
         } else if (item.getItemId() == R.id.iconInfo) {
-            ShowUserOnlineActivity_.intent(this).friendList(friendList).start();
+            ShowUserOnlineActivity_.intent(this).userInPlanList((ArrayList<UserInPlan>) plan.getInvitedFriendList()).start();
             return true;
         }
         return false;

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
+import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.dfa.vinatrip.models.response.User;
 import com.squareup.picasso.Picasso;
 
@@ -20,14 +21,14 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
     private LayoutInflater layoutInflater;
     private Context context;
     private List<User> friendList;
-    private List<Long> invitedFriendIdList;
+    private List<UserInPlan> invitedFriendList;
 
     public InviteFriendAdapter(Context context, List<User> friendList,
-                               List<Long> invitedFriendIdList, Plan currentPlan) {
+                               List<UserInPlan> invitedFriendList, Plan currentPlan) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.friendList = friendList;
-        this.invitedFriendIdList = invitedFriendIdList;
+        this.invitedFriendList = invitedFriendList;
     }
 
     @Override
@@ -55,16 +56,17 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
                     holder.btnAction.setText(R.string.invited);
                     holder.btnAction.setTag("Đã mời");
                     holder.btnAction.setBackgroundResource(R.drawable.btn_positive);
-                    invitedFriendIdList.add(friend.getId());
+                    invitedFriendList.add(new UserInPlan(friend.getId(), friend.getEmail(),
+                            friend.getUsername(), friend.getAvatar()));
                     break;
 
                 case "Đã mời":
                     holder.btnAction.setText("Mời");
                     holder.btnAction.setTag("Mời");
                     holder.btnAction.setBackgroundResource(R.drawable.btn_neutral);
-                    for (int i = 0; i < invitedFriendIdList.size(); i++) {
-                        if (invitedFriendIdList.get(i) == friend.getId()) {
-                            invitedFriendIdList.remove(i);
+                    for (int i = 0; i < invitedFriendList.size(); i++) {
+                        if (invitedFriendList.get(i).getId() == friend.getId()) {
+                            invitedFriendList.remove(i);
                             break;
                         }
                     }

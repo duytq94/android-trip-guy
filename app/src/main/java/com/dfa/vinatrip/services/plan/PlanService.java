@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.services.plan;
 
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
+import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.PlanSchedule;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface PlanService {
     Observable<List<Plan>> getPlan(long userId);
 
     Observable<List<PlanSchedule>> getPlanSchedule(long planId);
+
+    Observable<List<UserInPlan>> getPlanUser(long planId);
 }

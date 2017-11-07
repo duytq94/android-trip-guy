@@ -2,6 +2,7 @@ package com.dfa.vinatrip.services.plan;
 
 import com.beesightsoft.caf.services.network.NetworkProvider;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
+import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.PlanSchedule;
 import com.dfa.vinatrip.services.filter.ApiErrorFilter;
 
@@ -44,6 +45,13 @@ public class DefaultPlanService implements PlanService {
     public Observable<List<PlanSchedule>> getPlanSchedule(long planId) {
         return networkProvider
                 .transformResponse(restPlanService.getPlanSchedule(planId))
+                .compose(apiErrorFilter.execute());
+    }
+
+    @Override
+    public Observable<List<UserInPlan>> getPlanUser(long planId) {
+        return networkProvider
+                .transformResponse(restPlanService.getPlanUser(planId))
                 .compose(apiErrorFilter.execute());
     }
 }

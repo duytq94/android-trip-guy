@@ -1,11 +1,13 @@
 package com.dfa.vinatrip.domains.main.fragment.plan.detail_plan;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,9 +17,12 @@ import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.domains.chat.ChatGroupActivity_;
 import com.dfa.vinatrip.domains.location.LocationGroupActivity_;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
+import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.PlanSchedule;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.User;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -27,7 +32,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -62,11 +66,10 @@ public class DetailPlanActivity extends BaseActivity<DetailPlanView, DetailPlanP
     @ViewById(R.id.activity_detail_plan_rv_schedule)
     protected RecyclerView rvSchedule;
 
-    private List<User> userFriendList;
-    private List<User> friendInvitedList;
-    private ListFriendHorizontalAdapter listFriendHorizontalAdapter;
     private User currentUser;
-    private ScheduleAdapter adapter;
+
+    private ImageLoader imageLoader;
+    private DisplayImageOptions imageOptions;
 
     @App
     protected MainApplication application;
@@ -88,44 +91,31 @@ public class DetailPlanActivity extends BaseActivity<DetailPlanView, DetailPlanP
     }
 
     @AfterViews
-    void init() {
+    public void init() {
+        imageLoader = ImageLoader.getInstance();
+        imageOptions = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.bg_green)
+                .showImageForEmptyUri(R.drawable.photo_not_available)
+                .showImageOnFail(R.drawable.photo_not_available)
+                .resetViewBeforeLoading(true)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .bitmapConfig(Bitmap.Config.ARGB_4444)
+                .build();
+
         currentUser = presenter.getCurrentUser();
         setupAppBar();
-        presenter.getPlanSchedule(plan.getId());
+        presenter.getPlanDetail(plan.getId());
     }
 
     public void initView() {
-//        Picasso.with(this).load(plan.getUserMakePlan().getAvatar()).into(civAvatar);
-//        if (currentUser.getId() == plan.getUserMakePlan().getId()) {
-//            tvNickname.setText("Tôi");
-//        } else {
-//            tvNickname.setText(plan.getUserMakePlan().getUsername());
-//        }
-//        tvEmail.setText(plan.getUserMakePlan().getEmail());
-
-        // Filter the friends be invited from List friend
-//        userFriendList = dataService.getUserFriendList();
-//        friendInvitedList = new ArrayList<>();
-        // Add the current user to friendInvitedList (if they're not the user make this plan)
-//        if (currentUser.getId() != plan.getUserMakePlan().getId()) {
-//            friendInvitedList.add(new UserFriend(currentUser.getId(), "Tôi",
-//                    currentUser.getAvatar(), currentUser.getEmail(), "true"));
-//        }
-//        if (plan.getFriendInvitedList() != null) {
-//            for (long friendInvitedId : plan.getFriendInvitedList()) {
-//                for (User userFriend : userFriendList) {
-//                    if (userFriend.getId() == friendInvitedId) {
-//                        friendInvitedList.add(userFriend);
-//                        break;
-//                    }
-//                }
-//            }
-//        }
-
-//        listFriendHorizontalAdapter = new ListFriendHorizontalAdapter(this, friendInvitedList, tvFriendNotAvailable);
-//        rvFriendJoin.setAdapter(listFriendHorizontalAdapter);
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-//        rvFriendJoin.setLayoutManager(layoutManager);
+        imageLoader.displayImage(plan.getAvatarUserMakePlan(), civAvatar, imageOptions);
+        if (currentUser.getId() == plan.getIdUserMakePlan()) {
+            tvNickname.setText("Tôi");
+        } else {
+            tvNickname.setText(plan.getUsernameUserMakePlan());
+        }
+        tvEmail.setText(plan.getEmailUserMakePlan());
 
         tvDestination.setText(plan.getDestination());
         tvDateGo.setText(plan.getDateGo());
@@ -144,13 +134,20 @@ public class DetailPlanActivity extends BaseActivity<DetailPlanView, DetailPlanP
     }
 
     public void setupAdapterSchedule() {
-        adapter = new ScheduleAdapter(plan.getPlanScheduleList(), this);
+        ScheduleAdapter adapter = new ScheduleAdapter(plan.getPlanScheduleList(), this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
 
         rvSchedule.setLayoutManager(layoutManager);
         rvSchedule.setAdapter(adapter);
         rvSchedule.setHasFixedSize(true);
+    }
+
+    public void setupAdapterUserJoin() {
+        ListFriendHorizontalAdapter adapter = new ListFriendHorizontalAdapter(this, plan);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rvFriendJoin.setAdapter(adapter);
+        rvFriendJoin.setLayoutManager(layoutManager);
     }
 
     @Override
@@ -164,7 +161,7 @@ public class DetailPlanActivity extends BaseActivity<DetailPlanView, DetailPlanP
 
     @Click(R.id.activity_detail_plan_ll_chat_group)
     public void onLlChatGroupClick() {
-        ChatGroupActivity_.intent(this).friendList((ArrayList<User>) userFriendList).plan(plan).start();
+        ChatGroupActivity_.intent(this).plan(plan).start();
     }
 
     @Click(R.id.activity_detail_plan_ll_location_group)
@@ -188,10 +185,17 @@ public class DetailPlanActivity extends BaseActivity<DetailPlanView, DetailPlanP
     }
 
     @Override
-    public void getPlanScheduleSuccess(List<PlanSchedule> planScheduleList) {
+    public void getDetailPlanSuccess(List<PlanSchedule> planScheduleList, List<UserInPlan> invitedFriendList) {
         if (planScheduleList.size() > 0) {
             plan.setPlanScheduleList(planScheduleList);
             setupAdapterSchedule();
+        }
+        if (invitedFriendList.size() > 0) {
+            tvFriendNotAvailable.setVisibility(View.GONE);
+            plan.setInvitedFriendList(invitedFriendList);
+            setupAdapterUserJoin();
+        } else {
+            tvFriendNotAvailable.setVisibility(View.VISIBLE);
         }
         initView();
     }

@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.domains.main.fragment.plan.detail_plan;
 
 import com.dfa.vinatrip.base.BaseMvpView;
+import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.PlanSchedule;
 
 import java.util.List;
@@ -10,5 +11,5 @@ import java.util.List;
  */
 
 public interface DetailPlanView extends BaseMvpView {
-    void getPlanScheduleSuccess(List<PlanSchedule> planScheduleList);
+    void getDetailPlanSuccess(List<PlanSchedule> planScheduleList, List<UserInPlan> invitedFriendList);
 }

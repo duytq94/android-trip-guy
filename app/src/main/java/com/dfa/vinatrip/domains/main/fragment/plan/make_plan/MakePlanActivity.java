@@ -17,6 +17,7 @@ import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
+import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.choose_background.ChooseBackgroundPlanActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.User;
@@ -83,12 +84,12 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
     @ViewById(R.id.activity_make_plan_civ_background)
     protected CircleImageView civBackground;
 
-    private List<User> userFriendList;
+    private List<User> friendList;
     private InviteFriendAdapter inviteFriendAdapter;
     private Plan plan;
     private Calendar calendar;
     private DatePickerDialog dpdDateGo, dpdDateBack;
-    private List<Long> invitedFriendIdList;
+    private List<UserInPlan> invitedFriendList;
     private Validator validator;
     private List<PlanSchedule> planScheduleList;
     private int idBackground;
@@ -136,7 +137,7 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
         validator.setValidationListener(this);
 
         calendar = Calendar.getInstance();
-        invitedFriendIdList = new ArrayList<>();
+        invitedFriendList = new ArrayList<>();
 
         presenter.getListFriend(1, Integer.MAX_VALUE);
     }
@@ -274,16 +275,9 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
             planScheduleList.add(new PlanSchedule(content, title, timestampGo + MILLISECOND_IN_DAY * i));
         }
 
-        plan = new Plan(etTripName.getText().toString(),
-                tvDestination.getText().toString(),
-                dateGo,
-                dateBack,
-                idBackground,
-                planScheduleList,
-                currentUser.getId(),
-                currentUser.getAvatar(),
-                currentUser.getUsername(),
-                invitedFriendIdList);
+        plan = new Plan(etTripName.getText().toString(), tvDestination.getText().toString(),
+                dateGo, dateBack, idBackground, planScheduleList, currentUser.getId(),
+                currentUser.getEmail(), currentUser.getAvatar(), currentUser.getUsername(), invitedFriendList);
 
         presenter.createPlan(plan);
     }
@@ -328,10 +322,10 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
     public void getListFriendSuccess(List<User> friendList) {
         if (friendList.size() > 0) {
             tvFriendNotAvailable.setVisibility(View.GONE);
-            userFriendList = new ArrayList<>();
-            userFriendList.addAll(friendList);
+            this.friendList = new ArrayList<>();
+            friendList.addAll(this.friendList);
 
-            inviteFriendAdapter = new InviteFriendAdapter(this, userFriendList, invitedFriendIdList, null);
+            inviteFriendAdapter = new InviteFriendAdapter(this, friendList, invitedFriendList, null);
             rvListFriend.setAdapter(inviteFriendAdapter);
             LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             rvListFriend.setLayoutManager(manager);
