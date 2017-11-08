@@ -29,8 +29,8 @@ import android.widget.Toast;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
-import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
+import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.User;
 import com.dfa.vinatrip.utils.AppUtil;
@@ -42,7 +42,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
@@ -72,7 +71,14 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 
 import static com.dfa.vinatrip.ApiUrls.SERVER_SOCKET_LOCATION;
+import static com.dfa.vinatrip.utils.Constants.A_USER_TURN_OFF;
+import static com.dfa.vinatrip.utils.Constants.EMAIL;
+import static com.dfa.vinatrip.utils.Constants.JOIN_ROOM;
+import static com.dfa.vinatrip.utils.Constants.LATITUDE;
+import static com.dfa.vinatrip.utils.Constants.LONGITUDE;
+import static com.dfa.vinatrip.utils.Constants.RECEIVE_LOCATION;
 import static com.dfa.vinatrip.utils.Constants.REQUEST_PERMISSION_LOCATION;
+import static com.dfa.vinatrip.utils.Constants.SEND_LOCATION;
 
 @EActivity(R.layout.activity_location_group)
 public class LocationGroupActivity extends BaseActivity<LocationGroupView, LocationGroupPresenter>
@@ -91,16 +97,13 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
     private LocationListener locationListener;
     private Location location;
     private User currentUser;
-    private List<UserFriend> userFriendList;
-    private List<UserLocation> userLocationList;
+    private List<UserInPlan> userInPlanList;
     private Map<String, String> mapAvatar;
     private ImageLoader imageLoader;
     private Marker markerCurrentUser;
     private List<UserFriendMarker> userFriendMarkerList;
-    private Boolean statusGPS;
     private BroadcastReceiver broadcastReceiver;
     private IntentFilter filter;
-    private Gson gson;
     private Socket socket;
 
     @App
@@ -131,7 +134,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
 
             currentUser = presenter.getCurrentUser();
 
-            socket.emit("join_room", currentUser.getEmail(), plan.getId());
+            socket.emit(JOIN_ROOM, currentUser.getEmail(), plan.getId());
 
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             changeIconLocation();
@@ -139,7 +142,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             locationListener();
             requestPermission();
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -209,27 +212,19 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
 
     public void setup() {
         if (isPermissionGranted()) {
-            gson = new Gson();
-
             imageLoader = ImageLoader.getInstance();
 
-//            userFriendList = dataService.getUserFriendList();
-            // TODO get list friend
-
             mapAvatar = new HashMap<>();
-            for (int i = 0; i < userFriendList.size(); i++) {
-                mapAvatar.put(userFriendList.get(i).getEmail(), userFriendList.get(i).getAvatar());
+            for (int i = 0; i < plan.getInvitedFriendList().size(); i++) {
+                mapAvatar.put(plan.getInvitedFriendList().get(i).getEmail(), plan.getInvitedFriendList().get(i).getAvatar());
             }
 
             smfMyFriend.onCreate(null);
             smfMyFriend.onResume();
             smfMyFriend.getMapAsync(mMap -> {
                 googleMap = mMap;
-
                 userFriendMarkerList = new ArrayList<>();
-
-                presenter.getLastLocation(plan.getId());
-
+                presenter.getPlanUser(plan.getId());
             });
         }
     }
@@ -267,7 +262,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
 
             if (locationManager.getLastKnownLocation(provider) != null) {
                 location = locationManager.getLastKnownLocation(provider);
-                socket.emit("send_location", location.getLatitude(), location.getLongitude());
+                socket.emit(SEND_LOCATION, location.getLatitude(), location.getLongitude());
                 if (markerCurrentUser != null) {
                     markerCurrentUser.remove();
                 }
@@ -300,20 +295,20 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
     }
 
     @UiThread
-    public void getUserFriendLocation(final UserLocation userLocation) {
+    public void getUserFriendLocation(final UserInPlan userInPlan) {
         for (int i = 0; i < userFriendMarkerList.size(); i++) {
-            if (userLocation.getFromUser().equals(userFriendMarkerList.get(i).getFrom_user())) {
+            if (userInPlan.getEmail().equals(userFriendMarkerList.get(i).getFrom_user())) {
                 userFriendMarkerList.get(i).getMarker().remove();
             }
         }
-        imageLoader.loadImage(mapAvatar.get(userLocation.getFromUser()), new SimpleImageLoadingListener() {
+        imageLoader.loadImage(mapAvatar.get(userInPlan.getEmail()), new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 View viewMaker = LayoutInflater.from(LocationGroupActivity.this).inflate(R.layout.maker_avatar, null);
                 CircleImageView civAvatar = (CircleImageView) viewMaker.findViewById(R.id.maker_avatar_civ_avatar);
                 ImageView ivIndicator = (ImageView) viewMaker.findViewById(R.id.maker_avatar_iv_indicator);
 
-                if (userLocation.getIsOnline()) {
+                if (userInPlan.getIsOnline() == 1) {
                     ivIndicator.setVisibility(View.VISIBLE);
                 } else {
                     ivIndicator.setVisibility(View.GONE);
@@ -322,15 +317,15 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
                 civAvatar.setImageBitmap(loadedImage);
                 Bitmap bmAvatar = createBitmapFromView(viewMaker);
 
-                LatLng latLng = new LatLng(userLocation.getLatitude(), userLocation.getLongitude());
+                LatLng latLng = new LatLng(userInPlan.getLatitude(), userInPlan.getLongitude());
 
                 Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(latLng)
-                        .title(userLocation.getFromUser())
+                        .title(userInPlan.getUsername())
                         .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
                 marker.showInfoWindow();
 
-                UserFriendMarker userFriendMarker = new UserFriendMarker(marker, userLocation.getFromUser());
+                UserFriendMarker userFriendMarker = new UserFriendMarker(marker, userInPlan.getEmail());
                 userFriendMarkerList.add(userFriendMarker);
             }
         });
@@ -363,7 +358,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
     }
 
     public void changeIconLocation() {
-        statusGPS = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        Boolean statusGPS = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (statusGPS) {
             ivTurnLocation.setImageResource(R.drawable.ic_location);
             ivTurnLocation.setTag("gps_on");
@@ -430,35 +425,44 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
     }
 
     @Override
-    public void getLastLocationSuccess(List<UserLocation> userLocationList) {
+    public void getPlanUserSuccess(List<UserInPlan> userInPlanList) {
         getCurrentUserLocation();
-        this.userLocationList = userLocationList;
-        for (UserLocation userLocation : this.userLocationList) {
-            getUserFriendLocation(userLocation);
+        this.userInPlanList = userInPlanList;
+        plan.setInvitedFriendList(userInPlanList);
+        for (UserInPlan userInPlan : this.userInPlanList) {
+            getUserFriendLocation(userInPlan);
         }
 
-        socket.on("receive_location", args -> {
-            UserLocation userLocationCurrent = gson.fromJson(args[0].toString(), UserLocation.class);
-            userLocationCurrent.setIsOnline(1);
-            for (int i = 0; i < this.userLocationList.size(); i++) {
-                UserLocation userLocation = this.userLocationList.get(i);
-                if (userLocation.getFromUser().equals(userLocationCurrent.getFromUser())) {
-                    this.userLocationList.set(i, userLocationCurrent);
-                    break;
+        socket.on(RECEIVE_LOCATION, args -> {
+            JSONObject jsonObject = (JSONObject) args[0];
+            try {
+                String email = jsonObject.getString(EMAIL);
+                double latitude = Double.parseDouble(jsonObject.getString(LATITUDE));
+                double longitude = Double.parseDouble(jsonObject.getString(LONGITUDE));
+
+                for (int i = 0; i < this.userInPlanList.size(); i++) {
+                    UserInPlan userInPlan = this.userInPlanList.get(i);
+                    if (userInPlan.getEmail().equals(email)) {
+                        userInPlan.setLatitude(latitude);
+                        userInPlan.setLongitude(longitude);
+                        userInPlan.setIsOnline(1);
+                        getUserFriendLocation(userInPlan);
+                        break;
+                    }
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            getUserFriendLocation(userLocationCurrent);
         });
 
-        socket.on("a_user_turn_off", args -> {
-            String fromUser = null;
+        socket.on(A_USER_TURN_OFF, args -> {
             try {
-                fromUser = ((JSONObject) args[0]).getString("username");
-                for (int i = 0; i < this.userLocationList.size(); i++) {
-                    UserLocation userLocation = this.userLocationList.get(i);
-                    if (userLocation.getFromUser().equals(fromUser)) {
-                        userLocation.setIsOnline(0);
-                        getUserFriendLocation(userLocation);
+                String email = ((JSONObject) args[0]).getString(EMAIL);
+                for (int i = 0; i < this.userInPlanList.size(); i++) {
+                    UserInPlan userInPlan = this.userInPlanList.get(i);
+                    if (userInPlan.getEmail().equals(email)) {
+                        userInPlan.setIsOnline(0);
+                        getUserFriendLocation(userInPlan);
                         break;
                     }
                 }

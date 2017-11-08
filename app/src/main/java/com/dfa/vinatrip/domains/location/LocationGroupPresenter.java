@@ -4,7 +4,7 @@ import com.beesightsoft.caf.services.schedulers.RxScheduler;
 import com.dfa.vinatrip.base.BasePresenter;
 import com.dfa.vinatrip.models.response.User;
 import com.dfa.vinatrip.services.account.AccountService;
-import com.dfa.vinatrip.services.location.LocationService;
+import com.dfa.vinatrip.services.plan.PlanService;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -18,14 +18,14 @@ import rx.Subscription;
 
 public class LocationGroupPresenter extends BasePresenter<LocationGroupView> {
 
-    private Subscription subscriptionGetLastLocation;
-    private LocationService locationService;
+    private Subscription subscription;
+    private PlanService planService;
     private AccountService accountService;
 
     @Inject
-    public LocationGroupPresenter(EventBus eventBus, LocationService locationService, AccountService accountService) {
+    public LocationGroupPresenter(EventBus eventBus, PlanService planService, AccountService accountService) {
         super(eventBus);
-        this.locationService = locationService;
+        this.planService = planService;
         this.accountService = accountService;
     }
 
@@ -33,17 +33,17 @@ public class LocationGroupPresenter extends BasePresenter<LocationGroupView> {
         return accountService.getCurrentUser();
     }
 
-    public void getLastLocation(long groupId) {
-        RxScheduler.onStop(subscriptionGetLastLocation);
+    public void getPlanUser(long planId) {
+        RxScheduler.onStop(subscription);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscriptionGetLastLocation = locationService.getLastLocation(groupId)
+        subscription = planService.getPlanUser(planId)
                 .compose(RxScheduler.applyIoSchedulers())
-                .subscribe(userLocationList -> {
+                .subscribe(userInPlanList -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().getLastLocationSuccess(userLocationList);
+                        getView().getPlanUserSuccess(userInPlanList);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {

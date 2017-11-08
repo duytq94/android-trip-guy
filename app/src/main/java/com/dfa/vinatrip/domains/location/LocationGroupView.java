@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.domains.location;
 
 import com.dfa.vinatrip.base.BaseMvpView;
+import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 
 import java.util.List;
 
@@ -9,5 +10,5 @@ import java.util.List;
  */
 
 public interface LocationGroupView extends BaseMvpView {
-    void getLastLocationSuccess(List<UserLocation> userLocationList);
+    void getPlanUserSuccess(List<UserInPlan> userInPlanList);
 }

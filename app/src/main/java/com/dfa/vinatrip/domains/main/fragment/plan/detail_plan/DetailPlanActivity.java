@@ -144,7 +144,7 @@ public class DetailPlanActivity extends BaseActivity<DetailPlanView, DetailPlanP
     }
 
     public void setupAdapterUserJoin() {
-        ListFriendHorizontalAdapter adapter = new ListFriendHorizontalAdapter(this, plan);
+        ListFriendHorizontalAdapter adapter = new ListFriendHorizontalAdapter(this, plan, currentUser);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvFriendJoin.setAdapter(adapter);
         rvFriendJoin.setLayoutManager(layoutManager);

@@ -6,7 +6,6 @@ import com.dfa.vinatrip.services.chat.ChatService;
 import com.dfa.vinatrip.services.deal.DealService;
 import com.dfa.vinatrip.services.default_data.DataService;
 import com.dfa.vinatrip.services.friend.FriendService;
-import com.dfa.vinatrip.services.location.LocationService;
 import com.dfa.vinatrip.services.plan.PlanService;
 import com.dfa.vinatrip.services.trend.TrendService;
 
@@ -30,8 +29,6 @@ public interface ApplicationComponent {
     DealService dealService();
 
     TrendService trendService();
-
-    LocationService locationService();
 
     DataService dataService();
 

@@ -155,6 +155,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             socket.emit(JOIN_ROOM, presenter.getCurrentUser().getEmail(), plan.getId());
 
             imageLoader = ImageLoader.getInstance();
+
             gson = new Gson();
             KeyboardListener.setEventListener(this, this);
 
@@ -169,7 +170,6 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             setupStickerAdapter();
 
             presenter.getHistory(plan.getId(), 1, PAGE_SIZE);
-            presenter.getStatus(plan.getId());
 
             socket.on(RECEIVE_MESSAGE, args -> {
                 BaseMessage baseMessage = gson.fromJson(args[0].toString(), BaseMessage.class);
@@ -191,7 +191,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                         e.printStackTrace();
                     }
                     if (userInPlan.getEmail().equals(email)) {
-//                        friend.setIsOnline(true);
+                        userInPlan.setIsOnline(1);
                         break;
                     }
                 }
@@ -208,7 +208,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                         e.printStackTrace();
                     }
                     if (userInPlan.getEmail().equals(email)) {
-//                        friend.setIsOnline(false);
+                        userInPlan.setIsOnline(0);
                         break;
                     }
                 }
@@ -331,7 +331,9 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
         ToplessRecyclerViewScrollListener scrollListener = new ToplessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                presenter.getHistory(plan.getId(), page, PAGE_SIZE);
+                if (totalItemsCount >= PAGE_SIZE) {
+                    presenter.getHistory(plan.getId(), page, PAGE_SIZE);
+                }
             }
         };
 
@@ -477,20 +479,6 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     }
 
     @Override
-    public void getStatusSuccess(List<StatusUserChat> statusUserChatList) {
-        for (int i = 0; i < statusUserChatList.size(); i++) {
-            StatusUserChat statusUserChat = statusUserChatList.get(i);
-            for (int j = 0; j < plan.getInvitedFriendList().size(); j++) {
-                UserInPlan userInPlan = plan.getInvitedFriendList().get(j);
-                if (userInPlan.getEmail().equals(statusUserChat.getEmail())) {
-//                    friend.setIsOnline(statusUserChat.getIsOnline());
-                    break;
-                }
-            }
-        }
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.right_menu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -502,7 +490,10 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
             super.onBackPressed();
             return true;
         } else if (item.getItemId() == R.id.iconInfo) {
-            ShowUserOnlineActivity_.intent(this).userInPlanList((ArrayList<UserInPlan>) plan.getInvitedFriendList()).start();
+            ShowUserOnlineActivity_.intent(this)
+                    .userInPlanList((ArrayList<UserInPlan>) plan.getInvitedFriendList())
+                    .currentUser(presenter.getCurrentUser())
+                    .start();
             return true;
         }
         return false;

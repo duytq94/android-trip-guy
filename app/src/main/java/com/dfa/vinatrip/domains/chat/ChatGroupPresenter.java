@@ -53,19 +53,4 @@ public class ChatGroupPresenter extends BasePresenter<ChatGroupView> {
                     }
                 });
     }
-
-    public void getStatus(long groupId) {
-        RxScheduler.onStop(subscriptionGetStatus);
-        subscriptionGetStatus = chatService.getStatus(groupId)
-                .compose(RxScheduler.applyIoSchedulers())
-                .subscribe(statusUserChats -> {
-                    if (isViewAttached()) {
-                        getView().getStatusSuccess(statusUserChats);
-                    }
-                }, throwable -> {
-                    if (isViewAttached()) {
-                        getView().apiError(throwable);
-                    }
-                });
-    }
 }

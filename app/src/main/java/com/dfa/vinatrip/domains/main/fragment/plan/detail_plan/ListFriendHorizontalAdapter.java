@@ -6,17 +6,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
+import com.dfa.vinatrip.models.response.User;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ListFriendHorizontalAdapter extends RecyclerView.Adapter<ListFriendHorizontalAdapter.ProfileViewHolder> {
     private LayoutInflater layoutInflater;
@@ -24,8 +26,9 @@ public class ListFriendHorizontalAdapter extends RecyclerView.Adapter<ListFriend
     private ImageLoader imageLoader;
     private DisplayImageOptions imageOptions;
     private Plan plan;
+    private User currentUser;
 
-    public ListFriendHorizontalAdapter(Context context, Plan plan) {
+    public ListFriendHorizontalAdapter(Context context, Plan plan, User currentUser) {
         this.layoutInflater = LayoutInflater.from(context);
         this.friendInvitedList = plan.getInvitedFriendList();
         this.imageLoader = ImageLoader.getInstance();
@@ -39,6 +42,7 @@ public class ListFriendHorizontalAdapter extends RecyclerView.Adapter<ListFriend
                 .bitmapConfig(Bitmap.Config.ARGB_4444)
                 .build();
         this.plan = plan;
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -49,10 +53,10 @@ public class ListFriendHorizontalAdapter extends RecyclerView.Adapter<ListFriend
 
     @Override
     public void onBindViewHolder(ProfileViewHolder holder, int position) {
-        final UserInPlan userFriend = friendInvitedList.get(position);
+        UserInPlan userFriend = friendInvitedList.get(position);
         if (userFriend.getId() != plan.getIdUserMakePlan()) {
             holder.llRoot.setVisibility(View.VISIBLE);
-            holder.tvNickname.setText(userFriend.getUsername());
+            holder.tvNickname.setText(userFriend.getId() == currentUser.getId() ? "Tôi" : userFriend.getUsername());
             if (!userFriend.getAvatar().equals("")) {
                 imageLoader.displayImage(userFriend.getAvatar(), holder.civAvatar, imageOptions);
             }
@@ -68,13 +72,13 @@ public class ListFriendHorizontalAdapter extends RecyclerView.Adapter<ListFriend
 
     public static class ProfileViewHolder extends RecyclerView.ViewHolder {
         private TextView tvNickname;
-        private ImageView civAvatar;
+        private CircleImageView civAvatar;
         private LinearLayout llRoot;
 
         public ProfileViewHolder(View itemView) {
             super(itemView);
             tvNickname = (TextView) itemView.findViewById(R.id.item_friend_horizontal_tv_nickname);
-            civAvatar = (ImageView) itemView.findViewById(R.id.item_friend_horizontal_civ_avatar);
+            civAvatar = (CircleImageView) itemView.findViewById(R.id.item_friend_horizontal_civ_avatar);
             llRoot = (LinearLayout) itemView.findViewById(R.id.item_friend_horizontal_ll_root);
         }
     }

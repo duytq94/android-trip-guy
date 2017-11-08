@@ -29,18 +29,13 @@
             android:paddingBottom="10dp"
             android:paddingTop="10dp"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_gravity="bottom"
-            android:background="@drawable/bg_shadow_chat_bottom"/>
-
     </FrameLayout>
 
     <org.lucasr.twowayview.TwoWayView
         android:id="@+id/activity_chat_group_lv_photo_selected"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:background="#dddddd"
         android:orientation="horizontal"
         android:visibility="gone"/>
 
@@ -48,6 +43,7 @@
         android:id="@+id/activity_chat_group_ll_sticker"
         android:layout_width="match_parent"
         android:layout_height="210dp"
+        android:background="#dddddd"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -105,7 +101,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="44dp"
+        android:background="#dddddd"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -113,7 +110,7 @@
             android:layout_width="45dp"
             android:layout_height="match_parent"
             android:background="@drawable/btn_send"
-            android:padding="3dp">
+            android:padding="4dp">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -127,7 +124,7 @@
             android:layout_width="45dp"
             android:layout_height="match_parent"
             android:background="@drawable/btn_send"
-            android:padding="3dp">
+            android:padding="4dp">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -141,8 +138,9 @@
             android:id="@+id/activity_chat_group_et_input"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="6dp"
             android:layout_weight="1"
-            android:background="@color/transparent"
+            android:background="@drawable/bg_et_chat"
             android:hint="Nhập nội dung..."
             android:inputType="textMultiLine"
             android:paddingBottom="5dp"

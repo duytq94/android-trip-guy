@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.domains.main.fragment.plan;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -13,35 +14,45 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.models.response.User;
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
 public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder> {
     private List<Plan> planList;
-    private LayoutInflater layoutInflater;
     private Context context;
     private User currentUser;
-    private int lastItemPosition;
     private OnUpdateOrRemoveClick onUpdateOrRemoveClick;
+    private ImageLoader imageLoader;
+    private DisplayImageOptions imageOptions;
 
     public PlanAdapter(Context context, List<Plan> planList, User currentUser) {
         this.planList = planList;
-        this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.currentUser = currentUser;
+        imageLoader = ImageLoader.getInstance();
+        imageOptions = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.bg_green)
+                .showImageForEmptyUri(R.drawable.photo_not_available)
+                .showImageOnFail(R.drawable.photo_not_available)
+                .resetViewBeforeLoading(true)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .bitmapConfig(Bitmap.Config.ARGB_4444)
+                .build();
     }
 
     @Override
     public PlanViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.item_plan, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_plan, parent, false);
         return new PlanViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(PlanAdapter.PlanViewHolder holder, final int position) {
+    public void onBindViewHolder(PlanAdapter.PlanViewHolder holder, int position) {
         final Plan plan = planList.get(position);
-        lastItemPosition = planList.size() - 1;
+        int lastItemPosition = planList.size() - 1;
 
         if (position == lastItemPosition && planList.size() > 2) {
             holder.viewFooter.setVisibility(View.VISIBLE);
@@ -49,16 +60,11 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
             holder.viewFooter.setVisibility(View.GONE);
         }
 
-        holder.llDetail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onUpdateOrRemoveClick.onClick(position);
-            }
-        });
+        holder.llDetail.setOnClickListener(view -> onUpdateOrRemoveClick.onClick(position));
 
         holder.tvName.setText(plan.getName());
         holder.tvDestination.setText(plan.getDestination());
-        holder.tvDate.setText(plan.getDateGo() + " " + Html.fromHtml("&#10132;") + " " + plan.getDateBack());
+        holder.tvDate.setText(String.format("%s %s %s", plan.getDateGo(), Html.fromHtml("&#10132;"), plan.getDateBack()));
 
         if (plan.getIdUserMakePlan() == currentUser.getId()) {
             holder.tvUserName.setText("Tôi");
@@ -74,9 +80,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
         holder.tvRemove.setOnClickListener(view -> onUpdateOrRemoveClick.onRemove(position));
 
         if (plan.getAvatarUserMakePlan() != null) {
-            Picasso.with(context).load(plan.getAvatarUserMakePlan())
-                    .error(R.drawable.photo_not_available)
-                    .into(holder.ivAvatar);
+            imageLoader.displayImage(plan.getAvatarUserMakePlan(), holder.ivAvatar, imageOptions);
         } else {
             holder.ivAvatar.setImageResource(R.drawable.ic_avatar);
         }

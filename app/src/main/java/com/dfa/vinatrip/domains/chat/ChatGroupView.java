@@ -10,6 +10,4 @@ import java.util.List;
 
 public interface ChatGroupView extends BaseMvpView {
     void getHistorySuccess(List<BaseMessage> baseMessageList, int page);
-
-    void getStatusSuccess(List<StatusUserChat> statusUserChatList);
 }

@@ -144,5 +144,4 @@ public class Plan implements Serializable {
         this.planScheduleList = planScheduleList;
     }
 
-
 }

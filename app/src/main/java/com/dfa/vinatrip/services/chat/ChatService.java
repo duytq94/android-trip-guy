@@ -12,7 +12,7 @@ import rx.Observable;
  */
 
 public interface ChatService {
-    Observable<List<BaseMessage>> getHistory(long groupId, int page, int pageSize);
+    Observable<List<BaseMessage>> getHistory(long planId, int page, int pageSize);
 
-    Observable<List<StatusUserChat>> getStatus(long groupId);
+    Observable<List<StatusUserChat>> getStatus(long planId);
 }

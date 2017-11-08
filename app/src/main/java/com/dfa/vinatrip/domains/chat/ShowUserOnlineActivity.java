@@ -1,17 +1,21 @@
 package com.dfa.vinatrip.domains.chat;
 
+import android.graphics.Bitmap;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
+import com.dfa.vinatrip.models.response.User;
 import com.joanzapata.android.BaseAdapterHelper;
 import com.joanzapata.android.QuickAdapter;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.androidannotations.annotations.AfterViews;
@@ -28,6 +32,8 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
 
     @Extra
     protected ArrayList<UserInPlan> userInPlanList;
+    @Extra
+    protected User currentUser;
 
     @ViewById(R.id.my_toolbar)
     protected Toolbar toolbar;
@@ -38,15 +44,23 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
     @ViewById(R.id.activity_show_user_online_tv_count_sum)
     protected TextView tvCountSum;
 
-    private int countCurrent;
     private QuickAdapter<UserInPlan> adapter;
     private ImageLoader imageLoader;
+    private DisplayImageOptions imageOptions;
 
     @AfterViews
     public void init() {
         setupAppBar();
-
         imageLoader = ImageLoader.getInstance();
+        imageOptions = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.ic_avatar)
+                .showImageForEmptyUri(R.drawable.ic_avatar)
+                .showImageOnFail(R.drawable.ic_avatar)
+                .resetViewBeforeLoading(true)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .bitmapConfig(Bitmap.Config.ARGB_4444)
+                .build();
 
         adapter = new QuickAdapter<UserInPlan>(this, R.layout.item_user_online) {
             @Override
@@ -57,19 +71,20 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
                 TextView tvEmail = helper.getView(R.id.item_user_online_vertical_tv_email);
                 TextView tvType = helper.getView(R.id.item_user_online_tv_type);
 
-                imageLoader.displayImage(item.getAvatar(), civAvatar);
-                if (item.getUsername() != null) {
+                imageLoader.displayImage(item.getAvatar(), civAvatar, imageOptions);
+                if (item.getUsername().equals(currentUser.getUsername())) {
+                    tvNickname.setText("Tôi");
+                } else {
                     tvNickname.setText(item.getUsername());
                 }
                 tvEmail.setText(item.getEmail());
-//                if (item.getIsOnline()) {
-//                    ivIndicator.setVisibility(View.VISIBLE);
-//                    tvType.setText("Online");
-//                    countCurrent++;
-//                } else {
-//                    ivIndicator.setVisibility(View.GONE);
-//                    tvType.setText("Offline");
-//                }
+                if (item.getIsOnline() == 1 || item.getEmail().equals(currentUser.getEmail())) {
+                    ivIndicator.setVisibility(View.VISIBLE);
+                    tvType.setText("Online");
+                } else {
+                    ivIndicator.setVisibility(View.GONE);
+                    tvType.setText("Offline");
+                }
             }
         };
         lvUser.setAdapter(adapter);
@@ -78,7 +93,14 @@ public class ShowUserOnlineActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         tvCountSum.setText(String.valueOf(userInPlanList.size()));
-        tvCountCurrent.setText(String.valueOf(countCurrent));
+
+        int countOnline = 0;
+        for (UserInPlan userInPlan : userInPlanList) {
+            if (userInPlan.getIsOnline() == 1 || userInPlan.getEmail().equals(currentUser.getEmail())) {
+                countOnline++;
+            }
+        }
+        tvCountCurrent.setText(String.valueOf(countOnline));
     }
 
     public void setupAppBar() {

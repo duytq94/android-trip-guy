@@ -16,15 +16,15 @@ import rx.Observable;
  */
 
 public interface RestChatService {
-    @GET("history/{groupId}")
+    @GET("history/{planId}")
     Observable<RestMessageResponse<List<BaseMessage>>> getHistory(
-            @Path("groupId") long groupId,
+            @Path("planId") long groupId,
             @Query("page") int page,
             @Query("pageSize") int pageSize
     );
 
-    @GET("status/{groupId}")
+    @GET("status/{planId}")
     Observable<RestMessageResponse<List<StatusUserChat>>> getStatus(
-            @Path("groupId") long groupId
+            @Path("planId") long groupId
     );
 }

@@ -22,6 +22,13 @@ public class Constants {
     public static final String EMAIL = "email";
     public static final String SEND_MESSAGE = "send_message";
 
+    // Location
+    public static final String A_USER_TURN_OFF = "a_user_turn_off";
+    public static final String RECEIVE_LOCATION = "receive_location";
+    public static final String SEND_LOCATION = "send_location";
+    public static final String LATITUDE = "latitude";
+    public static final String LONGITUDE = "longitude";
+
     // FireBase storage
     public static final String URL_STORAGE = "gs://tripguy-10864.appspot.com";
     public static final String FOLDER_STORAGE_CHAT = "Chat";

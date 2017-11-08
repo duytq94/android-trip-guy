@@ -75,6 +75,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="@dimen/text_view_padding"
                                 android:paddingRight="@dimen/text_view_padding"
+                                android:text="duyduy"
                                 />
 
                             <TextView
@@ -84,6 +85,7 @@
                                 android:paddingLeft="@dimen/text_view_padding"
                                 android:paddingRight="@dimen/text_view_padding"
                                 android:paddingTop="@dimen/text_view_padding"
+                                android:text="duy@gmail.com"
                                 />
                         </LinearLayout>
                     </LinearLayout>
