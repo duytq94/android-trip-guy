@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.domains.main.fragment.plan;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -97,11 +96,12 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
         planAdapter.setOnUpdateOrRemoveClick(new PlanAdapter.OnUpdateOrRemoveClick() {
             @Override
             public void onUpdate(int position) {
-                Intent intent = new Intent(getActivity(), MakePlanActivity_.class);
-
-                // Send Plan to MakePlanActivity to update info
-                intent.putExtra("Plan", planList.get(position));
-                getActivity().startActivity(intent);
+//                if (AppUtil.stringDateToTimestamp(planList.get(position).getDateGo()) > NUtc.getUtcNow()) {
+                    MakePlanActivity_.intent(getActivity()).plan(planList.get(position)).isUpdatePlan(true).start();
+//                } else {
+//                    Toast.makeText(getActivity(), "Chuyến đi này đã bắt đầu, bạn không thể chỉnh sửa",
+//                            Toast.LENGTH_SHORT).show();
+//                }
             }
 
             @Override
@@ -136,7 +136,6 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
         });
 
         rvPlan.setAdapter(planAdapter);
-
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvPlan.setLayoutManager(manager);
     }

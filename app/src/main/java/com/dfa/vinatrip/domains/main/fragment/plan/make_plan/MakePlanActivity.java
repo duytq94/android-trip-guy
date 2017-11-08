@@ -37,6 +37,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
@@ -59,6 +60,11 @@ import static com.dfa.vinatrip.utils.Constants.REQUEST_BACKGROUND;
 @EActivity(R.layout.activity_make_plan)
 public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresenter>
         implements MakePlanView, Validator.ValidationListener {
+
+    @Extra
+    protected boolean isUpdatePlan;
+    @Extra
+    protected Plan plan;
 
     @ViewById(R.id.activity_make_plan_rv_list_friend)
     protected RecyclerView rvListFriend;
@@ -86,7 +92,6 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
 
     private List<User> friendList;
     private InviteFriendAdapter inviteFriendAdapter;
-    private Plan plan;
     private Calendar calendar;
     private DatePickerDialog dpdDateGo, dpdDateBack;
     private List<UserInPlan> invitedFriendList;
@@ -122,8 +127,24 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
     @AfterViews
     public void init() {
         currentUser = presenter.getCurrentUser();
-        initViewForNewPlan();
-        setCurrentDayForView();
+        if (isUpdatePlan) {
+            presenter.getPlanDetail(plan.getId());
+        } else {
+            initViewForNewPlan();
+            setCurrentDayForView();
+        }
+    }
+
+    public void initViewForUpdatePlan() {
+        etTripName.setText(plan.getName());
+        tvDestination.setText(plan.getDestination());
+        civBackground.setImageResource(plan.getIdBackground());
+        tvDateGo.setText(plan.getDateGo());
+        tvDateBack.setText(plan.getDateBack());
+
+        dateGo = plan.getDateGo();
+        dateBack = plan.getDateBack();
+        updateViewListSchedule();
     }
 
     public void initViewForNewPlan() {
@@ -169,6 +190,26 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
 
             etTitle.setHint(String.format("Ngày %s...", i + 1));
             etContent.setHint(String.format("Lịch trình ngày %s...", i + 1));
+            tvDate.setText(AppUtil.formatTime(FORMAT_DAY_VN, timestampGo + MILLISECOND_IN_DAY * i));
+            llSchedule.addView(llRoot);
+        }
+    }
+
+    public void updateViewListSchedule() {
+        timestampGo = AppUtil.stringDateToTimestamp(dateGo);
+        countDaySchedule = AppUtil.stringDateToTimestamp(dateBack) - AppUtil.stringDateToTimestamp(dateGo);
+        countDaySchedule = countDaySchedule / MILLISECOND_IN_DAY + 1;
+
+        llSchedule.removeAllViews();
+        for (int i = 0; i < countDaySchedule; i++) {
+            LinearLayout llRoot = (LinearLayout) getLayoutInflater().inflate(R.layout.item_add_schedule, null);
+            LinearLayout llMain = (LinearLayout) llRoot.getChildAt(1);
+            EditText etTitle = (EditText) llMain.findViewById(R.id.item_add_schedule_et_title);
+            EditText etContent = (EditText) llMain.findViewById(R.id.item_add_schedule_et_content);
+            TextView tvDate = (TextView) llMain.findViewById(R.id.item_add_schedule_tv_date);
+
+            etTitle.setText(plan.getPlanScheduleList().get(i).getTitle());
+            etContent.setText(plan.getPlanScheduleList().get(i).getContent());
             tvDate.setText(AppUtil.formatTime(FORMAT_DAY_VN, timestampGo + MILLISECOND_IN_DAY * i));
             llSchedule.addView(llRoot);
         }
@@ -323,9 +364,9 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
         if (friendList.size() > 0) {
             tvFriendNotAvailable.setVisibility(View.GONE);
             this.friendList = new ArrayList<>();
-            friendList.addAll(this.friendList);
+            this.friendList.addAll(friendList);
 
-            inviteFriendAdapter = new InviteFriendAdapter(this, friendList, invitedFriendList, null);
+            inviteFriendAdapter = new InviteFriendAdapter(this, this.friendList, invitedFriendList);
             rvListFriend.setAdapter(inviteFriendAdapter);
             LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             rvListFriend.setLayoutManager(manager);
@@ -338,6 +379,17 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
     public void createPlanSuccess(String message) {
         Toast.makeText(this, "Kế hoạch của bạn được tạo thành công", Toast.LENGTH_SHORT).show();
         finish();
+    }
+
+    @Override
+    public void getDetailPlanSuccess(List<PlanSchedule> planScheduleList, List<UserInPlan> invitedFriendList) {
+        plan.setPlanScheduleList(planScheduleList);
+        plan.setInvitedFriendList(invitedFriendList);
+        this.invitedFriendList = new ArrayList<>();
+        this.invitedFriendList.addAll(plan.getInvitedFriendList());
+        presenter.getListFriend(1, Integer.MAX_VALUE);
+
+        initViewForUpdatePlan();
     }
 
 }

@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.dfa.vinatrip.models.response.User;
 import com.squareup.picasso.Picasso;
@@ -24,7 +23,7 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
     private List<UserInPlan> invitedFriendList;
 
     public InviteFriendAdapter(Context context, List<User> friendList,
-                               List<UserInPlan> invitedFriendList, Plan currentPlan) {
+                               List<UserInPlan> invitedFriendList) {
         this.layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.friendList = friendList;
@@ -49,6 +48,15 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
 
         holder.btnAction.setText("Mời");
         holder.btnAction.setTag("Mời");
+        for (int i = 0; i < invitedFriendList.size(); i++) {
+            if (friend.getEmail().equals(invitedFriendList.get(i).getEmail())) {
+                holder.btnAction.setText(R.string.invited);
+                holder.btnAction.setTag("Đã mời");
+                holder.btnAction.setBackgroundResource(R.drawable.btn_positive);
+                break;
+            }
+        }
+
         holder.btnAction.setBackgroundResource(R.drawable.btn_neutral);
         holder.btnAction.setOnClickListener(v -> {
             switch (holder.btnAction.getTag().toString()) {
