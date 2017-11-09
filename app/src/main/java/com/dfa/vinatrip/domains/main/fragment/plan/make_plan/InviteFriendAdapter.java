@@ -48,6 +48,8 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
 
         holder.btnAction.setText("Mời");
         holder.btnAction.setTag("Mời");
+        holder.btnAction.setBackgroundResource(R.drawable.btn_neutral);
+
         for (int i = 0; i < invitedFriendList.size(); i++) {
             if (friend.getEmail().equals(invitedFriendList.get(i).getEmail())) {
                 holder.btnAction.setText(R.string.invited);
@@ -57,7 +59,6 @@ public class InviteFriendAdapter extends RecyclerView.Adapter<InviteFriendAdapte
             }
         }
 
-        holder.btnAction.setBackgroundResource(R.drawable.btn_neutral);
         holder.btnAction.setOnClickListener(v -> {
             switch (holder.btnAction.getTag().toString()) {
                 case "Mời":

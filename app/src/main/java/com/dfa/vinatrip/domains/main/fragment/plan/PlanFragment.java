@@ -17,6 +17,8 @@ import com.dfa.vinatrip.domains.auth.sign_in.SignInActivity_;
 import com.dfa.vinatrip.domains.main.fragment.plan.detail_plan.DetailPlanActivity_;
 import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.MakePlanActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
+import com.dfa.vinatrip.utils.AppUtil;
+import com.nhancv.nutc.NUtc;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -25,6 +27,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -68,6 +71,7 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
     @AfterViews
     public void init() {
         if (presenter.isLogin()) {
+            planList = new ArrayList<>();
             presenter.getPlan();
             rlLogin.setVisibility(View.VISIBLE);
             rlNotLogin.setVisibility(View.GONE);
@@ -96,12 +100,12 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
         planAdapter.setOnUpdateOrRemoveClick(new PlanAdapter.OnUpdateOrRemoveClick() {
             @Override
             public void onUpdate(int position) {
-//                if (AppUtil.stringDateToTimestamp(planList.get(position).getDateGo()) > NUtc.getUtcNow()) {
+                if (AppUtil.stringDateToTimestamp(planList.get(position).getDateGo()) > NUtc.getUtcNow()) {
                     MakePlanActivity_.intent(getActivity()).plan(planList.get(position)).isUpdatePlan(true).start();
-//                } else {
-//                    Toast.makeText(getActivity(), "Chuyến đi này đã bắt đầu, bạn không thể chỉnh sửa",
-//                            Toast.LENGTH_SHORT).show();
-//                }
+                } else {
+                    Toast.makeText(getActivity(), "Chuyến đi này đã bắt đầu, bạn không thể chỉnh sửa",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -169,7 +173,7 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
     public void getPlanSuccess(List<Plan> planList) {
         if (planList.size() > 0) {
             llPlanListNotAvailable.setVisibility(View.GONE);
-            this.planList = planList;
+            this.planList.addAll(planList);
             initView();
         } else {
             llPlanListNotAvailable.setVisibility(View.VISIBLE);

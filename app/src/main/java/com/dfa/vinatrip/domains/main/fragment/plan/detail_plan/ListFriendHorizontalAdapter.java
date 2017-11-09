@@ -62,6 +62,8 @@ public class ListFriendHorizontalAdapter extends RecyclerView.Adapter<ListFriend
             }
         } else {
             holder.llRoot.setVisibility(View.GONE);
+            holder.civAvatar.setVisibility(View.GONE);
+            holder.tvNickname.setVisibility(View.GONE);
         }
     }
 

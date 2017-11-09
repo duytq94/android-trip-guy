@@ -127,6 +127,14 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
     @AfterViews
     public void init() {
         currentUser = presenter.getCurrentUser();
+        planScheduleList = new ArrayList<>();
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
+
+        calendar = Calendar.getInstance();
+        invitedFriendList = new ArrayList<>();
+
         if (isUpdatePlan) {
             presenter.getPlanDetail(plan.getId());
         } else {
@@ -141,6 +149,7 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
         civBackground.setImageResource(plan.getIdBackground());
         tvDateGo.setText(plan.getDateGo());
         tvDateBack.setText(plan.getDateBack());
+        planScheduleList.addAll(plan.getPlanScheduleList());
 
         dateGo = plan.getDateGo();
         dateBack = plan.getDateBack();
@@ -152,13 +161,6 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
         civBackground.setImageResource(idBackground);
 
         countDaySchedule = 1;
-        planScheduleList = new ArrayList<>();
-
-        validator = new Validator(this);
-        validator.setValidationListener(this);
-
-        calendar = Calendar.getInstance();
-        invitedFriendList = new ArrayList<>();
 
         presenter.getListFriend(1, Integer.MAX_VALUE);
     }
@@ -176,6 +178,19 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
     }
 
     public void initViewListSchedule() {
+        try {
+            planScheduleList.clear();
+            for (int i = 0; i < countDaySchedule; i++) {
+                String title = ((EditText) llSchedule.getChildAt(i).findViewById(R.id.item_add_schedule_et_title)).getText().toString();
+                String content = ((EditText) llSchedule.getChildAt(i).findViewById(R.id.item_add_schedule_et_content)).getText().toString();
+                if (!title.isEmpty() || !content.isEmpty()) {
+                    planScheduleList.add(new PlanSchedule(content, title, timestampGo + MILLISECOND_IN_DAY * i));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         timestampGo = AppUtil.stringDateToTimestamp(dateGo);
         countDaySchedule = AppUtil.stringDateToTimestamp(dateBack) - AppUtil.stringDateToTimestamp(dateGo);
         countDaySchedule = countDaySchedule / MILLISECOND_IN_DAY + 1;
@@ -188,9 +203,15 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
             EditText etContent = (EditText) llMain.findViewById(R.id.item_add_schedule_et_content);
             TextView tvDate = (TextView) llMain.findViewById(R.id.item_add_schedule_tv_date);
 
-            etTitle.setHint(String.format("Ngày %s...", i + 1));
-            etContent.setHint(String.format("Lịch trình ngày %s...", i + 1));
+            try {
+                etTitle.setText(planScheduleList.get(i).getTitle());
+                etContent.setText(planScheduleList.get(i).getContent());
+            } catch (Exception e) {
+                etTitle.setHint(String.format("Ngày %s...", i + 1));
+                etContent.setHint(String.format("Lịch trình ngày %s...", i + 1));
+            }
             tvDate.setText(AppUtil.formatTime(FORMAT_DAY_VN, timestampGo + MILLISECOND_IN_DAY * i));
+
             llSchedule.addView(llRoot);
         }
     }
@@ -310,6 +331,7 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
     @Override
     public void onValidationSucceeded() {
         nsvRoot.scrollTo(0, nsvRoot.getBottom());
+        planScheduleList.clear();
         for (int i = 0; i < countDaySchedule; i++) {
             String title = ((EditText) llSchedule.getChildAt(i).findViewById(R.id.item_add_schedule_et_title)).getText().toString();
             String content = ((EditText) llSchedule.getChildAt(i).findViewById(R.id.item_add_schedule_et_content)).getText().toString();
