@@ -83,6 +83,26 @@ public class MakePlanPresenter extends BasePresenter<MakePlanView> {
                 });
     }
 
+    public void updatePlan(Plan newPlan) {
+        RxScheduler.onStop(subscription);
+        if (isViewAttached()) {
+            getView().showLoading();
+        }
+        subscription = planService.updatePlan(newPlan)
+                .compose(RxScheduler.applyIoSchedulers())
+                .subscribe(s -> {
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                        getView().updatePlanSuccess(s);
+                    }
+                }, throwable -> {
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                        getView().apiError(throwable);
+                    }
+                });
+    }
+
     public void getPlanDetail(long planId) {
         RxScheduler.onStop(subscription);
         if (isViewAttached()) {

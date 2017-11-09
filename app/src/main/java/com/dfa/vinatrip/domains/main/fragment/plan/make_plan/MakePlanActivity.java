@@ -342,7 +342,11 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
                 dateGo, dateBack, idBackground, planScheduleList, currentUser.getId(),
                 currentUser.getEmail(), currentUser.getAvatar(), currentUser.getUsername(), invitedFriendList);
 
-        presenter.createPlan(plan);
+        if (isUpdatePlan) {
+            presenter.updatePlan(plan);
+        } else {
+            presenter.createPlan(plan);
+        }
     }
 
     @Override
@@ -400,6 +404,12 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
     @Override
     public void createPlanSuccess(String message) {
         Toast.makeText(this, "Kế hoạch của bạn được tạo thành công", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void updatePlanSuccess(String message) {
+        Toast.makeText(this, "Kế hoạch của bạn được cập nhật thành công", Toast.LENGTH_SHORT).show();
         finish();
     }
 

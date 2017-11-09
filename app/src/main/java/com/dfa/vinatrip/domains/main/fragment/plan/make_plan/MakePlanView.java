@@ -15,5 +15,7 @@ public interface MakePlanView extends BaseMvpView {
 
     void createPlanSuccess(String message);
 
+    void updatePlanSuccess(String message);
+
     void getDetailPlanSuccess(List<PlanSchedule> planScheduleList, List<UserInPlan> invitedFriendList);
 }

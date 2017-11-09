@@ -23,6 +23,11 @@ public interface RestPlanService {
             @Body Plan newPlan
     );
 
+    @POST("plan/update/{planId}")
+    Observable<RestMessageResponse<String>> updatePlan(
+            @Body Plan newPlan
+    );
+
     @GET("plan/{userId}")
     Observable<RestMessageResponse<List<Plan>>> getPlan(
             @Path("userId") long userId

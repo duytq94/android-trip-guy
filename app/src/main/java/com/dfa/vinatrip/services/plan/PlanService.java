@@ -15,6 +15,8 @@ import rx.Observable;
 public interface PlanService {
     Observable<String> createPlan(Plan newPlan);
 
+    Observable<String> updatePlan(Plan newPlan);
+
     Observable<List<Plan>> getPlan(long userId);
 
     Observable<List<PlanSchedule>> getPlanSchedule(long planId);
