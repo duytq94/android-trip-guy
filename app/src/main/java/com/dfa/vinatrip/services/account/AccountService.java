@@ -3,7 +3,7 @@ package com.dfa.vinatrip.services.account;
 import com.beesightsoft.caf.services.authentication.AuthenticationManager;
 import com.dfa.vinatrip.models.request.AuthRequest;
 import com.dfa.vinatrip.models.request.SignInSocialRequest;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.User;
 
 import rx.Observable;
 

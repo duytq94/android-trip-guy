@@ -21,7 +21,7 @@ import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseFragment;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;

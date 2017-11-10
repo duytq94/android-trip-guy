@@ -10,8 +10,8 @@ import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseFragment;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
-import com.dfa.vinatrip.models.response.User;
-import com.dfa.vinatrip.models.response.user.FriendResponse;
+import com.dfa.vinatrip.models.response.user.User;
+import com.dfa.vinatrip.models.response.user.FriendStatus;
 import com.dfa.vinatrip.utils.AdapterUserListener;
 import com.dfa.vinatrip.widgets.EndlessRecyclerViewScrollListener;
 
@@ -63,7 +63,7 @@ public class MakeFriendFragment extends BaseFragment<MakeFriendView, MakeFriendP
     @AfterViews
     public void init() {
         userList = new ArrayList<>();
-        adapter = new ListUserAdapter(this);
+        adapter = new ListUserAdapter(this, presenter.getCurrentUser());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         DividerItemDecoration decoration = new DividerItemDecoration(rvListUser.getContext(), layoutManager.getOrientation());
         rvListUser.setLayoutManager(layoutManager);
@@ -119,9 +119,20 @@ public class MakeFriendFragment extends BaseFragment<MakeFriendView, MakeFriendP
     }
 
     @Override
-    public void addFriendRequestSuccess(FriendResponse friendResponse) {
-        if (friendResponse != null) {
+    public void addFriendRequestSuccess(int position, FriendStatus friendStatus) {
+        if (friendStatus != null) {
+            userList.get(position).setFriendStatus(friendStatus);
+            adapter.notifyDataSetChanged();
+            Toast.makeText(getActivity(), "Gửi lời mời kết bạn thành công", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    @Override
+    public void cancelFriendRequestSuccess(int position, FriendStatus friendStatus) {
+        if (friendStatus != null) {
+            userList.get(position).setFriendStatus(null);
+            adapter.notifyDataSetChanged();
+            Toast.makeText(getActivity(), "Hủy kết bạn thành công", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -129,11 +140,11 @@ public class MakeFriendFragment extends BaseFragment<MakeFriendView, MakeFriendP
     public void onBtnActionClick(int position, String command) {
         switch (command) {
             case MAKE_REQUEST:
-                presenter.addFriendRequest(userList.get(position).getId());
+                presenter.addFriendRequest(position, userList.get(position).getId());
                 break;
 
             case CANCEL_REQUEST:
-
+                presenter.cancelFriendRequest(position, userList.get(position).getFriendStatus().getId());
                 break;
         }
     }

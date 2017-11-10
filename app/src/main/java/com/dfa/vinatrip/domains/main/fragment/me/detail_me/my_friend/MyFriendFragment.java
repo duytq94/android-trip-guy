@@ -12,7 +12,8 @@ import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseFragment;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.FriendStatus;
+import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.utils.AdapterUserListener;
 import com.dfa.vinatrip.widgets.EndlessRecyclerViewScrollListener;
 
@@ -95,7 +96,7 @@ public class MyFriendFragment extends BaseFragment<MyFriendView, MyFriendPresent
 
     @Override
     public void showLoading() {
-//        showHUD();
+        showHUD();
     }
 
     @Override
@@ -126,7 +127,16 @@ public class MyFriendFragment extends BaseFragment<MyFriendView, MyFriendPresent
     }
 
     @Override
-    public void onBtnActionClick(int position, String command) {
+    public void unfriendSuccess(FriendStatus friendStatus, int position) {
+        if (friendStatus != null) {
+            friendList.remove(position);
+            adapter.notifyDataSetChanged();
+            Toast.makeText(getActivity(), "Hủy kết bạn thành công", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    @Override
+    public void onBtnActionClick(int position, String command) {
+        presenter.unfriend(position, friendList.get(position).getId());
     }
 }

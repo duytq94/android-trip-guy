@@ -32,7 +32,7 @@ import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

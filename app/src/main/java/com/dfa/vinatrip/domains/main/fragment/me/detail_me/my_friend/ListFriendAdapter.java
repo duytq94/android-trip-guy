@@ -11,14 +11,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.utils.AdapterUserListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
-import static com.dfa.vinatrip.utils.Constants.CANCEL_FRIEND;
+import static com.dfa.vinatrip.utils.Constants.UN_FRIEND;
 
 public class ListFriendAdapter extends RecyclerView.Adapter<ListFriendAdapter.ProfileViewHolder> {
 
@@ -63,7 +63,7 @@ public class ListFriendAdapter extends RecyclerView.Adapter<ListFriendAdapter.Pr
         }
         holder.tvSex.setText(user.getStringSex());
         holder.btnAction.setText(R.string.friend);
-        holder.btnAction.setTag(CANCEL_FRIEND);
+        holder.btnAction.setTag(UN_FRIEND);
         holder.btnAction.setOnClickListener(v -> {
             adapterUserListener.onBtnActionClick(position, holder.btnAction.getTag().toString());
         });

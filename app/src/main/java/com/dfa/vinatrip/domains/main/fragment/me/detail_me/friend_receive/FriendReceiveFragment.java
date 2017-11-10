@@ -12,7 +12,8 @@ import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseFragment;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.FriendStatus;
+import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.utils.AdapterUserListener;
 import com.dfa.vinatrip.widgets.EndlessRecyclerViewScrollListener;
 
@@ -95,12 +96,12 @@ public class FriendReceiveFragment extends BaseFragment<FriendReceiveView, Frien
 
     @Override
     public void onBtnActionClick(int position, String command) {
-
+        presenter.acceptFriendRequest(position, friendReceiveList.get(position).getFriendStatus().getId());
     }
 
     @Override
     public void showLoading() {
-//        showHUD();
+        showHUD();
     }
 
     @Override
@@ -127,6 +128,14 @@ public class FriendReceiveFragment extends BaseFragment<FriendReceiveView, Frien
             if (page == 1) {
                 llFriendReceiveNotAvailable.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+    @Override
+    public void acceptFriendRequestSuccess(int position, FriendStatus friendStatus) {
+        if (friendStatus != null) {
+            friendReceiveList.remove(position);
+            adapter.notifyDataSetChanged();
         }
     }
 }

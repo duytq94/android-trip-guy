@@ -24,7 +24,7 @@ import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFrien
 import com.dfa.vinatrip.domains.main.fragment.province.each_item_detail_province.rating.UserRating;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.User;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 

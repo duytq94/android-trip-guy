@@ -2,7 +2,7 @@ package com.dfa.vinatrip.domains.main.fragment.me.detail_me.friend_receive;
 
 import com.beesightsoft.caf.services.schedulers.RxScheduler;
 import com.dfa.vinatrip.base.BasePresenter;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.services.account.AccountService;
 import com.dfa.vinatrip.services.friend.FriendService;
 
@@ -45,6 +45,26 @@ public class FriendReceivePresenter extends BasePresenter<FriendReceiveView> {
                     if (isViewAttached()) {
                         getView().hideLoading();
                         getView().getListFriendReceiveSuccess(userList, page);
+                    }
+                }, throwable -> {
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                        getView().apiError(throwable);
+                    }
+                });
+    }
+
+    public void acceptFriendRequest(int position, long friendId) {
+        RxScheduler.onStop(subscription);
+        if (isViewAttached()) {
+            getView().showLoading();
+        }
+        subscription = friendService.acceptFriendRequest(friendId)
+                .compose(RxScheduler.applyIoSchedulers())
+                .subscribe(friendStatus -> {
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                        getView().acceptFriendRequestSuccess(position, friendStatus);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {

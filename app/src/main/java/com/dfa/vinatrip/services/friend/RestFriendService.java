@@ -1,14 +1,15 @@
 package com.dfa.vinatrip.services.friend;
 
 import com.beesightsoft.caf.services.common.RestMessageResponse;
-import com.dfa.vinatrip.models.response.User;
-import com.dfa.vinatrip.models.response.user.FriendResponse;
+import com.dfa.vinatrip.models.response.user.User;
+import com.dfa.vinatrip.models.response.user.FriendStatus;
 
 import java.util.List;
 
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -46,7 +47,26 @@ public interface RestFriendService {
     );
 
     @POST("api/friend/{peerId}/request")
-    Observable<RestMessageResponse<FriendResponse>> addFriendRequest(
+    Observable<RestMessageResponse<FriendStatus>> addFriendRequest(
+            @Path("peerId") long peerId,
+            @Header("access-token") String userToken
+    );
+
+    @POST("api/friend/{friendId}/cancel")
+    Observable<RestMessageResponse<FriendStatus>> cancelFriendRequest(
+            @Path("friendId") long friendId,
+            @Header("access-token") String userToken
+    );
+
+    @POST("api/friend/{peerId}/unfriend")
+    Observable<RestMessageResponse<FriendStatus>> unFriend(
+            @Path("peerId") long peerId,
+            @Header("access-token") String userToken
+    );
+
+    @POST("api/friend/{friendId}/accept")
+    Observable<RestMessageResponse<FriendStatus>> acceptFriendRequest(
+            @Path("friendId") long friendId,
             @Header("access-token") String userToken
     );
 }

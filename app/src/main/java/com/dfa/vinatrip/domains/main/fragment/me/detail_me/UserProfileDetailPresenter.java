@@ -1,7 +1,7 @@
 package com.dfa.vinatrip.domains.main.fragment.me.detail_me;
 
 import com.dfa.vinatrip.base.BasePresenter;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.services.account.AccountService;
 
 import org.greenrobot.eventbus.EventBus;

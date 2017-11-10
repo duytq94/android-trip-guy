@@ -18,7 +18,7 @@ import com.dfa.vinatrip.domains.auth.sign_in.SignInActivity_;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.request.AuthRequest;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.KeyboardListener;
 import com.mobsandgeeks.saripaar.ValidationError;

@@ -1,7 +1,8 @@
 package com.dfa.vinatrip.domains.main.fragment.me.detail_me.friend_receive;
 
 import com.dfa.vinatrip.base.BaseMvpView;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.FriendStatus;
+import com.dfa.vinatrip.models.response.user.User;
 
 import java.util.List;
 
@@ -11,4 +12,6 @@ import java.util.List;
 
 public interface FriendReceiveView extends BaseMvpView {
     void getListFriendReceiveSuccess(List<User> userList, int page);
+
+    void acceptFriendRequestSuccess(int position, FriendStatus friendStatus);
 }

@@ -4,7 +4,7 @@ import com.beesightsoft.caf.services.schedulers.RxScheduler;
 import com.dfa.vinatrip.base.BasePresenter;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.services.account.AccountService;
 import com.dfa.vinatrip.services.friend.FriendService;
 import com.dfa.vinatrip.services.plan.PlanService;

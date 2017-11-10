@@ -2,7 +2,7 @@ package com.dfa.vinatrip.services.account;
 
 import com.beesightsoft.caf.services.common.RestMessageResponse;
 import com.dfa.vinatrip.models.request.AuthRequest;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.User;
 
 import retrofit2.http.Body;
 import retrofit2.http.Header;

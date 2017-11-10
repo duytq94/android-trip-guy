@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.models.response;
+package com.dfa.vinatrip.models.response.user;
 
 import com.beesightsoft.caf.models.BaseEntity;
 import com.beesightsoft.caf.services.authentication.model.LoginResponse;
@@ -23,18 +23,15 @@ public class User extends BaseEntity implements LoginResponse, Serializable {
     private String intro;
     @SerializedName("sex")
     private int sex;
-    @SerializedName("latitude")
-    private double latitude;
-    @SerializedName("longitude")
-    private double longitude;
     @SerializedName("accessToken")
     private String accessToken;
     @SerializedName("background")
     private String background;
     @SerializedName("city")
     private String city;
-    @SerializedName("status_friend")
-    private int statusFriend;
+
+    @SerializedName("friend")
+    private FriendStatus friendStatus;
 
     public User(String username, String avatar, String birthday, String intro, int sex,
                 String background, String city) {
@@ -47,12 +44,12 @@ public class User extends BaseEntity implements LoginResponse, Serializable {
         this.city = city;
     }
 
-    public int getStatusFriend() {
-        return statusFriend;
+    public FriendStatus getFriendStatus() {
+        return friendStatus;
     }
 
-    public void setStatusFriend(int statusFriend) {
-        this.statusFriend = statusFriend;
+    public void setFriendStatus(FriendStatus friendStatus) {
+        this.friendStatus = friendStatus;
     }
 
     public String getCity() {
@@ -97,14 +94,6 @@ public class User extends BaseEntity implements LoginResponse, Serializable {
         }
     }
 
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
     public String getAccessToken() {
         return accessToken;
     }
@@ -139,14 +128,6 @@ public class User extends BaseEntity implements LoginResponse, Serializable {
 
     public void setSex(int sex) {
         this.sex = sex;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     public void setAccessToken(String accessToken) {

@@ -1,8 +1,8 @@
 package com.dfa.vinatrip.services.friend;
 
 import com.beesightsoft.caf.services.network.NetworkProvider;
-import com.dfa.vinatrip.models.response.User;
-import com.dfa.vinatrip.models.response.user.FriendResponse;
+import com.dfa.vinatrip.models.response.user.User;
+import com.dfa.vinatrip.models.response.user.FriendStatus;
 import com.dfa.vinatrip.services.account.AccountService;
 import com.dfa.vinatrip.services.filter.ApiErrorFilter;
 
@@ -58,9 +58,30 @@ public class DefaultFriendService implements FriendService {
     }
 
     @Override
-    public Observable<FriendResponse> addFriendRequest(long peerId) {
+    public Observable<FriendStatus> addFriendRequest(long peerId) {
         return networkProvider
-                .transformResponse(restFriendService.addFriendRequest(accountService.getCurrentUser().getAccessToken()))
+                .transformResponse(restFriendService.addFriendRequest(peerId, accountService.getCurrentUser().getAccessToken()))
+                .compose(apiErrorFilter.execute());
+    }
+
+    @Override
+    public Observable<FriendStatus> cancelFriendRequest(long friendId) {
+        return networkProvider
+                .transformResponse(restFriendService.cancelFriendRequest(friendId, accountService.getCurrentUser().getAccessToken()))
+                .compose(apiErrorFilter.execute());
+    }
+
+    @Override
+    public Observable<FriendStatus> unFriend(long peerId) {
+        return networkProvider
+                .transformResponse(restFriendService.unFriend(peerId, accountService.getCurrentUser().getAccessToken()))
+                .compose(apiErrorFilter.execute());
+    }
+
+    @Override
+    public Observable<FriendStatus> acceptFriendRequest(long friendId) {
+        return networkProvider
+                .transformResponse(restFriendService.acceptFriendRequest(friendId, accountService.getCurrentUser().getAccessToken()))
                 .compose(apiErrorFilter.execute());
     }
 }

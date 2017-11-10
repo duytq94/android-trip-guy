@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by duytq on 11/06/2017.
  */
 
-public class FriendResponse {
+public class FriendStatus {
     @SerializedName("id")
     private long id;
     @SerializedName("user_request")

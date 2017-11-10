@@ -5,7 +5,7 @@ import com.beesightsoft.caf.services.authentication.AuthenticationManagerConfigu
 import com.beesightsoft.caf.services.network.NetworkProvider;
 import com.dfa.vinatrip.models.request.AuthRequest;
 import com.dfa.vinatrip.models.request.SignInSocialRequest;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.services.filter.ApiErrorFilter;
 
 import rx.Observable;

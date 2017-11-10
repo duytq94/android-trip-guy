@@ -1,8 +1,8 @@
 package com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend;
 
 import com.dfa.vinatrip.base.BaseMvpView;
-import com.dfa.vinatrip.models.response.User;
-import com.dfa.vinatrip.models.response.user.FriendResponse;
+import com.dfa.vinatrip.models.response.user.User;
+import com.dfa.vinatrip.models.response.user.FriendStatus;
 
 import java.util.List;
 
@@ -13,5 +13,7 @@ import java.util.List;
 public interface MakeFriendView extends BaseMvpView {
     void getListUserSuccess(List<User> userList, int page);
 
-    void addFriendRequestSuccess(FriendResponse friendResponse);
+    void addFriendRequestSuccess(int position, FriendStatus friendStatus);
+
+    void cancelFriendRequestSuccess(int position, FriendStatus friendStatus);
 }

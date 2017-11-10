@@ -1,7 +1,7 @@
 package com.dfa.vinatrip.services.friend;
 
-import com.dfa.vinatrip.models.response.User;
-import com.dfa.vinatrip.models.response.user.FriendResponse;
+import com.dfa.vinatrip.models.response.user.User;
+import com.dfa.vinatrip.models.response.user.FriendStatus;
 
 import java.util.List;
 
@@ -20,5 +20,11 @@ public interface FriendService {
 
     Observable<List<User>> getListUser(int page, int pageSize);
 
-    Observable<FriendResponse> addFriendRequest(long peerId);
+    Observable<FriendStatus> addFriendRequest(long peerId);
+
+    Observable<FriendStatus> cancelFriendRequest(long friendId);
+
+    Observable<FriendStatus> unFriend(long peerId);
+
+    Observable<FriendStatus> acceptFriendRequest(long friendId);
 }

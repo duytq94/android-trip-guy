@@ -2,7 +2,7 @@ package com.dfa.vinatrip.domains.main.fragment.plan.make_plan;
 
 import com.dfa.vinatrip.base.BaseMvpView;
 import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.User;
 
 import java.util.List;
 

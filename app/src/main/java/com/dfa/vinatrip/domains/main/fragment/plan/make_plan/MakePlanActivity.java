@@ -20,7 +20,7 @@ import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.choose_background.ChooseBackgroundPlanActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;

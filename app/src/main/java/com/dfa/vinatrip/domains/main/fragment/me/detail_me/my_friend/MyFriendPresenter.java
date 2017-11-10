@@ -2,7 +2,7 @@ package com.dfa.vinatrip.domains.main.fragment.me.detail_me.my_friend;
 
 import com.beesightsoft.caf.services.schedulers.RxScheduler;
 import com.dfa.vinatrip.base.BasePresenter;
-import com.dfa.vinatrip.models.response.User;
+import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.services.account.AccountService;
 import com.dfa.vinatrip.services.friend.FriendService;
 
@@ -40,10 +40,30 @@ public class MyFriendPresenter extends BasePresenter<MyFriendView> {
         }
         subscription = friendService.getListFriend(page, pageSize)
                 .compose(RxScheduler.applyIoSchedulers())
-                .subscribe(friendList -> {
+                .subscribe(friendStatus -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().getListFriendSuccess(friendList, page);
+                        getView().getListFriendSuccess(friendStatus, page);
+                    }
+                }, throwable -> {
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                        getView().apiError(throwable);
+                    }
+                });
+    }
+
+    public void unfriend(int position, long peerId) {
+        RxScheduler.onStop(subscription);
+        if (isViewAttached()) {
+            getView().showLoading();
+        }
+        subscription = friendService.unFriend(peerId)
+                .compose(RxScheduler.applyIoSchedulers())
+                .subscribe(friendStatus -> {
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                        getView().unfriendSuccess(friendStatus, position);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {
