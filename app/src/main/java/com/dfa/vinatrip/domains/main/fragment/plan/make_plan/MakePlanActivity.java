@@ -157,7 +157,7 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
     }
 
     public void initViewForNewPlan() {
-        idBackground = R.drawable.bg_test3;
+        idBackground = R.drawable.bg_test5;
         civBackground.setImageResource(idBackground);
 
         countDaySchedule = 1;
@@ -337,14 +337,20 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
             String content = ((EditText) llSchedule.getChildAt(i).findViewById(R.id.item_add_schedule_et_content)).getText().toString();
             planScheduleList.add(new PlanSchedule(content, title, timestampGo + MILLISECOND_IN_DAY * i));
         }
-
-        plan = new Plan(etTripName.getText().toString(), tvDestination.getText().toString(),
-                dateGo, dateBack, idBackground, planScheduleList, currentUser.getId(),
-                currentUser.getEmail(), currentUser.getAvatar(), currentUser.getUsername(), invitedFriendList);
-
         if (isUpdatePlan) {
+            plan.setName(etTripName.getText().toString().trim());
+            plan.setDestination(tvDestination.getText().toString().trim());
+            plan.setDateGo(dateGo);
+            plan.setDateBack(dateBack);
+            plan.setIdBackground(idBackground);
+            plan.setPlanScheduleList(planScheduleList);
+            plan.setInvitedFriendList(invitedFriendList);
+
             presenter.updatePlan(plan);
         } else {
+            plan = new Plan(etTripName.getText().toString().trim(), tvDestination.getText().toString(),
+                    dateGo, dateBack, idBackground, planScheduleList, currentUser.getId(),
+                    currentUser.getEmail(), currentUser.getAvatar(), currentUser.getUsername(), invitedFriendList);
             presenter.createPlan(plan);
         }
     }

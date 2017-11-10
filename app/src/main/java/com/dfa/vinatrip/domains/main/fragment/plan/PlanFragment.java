@@ -117,18 +117,12 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
                 alertDialog.setButton(
                         DialogInterface.BUTTON_POSITIVE,
                         "ĐỒNG Ý",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                        (dialogInterface, i) -> {
 
-                            }
                         });
                 alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "HỦY",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                        (dialogInterface, i) -> {
 
-                            }
                         });
                 alertDialog.show();
             }
@@ -145,12 +139,12 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
     }
 
     @Click(R.id.fragment_plan_fab_make_new_plan)
-    void onFabMakeNewPlanClick() {
+    public void onFabMakeNewPlanClick() {
         MakePlanActivity_.intent(getActivity()).start();
     }
 
     @Click(R.id.fragment_plan_btn_sign_in)
-    void onBtnSignInClick() {
+    public void onBtnSignInClick() {
         SignInActivity_.intent(getActivity()).start();
     }
 
@@ -172,10 +166,12 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
     @Override
     public void getPlanSuccess(List<Plan> planList) {
         if (planList.size() > 0) {
+            rvPlan.setVisibility(View.VISIBLE);
             llPlanListNotAvailable.setVisibility(View.GONE);
             this.planList.addAll(planList);
             initView();
         } else {
+            rvPlan.setVisibility(View.GONE);
             llPlanListNotAvailable.setVisibility(View.VISIBLE);
         }
     }

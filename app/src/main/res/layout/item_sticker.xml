@@ -9,6 +9,6 @@
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:background="@drawable/bg_sticker"
-        android:padding="7dp"
+        android:padding="5dp"
         android:scaleType="centerCrop"/>
 </LinearLayout>

@@ -79,6 +79,7 @@ import static com.dfa.vinatrip.utils.Constants.A_USER_LEAVE_ROOM;
 import static com.dfa.vinatrip.utils.Constants.EMAIL;
 import static com.dfa.vinatrip.utils.Constants.FOLDER_STORAGE_CHAT;
 import static com.dfa.vinatrip.utils.Constants.JOIN_ROOM;
+import static com.dfa.vinatrip.utils.Constants.MAX_LENGTH_MESSAGE;
 import static com.dfa.vinatrip.utils.Constants.PAGE_SIZE;
 import static com.dfa.vinatrip.utils.Constants.RECEIVE_MESSAGE;
 import static com.dfa.vinatrip.utils.Constants.SEND_MESSAGE;
@@ -603,8 +604,11 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
 
     @Click(R.id.activity_chat_group_ll_send)
     public void onLlSendClick() {
-        if (!etInput.getText().toString().trim().isEmpty()) {
-            sendMessage(etInput.getText().toString(), text);
+        String content = etInput.getText().toString().trim();
+        if (!content.isEmpty() && content.length() < MAX_LENGTH_MESSAGE) {
+            sendMessage(content, text);
+        } else {
+            Toast.makeText(this, "Số lượng ký tự không hợp lệ", Toast.LENGTH_SHORT).show();
         }
         if (lvPhotoSelected.getVisibility() == View.VISIBLE && !isSendPhoto) {
             isSendPhoto = true;
