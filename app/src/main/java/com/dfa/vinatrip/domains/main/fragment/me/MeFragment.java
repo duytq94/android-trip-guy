@@ -1,7 +1,6 @@
 package com.dfa.vinatrip.domains.main.fragment.me;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -33,6 +32,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -43,6 +43,7 @@ import javax.inject.Inject;
 import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.blurry.Blurry;
 
+import static android.app.Activity.RESULT_OK;
 import static com.dfa.vinatrip.utils.AppUtil.REQUEST_UPDATE_INFO;
 
 
@@ -155,7 +156,6 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
         srlReload.setColorSchemeResources(R.color.colorMain);
 
         if (presenter.getCurrentUser() != null) {
-            currentUser = presenter.getCurrentUser();
             initView();
         } else {
             rlLogin.setVisibility(View.GONE);
@@ -164,7 +164,6 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
 
         srlReload.setOnRefreshListener(() -> {
             if (presenter.getCurrentUser() != null) {
-                currentUser = presenter.getCurrentUser();
                 initView();
             }
             srlReload.setRefreshing(false);
@@ -181,6 +180,8 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
     }
 
     public void initView() {
+        currentUser = presenter.getCurrentUser();
+
         rlLogin.setVisibility(View.VISIBLE);
         rlNotLogin.setVisibility(View.GONE);
 
@@ -302,27 +303,27 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
     @Click(R.id.fragment_me_ll_update_profile)
     public void onLlUpdateProfileClick() {
         // Make UserProfileDetailActivity notify when it finish
-        UserProfileDetailActivity_.intent(getActivity()).fromView("llUpdateProfile").startForResult(REQUEST_UPDATE_INFO);
+        UserProfileDetailActivity_.intent(this).fromView("llUpdateProfile").startForResult(REQUEST_UPDATE_INFO);
     }
 
     @Click(R.id.fragment_me_tv_make_friend)
     public void onTvMakeFriendClick() {
         // Make UserProfileDetailActivity notify when it finish
-        UserProfileDetailActivity_.intent(getActivity()).fromView("tvMakeFriend").startForResult(REQUEST_UPDATE_INFO);
+        UserProfileDetailActivity_.intent(this).fromView("tvMakeFriend").startForResult(REQUEST_UPDATE_INFO);
 
     }
 
     @Click(R.id.fragment_me_tv_view_more_my_friend)
     public void onTvViewMoreMyFriendClick() {
         // Send notify to inform that tvViewMore be clicked
-        UserProfileDetailActivity_.intent(getActivity()).fromView("tvViewMoreMyFriend").startForResult(REQUEST_UPDATE_INFO);
+        UserProfileDetailActivity_.intent(this).fromView("tvViewMoreMyFriend").startForResult(REQUEST_UPDATE_INFO);
 
     }
 
     @Click(R.id.fragment_me_tv_view_more_my_rating)
     public void onTvViewMoreMyRatingClick() {
         // Send notify to inform that tvViewMore be clicked
-        UserProfileDetailActivity_.intent(getActivity()).fromView("tvViewMoreMyRating").startForResult(REQUEST_UPDATE_INFO);
+        UserProfileDetailActivity_.intent(this).fromView("tvViewMoreMyRating").startForResult(REQUEST_UPDATE_INFO);
     }
 
     @Click(R.id.fragment_me_btn_sign_in)
@@ -330,11 +331,10 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
         SignInActivity_.intent(this).start();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int currentUserCode, Intent data) {
-        super.onActivityResult(requestCode, currentUserCode, data);
-        // Reload view
-        if (requestCode == REQUEST_UPDATE_INFO) {
+    @OnActivityResult(REQUEST_UPDATE_INFO)
+    public void onResultUpdate(int resultCode) {
+        if (resultCode == RESULT_OK) {
+            // Reload view
             initView();
         }
     }
@@ -363,12 +363,12 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
 
     @Override
     public void showLoading() {
-//        showHUD();
+        showHUD();
     }
 
     @Override
     public void hideLoading() {
-//        hideHUD();
+        hideHUD();
     }
 
     @Override
@@ -378,7 +378,7 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
 
     @Override
     public void signOutSuccess() {
-        SplashScreenActivity_.intent(getActivity()).start();
+        SplashScreenActivity_.intent(this).start();
         getActivity().finish();
     }
 }

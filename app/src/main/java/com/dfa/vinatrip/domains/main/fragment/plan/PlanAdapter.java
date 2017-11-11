@@ -2,7 +2,6 @@ package com.dfa.vinatrip.domains.main.fragment.plan;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -21,7 +20,6 @@ import java.util.List;
 
 public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder> {
     private List<Plan> planList;
-    private Context context;
     private User currentUser;
     private OnUpdateOrRemoveClick onUpdateOrRemoveClick;
     private ImageLoader imageLoader;
@@ -29,13 +27,12 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
 
     public PlanAdapter(Context context, List<Plan> planList, User currentUser) {
         this.planList = planList;
-        this.context = context;
         this.currentUser = currentUser;
         imageLoader = ImageLoader.getInstance();
         imageOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.bg_green)
-                .showImageForEmptyUri(R.drawable.photo_not_available)
-                .showImageOnFail(R.drawable.photo_not_available)
+                .showImageForEmptyUri(R.drawable.ic_avatar)
+                .showImageOnFail(R.drawable.ic_avatar)
                 .resetViewBeforeLoading(true)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
@@ -69,20 +66,19 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.PlanViewHolder
         if (plan.getIdUserMakePlan() == currentUser.getId()) {
             holder.tvUserName.setText("Tôi");
             holder.tvUpdate.setVisibility(View.VISIBLE);
+            holder.tvRemove.setText(R.string.remove_plan);
 
             holder.tvUpdate.setOnClickListener(view -> onUpdateOrRemoveClick.onUpdate(position));
         } else {
-            holder.tvUpdate.setVisibility(View.GONE);
-            holder.tvUpdate.setTextColor(ContextCompat.getColor(context, android.R.color.darker_gray));
             holder.tvUserName.setText(plan.getUsernameUserMakePlan());
+            holder.tvUpdate.setVisibility(View.GONE);
+            holder.tvRemove.setText(R.string.cancel_plan);
         }
 
         holder.tvRemove.setOnClickListener(view -> onUpdateOrRemoveClick.onRemove(position));
 
         if (plan.getAvatarUserMakePlan() != null) {
             imageLoader.displayImage(plan.getAvatarUserMakePlan(), holder.ivAvatar, imageOptions);
-        } else {
-            holder.ivAvatar.setImageResource(R.drawable.ic_avatar);
         }
 
         holder.ivBackground.setImageResource(plan.getIdBackground());

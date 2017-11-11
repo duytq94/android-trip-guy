@@ -47,4 +47,8 @@ public class Constants {
     public static final String CANCEL_REQUEST = "CancelRequest";
     public static final String UN_FRIEND = "Unfriend";
     public static final String ACCEPT_REQUEST = "AcceptRequest";
+
+    // Plan
+    public static final int REQUEST_MAKE_PLAN = 3;
+    public static final String KEY_NEW_PLAN = "newPlan";
 }

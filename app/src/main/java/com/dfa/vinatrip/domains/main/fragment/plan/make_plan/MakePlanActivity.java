@@ -54,6 +54,7 @@ import es.dmoral.toasty.Toasty;
 
 import static com.dfa.vinatrip.utils.AppUtil.REQUEST_PLACE_AUTO_COMPLETE;
 import static com.dfa.vinatrip.utils.Constants.FORMAT_DAY_VN;
+import static com.dfa.vinatrip.utils.Constants.KEY_NEW_PLAN;
 import static com.dfa.vinatrip.utils.Constants.MILLISECOND_IN_DAY;
 import static com.dfa.vinatrip.utils.Constants.REQUEST_BACKGROUND;
 
@@ -294,8 +295,7 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
 
     @Click(R.id.activity_make_plan_ll_background)
     public void onLlBackgroundClick() {
-        Intent intent = new Intent(this, ChooseBackgroundPlanActivity_.class);
-        startActivityForResult(intent, REQUEST_BACKGROUND);
+        ChooseBackgroundPlanActivity_.intent(this).startForResult(REQUEST_BACKGROUND);
     }
 
     @Click(R.id.activity_make_plan_ll_destination)
@@ -410,6 +410,9 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
     @Override
     public void createPlanSuccess(String message) {
         Toast.makeText(this, "Kế hoạch của bạn được tạo thành công", Toast.LENGTH_SHORT).show();
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra(KEY_NEW_PLAN, plan);
+        setResult(RESULT_OK, resultIntent);
         finish();
     }
 

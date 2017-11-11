@@ -18,7 +18,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
-import static com.dfa.vinatrip.utils.Constants.UN_FRIEND;
+import static com.dfa.vinatrip.utils.Constants.ACCEPT_REQUEST;
 
 public class ListFriendReceiveAdapter extends RecyclerView.Adapter<ListFriendReceiveAdapter.ProfileViewHolder> {
 
@@ -63,7 +63,7 @@ public class ListFriendReceiveAdapter extends RecyclerView.Adapter<ListFriendRec
         }
         holder.tvSex.setText(user.getStringSex());
         holder.btnAction.setText(R.string.agree);
-        holder.btnAction.setTag(UN_FRIEND);
+        holder.btnAction.setTag(ACCEPT_REQUEST);
         holder.btnAction.setOnClickListener(v -> {
             adapterUserListener.onBtnActionClick(position, holder.btnAction.getTag().toString());
         });

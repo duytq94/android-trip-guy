@@ -269,17 +269,13 @@ public class UpdateUserProfileFragment extends BaseFragment<UpdateUserProfileVie
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == ALBUM_REQUEST_CODE) {
-                photo = data.getParcelableArrayListExtra(Define.INTENT_PATH);
-
-                Picasso.with(getActivity())
-                        .load(photo.get(0))
-                        .into(target);
-            }
+    @OnActivityResult(ALBUM_REQUEST_CODE)
+    public void onResultAvatar(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && data != null) {
+            photo = data.getParcelableArrayListExtra(Define.INTENT_PATH);
+            Picasso.with(getActivity())
+                    .load(photo.get(0))
+                    .into(target);
         }
     }
 
@@ -358,5 +354,7 @@ public class UpdateUserProfileFragment extends BaseFragment<UpdateUserProfileVie
         currentUser = newUser;
         presenter.setCurrentUser(newUser);
         Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+        getActivity().setResult(RESULT_OK);
     }
+
 }

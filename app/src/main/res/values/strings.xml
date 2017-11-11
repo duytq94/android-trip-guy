@@ -81,7 +81,8 @@
     <string name="invited">&#10004; Đã mời</string>
 
     <string name="update_plan">Chỉnh sửa &#10148;</string>
-    <string name="remove_plan">Xóa &#10006;</string>
+    <string name="remove_plan">Xóa kế hoạch &#10006;</string>
+    <string name="cancel_plan">Không tham gia &#10006;</string>
     <string name="trip_plan">Kế hoạch chuyến đi</string>
     <string name="plan_list_not_available">Hiện bạn chưa có kế hoạch du lịch nào</string>
     <string name="not_login">Hiện bạn chưa đăng nhập</string>

@@ -4,38 +4,33 @@
     android:id="@+id/fragment_update_user_profile_sv_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="none"
-    >
+    android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_margin="@dimen/activity_vertical_margin"
-            >
+            android:layout_margin="@dimen/activity_vertical_margin">
 
             <ImageView
                 android:id="@+id/fragment_update_user_profile_iv_blur_avatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/colorBlackTransparent"
-                android:scaleType="centerCrop"
-                />
+                android:scaleType="centerCrop"/>
 
             <ImageView
                 android:id="@+id/fragment_update_user_profile_iv_change_avatar"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="end"
-                android:src="@drawable/ic_change_avatar"
-                />
+                android:src="@drawable/ic_change_avatar"/>
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/fragment_update_user_profile_iv_avatar"
@@ -43,16 +38,14 @@
                 android:layout_height="96dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:src="@drawable/ic_avatar"
-                />
+                android:src="@drawable/ic_avatar"/>
         </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_vertical_margin"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView2"
@@ -64,13 +57,11 @@
                 android:text="@string/personal_info"
                 android:textColor="@color/colorMain"
                 android:textSize="@dimen/text_large"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/fragment_update_user_profile_et_nickname"
@@ -81,8 +72,7 @@
                     android:inputType="textCapSentences"
                     android:paddingLeft="10dp"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_medium"
-                    />
+                    android:textSize="@dimen/text_medium"/>
             </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
@@ -91,8 +81,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingBottom="25dp"
-                android:paddingTop="5dp"
-                >
+                android:paddingTop="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -100,8 +89,7 @@
                     android:layout_marginBottom="5dp"
                     android:paddingLeft="10dp"
                     android:text="Nơi ở"
-                    android:textColor="@color/colorMain"
-                    />
+                    android:textColor="@color/colorMain"/>
 
                 <TextView
                     android:id="@+id/fragment_update_user_profile_tv_city"
@@ -111,8 +99,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_medium"
-                    />
+                    android:textSize="@dimen/text_medium"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -120,14 +107,12 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginTop="5dp"
-                    android:background="#686767"
-                    />
+                    android:background="#686767"/>
             </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/fragment_update_user_profile_et_introduce_your_self"
@@ -138,8 +123,7 @@
                     android:inputType="textCapSentences"
                     android:paddingLeft="10dp"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_medium"
-                    />
+                    android:textSize="@dimen/text_medium"/>
             </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
@@ -148,8 +132,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="@dimen/text_view_padding"
-                android:weightSum="5"
-                >
+                android:weightSum="5">
 
                 <TextView
                     android:layout_width="0dp"
@@ -158,20 +141,17 @@
                     android:layout_weight="2"
                     android:text="@string/birthday"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_medium"
-                    />
+                    android:textSize="@dimen/text_medium"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/fragment_update_user_profile_tv_birthday"
@@ -180,16 +160,14 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="8dp"
                             android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_medium"
-                            />
+                            android:textSize="@dimen/text_medium"/>
 
                         <ImageView
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:layout_alignParentRight="true"
                             android:layout_marginRight="15.5dp"
-                            android:src="@drawable/ic_more"
-                            />
+                            android:src="@drawable/ic_more"/>
                     </RelativeLayout>
 
                     <View
@@ -198,8 +176,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_marginTop="5dp"
-                        android:background="#686767"
-                        />
+                        android:background="#686767"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -208,8 +185,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="@dimen/text_view_padding"
-                android:weightSum="5"
-                >
+                android:weightSum="5">
 
                 <TextView
                     android:layout_width="0dp"
@@ -218,34 +194,30 @@
                     android:layout_weight="2"
                     android:text="@string/sex"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_medium"
-                    />
+                    android:textSize="@dimen/text_medium"/>
 
                 <Spinner
                     android:id="@+id/fragment_update_user_profile_spn_sex"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-                    />
+                    android:layout_weight="3"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <Button
                     android:id="@+id/fragment_update_user_profile_btn_done"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/activity_vertical_margin"
                     android:background="@drawable/btn_positive"
                     android:text="@string/done"
-                    android:textColor="@android:color/white"
-                    style="?android:attr/borderlessButtonStyle"
-                    />
+                    android:textColor="@android:color/white"/>
 
                 <Button
                     android:id="@+id/fragment_update_user_profile_btn_cancel"
@@ -256,8 +228,7 @@
                     android:background="@null"
                     android:text="@string/cancel"
                     android:textAllCaps="false"
-                    android:textColor="@color/btn_press_state_green"
-                    />
+                    android:textColor="@color/btn_press_state_green"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

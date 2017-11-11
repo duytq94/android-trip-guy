@@ -52,6 +52,7 @@ import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -514,18 +515,15 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == ALBUM_REQUEST_CODE) {
-                photoSelectedList.clear();
-                photoSelectedList = data.getParcelableArrayListExtra(Define.INTENT_PATH);
-                photoSelectedAdapter.clear();
-                photoSelectedAdapter.addAll(photoSelectedList);
-                photoSelectedAdapter.notifyDataSetChanged();
-                lvPhotoSelected.setVisibility(View.VISIBLE);
-            }
+    @OnActivityResult(ALBUM_REQUEST_CODE)
+    public void onResultPhoto(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && data != null) {
+            photoSelectedList.clear();
+            photoSelectedList = data.getParcelableArrayListExtra(Define.INTENT_PATH);
+            photoSelectedAdapter.clear();
+            photoSelectedAdapter.addAll(photoSelectedList);
+            photoSelectedAdapter.notifyDataSetChanged();
+            lvPhotoSelected.setVisibility(View.VISIBLE);
         }
     }
 
