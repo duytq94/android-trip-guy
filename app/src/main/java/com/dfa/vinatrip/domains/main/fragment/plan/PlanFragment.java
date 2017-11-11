@@ -118,7 +118,11 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
                         DialogInterface.BUTTON_POSITIVE,
                         "ĐỒNG Ý",
                         (dialogInterface, i) -> {
-
+                            if (presenter.getCurrentUser().getId() == planList.get(position).getIdUserMakePlan()) {
+                                presenter.removePlan(position, planList.get(position).getId());
+                            } else {
+                                presenter.cancelPlan(position, planList.get(position).getId());
+                            }
                         });
                 alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "HỦY",
                         (dialogInterface, i) -> {
@@ -172,6 +176,26 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
             initView();
         } else {
             rvPlan.setVisibility(View.GONE);
+            llPlanListNotAvailable.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void cancelPlanSuccess(String message, int position) {
+        Toast.makeText(getActivity(), "Bạn không tham gia kế hoạch này nữa", Toast.LENGTH_SHORT).show();
+        planList.remove(position);
+        planAdapter.notifyDataSetChanged();
+        if (planList.size() == 0) {
+            llPlanListNotAvailable.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void removePlanSuccess(String message, int position) {
+        Toast.makeText(getActivity(), "Xóa kế hoạch thành công", Toast.LENGTH_SHORT).show();
+        planList.remove(position);
+        planAdapter.notifyDataSetChanged();
+        if (planList.size() == 0) {
             llPlanListNotAvailable.setVisibility(View.VISIBLE);
         }
     }

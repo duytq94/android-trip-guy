@@ -608,7 +608,9 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
         if (!content.isEmpty() && content.length() < MAX_LENGTH_MESSAGE) {
             sendMessage(content, text);
         } else {
-            Toast.makeText(this, "Số lượng ký tự không hợp lệ", Toast.LENGTH_SHORT).show();
+            if (lvPhotoSelected.getVisibility() == View.GONE) {
+                Toast.makeText(this, "Số lượng ký tự không hợp lệ", Toast.LENGTH_SHORT).show();
+            }
         }
         if (lvPhotoSelected.getVisibility() == View.VISIBLE && !isSendPhoto) {
             isSendPhoto = true;

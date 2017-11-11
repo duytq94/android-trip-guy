@@ -56,4 +56,46 @@ public class PlanPresenter extends BasePresenter<PlanView> {
                     }
                 });
     }
+
+    // for member
+    public void cancelPlan(int position, long planId) {
+        RxScheduler.onStop(subscription);
+        if (isViewAttached()) {
+            getView().showLoading();
+        }
+        subscription = planService.cancelPlan(accountService.getCurrentUser().getId(), planId)
+                .compose(RxScheduler.applyIoSchedulers())
+                .subscribe(message -> {
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                        getView().cancelPlanSuccess(message, position);
+                    }
+                }, throwable -> {
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                        getView().apiError(throwable);
+                    }
+                });
+    }
+
+    // for owner
+    public void removePlan(int position, long planId) {
+        RxScheduler.onStop(subscription);
+        if (isViewAttached()) {
+            getView().showLoading();
+        }
+        subscription = planService.removePlan(planId)
+                .compose(RxScheduler.applyIoSchedulers())
+                .subscribe(message -> {
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                        getView().removePlanSuccess(message, position);
+                    }
+                }, throwable -> {
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                        getView().apiError(throwable);
+                    }
+                });
+    }
 }

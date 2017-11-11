@@ -10,4 +10,8 @@ import java.util.List;
 
 public interface PlanView extends BaseMvpView {
     void getPlanSuccess(List<Plan> planList);
+
+    void cancelPlanSuccess(String message, int position);
+
+    void removePlanSuccess(String message, int position);
 }

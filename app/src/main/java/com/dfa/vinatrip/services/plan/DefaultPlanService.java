@@ -61,4 +61,18 @@ public class DefaultPlanService implements PlanService {
                 .transformResponse(restPlanService.getPlanUser(planId))
                 .compose(apiErrorFilter.execute());
     }
+
+    @Override
+    public Observable<String> cancelPlan(long userId, long planId) {
+        return networkProvider
+                .transformResponse(restPlanService.cancelPlan(userId, planId))
+                .compose(apiErrorFilter.execute());
+    }
+
+    @Override
+    public Observable<String> removePlan(long planId) {
+        return networkProvider
+                .transformResponse(restPlanService.removePlan(planId))
+                .compose(apiErrorFilter.execute());
+    }
 }

@@ -22,4 +22,8 @@ public interface PlanService {
     Observable<List<PlanSchedule>> getPlanSchedule(long planId);
 
     Observable<List<UserInPlan>> getPlanUser(long planId);
+
+    Observable<String> cancelPlan(long userId, long planId);
+
+    Observable<String> removePlan(long planId);
 }

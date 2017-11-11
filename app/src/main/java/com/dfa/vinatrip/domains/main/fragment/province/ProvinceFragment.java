@@ -134,12 +134,12 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
 
     @Override
     public void showLoading() {
-//        showHUD();
+        showHUD();
     }
 
     @Override
     public void hideLoading() {
-//        hideHUD();
+        hideHUD();
     }
 
     @Override
