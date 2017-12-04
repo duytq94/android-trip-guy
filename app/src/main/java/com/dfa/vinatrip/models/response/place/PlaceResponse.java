@@ -28,7 +28,10 @@ public class PlaceResponse implements Serializable {
     private double longitude;
     @SerializedName("images")
     private List<PlaceImage> placeImages;
-
+    
+    public PlaceResponse() {
+    }
+    
     public int getId() {
         return id;
     }

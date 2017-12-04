@@ -108,7 +108,7 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
 
     @Override
     public void showLoading() {
-        showHUD();
+        //showHUD();
     }
 
     @Override

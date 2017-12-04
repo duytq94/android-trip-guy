@@ -1,9 +1,9 @@
 package com.dfa.vinatrip.domains.main.fragment.province.province_detail;
 
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.MainApplication;
@@ -14,16 +14,20 @@ import com.dfa.vinatrip.domains.main.fragment.province.province_detail.adapter.R
 import com.dfa.vinatrip.domains.main.fragment.province.province_detail.adapter.RecyclerHotelAdapter;
 import com.dfa.vinatrip.domains.main.fragment.province.province_detail.adapter.RecyclerImageAdapter;
 import com.dfa.vinatrip.domains.main.fragment.province.province_detail.adapter.RecyclerPlaceAdapter;
+import com.dfa.vinatrip.domains.main.fragment.province.province_detail.view_all.food.FoodListActivity_;
+import com.dfa.vinatrip.domains.main.fragment.province.province_detail.view_all.hotel.HotelListActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.Province;
 import com.dfa.vinatrip.models.response.food.FoodResponse;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
 import com.dfa.vinatrip.models.response.place.PlaceResponse;
 import com.dfa.vinatrip.models.response.province_image.ProvinceImageResponse;
+import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
@@ -44,8 +48,8 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
     
     @ViewById(R.id.activity_province_detail_tb_toolbar)
     protected NToolbar nToolbar;
-    @ViewById(R.id.activity_province_detail_vp_viewpager_banner)
-    protected ViewPager vpBanner;
+    @ViewById(R.id.activity_province_detail_iv_banner)
+    protected ImageView ivBanner;
     @ViewById(R.id.activity_province_detail_tv_intro)
     protected TextView tvIntro;
     @ViewById(R.id.activity_province_detail_rcv_hotel)
@@ -63,23 +67,23 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
     @Extra
     protected Province province;
     
-    private int hotel_page = 1;
-    private int hotel_per_page = 5;
+    private static final int hotel_page = 1;
+    private static final int hotel_per_page = 5;
     private List<HotelResponse> hotelResponses;
     private RecyclerHotelAdapter hotelAdapter;
     
-    private int food_page = 1;
-    private int food_per_page = 5;
+    private static final int food_page = 1;
+    private static final int food_per_page = 5;
     private List<FoodResponse> foodResponses;
     private RecyclerFoodAdapter foodAdapter;
     
-    private int place_page = 1;
-    private int place_per_page = 5;
+    private static final int place_page = 1;
+    private static final int place_per_page = 5;
     private List<PlaceResponse> placeResponses;
     private RecyclerPlaceAdapter placeAdapter;
     
-    private int image_page = 1;
-    private int image_per_page = 10;
+    private static final int image_page = 1;
+    private static final int image_per_page = 5;
     private List<ProvinceImageResponse> imageResponses;
     private RecyclerImageAdapter imageAdapter;
     
@@ -99,10 +103,14 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
             onBackPressed();
         });
         
+        Picasso.with(this).load(province.getAvatar())
+                .error(R.drawable.photo_not_available)
+                .into(ivBanner);
+        
         tvIntro.setText(province.getDescription());
         
         hotelResponses = new ArrayList<>();
-        hotelAdapter = new RecyclerHotelAdapter(this, hotelResponses);
+        hotelAdapter = new RecyclerHotelAdapter(this, province, hotelResponses);
         rcvHotels.setHasFixedSize(true);
         rcvHotels.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rcvHotels.setAdapter(hotelAdapter);
@@ -143,7 +151,7 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
     
     @Override
     public void apiError(Throwable throwable) {
-        
+    
     }
     
     @NonNull
@@ -157,21 +165,35 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
         finish();
     }
     
+    @Click(R.id.activity_province_detail_tv_view_all_hotel)
+    void viewAllHotelClick() {
+        HotelListActivity_.intent(this).province(province).start();
+    }
+    
+    @Click(R.id.activity_province_detail_tv_view_all_food)
+    void viewAllFoodClick() {
+        FoodListActivity_.intent(this).province(province).start();
+    }
+    
+    //-----------------------------------------------------------------------------------------------------------------
     @Override
     public void getHotelsSuccess(List<HotelResponse> hotelResponses) {
         this.hotelResponses.addAll(hotelResponses);
+        this.hotelResponses.add(new HotelResponse());
         this.hotelAdapter.notifyDataSetChanged();
     }
     
     @Override
     public void getFoodsSuccess(List<FoodResponse> foodResponses) {
         this.foodResponses.addAll(foodResponses);
+        this.foodResponses.add(new FoodResponse());
         this.foodAdapter.notifyDataSetChanged();
     }
     
     @Override
     public void getPlacesSuccess(List<PlaceResponse> placeResponses) {
         this.placeResponses.addAll(placeResponses);
+        this.placeResponses.add(new PlaceResponse());
         this.placeAdapter.notifyDataSetChanged();
     }
     

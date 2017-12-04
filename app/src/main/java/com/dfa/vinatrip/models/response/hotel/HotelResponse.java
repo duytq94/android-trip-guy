@@ -36,7 +36,10 @@ public class HotelResponse implements Serializable{
     private String avatar;
     @SerializedName("images")
     private List<HotelImage> images;
-
+    
+    public HotelResponse() {
+    }
+    
     public int getId() {
         return id;
     }

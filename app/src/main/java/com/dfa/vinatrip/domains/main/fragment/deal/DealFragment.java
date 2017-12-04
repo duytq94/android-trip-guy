@@ -195,7 +195,7 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
 
     @Override
     public void showLoading() {
-        showHUD();
+        //showHUD();
     }
 
     @Override

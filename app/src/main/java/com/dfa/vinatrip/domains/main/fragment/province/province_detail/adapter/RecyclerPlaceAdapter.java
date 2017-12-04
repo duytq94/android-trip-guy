@@ -1,11 +1,13 @@
 package com.dfa.vinatrip.domains.main.fragment.province.province_detail.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
@@ -38,12 +40,19 @@ public class RecyclerPlaceAdapter extends RecyclerView.Adapter<RecyclerPlaceAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         PlaceResponse place = placeResponses.get(position);
-        
-        holder.tvPlaceName.setText(place.getName());
-        Picasso.with(context).load(place.getAvatar())
-                .placeholder(R.drawable.ic_loading)
-                .error(R.drawable.photo_not_available)
-                .into(holder.ivPlaceAvatar);
+        if (position != placeResponses.size() - 1) {
+            holder.llMain.setVisibility(View.VISIBLE);
+            holder.cvViewAll.setVisibility(View.GONE);
+            
+            holder.tvPlaceName.setText(place.getName());
+            Picasso.with(context).load(place.getAvatar())
+                    .placeholder(R.drawable.ic_loading)
+                    .error(R.drawable.photo_not_available)
+                    .into(holder.ivPlaceAvatar);
+        } else {
+            holder.llMain.setVisibility(View.GONE);
+            holder.cvViewAll.setVisibility(View.VISIBLE);
+        }
     }
     
     @Override
@@ -52,6 +61,8 @@ public class RecyclerPlaceAdapter extends RecyclerView.Adapter<RecyclerPlaceAdap
     }
     
     public class ViewHolder extends RecyclerView.ViewHolder {
+        private LinearLayout llMain;
+        private CardView cvViewAll;
         private ImageView ivPlaceAvatar;
         private TextView tvPlaceName;
         private SimpleRatingBar srbPlaceRate;
@@ -60,6 +71,8 @@ public class RecyclerPlaceAdapter extends RecyclerView.Adapter<RecyclerPlaceAdap
         
         public ViewHolder(View itemView) {
             super(itemView);
+            llMain = (LinearLayout) itemView.findViewById(R.id.item_province_detail_it_place_ll_main);
+            cvViewAll = (CardView) itemView.findViewById(R.id.item_province_detail_it_place_cv_view_all);
             ivPlaceAvatar = (ImageView) itemView.findViewById(R.id.item_province_detail_it_place_iv_image);
             tvPlaceName = (TextView) itemView.findViewById(R.id.item_province_detail_it_place_tv_name);
             srbPlaceRate = (SimpleRatingBar) itemView.findViewById(R.id.item_province_detail_it_place_srb_rating);

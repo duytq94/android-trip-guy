@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.domains.main.fragment.province;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
@@ -8,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -19,7 +21,6 @@ import com.dfa.vinatrip.domains.main.fragment.province.adapter.RecyclerProvinceA
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.Province;
 import com.dfa.vinatrip.utils.AppUtil;
-import com.dfa.vinatrip.widgets.EndlessRecyclerViewScrollListener;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -41,7 +42,7 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
     protected MainApplication mainApplication;
     @Inject
     protected ProvincePresenter presenter;
-
+    
     @ViewById(R.id.fragment_province_srl_swipe)
     protected SwipeRefreshLayout srlReload;
     @ViewById(R.id.fragment_province_nsv_scrollview)
@@ -52,13 +53,16 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
     protected LinearLayout llBannerPosition;
     @ViewById(R.id.fragment_province_rcv_recycler)
     protected RecyclerView rcvProvince;
-
+    
     private List<String> banners;
     private PagerBannerAdapter bannerAdapter;
-
+    
     private List<Province> provinceList;
     private RecyclerProvinceAdapter provinceAdapter;
-
+    private int nsvHeight;
+    private long pageProvince = 1;
+    private boolean canLoadMore = false;
+    
     @AfterInject
     protected void initInject() {
         DaggerProvinceComponent.builder()
@@ -66,43 +70,16 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
                 .applicationComponent(mainApplication.getApplicationComponent())
                 .build().inject(this);
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.M)
     @AfterViews
     public void init() {
-        firstSetup();
-
-        presenter.getBanner();
-        presenter.getProvince(1, PAGE_SIZE);
-
-        srlReload.setColorSchemeResources(R.color.colorMain);
-        srlReload.setOnRefreshListener(() -> {
-            presenter.getProvince(1, PAGE_SIZE);
-            srlReload.setRefreshing(false);
-        });
-    }
-
-    public void firstSetup() {
-        provinceList = new ArrayList<>();
-        provinceAdapter = new RecyclerProvinceAdapter(getContext(), provinceList);
-        rcvProvince.setHasFixedSize(true);
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-        rcvProvince.setLayoutManager(layoutManager);
-        rcvProvince.setAdapter(provinceAdapter);
-        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                presenter.getProvince(page, PAGE_SIZE);
-            }
-        };
-        rcvProvince.addOnScrollListener(scrollListener);
-
         banners = new ArrayList<>();
         bannerAdapter = new PagerBannerAdapter(getContext(), banners);
         vpBanner.setAdapter(bannerAdapter);
         vpBanner.setPageTransformer(true, new ViewPager.PageTransformer() {
             static final float MIN_SCALE = 0.75f;
-
+            
             @Override
             public void transformPage(View page, float position) {
                 int pageWidth = page.getWidth();
@@ -116,7 +93,7 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
                 } else if (position <= 1) {
                     page.setAlpha(1 - position);
                     page.setTranslationX(pageWidth * -position);
-
+                    
                     float scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - Math.abs(position));
                     page.setScaleX(scaleFactor);
                     page.setScaleY(scaleFactor);
@@ -125,41 +102,80 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
                 }
             }
         });
+        
+        provinceList = new ArrayList<>();
+        provinceAdapter = new RecyclerProvinceAdapter(getContext(), provinceList);
+        rcvProvince.setHasFixedSize(true);
+        rcvProvince.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        rcvProvince.setAdapter(provinceAdapter);
+        
+        nestedScrollView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        nsvHeight = nestedScrollView.getHeight();
+                        if (nestedScrollView.getViewTreeObserver().isAlive()) {
+                            nestedScrollView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        }
+                    }
+                });
+        
+        nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+                (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+                    int maxScrollY = rcvProvince.getMeasuredHeight() + AppUtil.dpToPx(getContext(), 158) - nsvHeight;
+                    if (canLoadMore && scrollY > (maxScrollY - AppUtil.dpToPx(getContext(), 156))) {
+                        pageProvince = pageProvince + 1;
+                        presenter.getProvince(pageProvince, PAGE_SIZE);
+                        canLoadMore = false;
+                    }
+                });
+        
+        presenter.getBanner();
+        presenter.getProvince(pageProvince, PAGE_SIZE);
+        
+        srlReload.setColorSchemeResources(R.color.colorMain);
+        srlReload.setOnRefreshListener(() -> {
+            provinceList.clear();
+            pageProvince = 1;
+            presenter.getProvince(pageProvince, PAGE_SIZE);
+            srlReload.setRefreshing(false);
+        });
     }
-
+    
+    @NonNull
     @Override
     public ProvincePresenter createPresenter() {
         return presenter;
     }
-
+    
     @Override
     public void showLoading() {
         showHUD();
     }
-
+    
     @Override
     public void hideLoading() {
         hideHUD();
     }
-
+    
     @Override
     public void apiError(Throwable throwable) {
-
+    
     }
-
+    
     @Override
     public void getBannerSuccess(List<String> banners) {
         this.banners.addAll(banners);
         bannerAdapter.notifyDataSetChanged();
-
+        
         for (int i = 0; i < this.banners.size(); i++) {
             LinearLayout.LayoutParams layoutParams =
                     new LinearLayout.LayoutParams(AppUtil.dpToPx(getContext(), 8f), AppUtil.dpToPx(getContext(), 8f));
             layoutParams.setMargins(AppUtil.dpToPx(getContext(), 4f), 0, AppUtil.dpToPx(getContext(), 4f), 0);
-
+            
             ImageView imageView = new ImageView(getContext());
             imageView.setLayoutParams(layoutParams);
-
+            
             if (i == 0) {
                 imageView.setBackgroundResource(R.drawable.bg_oval_select);
             } else {
@@ -167,13 +183,13 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
             }
             llBannerPosition.addView(imageView);
         }
-
+        
         vpBanner.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+            
             }
-
+            
             @Override
             public void onPageSelected(int position) {
                 for (int i = 0; i < banners.size(); i++) {
@@ -185,17 +201,18 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
                     }
                 }
             }
-
+            
             @Override
             public void onPageScrollStateChanged(int state) {
-
+            
             }
         });
     }
-
+    
     @Override
     public void getProvinceSuccess(List<Province> provinces) {
         provinceList.addAll(provinces);
         provinceAdapter.notifyDataSetChanged();
+        canLoadMore = provinces.size() == PAGE_SIZE;
     }
 }

@@ -31,6 +31,9 @@ public class FoodResponse implements Serializable {
     @SerializedName("images")
     private List<FoodImage> images;
     
+    public FoodResponse() {
+    }
+    
     public int getId() {
         return id;
     }

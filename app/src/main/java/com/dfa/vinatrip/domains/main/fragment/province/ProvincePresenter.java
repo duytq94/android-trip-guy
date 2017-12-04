@@ -29,7 +29,7 @@ public class ProvincePresenter extends BasePresenter<ProvinceView> {
     
     public void getBanner(){
         List<String> banners = new ArrayList<>();
-        banners.add("http://internetmarketinginpanama.com/wp-content/uploads/2014/02/travel-banner.jpg");
+        banners.add("http://flamingotravel.com.vn/wp-content/uploads/2014/05/Vietnam-motorbike-tours-flamingo-travel-Banner-2.jpg");
         banners.add("http://dulichnamachau.vn/wp-content/uploads/2015/08/banner-travel-1.jpg");
         banners.add("http://vietnamtourism.gov.vn/english/images/2017/258banner-hoian-1280x600.jpg");
         banners.add("http://www.vietnamtourism.com/imguploads/news/2016/T1/vinhhalong.jpg");
