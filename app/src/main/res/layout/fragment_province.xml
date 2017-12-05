@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragment_province_srl_swipe"
     android:layout_width="match_parent"
-    android:background="#e5e5e5"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#e5e5e5">
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/fragment_province_nsv_scrollview"
@@ -41,7 +41,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:layout_marginTop="10dp"
                 android:nestedScrollingEnabled="false"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

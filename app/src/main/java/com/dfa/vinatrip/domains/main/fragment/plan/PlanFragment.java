@@ -165,7 +165,7 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
 
     @Override
     public void showLoading() {
-        showHUD();
+        //showHUD();
     }
 
     @Override

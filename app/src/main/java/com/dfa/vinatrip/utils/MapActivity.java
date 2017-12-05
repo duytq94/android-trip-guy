@@ -4,14 +4,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.fragment.province.each_item_detail_province.each_province_destination.ProvinceDestinationDetail;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.LatLng;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.ViewById;
 
@@ -32,10 +29,10 @@ public class MapActivity extends AppCompatActivity {
 //    ProvinceHotel detailHotel;
 //    @Extra
 //    ProvinceFood detailFood;
-    @Extra
+/*    @Extra
     ProvinceDestinationDetail detailDestination;
     @Extra
-    LatLng latLng;
+    LatLng latLng;*/
     
     @AfterViews
     void init() {
