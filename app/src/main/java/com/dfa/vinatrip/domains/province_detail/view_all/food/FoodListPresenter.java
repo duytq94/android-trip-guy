@@ -1,9 +1,8 @@
-package com.dfa.vinatrip.domains.auth.sign_in;
+package com.dfa.vinatrip.domains.province_detail.view_all.food;
 
 import com.beesightsoft.caf.services.schedulers.RxScheduler;
 import com.dfa.vinatrip.base.BasePresenter;
-import com.dfa.vinatrip.models.request.AuthRequest;
-import com.dfa.vinatrip.services.account.AccountService;
+import com.dfa.vinatrip.services.default_data.DataService;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -12,34 +11,33 @@ import javax.inject.Inject;
 import rx.Subscription;
 
 /**
- * Created by duonghd on 9/27/2017.
+ * Created by duonghd on 10/13/2017.
  */
 
-public class SignInPresenter extends BasePresenter<SignInView> {
-    private AccountService accountService;
+public class FoodListPresenter extends BasePresenter<FoodListView> {
+    private DataService dataService;
     private Subscription subscription;
     
     @Inject
-    public SignInPresenter(EventBus eventBus, AccountService accountService) {
+    public FoodListPresenter(EventBus eventBus, DataService dataService) {
         super(eventBus);
-        this.accountService = accountService;
+        this.dataService = dataService;
     }
     
-    public void loginWithEmail(AuthRequest authRequest) {
+    public void getFoods(int province_id, long page, long per_page) {
         RxScheduler.onStop(subscription);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription = accountService.login(authRequest)
+        subscription = dataService.getFoods(province_id, page, per_page)
                 .compose(RxScheduler.applyIoSchedulers())
                 .doOnTerminate(() -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
                     }
-                })
-                .subscribe(user -> {
+                }).subscribe(foodResponses -> {
                     if (isViewAttached()) {
-                        getView().signInSuccess(user);
+                        getView().getFoodsSuccess(foodResponses);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {
