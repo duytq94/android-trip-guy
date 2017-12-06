@@ -40,23 +40,23 @@
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".domains.main.fragment.province.province_detail.ProvinceDetailActivity_"
+            android:name=".domains.province_detail.ProvinceDetailActivity_"
             android:windowSoftInputMode="adjustNothing"/>
 
         <activity
-            android:name=".domains.main.fragment.province.province_detail.view_all.hotel.hotel_detail.HotelDetailActivity_"
+            android:name=".domains.province_detail.view_all.hotel.hotel_detail.HotelDetailActivity_"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".domains.main.fragment.province.province_detail.view_all.hotel.HotelListActivity_"
+            android:name=".domains.province_detail.view_all.hotel.HotelListActivity_"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".domains.main.fragment.province.province_detail.view_all.food.FoodListActivity_"
+            android:name=".domains.province_detail.view_all.food.FoodListActivity_"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize"/>    <!--duonghd-->
 
         <activity
             android:name=".utils.MapActivity_"
@@ -64,10 +64,12 @@
 
         <activity
             android:name=".domains.auth.sign_up.SignUpActivity_"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
             android:name=".domains.auth.sign_in.SignInActivity_"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
@@ -92,10 +94,6 @@
 
         <activity
             android:name=".domains.main.fragment.plan.detail_plan.DetailPlanActivity_"
-            android:windowSoftInputMode="adjustNothing"/>
-
-        <activity
-            android:name=".domains.search.SearchActivity_"
             android:windowSoftInputMode="adjustNothing"/>
 
         <activity

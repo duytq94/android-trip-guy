@@ -4,10 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-/**
- * Created by duonghd on 10/7/2017.
- */
-
 public class HotelImage implements Serializable {
     @SerializedName("id")
     private int id;

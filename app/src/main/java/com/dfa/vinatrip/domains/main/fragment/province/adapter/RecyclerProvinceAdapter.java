@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
-import com.dfa.vinatrip.domains.main.fragment.province.province_detail.ProvinceDetailActivity_;
+import com.dfa.vinatrip.domains.province_detail.ProvinceDetailActivity_;
 import com.dfa.vinatrip.models.response.Province;
 import com.dfa.vinatrip.widgets.RotateLoading;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;

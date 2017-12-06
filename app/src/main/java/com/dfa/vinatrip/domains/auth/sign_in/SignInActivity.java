@@ -148,8 +148,7 @@ public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
         }
         return super.dispatchTouchEvent(ev);
     }
-
-
+    
     @Override
     public void showLoading() {
         showHUD();

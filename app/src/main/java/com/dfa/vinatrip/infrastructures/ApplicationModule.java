@@ -40,10 +40,6 @@ import java.io.IOException;
 import dagger.Module;
 import dagger.Provides;
 
-/**
- * Created by DFA on 5/20/2017.
- */
-
 @ApplicationScope
 @Module
 public class ApplicationModule {
