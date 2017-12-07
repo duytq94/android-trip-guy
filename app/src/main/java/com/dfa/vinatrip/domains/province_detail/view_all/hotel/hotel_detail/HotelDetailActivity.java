@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,8 +17,10 @@ import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.custom_view.NToolbar;
 import com.dfa.vinatrip.custom_view.SimpleRatingBar;
+import com.dfa.vinatrip.domains.province_detail.view_all.hotel.hotel_detail.adapter.RecyclerHotelFeedbackAdapter;
 import com.dfa.vinatrip.domains.province_detail.view_all.hotel.hotel_detail.adapter.RecyclerImageAdapter;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
+import com.dfa.vinatrip.models.response.feedback.FeedbackResponse;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.KeyboardVisibility;
@@ -30,6 +33,8 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -48,14 +53,22 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
     protected LinearLayout llRoot;
     @ViewById(R.id.activity_province_hotel_detail_tb_toolbar)
     protected NToolbar nToolbar;
-    @ViewById(R.id.activity_hotel_detail_tv_name)
-    protected TextView tvName;
+    @ViewById(R.id.activity_hotel_detail_tv_hotel_name)
+    protected TextView tvHotelName;
+    @ViewById(R.id.activity_hotel_detail_tv_number_of_feedback)
+    protected TextView tvNumberOfFeedback;
     @ViewById(R.id.activity_hotel_detail_iv_banner)
     protected ImageView ivBanner;
     @ViewById(R.id.activity_hotel_detail_tv_phone)
     protected TextView tvPhone;
     @ViewById(R.id.activity_hotel_detail_tv_address)
     protected TextView tvAddress;
+    @ViewById(R.id.activity_hotel_detail_iv_map)
+    protected ImageView ivMap;
+    @ViewById(R.id.activity_hotel_detail_rcv_feedback)
+    protected RecyclerView rcvFeedback;
+    @ViewById(R.id.activity_hotel_detail_tv_none_feedback)
+    protected TextView tvNoneFeedback;
     @ViewById(R.id.activity_hotel_detail_rcv_photo)
     protected RecyclerView rcvPhoto;
     
@@ -96,6 +109,7 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
         nToolbar.setOnLeftClickListener(v -> onBackPressed());
         
         setupViewWithData();
+        presenter.getHotelFeedback(hotelResponse.getId(), 0, 0);
     }
     
     private void showKeyboard() {
@@ -116,7 +130,30 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
                 .error(R.drawable.photo_not_available)
                 .into(ivBanner);
         
-        tvName.setText(hotelResponse.getName());
+        ivMap.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        int ivMapHeight = ivMap.getHeight();
+                        int ivMapWidth = ivMap.getWidth();
+                        double latitude = hotelResponse.getLatitude();
+                        
+                        double longitude = hotelResponse.getLongitude();
+                        
+                        String s1 = "https://maps.googleapis.com/maps/api/staticmap?center=";
+                        String s2 = "&zoom=15&scale=2&size=";
+                        String s3 = "&markers=size:big%7Ccolor:0xff0000%7Clabel:%7C";
+                        
+                        String url = s1 + latitude + "," + longitude + s2 + ivMapWidth + "x" + ivMapHeight + s3 + latitude + "," + longitude;
+                        Picasso.with(HotelDetailActivity.this).load(url).into(ivMap);
+                        
+                        if (ivMap.getViewTreeObserver().isAlive()) {
+                            ivMap.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        }
+                    }
+                });
+        
+        tvHotelName.setText(hotelResponse.getName());
         tvPhone.setText(hotelResponse.getPhone_number());
         tvAddress.setText(hotelResponse.getLocation());
         if (presenter.getCurrentUser() != null) {
@@ -179,5 +216,22 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
             validateResult = true;
         }
         return validateResult;
+    }
+    
+    @Override
+    public void getHotelFeedbackSuccess(List<FeedbackResponse> feedbackResponses) {
+        if (feedbackResponses.size() != 0) {
+            rcvFeedback.setVisibility(View.VISIBLE);
+            tvNoneFeedback.setVisibility(View.GONE);
+            
+            this.rcvFeedback.setHasFixedSize(true);
+            this.rcvFeedback.setLayoutManager(new LinearLayoutManager(this));
+            this.rcvFeedback.setAdapter(new RecyclerHotelFeedbackAdapter(this, feedbackResponses));
+            
+            tvNumberOfFeedback.setText(String.format("%s đánh giá", feedbackResponses.size()));
+        } else {
+            rcvFeedback.setVisibility(View.GONE);
+            tvNoneFeedback.setVisibility(View.VISIBLE);
+        }
     }
 }

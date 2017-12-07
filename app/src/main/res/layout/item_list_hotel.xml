@@ -69,13 +69,13 @@
                         app:srb_isIndicator="true"
                         app:srb_numberOfStars="5"
                         app:srb_rating="3.5"
-                        app:srb_starBorderWidth="1"
-                        app:srb_starSize="9dp"
+                        app:srb_starBorderWidth="1.5"
+                        app:srb_starSize="10dp"
                         app:srb_starsSeparation="3dp"
                         app:srb_stepSize="0.5"/>
 
                     <TextView
-                        android:id="@+id/item_list_hotel_tv_review"
+                        android:id="@+id/item_list_hotel_tv_number_of_feedback"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"

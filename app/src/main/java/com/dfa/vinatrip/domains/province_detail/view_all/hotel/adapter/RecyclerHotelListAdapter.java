@@ -68,7 +68,7 @@ public class RecyclerHotelListAdapter extends RecyclerView.Adapter<RecyclerHotel
             tvHotelName = (TextView) itemView.findViewById(R.id.item_list_hotel_tv_name);
             tvHotelAddress = (TextView) itemView.findViewById(R.id.item_list_hotel_tv_address);
             srbHotelRate = (SimpleRatingBar) itemView.findViewById(R.id.item_list_hotel_srb_rate);
-            tvHotelReview = (TextView) itemView.findViewById(R.id.item_list_hotel_tv_review);
+            tvHotelReview = (TextView) itemView.findViewById(R.id.item_list_hotel_tv_number_of_feedback);
             tvHotelDistance = (TextView) itemView.findViewById(R.id.item_list_hotel_tv_distance);
             
             itemView.setOnClickListener(v -> {
