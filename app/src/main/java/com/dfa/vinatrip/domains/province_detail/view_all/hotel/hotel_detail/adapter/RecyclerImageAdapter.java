@@ -39,7 +39,7 @@ public class RecyclerImageAdapter extends RecyclerView.Adapter<RecyclerImageAdap
         Picasso.with(context).load(hotelImages.get(position).getUrl())
                 .placeholder(R.drawable.ic_loading)
                 .error(R.drawable.photo_not_available)
-                .into(holder.ivImageAvatar);
+                .into(holder.ivImageView);
     }
     
     @Override
@@ -48,11 +48,11 @@ public class RecyclerImageAdapter extends RecyclerView.Adapter<RecyclerImageAdap
     }
     
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView ivImageAvatar;
+        private ImageView ivImageView;
         
         public ViewHolder(View itemView) {
             super(itemView);
-            ivImageAvatar = (ImageView) itemView.findViewById(R.id.item_province_detail_it_photo_iv_photos);
+            ivImageView = (ImageView) itemView.findViewById(R.id.item_province_detail_it_photo_iv_photos);
         }
     }
 }

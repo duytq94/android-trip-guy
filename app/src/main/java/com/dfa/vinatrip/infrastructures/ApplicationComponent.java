@@ -5,6 +5,7 @@ import com.dfa.vinatrip.services.account.AccountService;
 import com.dfa.vinatrip.services.chat.ChatService;
 import com.dfa.vinatrip.services.deal.DealService;
 import com.dfa.vinatrip.services.default_data.DataService;
+import com.dfa.vinatrip.services.feedback.FeedbackService;
 import com.dfa.vinatrip.services.friend.FriendService;
 import com.dfa.vinatrip.services.plan.PlanService;
 import com.dfa.vinatrip.services.trend.TrendService;
@@ -35,4 +36,6 @@ public interface ApplicationComponent {
     FriendService friendService();
 
     PlanService planService();
+    
+    FeedbackService feedbackService();
 }

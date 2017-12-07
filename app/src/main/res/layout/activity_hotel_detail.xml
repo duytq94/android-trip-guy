@@ -49,7 +49,7 @@
                         android:layout_weight="1"/>
 
                     <TextView
-                        android:id="@+id/activity_hotel_detail_tv_name"
+                        android:id="@+id/activity_hotel_detail_tv_hotel_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
@@ -82,7 +82,7 @@
                             app:srb_stepSize="0.5"/>
 
                         <TextView
-                            android:id="@+id/item_list_hotel_tv_review"
+                            android:id="@+id/activity_hotel_detail_tv_number_of_feedback"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
@@ -184,7 +184,7 @@
                     android:textStyle="bold"/>
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/activity_hotel_detail_rcv_review"
+                    android:id="@+id/activity_hotel_detail_rcv_feedback"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -192,6 +192,7 @@
                     android:visibility="gone"/>
 
                 <TextView
+                    android:id="@+id/activity_hotel_detail_tv_none_feedback"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -252,7 +253,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -322,7 +323,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:background="@android:color/white"
                 android:orientation="vertical">
@@ -363,13 +364,13 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/activity_hotel_detail_rcv_photo"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="110dp"
                     android:layout_marginTop="5dp"/>
 
                 <View
                     android:layout_width="wrap_content"
                     android:layout_height="0.66dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:background="#c9c9c9"/>
             </LinearLayout>
         </LinearLayout>

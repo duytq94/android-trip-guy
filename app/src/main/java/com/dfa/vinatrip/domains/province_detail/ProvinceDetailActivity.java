@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.domains.province_detail;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,6 +39,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+@SuppressLint("Registered")
 @EActivity(R.layout.activity_province_detail)
 public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, ProvinceDetailPresenter>
         implements ProvinceDetailView {
@@ -99,9 +101,7 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
     void init() {
         nToolbar.setup(this, "TripGuy");
         nToolbar.showLeftIcon().showToolbarColor();
-        nToolbar.setOnLeftClickListener(v -> {
-            onBackPressed();
-        });
+        nToolbar.setOnLeftClickListener(v -> onBackPressed());
         
         Picasso.with(this).load(province.getAvatar())
                 .error(R.drawable.photo_not_available)
