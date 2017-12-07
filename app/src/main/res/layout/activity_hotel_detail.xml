@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="#e6eaeaea"
     android:descendantFocusability="beforeDescendants"
+    android:fitsSystemWindows="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
@@ -15,364 +16,396 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"/>
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fitsSystemWindows="true">
 
-        <LinearLayout
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="180dp"
+            android:fitsSystemWindows="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <RelativeLayout
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbar"
                 android:layout_width="match_parent"
-                android:layout_height="180dp">
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
                     android:id="@+id/activity_hotel_detail_iv_banner"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="180dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/photo_not_available"/>
+                    android:src="@drawable/photo_not_available"
+                    app:layout_collapseMode="parallax"/>
+
+                <android.support.v7.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_gravity="bottom"
+                    android:background="@android:color/transparent"
+                    app:contentInsetEnd="0dp"
+                    app:contentInsetLeft="0dp"
+                    app:contentInsetRight="0dp"
+                    app:contentInsetStart="0dp"
+                    app:layout_collapseMode="none"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/bg_overlay_bottom"
+                        android:orientation="vertical">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:id="@+id/activity_hotel_detail_tv_hotel_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+                            android:text="HotelName"
+                            android:textColor="#ffffff"
+                            android:textSize="13dp"
+                            android:textStyle="bold"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <com.dfa.vinatrip.custom_view.SimpleRatingBar
+                                android:id="@+id/item_list_hotel_srb_rate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srb_borderColor="#ffdd00"
+                                app:srb_fillColor="#ffdd00"
+                                app:srb_isIndicator="true"
+                                app:srb_numberOfStars="5"
+                                app:srb_rating="0"
+                                app:srb_starBorderWidth="2.5"
+                                app:srb_starSize="13dp"
+                                app:srb_starsSeparation="5dp"
+                                app:srb_stepSize="0.5"/>
+
+                            <TextView
+                                android:id="@+id/activity_hotel_detail_tv_number_of_feedback"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:text="0 đánh giá"
+                                android:textColor="#ffffff"
+                                android:textSize="10dp"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+                </android.support.v7.widget.Toolbar>
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="@drawable/bg_overlay_bottom"
+                    android:layout_height="wrap_content"
+                    android:background="#ffffff"
                     android:orientation="vertical">
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:id="@+id/activity_hotel_detail_tv_hotel_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:gravity="center_vertical"
-                        android:singleLine="true"
-                        android:text="HotelName"
-                        android:textColor="#ffffff"
-                        android:textSize="13dp"
-                        android:textStyle="bold"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:gravity="center_vertical"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
-                        <com.dfa.vinatrip.custom_view.SimpleRatingBar
-                            android:id="@+id/item_list_hotel_srb_rate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:srb_borderColor="#ffdd00"
-                            app:srb_fillColor="#ffdd00"
-                            app:srb_isIndicator="true"
-                            app:srb_numberOfStars="5"
-                            app:srb_rating="3.5"
-                            app:srb_starBorderWidth="1"
-                            app:srb_starSize="9dp"
-                            app:srb_starsSeparation="3dp"
-                            app:srb_stepSize="0.5"/>
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:src="@drawable/ic_call"/>
 
                         <TextView
-                            android:id="@+id/activity_hotel_detail_tv_number_of_feedback"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/activity_hotel_detail_tv_phone"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginLeft="10dp"
-                            android:text="0 đánh giá"
-                            android:textColor="#ffffff"
-                            android:textSize="8dp"/>
+                            android:singleLine="true"
+                            android:text="+84 999 999 999"
+                            android:textColor="#0b0b0b"
+                            android:textSize="12dp"/>
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"/>
-                </LinearLayout>
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#ffffff"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:src="@drawable/ic_call"/>
-
-                    <TextView
-                        android:id="@+id/activity_hotel_detail_tv_phone"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:singleLine="true"
-                        android:text="+84 999 999 999"
-                        android:textColor="#0b0b0b"
-                        android:textSize="12dp"/>
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:src="@drawable/ic_direction"/>
+
+                        <TextView
+                            android:id="@+id/activity_hotel_detail_tv_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:text="Ký túc xá khu B - Dĩ An - Bình Dương"
+                            android:textColor="#0b0b0b"
+                            android:textSize="12dp"/>
+                    </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/activity_hotel_detail_iv_map"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:src="@drawable/ic_direction"/>
-
-                    <TextView
-                        android:id="@+id/activity_hotel_detail_tv_address"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:text="Ký túc xá khu B - Dĩ An - Bình Dương"
-                        android:textColor="#0b0b0b"
-                        android:textSize="12dp"/>
-                </LinearLayout>
-
+                    android:layout_height="180dp"
+                    android:scaleType="fitXY"
+                    android:visibility="visible"/>
                 <View
                     android:layout_width="wrap_content"
                     android:layout_height="0.66dp"
-                    android:layout_marginTop="5dp"
                     android:background="#c9c9c9"/>
-            </LinearLayout>
-
-            <com.google.android.gms.maps.MapView
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/ic_google_map_demo"
-                android:visibility="gone"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="#ffffff"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:text="Đánh giá"
-                    android:textColor="#0b0b0b"
-                    android:textSize="12dp"
-                    android:textStyle="bold"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/activity_hotel_detail_rcv_feedback"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:nestedScrollingEnabled="false"
-                    android:visibility="gone"/>
-
-                <TextView
-                    android:id="@+id/activity_hotel_detail_tv_none_feedback"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Hiện chưa có đánh giá nào"
-                    android:textSize="10dp"
-                    android:textStyle="italic"/>
-
-                <EditText
-                    android:id="@+id/activity_hotel_detail_edt_feedback_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/bg_search_view_radius_3dp"
-                    android:gravity="top"
-                    android:hint="Gửi đánh giá của bạn..."
-                    android:minHeight="60dp"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:textColor="#0b0b0b"
-                    android:textColorHint="#b6b6b6"
-                    android:textSize="10dp"/>
 
                 <LinearLayout
-                    android:id="@+id/activity_hotel_detail_ll_is_login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:visibility="visible">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/activity_hotel_detail_civ_user_avatar"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="20dp"
-                        android:src="@drawable/ic_avatar"/>
+                    android:layout_marginTop="5dp"
+                    android:background="#ffffff"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/activity_hotel_detail_tv_user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:text="user name"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Đánh giá"
                         android:textColor="#0b0b0b"
-                        android:textSize="12dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/activity_hotel_detail_ll_not_login"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:visibility="visible">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:text="Đăng nhập để tiếp tục"
-                        android:textColor="#228b22"
-                        android:textSize="10dp"
-                        android:textStyle="italic"/>
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/bg_btn_green_radius_3dp"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:text="Đăng nhập"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-
-                <com.dfa.vinatrip.custom_view.SimpleRatingBar
-                    android:id="@+id/activity_hotel_detail_srb_feedback_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    app:srb_borderColor="#ffdd00"
-                    app:srb_fillColor="#ffdd00"
-                    app:srb_numberOfStars="5"
-                    app:srb_rating="3.5"
-                    app:srb_starBorderWidth="1"
-                    app:srb_starSize="25dp"
-                    app:srb_starsSeparation="3dp"
-                    app:srb_stepSize="0.5"/>
-
-                <TextView
-                    android:id="@+id/activity_hotel_detail_tv_send_feedback"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/bg_btn_green_radius_3dp"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:text="GỬI"
-                    android:textColor="@android:color/white"
-                    android:textSize="14dp"
-                    android:textStyle="bold"/>
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="0.66dp"
-                    android:layout_marginTop="10dp"
-                    android:background="#c9c9c9"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/white"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_weight="1"
-                        android:text="Hình ảnh"
-                        android:textColor="@color/colorMain"
                         android:textSize="12dp"
                         android:textStyle="bold"/>
 
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/activity_hotel_detail_rcv_feedback"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:nestedScrollingEnabled="false"
+                        android:visibility="gone"/>
+
                     <TextView
-                        android:id="@+id/activity_hotel_detail_iv_view_all"
+                        android:id="@+id/activity_hotel_detail_tv_none_feedback"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/bg_ntoolbar_icon_click"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:text="Xem tất cả"
-                        android:textColor="@color/colorMain"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Hiện chưa có đánh giá nào"
                         android:textSize="10dp"
                         android:textStyle="italic"/>
+
+                    <EditText
+                        android:id="@+id/activity_hotel_detail_edt_feedback_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/bg_search_view_radius_3dp"
+                        android:gravity="top"
+                        android:hint="Gửi đánh giá của bạn..."
+                        android:minHeight="60dp"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="5dp"
+                        android:textColor="#0b0b0b"
+                        android:textColorHint="#b6b6b6"
+                        android:textSize="10dp"/>
+
+                    <LinearLayout
+                        android:id="@+id/activity_hotel_detail_ll_is_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/activity_hotel_detail_civ_user_avatar"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="20dp"
+                            android:src="@drawable/ic_avatar"/>
+
+                        <TextView
+                            android:id="@+id/activity_hotel_detail_tv_user_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:text="user name"
+                            android:textColor="#0b0b0b"
+                            android:textSize="12dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/activity_hotel_detail_ll_not_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:text="Đăng nhập để tiếp tục"
+                            android:textColor="#228b22"
+                            android:textSize="10dp"
+                            android:textStyle="italic"/>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/bg_btn_green_radius_3dp"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:text="Đăng nhập"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <com.dfa.vinatrip.custom_view.SimpleRatingBar
+                        android:id="@+id/activity_hotel_detail_srb_feedback_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        app:srb_borderColor="#ffdd00"
+                        app:srb_fillColor="#ffdd00"
+                        app:srb_numberOfStars="5"
+                        app:srb_rating="0"
+                        app:srb_starBorderWidth="3"
+                        app:srb_starSize="25dp"
+                        app:srb_starsSeparation="5dp"
+                        app:srb_stepSize="0.5"/>
+
+                    <TextView
+                        android:id="@+id/activity_hotel_detail_tv_send_feedback"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_btn_green_radius_3dp"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:text="GỬI"
+                        android:textColor="@android:color/white"
+                        android:textSize="14dp"
+                        android:textStyle="bold"/>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="0.66dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#c9c9c9"/>
                 </LinearLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/activity_hotel_detail_rcv_photo"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="110dp"
-                    android:layout_marginTop="5dp"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
 
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="0.66dp"
-                    android:layout_marginTop="10dp"
-                    android:background="#c9c9c9"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_weight="1"
+                            android:text="Hình ảnh"
+                            android:textColor="@color/colorMain"
+                            android:textSize="12dp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/activity_hotel_detail_iv_view_all"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/bg_ntoolbar_icon_click"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:text="Xem tất cả"
+                            android:textColor="@color/colorMain"
+                            android:textSize="10dp"
+                            android:textStyle="italic"/>
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/activity_hotel_detail_rcv_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="110dp"
+                        android:layout_marginTop="5dp"/>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="0.66dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#c9c9c9"/>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

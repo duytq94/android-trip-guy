@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -62,6 +63,8 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
     protected TextView tvPhone;
     @ViewById(R.id.activity_hotel_detail_tv_address)
     protected TextView tvAddress;
+    @ViewById(R.id.activity_hotel_detail_iv_map)
+    protected ImageView ivMap;
     @ViewById(R.id.activity_hotel_detail_rcv_feedback)
     protected RecyclerView rcvFeedback;
     @ViewById(R.id.activity_hotel_detail_tv_none_feedback)
@@ -126,6 +129,29 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
         Picasso.with(this).load(hotelResponse.getAvatar())
                 .error(R.drawable.photo_not_available)
                 .into(ivBanner);
+        
+        ivMap.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        int ivMapHeight = ivMap.getHeight();
+                        int ivMapWidth = ivMap.getWidth();
+                        double latitude = hotelResponse.getLatitude();
+                        
+                        double longitude = hotelResponse.getLongitude();
+                        
+                        String s1 = "https://maps.googleapis.com/maps/api/staticmap?center=";
+                        String s2 = "&zoom=15&scale=2&size=";
+                        String s3 = "&markers=size:big%7Ccolor:0xff0000%7Clabel:%7C";
+                        
+                        String url = s1 + latitude + "," + longitude + s2 + ivMapWidth + "x" + ivMapHeight + s3 + latitude + "," + longitude;
+                        Picasso.with(HotelDetailActivity.this).load(url).into(ivMap);
+                        
+                        if (ivMap.getViewTreeObserver().isAlive()) {
+                            ivMap.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        }
+                    }
+                });
         
         tvHotelName.setText(hotelResponse.getName());
         tvPhone.setText(hotelResponse.getPhone_number());

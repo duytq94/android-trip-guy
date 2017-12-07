@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.models.response.feedback;
 
+import com.dfa.vinatrip.models.response.user.User;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -24,13 +25,15 @@ public class FeedbackResponse implements Serializable{
     @SerializedName("content")
     private String content;
     @SerializedName("rate")
-    private double rate;
+    private float rate;
     @SerializedName("status")
     private int status;
     @SerializedName("created_at")
     private String createdAt;
     @SerializedName("updated_at")
     private String updatedAt;
+    @SerializedName("profile")
+    private User profile;
     
     public int getId() {
         return id;
@@ -60,7 +63,7 @@ public class FeedbackResponse implements Serializable{
         return content;
     }
     
-    public double getRate() {
+    public float getRate() {
         return rate;
     }
     
@@ -74,6 +77,10 @@ public class FeedbackResponse implements Serializable{
     
     public String getUpdatedAt() {
         return updatedAt;
+    }
+    
+    public User getProfile() {
+        return profile;
     }
     
     public void setId(int id) {
@@ -104,7 +111,7 @@ public class FeedbackResponse implements Serializable{
         this.content = content;
     }
     
-    public void setRate(double rate) {
+    public void setRate(float rate) {
         this.rate = rate;
     }
     
@@ -118,5 +125,9 @@ public class FeedbackResponse implements Serializable{
     
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    
+    public void setProfile(User profile) {
+        this.profile = profile;
     }
 }

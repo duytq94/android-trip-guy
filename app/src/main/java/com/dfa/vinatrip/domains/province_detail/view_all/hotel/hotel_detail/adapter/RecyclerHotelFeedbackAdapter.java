@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.custom_view.SimpleRatingBar;
 import com.dfa.vinatrip.models.response.feedback.FeedbackResponse;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -37,7 +38,18 @@ public class RecyclerHotelFeedbackAdapter extends RecyclerView.Adapter<RecyclerH
     
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-    
+        FeedbackResponse feedbackResponse = feedbackResponses.get(position);
+        if (feedbackResponse.getProfile().getAvatar() != null) {
+            Picasso.with(context).load(feedbackResponse.getProfile().getAvatar())
+                    .error(R.drawable.photo_not_available)
+                    .into(holder.civAvatar);
+        } else {
+            holder.civAvatar.setImageResource(R.drawable.ic_avatar);
+        }
+        
+        holder.tvUsername.setText(feedbackResponse.getProfile().getUsername());
+        holder.srbRate.setRating(feedbackResponse.getRate());
+        holder.tvContent.setText(feedbackResponse.getContent());
     }
     
     @Override
