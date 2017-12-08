@@ -6,7 +6,7 @@
     android:layout_height="100dp"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="3dp"
+    app:cardCornerRadius="0dp"
     app:cardElevation="0dp">
 
     <LinearLayout
@@ -22,7 +22,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/item_list_hotel_iv_avatar"
+                android:id="@+id/item_recycler_hotel_search_iv_avatar"
                 android:layout_width="99dp"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -34,7 +34,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/item_list_hotel_tv_name"
+                    android:id="@+id/item_recycler_hotel_search_tv_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -44,7 +44,7 @@
                     android:textSize="12dp"/>
 
                 <TextView
-                    android:id="@+id/item_list_hotel_tv_address"
+                    android:id="@+id/item_recycler_hotel_search_tv_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -61,7 +61,7 @@
                     android:orientation="horizontal">
 
                     <com.dfa.vinatrip.custom_view.SimpleRatingBar
-                        android:id="@+id/item_list_hotel_srb_rate"
+                        android:id="@+id/item_recycler_hotel_search_srb_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srb_borderColor="#ffdd00"
@@ -75,7 +75,7 @@
                         app:srb_stepSize="0.5"/>
 
                     <TextView
-                        android:id="@+id/item_list_hotel_tv_number_of_feedback"
+                        android:id="@+id/item_recycler_hotel_search_tv_number_of_feedback"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -90,11 +90,11 @@
                     android:layout_weight="1"/>
 
                 <TextView
-                    android:text="10.3 km"
-                    android:id="@+id/item_list_hotel_tv_distance"
+                    android:id="@+id/item_recycler_hotel_search_tv_distance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:text="10.3 km"
                     android:textSize="8dp"/>
             </LinearLayout>
         </LinearLayout>
@@ -102,6 +102,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.66dp"
-            android:background="#bfbfbf"/>
+            android:background="#96d9d9d9"/>
     </LinearLayout>
 </android.support.v7.widget.CardView>

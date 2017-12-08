@@ -17,24 +17,24 @@ import java.util.List;
  * Created by duonghd on 11/3/2017.
  */
 
-public class RecyclerImageAdapter extends RecyclerView.Adapter<RecyclerImageAdapter.ViewHolder> {
+public class RecyclerProvinceImageAdapter extends RecyclerView.Adapter<RecyclerProvinceImageAdapter.ViewHolder> {
     private Context context;
     private List<ProvinceImageResponse> imageResponses;
     
-    public RecyclerImageAdapter(Context context, List<ProvinceImageResponse> imageResponses) {
+    public RecyclerProvinceImageAdapter(Context context, List<ProvinceImageResponse> imageResponses) {
         this.context = context;
         this.imageResponses = imageResponses;
     }
     
     @Override
-    public RecyclerImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerProvinceImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.item_province_detail_it_photo, parent, false);
-        return new RecyclerImageAdapter.ViewHolder(view);
+                R.layout.item_recycler_province_image, parent, false);
+        return new RecyclerProvinceImageAdapter.ViewHolder(view);
     }
     
     @Override
-    public void onBindViewHolder(RecyclerImageAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerProvinceImageAdapter.ViewHolder holder, int position) {
         ProvinceImageResponse image = imageResponses.get(position);
         Picasso.with(context).load(image.getUrl())
                 .placeholder(R.drawable.ic_loading)
@@ -52,7 +52,7 @@ public class RecyclerImageAdapter extends RecyclerView.Adapter<RecyclerImageAdap
         
         public ViewHolder(View itemView) {
             super(itemView);
-            ivImageView = (ImageView) itemView.findViewById(R.id.item_province_detail_it_photo_iv_photos);
+            ivImageView = (ImageView) itemView.findViewById(R.id.item_recycler_province_image_iv_photos);
         }
     }
 }

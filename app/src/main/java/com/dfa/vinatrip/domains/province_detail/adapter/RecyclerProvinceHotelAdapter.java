@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.custom_view.SimpleRatingBar;
-import com.dfa.vinatrip.domains.province_detail.view_all.hotel.HotelListActivity_;
+import com.dfa.vinatrip.domains.province_detail.view_all.hotel.HotelSearchActivity_;
 import com.dfa.vinatrip.domains.province_detail.view_all.hotel.hotel_detail.HotelDetailActivity_;
 import com.dfa.vinatrip.models.response.Province;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
@@ -20,16 +20,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-/**
- * Created by duonghd on 10/13/2017.
- */
-
-public class RecyclerHotelAdapter extends RecyclerView.Adapter<RecyclerHotelAdapter.ViewHolder> {
+public class RecyclerProvinceHotelAdapter extends RecyclerView.Adapter<RecyclerProvinceHotelAdapter.ViewHolder> {
     private Context context;
     private Province province;
     private List<HotelResponse> hotelResponses;
     
-    public RecyclerHotelAdapter(Context context, Province province, List<HotelResponse> hotelResponses) {
+    public RecyclerProvinceHotelAdapter(Context context, Province province, List<HotelResponse> hotelResponses) {
         this.context = context;
         this.province = province;
         this.hotelResponses = hotelResponses;
@@ -38,7 +34,7 @@ public class RecyclerHotelAdapter extends RecyclerView.Adapter<RecyclerHotelAdap
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.item_province_detail_it_hotel, parent, false);
+                R.layout.item_recycler_province_hotel, parent, false);
         return new ViewHolder(view);
     }
     
@@ -74,17 +70,17 @@ public class RecyclerHotelAdapter extends RecyclerView.Adapter<RecyclerHotelAdap
         
         public ViewHolder(View itemView) {
             super(itemView);
-            llMain = (LinearLayout) itemView.findViewById(R.id.item_province_detail_it_hotel_ll_main);
-            cvViewAll = (CardView) itemView.findViewById(R.id.item_province_detail_it_hotel_cv_view_all);
-            ivHotelAvatar = (ImageView) itemView.findViewById(R.id.item_province_detail_it_hotel_iv_image);
-            tvHotelName = (TextView) itemView.findViewById(R.id.item_province_detail_it_hotel_tv_name);
-            srbHotelRate = (SimpleRatingBar) itemView.findViewById(R.id.item_province_detail_it_hotel_srb_rating);
-            tvHotelReviews = (TextView) itemView.findViewById(R.id.item_province_detail_it_hotel_tv_reviews);
-            tvHotelDistance = (TextView) itemView.findViewById(R.id.item_province_detail_it_hotel_tv_distance);
+            llMain = (LinearLayout) itemView.findViewById(R.id.item_recycler_province_hotel_ll_main);
+            cvViewAll = (CardView) itemView.findViewById(R.id.item_recycler_province_hotel_cv_view_all);
+            ivHotelAvatar = (ImageView) itemView.findViewById(R.id.item_recycler_province_hotel_iv_image);
+            tvHotelName = (TextView) itemView.findViewById(R.id.item_recycler_province_hotel_tv_name);
+            srbHotelRate = (SimpleRatingBar) itemView.findViewById(R.id.item_recycler_province_hotel_srb_rating);
+            tvHotelReviews = (TextView) itemView.findViewById(R.id.item_recycler_province_hotel_tv_reviews);
+            tvHotelDistance = (TextView) itemView.findViewById(R.id.item_recycler_province_hotel_tv_distance);
             
             itemView.setOnClickListener(v -> {
                 if (getAdapterPosition() == hotelResponses.size() - 1) {
-                    HotelListActivity_.intent(context)
+                    HotelSearchActivity_.intent(context)
                             .province(province).start();
                 } else {
                     HotelDetailActivity_.intent(context)

@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.services.default_data;
 
 import com.dfa.vinatrip.models.response.Province;
+import com.dfa.vinatrip.models.response.event.EventResponse;
 import com.dfa.vinatrip.models.response.food.FoodResponse;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
 import com.dfa.vinatrip.models.response.place.PlaceResponse;
@@ -16,6 +17,8 @@ import rx.Observable;
 
 public interface DataService {
     Observable<List<Province>> getProvinces(long page, long per_page);
+    
+    Observable<List<EventResponse>> getEvents(int province_id, long page, long per_page);
     
     Observable<List<HotelResponse>> getHotels(int province_id, long page, long per_page);
     

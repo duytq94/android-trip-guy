@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.services.feedback;
 
 import com.beesightsoft.caf.services.network.NetworkProvider;
+import com.dfa.vinatrip.models.request.FeedbackRequest;
 import com.dfa.vinatrip.models.response.feedback.FeedbackResponse;
 import com.dfa.vinatrip.services.filter.ApiErrorFilter;
 
@@ -26,6 +27,50 @@ public class DefaultFeedbackService implements FeedbackService {
     @Override
     public Observable<List<FeedbackResponse>> getHotelFeedback(int hotelId, int page, int pageSize) {
         return networkProvider.transformResponse(restFeedbackService.getHotelFeedback(hotelId, page, pageSize))
+                .compose(apiErrorFilter.execute());
+    }
+    
+    @Override
+    public Observable<List<FeedbackResponse>> getFoodFeedback(int foodId, int page, int pageSize) {
+        return networkProvider.transformResponse(restFeedbackService.getFoodFeedback(foodId, page, pageSize))
+                .compose(apiErrorFilter.execute());
+    }
+    
+    @Override
+    public Observable<List<FeedbackResponse>> getPlaceFeedback(int placeId, int page, int pageSize) {
+        return networkProvider.transformResponse(restFeedbackService.getPlaceFeedback(placeId, page, pageSize))
+                .compose(apiErrorFilter.execute());
+    }
+    
+    @Override
+    public Observable<List<FeedbackResponse>> getEventFeedback(int eventId, int page, int pageSize) {
+        return networkProvider.transformResponse(restFeedbackService.getEventFeedback(eventId, page, pageSize))
+                .compose(apiErrorFilter.execute());
+    }
+    
+    @Override
+    public Observable<FeedbackResponse> postHotelFeedback(String accessToken, int hotelId, FeedbackRequest feedbackRequest) {
+        return networkProvider.transformResponse(restFeedbackService.postHotelFeedback(accessToken, hotelId, feedbackRequest))
+                .compose(apiErrorFilter.execute());
+    }
+    
+    @Override
+    public Observable<FeedbackResponse> postFoodFeedback(String accessToken, int foodId, FeedbackRequest feedbackRequest) {
+        return networkProvider.transformResponse(restFeedbackService.postHotelFeedback(accessToken, foodId, feedbackRequest))
+                .compose(apiErrorFilter.execute());
+    }
+    
+    @Override
+    public Observable<FeedbackResponse> postPlaceFeedback(String accessToken, int placeId, FeedbackRequest
+            feedbackRequest) {
+        return networkProvider.transformResponse(restFeedbackService.postHotelFeedback(accessToken, placeId, feedbackRequest))
+                .compose(apiErrorFilter.execute());
+    }
+    
+    @Override
+    public Observable<FeedbackResponse> postEventFeedback(String accessToken, int eventId, FeedbackRequest
+            feedbackRequest) {
+        return networkProvider.transformResponse(restFeedbackService.postHotelFeedback(accessToken, eventId, feedbackRequest))
                 .compose(apiErrorFilter.execute());
     }
 }

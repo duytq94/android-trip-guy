@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.domains.province_detail;
 
 import com.dfa.vinatrip.base.BaseMvpView;
+import com.dfa.vinatrip.models.response.event.EventResponse;
 import com.dfa.vinatrip.models.response.food.FoodResponse;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
 import com.dfa.vinatrip.models.response.place.PlaceResponse;
@@ -13,6 +14,8 @@ import java.util.List;
  */
 
 public interface ProvinceDetailView extends BaseMvpView {
+    void getEventsSuccess(List<EventResponse> eventResponses);
+    
     void getHotelsSuccess(List<HotelResponse> hotelResponses);
     
     void getFoodsSuccess(List<FoodResponse> foodResponses);

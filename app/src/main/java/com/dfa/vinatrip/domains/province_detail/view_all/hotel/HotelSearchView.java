@@ -9,6 +9,6 @@ import java.util.List;
  * Created by duonghd on 10/7/2017.
  */
 
-public interface HotelListView extends BaseMvpView {
+public interface HotelSearchView extends BaseMvpView {
     void getHotelsSuccess(List<HotelResponse> hotelResponses);
 }

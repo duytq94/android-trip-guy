@@ -22,23 +22,23 @@ import java.util.List;
 import javax.inject.Inject;
 
 @SuppressLint("Registered")
-@EActivity(R.layout.activity_food_list)
-public class FoodListActivity extends BaseActivity<FoodListView, FoodListPresenter>
-        implements FoodListView {
+@EActivity(R.layout.activity_food_search)
+public class FoodSearchActivity extends BaseActivity<FoodSearchView, FoodSearchPresenter>
+        implements FoodSearchView {
     @App
     protected MainApplication mainApplication;
     @Inject
-    protected FoodListPresenter presenter;
+    protected FoodSearchPresenter presenter;
     
     @Extra
     protected Province province;
     
-    private static final int page = 1;
-    private static final int per_page = 10;
+    private static final int page = 0;
+    private static final int per_page = 0;
     
     @AfterInject
     void initInject() {
-        DaggerFoodListComponent.builder()
+        DaggerFoodSearchComponent.builder()
                 .applicationComponent(mainApplication.getApplicationComponent())
                 .activityModule(new ActivityModule(this))
                 .build().inject(this);
@@ -51,7 +51,7 @@ public class FoodListActivity extends BaseActivity<FoodListView, FoodListPresent
     
     @NonNull
     @Override
-    public FoodListPresenter createPresenter() {
+    public FoodSearchPresenter createPresenter() {
         return presenter;
     }
     

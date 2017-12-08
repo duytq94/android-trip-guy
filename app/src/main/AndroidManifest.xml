@@ -53,12 +53,12 @@
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".domains.province_detail.view_all.hotel.HotelListActivity_"
+            android:name=".domains.province_detail.view_all.hotel.HotelSearchActivity_"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".domains.province_detail.view_all.food.FoodListActivity_"
+            android:name=".domains.province_detail.view_all.food.FoodSearchActivity_"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>    <!--duonghd-->
 

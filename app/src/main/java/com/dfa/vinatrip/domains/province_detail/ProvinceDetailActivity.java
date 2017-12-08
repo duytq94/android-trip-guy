@@ -11,14 +11,16 @@ import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.custom_view.NToolbar;
-import com.dfa.vinatrip.domains.province_detail.adapter.RecyclerFoodAdapter;
-import com.dfa.vinatrip.domains.province_detail.adapter.RecyclerHotelAdapter;
-import com.dfa.vinatrip.domains.province_detail.adapter.RecyclerImageAdapter;
-import com.dfa.vinatrip.domains.province_detail.adapter.RecyclerPlaceAdapter;
-import com.dfa.vinatrip.domains.province_detail.view_all.food.FoodListActivity_;
-import com.dfa.vinatrip.domains.province_detail.view_all.hotel.HotelListActivity_;
+import com.dfa.vinatrip.domains.province_detail.adapter.RecyclerProvinceEventAdapter;
+import com.dfa.vinatrip.domains.province_detail.adapter.RecyclerProvinceFoodAdapter;
+import com.dfa.vinatrip.domains.province_detail.adapter.RecyclerProvinceHotelAdapter;
+import com.dfa.vinatrip.domains.province_detail.adapter.RecyclerProvinceImageAdapter;
+import com.dfa.vinatrip.domains.province_detail.adapter.RecyclerProvincePlaceAdapter;
+import com.dfa.vinatrip.domains.province_detail.view_all.food.FoodSearchActivity_;
+import com.dfa.vinatrip.domains.province_detail.view_all.hotel.HotelSearchActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.Province;
+import com.dfa.vinatrip.models.response.event.EventResponse;
 import com.dfa.vinatrip.models.response.food.FoodResponse;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
 import com.dfa.vinatrip.models.response.place.PlaceResponse;
@@ -54,6 +56,8 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
     protected ImageView ivBanner;
     @ViewById(R.id.activity_province_detail_tv_intro)
     protected TextView tvIntro;
+    @ViewById(R.id.activity_province_detail_rcv_featured_event)
+    protected RecyclerView rcvEvents;
     @ViewById(R.id.activity_province_detail_rcv_hotel)
     protected RecyclerView rcvHotels;
     @ViewById(R.id.activity_province_detail_rcv_food)
@@ -69,25 +73,30 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
     @Extra
     protected Province province;
     
+    private static final int event_page = 1;
+    private static final int event_per_page = 5;
+    private List<EventResponse> eventResponses;
+    private RecyclerProvinceEventAdapter eventAdapter;
+    
     private static final int hotel_page = 1;
     private static final int hotel_per_page = 5;
     private List<HotelResponse> hotelResponses;
-    private RecyclerHotelAdapter hotelAdapter;
+    private RecyclerProvinceHotelAdapter hotelAdapter;
     
     private static final int food_page = 1;
     private static final int food_per_page = 5;
     private List<FoodResponse> foodResponses;
-    private RecyclerFoodAdapter foodAdapter;
+    private RecyclerProvinceFoodAdapter foodAdapter;
     
     private static final int place_page = 1;
     private static final int place_per_page = 5;
     private List<PlaceResponse> placeResponses;
-    private RecyclerPlaceAdapter placeAdapter;
+    private RecyclerProvincePlaceAdapter placeAdapter;
     
     private static final int image_page = 1;
     private static final int image_per_page = 5;
     private List<ProvinceImageResponse> imageResponses;
-    private RecyclerImageAdapter imageAdapter;
+    private RecyclerProvinceImageAdapter imageAdapter;
     
     @AfterInject
     void initInject() {
@@ -109,30 +118,37 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
         
         tvIntro.setText(province.getDescription());
         
+        eventResponses = new ArrayList<>();
+        eventAdapter = new RecyclerProvinceEventAdapter(this, province, eventResponses);
+        rcvEvents.setHasFixedSize(true);
+        rcvEvents.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rcvEvents.setAdapter(eventAdapter);
+        
         hotelResponses = new ArrayList<>();
-        hotelAdapter = new RecyclerHotelAdapter(this, province, hotelResponses);
+        hotelAdapter = new RecyclerProvinceHotelAdapter(this, province, hotelResponses);
         rcvHotels.setHasFixedSize(true);
         rcvHotels.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rcvHotels.setAdapter(hotelAdapter);
         
         foodResponses = new ArrayList<>();
-        foodAdapter = new RecyclerFoodAdapter(this, foodResponses);
+        foodAdapter = new RecyclerProvinceFoodAdapter(this, foodResponses);
         rcvFoods.setHasFixedSize(true);
         rcvFoods.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rcvFoods.setAdapter(foodAdapter);
         
         placeResponses = new ArrayList<>();
-        placeAdapter = new RecyclerPlaceAdapter(this, placeResponses);
+        placeAdapter = new RecyclerProvincePlaceAdapter(this, placeResponses);
         rcvPlaces.setHasFixedSize(true);
         rcvPlaces.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rcvPlaces.setAdapter(placeAdapter);
         
         imageResponses = new ArrayList<>();
-        imageAdapter = new RecyclerImageAdapter(this, imageResponses);
+        imageAdapter = new RecyclerProvinceImageAdapter(this, imageResponses);
         rcvImages.setHasFixedSize(true);
         rcvImages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rcvImages.setAdapter(imageAdapter);
         
+        presenter.getEvents(province.getId(), event_page, event_per_page);
         presenter.getHotels(province.getId(), hotel_page, hotel_per_page);
         presenter.getFoods(province.getId(), food_page, food_per_page);
         presenter.getPlaces(province.getId(), place_page, place_per_page);
@@ -167,15 +183,22 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
     
     @Click(R.id.activity_province_detail_tv_view_all_hotel)
     void viewAllHotelClick() {
-        HotelListActivity_.intent(this).province(province).start();
+        HotelSearchActivity_.intent(this).province(province).start();
     }
     
     @Click(R.id.activity_province_detail_tv_view_all_food)
     void viewAllFoodClick() {
-        FoodListActivity_.intent(this).province(province).start();
+        FoodSearchActivity_.intent(this).province(province).start();
     }
     
     //-----------------------------------------------------------------------------------------------------------------
+    @Override
+    public void getEventsSuccess(List<EventResponse> eventResponses) {
+        this.eventResponses.addAll(eventResponses);
+        this.eventResponses.add(new EventResponse());
+        this.eventAdapter.notifyDataSetChanged();
+    }
+    
     @Override
     public void getHotelsSuccess(List<HotelResponse> hotelResponses) {
         this.hotelResponses.addAll(hotelResponses);

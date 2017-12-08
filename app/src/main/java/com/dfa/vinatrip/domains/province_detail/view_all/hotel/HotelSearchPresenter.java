@@ -14,12 +14,12 @@ import rx.Subscription;
  * Created by duonghd on 10/7/2017.
  */
 
-public class HotelListPresenter extends BasePresenter<HotelListView> {
+public class HotelSearchPresenter extends BasePresenter<HotelSearchView> {
     private DataService dataService;
     private Subscription subscription;
 
     @Inject
-    public HotelListPresenter(EventBus eventBus, DataService dataService) {
+    public HotelSearchPresenter(EventBus eventBus, DataService dataService) {
         super(eventBus);
         this.dataService = dataService;
     }

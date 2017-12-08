@@ -20,6 +20,7 @@ import com.dfa.vinatrip.custom_view.SimpleRatingBar;
 import com.dfa.vinatrip.domains.province_detail.view_all.hotel.hotel_detail.adapter.RecyclerHotelFeedbackAdapter;
 import com.dfa.vinatrip.domains.province_detail.view_all.hotel.hotel_detail.adapter.RecyclerImageAdapter;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
+import com.dfa.vinatrip.models.request.FeedbackRequest;
 import com.dfa.vinatrip.models.response.feedback.FeedbackResponse;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
 import com.dfa.vinatrip.utils.AppUtil;
@@ -141,7 +142,7 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
                         double longitude = hotelResponse.getLongitude();
                         
                         String s1 = "https://maps.googleapis.com/maps/api/staticmap?center=";
-                        String s2 = "&zoom=15&scale=2&size=";
+                        String s2 = "&zoom=18&scale=2&size=";
                         String s3 = "&markers=size:big%7Ccolor:0xff0000%7Clabel:%7C";
                         
                         String url = s1 + latitude + "," + longitude + s2 + ivMapWidth + "x" + ivMapHeight + s3 + latitude + "," + longitude;
@@ -155,7 +156,7 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
         
         tvHotelName.setText(hotelResponse.getName());
         tvPhone.setText(hotelResponse.getPhone_number());
-        tvAddress.setText(hotelResponse.getLocation());
+        tvAddress.setText(hotelResponse.getAddress());
         if (presenter.getCurrentUser() != null) {
             llIsLogin.setVisibility(View.VISIBLE);
             llNotLogin.setVisibility(View.GONE);
@@ -201,12 +202,13 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
     
     @Click(R.id.activity_hotel_detail_tv_send_feedback)
     void sendFeedbackClick() {
-        if (presenter.getCurrentUser() != null && validateRatingInput()) {
-            presenter.sendFeedback();
+        if (presenter.getCurrentUser() != null && validateFeedbackInput()) {
+            presenter.sendFeedback(hotelResponse.getId(),
+                    new FeedbackRequest(edtFeedbackContent.getText().toString(), srbFeedbackRating.getRating()));
         }
     }
     
-    private boolean validateRatingInput() {
+    private boolean validateFeedbackInput() {
         boolean validateResult = false;
         if (edtFeedbackContent.getText().toString().length() == 0) {
             Toast.makeText(this, "Nội dung còn trống!", Toast.LENGTH_SHORT).show();
@@ -233,5 +235,10 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
             rcvFeedback.setVisibility(View.GONE);
             tvNoneFeedback.setVisibility(View.VISIBLE);
         }
+    }
+    
+    @Override
+    public void postHotelFeedbackSuccess(FeedbackResponse feedbackResponse) {
+        Toast.makeText(this, "Cảm ơn bạn đã gửi đánh giá.", Toast.LENGTH_SHORT).show();
     }
 }

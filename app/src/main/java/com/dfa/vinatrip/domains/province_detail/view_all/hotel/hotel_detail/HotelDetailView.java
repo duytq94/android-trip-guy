@@ -11,4 +11,6 @@ import java.util.List;
 
 public interface HotelDetailView extends BaseMvpView {
     void getHotelFeedbackSuccess(List<FeedbackResponse> feedbackResponses);
+    
+    void postHotelFeedbackSuccess(FeedbackResponse feedbackResponse);
 }

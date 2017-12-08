@@ -29,7 +29,7 @@ public class RecyclerImageAdapter extends RecyclerView.Adapter<RecyclerImageAdap
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.item_province_detail_it_photo, parent, false);
+                R.layout.item_recycler_province_image, parent, false);
         return new ViewHolder(view);
     }
     
@@ -52,7 +52,7 @@ public class RecyclerImageAdapter extends RecyclerView.Adapter<RecyclerImageAdap
         
         public ViewHolder(View itemView) {
             super(itemView);
-            ivImageView = (ImageView) itemView.findViewById(R.id.item_province_detail_it_photo_iv_photos);
+            ivImageView = (ImageView) itemView.findViewById(R.id.item_recycler_province_image_iv_photos);
         }
     }
 }

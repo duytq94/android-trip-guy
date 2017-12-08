@@ -2,6 +2,7 @@ package com.dfa.vinatrip.services.default_data;
 
 import com.beesightsoft.caf.services.network.NetworkProvider;
 import com.dfa.vinatrip.models.response.Province;
+import com.dfa.vinatrip.models.response.event.EventResponse;
 import com.dfa.vinatrip.models.response.food.FoodResponse;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
 import com.dfa.vinatrip.models.response.place.PlaceResponse;
@@ -30,6 +31,12 @@ public class DefaultDataService implements DataService {
     @Override
     public Observable<List<Province>> getProvinces(long page, long per_page) {
         return networkProvider.transformResponse(restDataService.getProvinces(page, per_page))
+                .compose(apiErrorFilter.execute());
+    }
+    
+    @Override
+    public Observable<List<EventResponse>> getEvents(int province_id, long page, long per_page) {
+        return networkProvider.transformResponse(restDataService.getEvents(province_id, page, per_page))
                 .compose(apiErrorFilter.execute());
     }
     
