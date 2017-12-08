@@ -15,7 +15,7 @@ import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.custom_view.NToolbar;
-import com.dfa.vinatrip.domains.province_detail.view_all.hotel.adapter.RecyclerHotelListAdapter;
+import com.dfa.vinatrip.domains.province_detail.view_all.hotel.adapter.RecyclerHotelSearchAdapter;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.Province;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
@@ -37,18 +37,14 @@ import javax.inject.Inject;
 
 import rx.subjects.PublishSubject;
 
-/**
- * Created by duonghd on 10/6/2017.
- */
-
 @SuppressLint("Registered")
-@EActivity(R.layout.activity_hotel_list)
-public class HotelListActivity extends BaseActivity<HotelListView, HotelListPresenter>
-        implements HotelListView {
+@EActivity(R.layout.activity_hotel_search)
+public class HotelSearchActivity extends BaseActivity<HotelSearchView, HotelSearchPresenter>
+        implements HotelSearchView {
     @App
     protected MainApplication mainApplication;
     @Inject
-    protected HotelListPresenter presenter;
+    protected HotelSearchPresenter presenter;
     
     @ViewById(R.id.activity_hotel_list_ll_root)
     protected LinearLayout llRoot;
@@ -63,12 +59,14 @@ public class HotelListActivity extends BaseActivity<HotelListView, HotelListPres
     protected Province province;
     
     private List<HotelResponse> hotelResponses;
-    private RecyclerHotelListAdapter hotelAdapter;
+    private RecyclerHotelSearchAdapter hotelAdapter;
     private PublishSubject<String> publishSubject;
+    private static final int page = 0;
+    private static final int per_page = 0;
     
     @AfterInject
     void initInject() {
-        DaggerHotelListComponent.builder()
+        DaggerHotelSearchComponent.builder()
                 .applicationComponent(mainApplication.getApplicationComponent())
                 .activityModule(new ActivityModule(this))
                 .build().inject(this);
@@ -81,22 +79,20 @@ public class HotelListActivity extends BaseActivity<HotelListView, HotelListPres
         
         nToolbar.setup(this, "TripGuy");
         nToolbar.showLeftIcon().showToolbarColor();
-        nToolbar.setOnLeftClickListener(v -> {
-            onBackPressed();
-        });
+        nToolbar.setOnLeftClickListener(v -> onBackPressed());
         
         hotelResponses = new ArrayList<>();
-        hotelAdapter = new RecyclerHotelListAdapter(this);
+        hotelAdapter = new RecyclerHotelSearchAdapter(this);
         rcvHotels.setHasFixedSize(true);
         rcvHotels.setLayoutManager(new LinearLayoutManager(this));
         rcvHotels.setAdapter(hotelAdapter);
         
-        presenter.getHotels(province.getId(), 0, 0);
+        presenter.getHotels(province.getId(), page, per_page);
     }
     
     private void showKeyboard() {
         KeyboardVisibility.setEventListener(this, isOpen -> {
-            if (KeyboardVisibility.isKeyboardVisible(HotelListActivity.this)) {
+            if (KeyboardVisibility.isKeyboardVisible(HotelSearchActivity.this)) {
                 Log.e("keyboard", "show");
             } else {
                 if (getCurrentFocus() != null) {
@@ -109,7 +105,7 @@ public class HotelListActivity extends BaseActivity<HotelListView, HotelListPres
     
     @NonNull
     @Override
-    public HotelListPresenter createPresenter() {
+    public HotelSearchPresenter createPresenter() {
         return presenter;
     }
     
@@ -162,7 +158,7 @@ public class HotelListActivity extends BaseActivity<HotelListView, HotelListPres
     private List<HotelResponse> filterHotel(String query) {
         List<HotelResponse> hotelFilter = new ArrayList<>();
         for (HotelResponse hotelResponse : hotelResponses) {
-            if (AppUtil.convertStringQuery(hotelResponse.getLocation()).contains(AppUtil.convertStringQuery(query)) ||
+            if (AppUtil.convertStringQuery(hotelResponse.getAddress()).contains(AppUtil.convertStringQuery(query)) ||
                     AppUtil.convertStringQuery(hotelResponse.getName()).contains(AppUtil.convertStringQuery(query))) {
                 hotelFilter.add(hotelResponse);
             }

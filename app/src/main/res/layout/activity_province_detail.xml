@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -70,16 +69,38 @@
                 android:background="@android:color/white"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/activity_province_detail_tv_featured_event"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Lễ hội trong năm"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_medium"
-                    android:textStyle="bold"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:text="Lễ hội trong năm"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/activity_province_detail_tv_view_all_event"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/bg_ntoolbar_icon_click"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="Xem tất cả"
+                        android:textColor="@color/colorMain"
+                        android:textSize="10dp"
+                        android:textStyle="italic"/>
+                </LinearLayout>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/activity_province_detail_rcv_featured_event"
@@ -90,7 +111,7 @@
                 <View
                     android:layout_width="wrap_content"
                     android:layout_height="0.66dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="20dp"
                     android:background="#c9c9c9"/>
             </LinearLayout>
 
@@ -301,7 +322,7 @@
                 <View
                     android:layout_width="wrap_content"
                     android:layout_height="0.66dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:background="#c9c9c9"/>
             </LinearLayout>
         </LinearLayout>

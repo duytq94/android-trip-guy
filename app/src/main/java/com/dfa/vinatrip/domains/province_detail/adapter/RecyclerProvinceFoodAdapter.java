@@ -21,19 +21,19 @@ import java.util.List;
  * Created by duonghd on 10/13/2017.
  */
 
-public class RecyclerFoodAdapter extends RecyclerView.Adapter<RecyclerFoodAdapter.ViewHolder> {
+public class RecyclerProvinceFoodAdapter extends RecyclerView.Adapter<RecyclerProvinceFoodAdapter.ViewHolder> {
     private Context context;
     private List<FoodResponse> foodResponses;
     
-    public RecyclerFoodAdapter(Context context, List<FoodResponse> foodResponses) {
+    public RecyclerProvinceFoodAdapter(Context context, List<FoodResponse> foodResponses) {
         this.context = context;
         this.foodResponses = foodResponses;
     }
     
     @Override
-    public RecyclerFoodAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerProvinceFoodAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.item_province_detail_it_food, parent, false);
+                R.layout.item_recycler_province_food, parent, false);
         return new ViewHolder(view);
     }
     
@@ -69,13 +69,13 @@ public class RecyclerFoodAdapter extends RecyclerView.Adapter<RecyclerFoodAdapte
         
         public ViewHolder(View itemView) {
             super(itemView);
-            llMain = (LinearLayout) itemView.findViewById(R.id.item_province_detail_it_food_ll_main);
-            cvViewAll = (CardView) itemView.findViewById(R.id.item_province_detail_it_food_cv_view_all);
-            ivFoodAvatar = (ImageView) itemView.findViewById(R.id.item_province_detail_it_food_iv_image);
-            tvFoodName = (TextView) itemView.findViewById(R.id.item_province_detail_it_food_tv_name);
-            srbFoodRate = (SimpleRatingBar) itemView.findViewById(R.id.item_province_detail_it_food_srb_rating);
-            tvFoodReviews = (TextView) itemView.findViewById(R.id.item_province_detail_it_food_tv_reviews);
-            tvFoodDistance = (TextView) itemView.findViewById(R.id.item_province_detail_it_food_tv_distance);
+            llMain = (LinearLayout) itemView.findViewById(R.id.item_recycler_province_food_ll_main);
+            cvViewAll = (CardView) itemView.findViewById(R.id.item_recycler_province_food_cv_view_all);
+            ivFoodAvatar = (ImageView) itemView.findViewById(R.id.item_recycler_province_food_iv_image);
+            tvFoodName = (TextView) itemView.findViewById(R.id.item_recycler_province_food_tv_name);
+            srbFoodRate = (SimpleRatingBar) itemView.findViewById(R.id.item_recycler_province_food_srb_rating);
+            tvFoodReviews = (TextView) itemView.findViewById(R.id.item_recycler_province_food_tv_reviews);
+            tvFoodDistance = (TextView) itemView.findViewById(R.id.item_recycler_province_food_tv_distance);
         }
     }
 }

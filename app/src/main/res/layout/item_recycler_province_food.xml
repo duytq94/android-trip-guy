@@ -6,6 +6,7 @@
     android:layout_height="150dp"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
     app:cardCornerRadius="0dp"
     app:cardElevation="0dp">
 
@@ -17,11 +18,11 @@
         android:padding="2dp">
 
         <LinearLayout
-            android:id="@+id/item_province_detail_it_place_ll_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="visible"
+            android:id="@+id/item_recycler_province_food_ll_main"
+            android:orientation="vertical">
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -30,7 +31,7 @@
                 app:cardElevation="0dp">
 
                 <ImageView
-                    android:id="@+id/item_province_detail_it_place_iv_image"
+                    android:id="@+id/item_recycler_province_food_iv_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
@@ -38,7 +39,7 @@
             </android.support.v7.widget.CardView>
 
             <TextView
-                android:id="@+id/item_province_detail_it_place_tv_name"
+                android:id="@+id/item_recycler_province_food_tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -54,11 +55,11 @@
                 android:orientation="horizontal">
 
                 <com.dfa.vinatrip.custom_view.SimpleRatingBar
-                    android:id="@+id/item_province_detail_it_place_srb_rating"
+                    android:id="@+id/item_recycler_province_food_srb_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srb_borderColor="#088b0c"
-                    app:srb_fillColor="#088b0c"
+                    app:srb_borderColor="#ff0090"
+                    app:srb_fillColor="#ff0090"
                     app:srb_isIndicator="true"
                     app:srb_numberOfStars="5"
                     app:srb_rating="3.5"
@@ -68,7 +69,7 @@
                     app:srb_stepSize="0.5"/>
 
                 <TextView
-                    android:id="@+id/item_province_detail_it_place_tv_reviews"
+                    android:id="@+id/item_recycler_province_food_tv_reviews"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -77,7 +78,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/item_province_detail_it_place_tv_distance"
+                android:id="@+id/item_recycler_province_food_tv_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -89,7 +90,7 @@
         </LinearLayout>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/item_province_detail_it_place_cv_view_all"
+            android:id="@+id/item_recycler_province_food_cv_view_all"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:visibility="gone"
@@ -108,8 +109,8 @@
                     android:layout_weight="1"/>
 
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:layout_gravity="center_horizontal"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_view_more"/>

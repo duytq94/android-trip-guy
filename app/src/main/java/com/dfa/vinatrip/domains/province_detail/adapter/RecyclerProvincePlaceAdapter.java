@@ -21,11 +21,11 @@ import java.util.List;
  * Created by duonghd on 11/3/2017.
  */
 
-public class RecyclerPlaceAdapter extends RecyclerView.Adapter<RecyclerPlaceAdapter.ViewHolder> {
+public class RecyclerProvincePlaceAdapter extends RecyclerView.Adapter<RecyclerProvincePlaceAdapter.ViewHolder> {
     private Context context;
     private List<PlaceResponse> placeResponses;
     
-    public RecyclerPlaceAdapter(Context context, List<PlaceResponse> placeResponses) {
+    public RecyclerProvincePlaceAdapter(Context context, List<PlaceResponse> placeResponses) {
         this.context = context;
         this.placeResponses = placeResponses;
     }
@@ -33,7 +33,7 @@ public class RecyclerPlaceAdapter extends RecyclerView.Adapter<RecyclerPlaceAdap
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.item_province_detail_it_place, parent, false);
+                R.layout.item_recycler_province_place, parent, false);
         return new ViewHolder(view);
     }
     
@@ -71,13 +71,13 @@ public class RecyclerPlaceAdapter extends RecyclerView.Adapter<RecyclerPlaceAdap
         
         public ViewHolder(View itemView) {
             super(itemView);
-            llMain = (LinearLayout) itemView.findViewById(R.id.item_province_detail_it_place_ll_main);
-            cvViewAll = (CardView) itemView.findViewById(R.id.item_province_detail_it_place_cv_view_all);
-            ivPlaceAvatar = (ImageView) itemView.findViewById(R.id.item_province_detail_it_place_iv_image);
-            tvPlaceName = (TextView) itemView.findViewById(R.id.item_province_detail_it_place_tv_name);
-            srbPlaceRate = (SimpleRatingBar) itemView.findViewById(R.id.item_province_detail_it_place_srb_rating);
-            tvPlaceReviews = (TextView) itemView.findViewById(R.id.item_province_detail_it_place_tv_reviews);
-            tvPlaceDistance = (TextView) itemView.findViewById(R.id.item_province_detail_it_place_tv_distance);
+            llMain = (LinearLayout) itemView.findViewById(R.id.item_recycler_province_place_ll_main);
+            cvViewAll = (CardView) itemView.findViewById(R.id.item_recycler_province_place_cv_view_all);
+            ivPlaceAvatar = (ImageView) itemView.findViewById(R.id.item_recycler_province_place_iv_image);
+            tvPlaceName = (TextView) itemView.findViewById(R.id.item_recycler_province_place_tv_name);
+            srbPlaceRate = (SimpleRatingBar) itemView.findViewById(R.id.item_recycler_province_place_srb_rating);
+            tvPlaceReviews = (TextView) itemView.findViewById(R.id.item_recycler_province_place_tv_reviews);
+            tvPlaceDistance = (TextView) itemView.findViewById(R.id.item_recycler_province_place_tv_distance);
         }
     }
 }

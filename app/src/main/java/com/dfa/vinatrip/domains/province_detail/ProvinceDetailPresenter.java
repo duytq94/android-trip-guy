@@ -20,6 +20,7 @@ public class ProvinceDetailPresenter extends BasePresenter<ProvinceDetailView> {
     private Subscription subscription2;
     private Subscription subscription3;
     private Subscription subscription4;
+    private Subscription subscription5;
     
     @Inject
     public ProvinceDetailPresenter(EventBus eventBus, DataService dataService) {
@@ -27,12 +28,34 @@ public class ProvinceDetailPresenter extends BasePresenter<ProvinceDetailView> {
         this.dataService = dataService;
     }
     
-    public void getHotels(int province_id, long page, long per_page) {
+    public void getEvents(int province_id, long page, long per_page) {
         RxScheduler.onStop(subscription1);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription1 = dataService.getHotels(province_id, page, per_page)
+        subscription1 = dataService.getEvents(province_id, page, per_page)
+                .compose(RxScheduler.applyIoSchedulers())
+                .doOnTerminate(() -> {
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                    }
+                }).subscribe(eventResponses -> {
+                    if (isViewAttached()) {
+                        getView().getEventsSuccess(eventResponses);
+                    }
+                }, throwable -> {
+                    if (isViewAttached()) {
+                        getView().apiError(throwable);
+                    }
+                });
+    }
+    
+    public void getHotels(int province_id, long page, long per_page) {
+        RxScheduler.onStop(subscription2);
+        if (isViewAttached()) {
+            getView().showLoading();
+        }
+        subscription2 = dataService.getHotels(province_id, page, per_page)
                 .compose(RxScheduler.applyIoSchedulers())
                 .doOnTerminate(() -> {
                     if (isViewAttached()) {
@@ -50,11 +73,11 @@ public class ProvinceDetailPresenter extends BasePresenter<ProvinceDetailView> {
     }
     
     public void getFoods(int province_id, long page, long per_page) {
-        RxScheduler.onStop(subscription2);
+        RxScheduler.onStop(subscription3);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription2 = dataService.getFoods(province_id, page, per_page)
+        subscription3 = dataService.getFoods(province_id, page, per_page)
                 .compose(RxScheduler.applyIoSchedulers())
                 .doOnTerminate(() -> {
                     if (isViewAttached()) {
@@ -72,11 +95,11 @@ public class ProvinceDetailPresenter extends BasePresenter<ProvinceDetailView> {
     }
     
     public void getPlaces(int province_id, long page, long per_page) {
-        RxScheduler.onStop(subscription3);
+        RxScheduler.onStop(subscription4);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription3 = dataService.getPlaces(province_id, page, per_page)
+        subscription4 = dataService.getPlaces(province_id, page, per_page)
                 .compose(RxScheduler.applyIoSchedulers())
                 .doOnTerminate(() -> {
                     if (isViewAttached()) {
@@ -94,11 +117,11 @@ public class ProvinceDetailPresenter extends BasePresenter<ProvinceDetailView> {
     }
     
     public void getImages(int province_id, long page, long per_page) {
-        RxScheduler.onStop(subscription4);
+        RxScheduler.onStop(subscription5);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription4 = dataService.getImages(province_id, page, per_page)
+        subscription5 = dataService.getImages(province_id, page, per_page)
                 .compose(RxScheduler.applyIoSchedulers())
                 .doOnTerminate(() -> {
                     if (isViewAttached()) {

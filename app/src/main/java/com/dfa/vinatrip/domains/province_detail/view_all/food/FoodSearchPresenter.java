@@ -10,16 +10,12 @@ import javax.inject.Inject;
 
 import rx.Subscription;
 
-/**
- * Created by duonghd on 10/13/2017.
- */
-
-public class FoodListPresenter extends BasePresenter<FoodListView> {
+public class FoodSearchPresenter extends BasePresenter<FoodSearchView> {
     private DataService dataService;
     private Subscription subscription;
     
     @Inject
-    public FoodListPresenter(EventBus eventBus, DataService dataService) {
+    public FoodSearchPresenter(EventBus eventBus, DataService dataService) {
         super(eventBus);
         this.dataService = dataService;
     }

@@ -17,22 +17,18 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by duonghd on 10/7/2017.
- */
-
-public class RecyclerHotelListAdapter extends RecyclerView.Adapter<RecyclerHotelListAdapter.ViewHolder> {
+public class RecyclerHotelSearchAdapter extends RecyclerView.Adapter<RecyclerHotelSearchAdapter.ViewHolder> {
     private Context context;
     private List<HotelResponse> hotelResponses;
     
-    public RecyclerHotelListAdapter(Context context) {
+    public RecyclerHotelSearchAdapter(Context context) {
         this.context = context;
         this.hotelResponses = new ArrayList<>();
     }
     
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_hotel, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_hotel_search, parent, false);
         return new ViewHolder(view);
     }
     
@@ -41,7 +37,7 @@ public class RecyclerHotelListAdapter extends RecyclerView.Adapter<RecyclerHotel
         HotelResponse hotel = hotelResponses.get(position);
         
         holder.tvHotelName.setText(hotel.getName());
-        holder.tvHotelAddress.setText(hotel.getLocation());
+        holder.tvHotelAddress.setText(hotel.getAddress());
         
         Picasso.with(context).load(hotel.getAvatar())
                 .error(R.drawable.photo_not_available)
@@ -64,12 +60,12 @@ public class RecyclerHotelListAdapter extends RecyclerView.Adapter<RecyclerHotel
         
         public ViewHolder(View itemView) {
             super(itemView);
-            ivHotelAvatar = (ImageView) itemView.findViewById(R.id.item_list_hotel_iv_avatar);
-            tvHotelName = (TextView) itemView.findViewById(R.id.item_list_hotel_tv_name);
-            tvHotelAddress = (TextView) itemView.findViewById(R.id.item_list_hotel_tv_address);
-            srbHotelRate = (SimpleRatingBar) itemView.findViewById(R.id.item_list_hotel_srb_rate);
-            tvHotelReview = (TextView) itemView.findViewById(R.id.item_list_hotel_tv_number_of_feedback);
-            tvHotelDistance = (TextView) itemView.findViewById(R.id.item_list_hotel_tv_distance);
+            ivHotelAvatar = (ImageView) itemView.findViewById(R.id.item_recycler_hotel_search_iv_avatar);
+            tvHotelName = (TextView) itemView.findViewById(R.id.item_recycler_hotel_search_tv_name);
+            tvHotelAddress = (TextView) itemView.findViewById(R.id.item_recycler_hotel_search_tv_address);
+            srbHotelRate = (SimpleRatingBar) itemView.findViewById(R.id.item_recycler_hotel_search_srb_rate);
+            tvHotelReview = (TextView) itemView.findViewById(R.id.item_recycler_hotel_search_tv_number_of_feedback);
+            tvHotelDistance = (TextView) itemView.findViewById(R.id.item_recycler_hotel_search_tv_distance);
             
             itemView.setOnClickListener(v -> {
                 HotelDetailActivity_.intent(context).hotelResponse(hotelResponses.get(getAdapterPosition())).start();

@@ -2,6 +2,7 @@ package com.dfa.vinatrip.services.default_data;
 
 import com.beesightsoft.caf.services.common.RestMessageResponse;
 import com.dfa.vinatrip.models.response.Province;
+import com.dfa.vinatrip.models.response.event.EventResponse;
 import com.dfa.vinatrip.models.response.food.FoodResponse;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
 import com.dfa.vinatrip.models.response.place.PlaceResponse;
@@ -22,6 +23,12 @@ public interface RestDataService {
     
     @GET("api/province")
     Observable<RestMessageResponse<List<Province>>> getProvinces(
+            @Query("page") long page,
+            @Query("per_page") long per_page);
+    
+    @GET("api/province/{province_id}/events")
+    Observable<RestMessageResponse<List<EventResponse>>> getEvents(
+            @Path("province_id") int province_id,
             @Query("page") long page,
             @Query("per_page") long per_page);
     

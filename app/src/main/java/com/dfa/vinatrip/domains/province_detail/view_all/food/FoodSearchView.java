@@ -9,6 +9,6 @@ import java.util.List;
  * Created by duonghd on 10/13/2017.
  */
 
-public interface FoodListView extends BaseMvpView {
+public interface FoodSearchView extends BaseMvpView {
     void getFoodsSuccess(List<FoodResponse> foodResponses);
 }
