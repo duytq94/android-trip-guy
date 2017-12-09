@@ -268,7 +268,8 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/activity_detail_plan_rv_schedule"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>

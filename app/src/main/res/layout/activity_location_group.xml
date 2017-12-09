@@ -13,6 +13,18 @@
         >
 
         <ImageView
+            android:id="@+id/activity_location_group_iv_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/bg_ntoolbar_icon_click"
+            android:clickable="true"
+            android:padding="7dp"
+            android:src="@drawable/ic_arrow_back_white_24dp"/>
+
+        <ImageView
             android:id="@+id/activity_location_group_iv_info"
             android:layout_width="56dp"
             android:layout_height="56dp"

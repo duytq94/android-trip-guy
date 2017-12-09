@@ -191,6 +191,11 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
         }
     }
 
+    @Click(R.id.activity_location_group_iv_back)
+    public void onIvBackClick() {
+        onBackPressed();
+    }
+
     public void requestPermission() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
