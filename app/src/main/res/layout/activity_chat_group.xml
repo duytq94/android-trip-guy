@@ -103,6 +103,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/activity_chat_group_ll_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#dddddd"

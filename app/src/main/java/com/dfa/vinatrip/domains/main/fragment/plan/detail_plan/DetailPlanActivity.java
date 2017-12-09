@@ -134,7 +134,7 @@ public class DetailPlanActivity extends BaseActivity<DetailPlanView, DetailPlanP
     }
 
     public void setupAdapterSchedule() {
-        ScheduleAdapter adapter = new ScheduleAdapter(plan.getPlanScheduleList(), this);
+        ScheduleAdapter adapter = new ScheduleAdapter(plan.getPlanScheduleList(), plan, this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setReverseLayout(true);
 

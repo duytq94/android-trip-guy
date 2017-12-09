@@ -224,5 +224,6 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
     public void getImagesSuccess(List<ProvinceImageResponse> provinceImageResponses) {
         this.imageResponses.addAll(provinceImageResponses);
         this.imageAdapter.notifyDataSetChanged();
+        this.imageAdapter.setListTempUrl();
     }
 }

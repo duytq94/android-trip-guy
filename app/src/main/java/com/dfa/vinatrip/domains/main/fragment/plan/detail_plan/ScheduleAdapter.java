@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.PlanSchedule;
 import com.dfa.vinatrip.utils.AppUtil;
 
@@ -23,10 +24,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
 
     private List<PlanSchedule> planScheduleList;
     private Context context;
+    private Plan plan;
 
-    public ScheduleAdapter(List<PlanSchedule> planScheduleList, Context context) {
+    public ScheduleAdapter(List<PlanSchedule> planScheduleList, Plan plan, Context context) {
         this.planScheduleList = planScheduleList;
         this.context = context;
+        this.plan = plan;
     }
 
     @Override
@@ -57,8 +60,10 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         if ((position == planScheduleList.size() - 1)
                 && (planSchedule.getTimestamp() + MILLISECOND_IN_DAY) < System.currentTimeMillis()) {
             holder.llFinish.setVisibility(View.VISIBLE);
+            plan.setExpired(true);
         } else {
             holder.llFinish.setVisibility(View.GONE);
+            plan.setExpired(false);
         }
     }
 

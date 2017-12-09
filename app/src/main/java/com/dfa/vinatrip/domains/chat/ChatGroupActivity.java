@@ -110,6 +110,8 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     protected RecyclerView rvSticker;
     @ViewById(R.id.activity_chat_group_ll_sticker)
     protected LinearLayout llSticker;
+    @ViewById(R.id.activity_chat_group_ll_input)
+    protected LinearLayout llInput;
 
     private ArrayList<Uri> photoSelectedList;
     private QuickAdapter<Uri> photoSelectedAdapter;
@@ -173,49 +175,54 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
 
             presenter.getHistory(plan.getId(), 1, PAGE_SIZE);
 
-            socket.on(RECEIVE_MESSAGE, args -> {
-                BaseMessage baseMessage = gson.fromJson(args[0].toString(), BaseMessage.class);
-                baseMessageList.add(baseMessage);
-                runOnUiThread(() -> {
-                    chatGroupAdapter.notifyDataSetChanged();
-                    rvList.scrollToPosition(baseMessageList.size() - 1);
+            if (plan.isExpired()) {
+                llInput.setVisibility(View.GONE);
+            } else {
+                llInput.setVisibility(View.VISIBLE);
+
+                socket.on(RECEIVE_MESSAGE, args -> {
+                    BaseMessage baseMessage = gson.fromJson(args[0].toString(), BaseMessage.class);
+                    baseMessageList.add(baseMessage);
+                    runOnUiThread(() -> {
+                        chatGroupAdapter.notifyDataSetChanged();
+                        rvList.scrollToPosition(baseMessageList.size() - 1);
+                    });
                 });
-            });
 
-            socket.on(A_USER_JOIN_ROOM, args -> {
-                for (int i = 0; i < plan.getInvitedFriendList().size(); i++) {
-                    UserInPlan userInPlan = plan.getInvitedFriendList().get(i);
-                    JSONObject jsonObject = (JSONObject) args[0];
-                    String email = "";
-                    try {
-                        email = jsonObject.getString(EMAIL);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                socket.on(A_USER_JOIN_ROOM, args -> {
+                    for (int i = 0; i < plan.getInvitedFriendList().size(); i++) {
+                        UserInPlan userInPlan = plan.getInvitedFriendList().get(i);
+                        JSONObject jsonObject = (JSONObject) args[0];
+                        String email = "";
+                        try {
+                            email = jsonObject.getString(EMAIL);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (userInPlan.getEmail().equals(email)) {
+                            userInPlan.setIsOnline(1);
+                            break;
+                        }
                     }
-                    if (userInPlan.getEmail().equals(email)) {
-                        userInPlan.setIsOnline(1);
-                        break;
-                    }
-                }
-            });
+                });
 
-            socket.on(A_USER_LEAVE_ROOM, args -> {
-                for (int i = 0; i < plan.getInvitedFriendList().size(); i++) {
-                    UserInPlan userInPlan = plan.getInvitedFriendList().get(i);
-                    JSONObject jsonObject = (JSONObject) args[0];
-                    String email = "";
-                    try {
-                        email = jsonObject.getString(EMAIL);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                socket.on(A_USER_LEAVE_ROOM, args -> {
+                    for (int i = 0; i < plan.getInvitedFriendList().size(); i++) {
+                        UserInPlan userInPlan = plan.getInvitedFriendList().get(i);
+                        JSONObject jsonObject = (JSONObject) args[0];
+                        String email = "";
+                        try {
+                            email = jsonObject.getString(EMAIL);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (userInPlan.getEmail().equals(email)) {
+                            userInPlan.setIsOnline(0);
+                            break;
+                        }
                     }
-                    if (userInPlan.getEmail().equals(email)) {
-                        userInPlan.setIsOnline(0);
-                        break;
-                    }
-                }
-            });
-
+                });
+            }
         } catch (URISyntaxException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }

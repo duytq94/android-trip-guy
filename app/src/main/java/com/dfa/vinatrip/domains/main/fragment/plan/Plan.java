@@ -31,6 +31,7 @@ public class Plan implements Serializable {
     private String usernameUserMakePlan;
     @SerializedName("invited_friend_list")
     private List<UserInPlan> invitedFriendList;
+    private boolean isExpired = false;
 
     public Plan(String name, String destination, String dateGo, String dateBack, int idBackground,
                 List<PlanSchedule> planScheduleList, long idUserMakePlan, String emailUserMakePlan,
@@ -46,6 +47,15 @@ public class Plan implements Serializable {
         this.avatarUserMakePlan = avatarUserMakePlan;
         this.usernameUserMakePlan = usernameUserMakePlan;
         this.invitedFriendList = invitedFriendList;
+    }
+
+
+    public boolean isExpired() {
+        return isExpired;
+    }
+
+    public void setExpired(boolean expired) {
+        isExpired = expired;
     }
 
     public String getEmailUserMakePlan() {

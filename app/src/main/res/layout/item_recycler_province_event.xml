@@ -36,6 +36,14 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/photo_not_available"/>
 
+                <com.dfa.vinatrip.widgets.RotateLoading
+                    android:id="@+id/item_recycler_province_event_rotate_loading"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    app:loading_width="3dp"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"

@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.domains.province_detail.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,7 +17,11 @@ import com.dfa.vinatrip.domains.province_detail.view_all.hotel.HotelSearchActivi
 import com.dfa.vinatrip.domains.province_detail.view_all.hotel.hotel_detail.HotelDetailActivity_;
 import com.dfa.vinatrip.models.response.Province;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
-import com.squareup.picasso.Picasso;
+import com.dfa.vinatrip.widgets.RotateLoading;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
 
@@ -24,11 +29,23 @@ public class RecyclerProvinceHotelAdapter extends RecyclerView.Adapter<RecyclerP
     private Context context;
     private Province province;
     private List<HotelResponse> hotelResponses;
-    
+    private ImageLoader imageLoader;
+    private DisplayImageOptions imageOptions;
+
     public RecyclerProvinceHotelAdapter(Context context, Province province, List<HotelResponse> hotelResponses) {
         this.context = context;
         this.province = province;
         this.hotelResponses = hotelResponses;
+        imageLoader = ImageLoader.getInstance();
+        imageOptions = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.bg_green)
+                .showImageForEmptyUri(R.drawable.photo_not_available)
+                .showImageOnFail(R.drawable.photo_not_available)
+                .resetViewBeforeLoading(true)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .bitmapConfig(Bitmap.Config.ARGB_4444)
+                .build();
     }
     
     @Override
@@ -45,9 +62,32 @@ public class RecyclerProvinceHotelAdapter extends RecyclerView.Adapter<RecyclerP
             holder.llMain.setVisibility(View.VISIBLE);
             holder.cvViewAll.setVisibility(View.GONE);
             holder.tvHotelName.setText(hotel.getName());
-            Picasso.with(context).load(hotel.getAvatar())
-                    .error(R.drawable.photo_not_available)
-                    .into(holder.ivHotelAvatar);
+
+            imageLoader.displayImage(hotel.getAvatar(), holder.ivHotelAvatar, imageOptions, new ImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String imageUri, View view) {
+                    holder.rotateLoading.setVisibility(View.VISIBLE);
+                    holder.rotateLoading.start();
+                }
+
+                @Override
+                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                    holder.rotateLoading.setVisibility(View.GONE);
+                    holder.rotateLoading.stop();
+                }
+
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    holder.rotateLoading.setVisibility(View.GONE);
+                    holder.rotateLoading.stop();
+                }
+
+                @Override
+                public void onLoadingCancelled(String imageUri, View view) {
+                    holder.rotateLoading.setVisibility(View.GONE);
+                    holder.rotateLoading.stop();
+                }
+            });
         } else {
             holder.llMain.setVisibility(View.GONE);
             holder.cvViewAll.setVisibility(View.VISIBLE);
@@ -67,7 +107,8 @@ public class RecyclerProvinceHotelAdapter extends RecyclerView.Adapter<RecyclerP
         private SimpleRatingBar srbHotelRate;
         private TextView tvHotelReviews;
         private TextView tvHotelDistance;
-        
+        private RotateLoading rotateLoading;
+
         public ViewHolder(View itemView) {
             super(itemView);
             llMain = (LinearLayout) itemView.findViewById(R.id.item_recycler_province_hotel_ll_main);
@@ -77,7 +118,8 @@ public class RecyclerProvinceHotelAdapter extends RecyclerView.Adapter<RecyclerP
             srbHotelRate = (SimpleRatingBar) itemView.findViewById(R.id.item_recycler_province_hotel_srb_rating);
             tvHotelReviews = (TextView) itemView.findViewById(R.id.item_recycler_province_hotel_tv_reviews);
             tvHotelDistance = (TextView) itemView.findViewById(R.id.item_recycler_province_hotel_tv_distance);
-            
+            rotateLoading = (RotateLoading) itemView.findViewById(R.id.item_recycler_province_hotel_rotate_loading);
+
             itemView.setOnClickListener(v -> {
                 if (getAdapterPosition() == hotelResponses.size() - 1) {
                     HotelSearchActivity_.intent(context)
