@@ -21,6 +21,7 @@ import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.dfa.vinatrip.domains.main.fragment.plan.make_plan.PlanSchedule;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.user.User;
+import com.dfa.vinatrip.video_call.LoginVideoCallActivity_;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -165,11 +166,20 @@ public class DetailPlanActivity extends BaseActivity<DetailPlanView, DetailPlanP
     }
 
     @Click(R.id.activity_detail_plan_ll_location_group)
-    public void onLlLocationGroup() {
+    public void onLlLocationGroupClick() {
         LocationGroupActivity_.intent(this).plan(plan).start();
     }
 
+    @Click(R.id.activity_detail_plan_ll_video_call)
+    public void onLlVideoCallClick() {
+        LoginVideoCallActivity_.intent(this)
+                .plan(plan)
+                .currentUser(presenter.getCurrentUser())
+                .start();
+    }
+
     @Override
+
     public void showLoading() {
         showHUD();
     }

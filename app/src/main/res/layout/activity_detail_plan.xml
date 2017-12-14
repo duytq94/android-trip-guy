@@ -293,14 +293,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:text="Thảo luận"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_large"/>
+                android:textSize="@dimen/text_medium"/>
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:padding="3dp"
                 android:src="@drawable/ic_chat"/>
@@ -320,17 +319,42 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="25dp"
                 android:gravity="center"
                 android:text="Vị trí nhóm"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/text_large"/>
+                android:textSize="@dimen/text_medium"/>
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="25dp"
                 android:layout_height="match_parent"
                 android:padding="3dp"
                 android:src="@drawable/ic_location"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_detail_plan_ll_video_call"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="7dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_positive"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Gọi thoại"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_medium"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:padding="3dp"
+                android:src="@drawable/ic_video_call"/>
 
         </LinearLayout>
     </LinearLayout>
