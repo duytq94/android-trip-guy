@@ -2,7 +2,6 @@ package com.dfa.vinatrip.video_call;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Build;
 import android.widget.Toast;
 
@@ -16,7 +15,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 
 @EActivity(R.layout.activity_login_video_call)
-public class LoginVideoCallActivity extends BaseActivity implements SinchService.StartFailedListener {
+public class LoginVideoCallActivity extends BaseVideoCallActivity implements SinchService.StartFailedListener {
 
     @Extra
     protected Plan plan;
@@ -76,8 +75,7 @@ public class LoginVideoCallActivity extends BaseActivity implements SinchService
 
     //Once the connection is made to the Sinch Service, It takes you to the next activity where you enter the name of the user to whom the call is to be placed
     private void openPlaceCallActivity() {
-        Intent mainActivity = new Intent(this, PlaceCallActivity.class);
-        startActivity(mainActivity);
+        PlaceCallActivity_.intent(this).currentUser(currentUser).plan(plan).start();
     }
 
     private void showSpinner() {

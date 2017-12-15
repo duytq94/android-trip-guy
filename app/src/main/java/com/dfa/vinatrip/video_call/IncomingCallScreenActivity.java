@@ -14,7 +14,7 @@ import com.sinch.android.rtc.video.VideoCallListener;
 
 import java.util.List;
 
-public class IncomingCallScreenActivity extends BaseActivity {
+public class IncomingCallScreenActivity extends BaseVideoCallActivity {
 
     static final String TAG = IncomingCallScreenActivity.class.getSimpleName();
     private String mCallId;

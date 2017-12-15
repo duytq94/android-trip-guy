@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
  * Created by duytq on 12/13/2017.
  */
 
-public class BaseActivity extends AppCompatActivity implements ServiceConnection {
+public class BaseVideoCallActivity extends AppCompatActivity implements ServiceConnection {
     private SinchService.SinchServiceInterface mSinchServiceInterface;
 
     @Override

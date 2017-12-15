@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +22,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class CallScreenActivity extends BaseActivity {
+public class CallScreenActivity extends BaseVideoCallActivity {
 
     static final String TAG = CallScreenActivity.class.getSimpleName();
     static final String CALL_START_TIME = "callStartTime";
@@ -43,15 +42,9 @@ public class CallScreenActivity extends BaseActivity {
     private TextView mCallerName;
 
     private class UpdateCallDurationTask extends TimerTask {
-
         @Override
         public void run() {
-            CallScreenActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    updateCallDuration();
-                }
-            });
+            CallScreenActivity.this.runOnUiThread(() -> updateCallDuration());
         }
     }
 
@@ -77,14 +70,9 @@ public class CallScreenActivity extends BaseActivity {
         mCallDuration = (TextView) findViewById(R.id.callDuration);
         mCallerName = (TextView) findViewById(R.id.remoteUser);
         mCallState = (TextView) findViewById(R.id.callState);
-        Button endCallButton = (Button) findViewById(R.id.hangupButton);
+        Button endCallButton = (Button) findViewById(R.id.activity_call_screen_btn_end_call);
 
-        endCallButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                endCall();
-            }
-        });
+        endCallButton.setOnClickListener(v -> endCall());
 
         mCallId = getIntent().getStringExtra(SinchService.CALL_ID);
         if (savedInstanceState == null) {
@@ -192,7 +180,7 @@ public class CallScreenActivity extends BaseActivity {
                 }
             });
 
-            LinearLayout view = (LinearLayout) findViewById(R.id.remoteVideo);
+            RelativeLayout view = (RelativeLayout) findViewById(R.id.remoteVideo);
             view.addView(vc.getRemoteView());
             mVideoViewsAdded = true;
         }
@@ -206,7 +194,7 @@ public class CallScreenActivity extends BaseActivity {
 
         VideoController vc = getSinchServiceInterface().getVideoController();
         if (vc != null) {
-            LinearLayout view = (LinearLayout) findViewById(R.id.remoteVideo);
+            RelativeLayout view = (RelativeLayout) findViewById(R.id.remoteVideo);
             view.removeView(vc.getRemoteView());
 
             RelativeLayout localView = (RelativeLayout) findViewById(R.id.localVideo);
