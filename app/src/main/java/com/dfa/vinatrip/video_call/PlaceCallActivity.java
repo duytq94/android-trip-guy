@@ -2,6 +2,9 @@ package com.dfa.vinatrip.video_call;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +23,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.sinch.android.rtc.calling.Call;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
@@ -34,7 +38,9 @@ public class PlaceCallActivity extends BaseVideoCallActivity {
     @Extra
     protected User currentUser;
 
-    @ViewById(R.id.activity_place_call_video_call_lv_user)
+    @ViewById(R.id.my_toolbar)
+    protected Toolbar toolbar;
+    @ViewById(R.id.activity_place_call_lv_user)
     protected ListView lvUser;
 
     private QuickAdapter<UserInPlan> adapter;
@@ -43,6 +49,8 @@ public class PlaceCallActivity extends BaseVideoCallActivity {
 
     @AfterViews
     public void init() {
+        setupAppBar();
+
         imageLoader = ImageLoader.getInstance();
         imageOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.ic_avatar)
@@ -62,24 +70,22 @@ public class PlaceCallActivity extends BaseVideoCallActivity {
                 TextView tvNickname = helper.getView(R.id.item_user_online_vertical_tv_nickname);
                 TextView tvEmail = helper.getView(R.id.item_user_online_vertical_tv_email);
                 TextView tvType = helper.getView(R.id.item_user_online_tv_type);
+                LinearLayout llRoot = helper.getView(R.id.item_user_online_ll_root);
 
                 imageLoader.displayImage(item.getAvatar(), civAvatar, imageOptions);
                 if (item.getUsername().equals(currentUser.getUsername())) {
-                    tvNickname.setText("Tôi");
+                    llRoot.setVisibility(View.GONE);
                 } else {
+                    llRoot.setVisibility(View.VISIBLE);
                     tvNickname.setText(item.getUsername());
                 }
                 tvEmail.setText(item.getEmail());
-                if (item.getIsOnline() == 1 || item.getEmail().equals(currentUser.getEmail())) {
-                    ivIndicator.setVisibility(View.VISIBLE);
-                    tvType.setText("Online");
-                } else {
-                    ivIndicator.setVisibility(View.GONE);
-                    tvType.setText("Offline");
-                }
-                LinearLayout llRoot = helper.getView(R.id.item_user_online_ll_root);
+
+                ivIndicator.setVisibility(View.GONE);
+                tvType.setVisibility(View.GONE);
+
                 llRoot.setOnClickListener(v -> {
-                    callButtonClicked(item.getEmail());
+                    callSomeone(item.getEmail());
                 });
             }
         };
@@ -104,7 +110,8 @@ public class PlaceCallActivity extends BaseVideoCallActivity {
     }
 
     //to kill the current session of SinchService
-    private void stopButtonClicked() {
+    @Click(R.id.activity_place_call_ll_stop)
+    public void onBtnCallStopClick() {
         if (getSinchServiceInterface() != null) {
             getSinchServiceInterface().stopClient();
         }
@@ -112,9 +119,9 @@ public class PlaceCallActivity extends BaseVideoCallActivity {
     }
 
     //to place the call to the entered name
-    private void callButtonClicked(String username) {
+    public void callSomeone(String username) {
         if (username.isEmpty()) {
-            Toast.makeText(this, "Please enter a user to call", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Không có dữ liệu cho user này", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -124,5 +131,25 @@ public class PlaceCallActivity extends BaseVideoCallActivity {
         Intent callScreen = new Intent(this, CallScreenActivity.class);
         callScreen.putExtra(SinchService.CALL_ID, callId);
         startActivity(callScreen);
+    }
+
+    public void setupAppBar() {
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Gọi thoại");
+
+            // Set button back
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+        return false;
     }
 }

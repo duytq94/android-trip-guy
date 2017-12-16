@@ -35,7 +35,7 @@ public class LoginVideoCallActivity extends BaseVideoCallActivity implements Sin
     //this method is invoked when the connection is established with the SinchService
     @Override
     protected void onServiceConnected() {
-        loginClicked();
+        loginSinch();
         getSinchServiceInterface().setStartListener(this);
     }
 
@@ -62,7 +62,7 @@ public class LoginVideoCallActivity extends BaseVideoCallActivity implements Sin
     }
 
     //Login is Clicked to manually to connect to the Sinch Service
-    private void loginClicked() {
+    private void loginSinch() {
         if (!currentUser.getEmail().isEmpty()) {
             if (!getSinchServiceInterface().isStarted()) {
                 getSinchServiceInterface().startClient(currentUser.getEmail());
@@ -76,12 +76,13 @@ public class LoginVideoCallActivity extends BaseVideoCallActivity implements Sin
     //Once the connection is made to the Sinch Service, It takes you to the next activity where you enter the name of the user to whom the call is to be placed
     private void openPlaceCallActivity() {
         PlaceCallActivity_.intent(this).currentUser(currentUser).plan(plan).start();
+        finish();
     }
 
     private void showSpinner() {
         mSpinner = new ProgressDialog(this);
-        mSpinner.setTitle("Logging in");
-        mSpinner.setMessage("Please wait...");
+        mSpinner.setTitle("Đang kết nối");
+        mSpinner.setMessage("Xin chờ trong giây lát...");
         mSpinner.show();
     }
 }
