@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
@@ -25,9 +25,9 @@ public class IncomingCallScreenActivity extends BaseVideoCallActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_incoming_call_screen);
 
-        Button answer = (Button) findViewById(R.id.answerButton);
+        LinearLayout answer = (LinearLayout) findViewById(R.id.activity_incoming_call_screen_ll_answer);
         answer.setOnClickListener(mClickListener);
-        Button decline = (Button) findViewById(R.id.declineButton);
+        LinearLayout decline = (LinearLayout) findViewById(R.id.activity_incoming_call_screen_ll_cancel);
         decline.setOnClickListener(mClickListener);
 
         mAudioPlayer = new AudioPlayer(this);
@@ -106,10 +106,10 @@ public class IncomingCallScreenActivity extends BaseVideoCallActivity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.answerButton:
+                case R.id.activity_incoming_call_screen_ll_answer:
                     answerClicked();
                     break;
-                case R.id.declineButton:
+                case R.id.activity_incoming_call_screen_ll_cancel:
                     declineClicked();
                     break;
             }

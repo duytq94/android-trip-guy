@@ -4,7 +4,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,7 +70,7 @@ public class CallScreenActivity extends BaseVideoCallActivity {
         mCallDuration = (TextView) findViewById(R.id.callDuration);
         mCallerName = (TextView) findViewById(R.id.remoteUser);
         mCallState = (TextView) findViewById(R.id.callState);
-        Button endCallButton = (Button) findViewById(R.id.activity_call_screen_btn_end_call);
+        LinearLayout endCallButton = (LinearLayout) findViewById(R.id.activity_call_screen_btn_end_call);
 
         endCallButton.setOnClickListener(v -> endCall());
 

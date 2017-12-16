@@ -3,13 +3,11 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="#ffffffff"
-              android:orientation="vertical"
-              android:weightSum="5">
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="100dp"
         android:background="#fffafafa"
         android:orientation="vertical">
 
@@ -36,36 +34,60 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="1"
         android:background="@android:color/darker_gray"
         android:contentDescription="Call background"
         android:padding="0dip">
 
     </ImageView>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/bottomPanel"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_weight="1"
-        android:gravity="center">
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/answerButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Answer"
-            android:textSize="20sp"/>
+        <LinearLayout
+            android:id="@+id/activity_incoming_call_screen_ll_answer"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_margin="7dp"
+            android:background="@drawable/btn_positive"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/declineButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/answerButton"
-            android:text="Cancel"
-            android:textSize="20sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="TRẢ LỜI"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_medium"/>
 
-    </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_incoming_call_screen_ll_cancel"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_margin="7dp"
+            android:background="@drawable/btn_negative"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="HỦY"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_medium"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
