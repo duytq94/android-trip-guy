@@ -100,6 +100,16 @@ public class IncomingCallScreenActivity extends BaseVideoCallActivity {
         public void onVideoTrackAdded(Call call) {
             // Display some kind of icon showing it's a video call
         }
+
+        @Override
+        public void onVideoTrackPaused(Call call) {
+
+        }
+
+        @Override
+        public void onVideoTrackResumed(Call call) {
+
+        }
     }
 
     private View.OnClickListener mClickListener = new View.OnClickListener() {

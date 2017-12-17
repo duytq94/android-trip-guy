@@ -245,5 +245,15 @@ public class CallScreenActivity extends BaseVideoCallActivity {
             Log.d(TAG, "Video track added");
             addVideoViews();
         }
+
+        @Override
+        public void onVideoTrackPaused(Call call) {
+
+        }
+
+        @Override
+        public void onVideoTrackResumed(Call call) {
+
+        }
     }
 }

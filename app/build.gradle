@@ -77,7 +77,14 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
+    compile(name: 'sinch-android-rtc', version: '+', ext: 'aar')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
@@ -88,6 +95,7 @@ dependencies {
 
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:support-v4:25.+'
 
     // Google Firebase
     compile 'com.google.firebase:firebase-storage:10.0.1'
@@ -153,7 +161,4 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
 }
 // this line has to put out of dependencies so app can run Google Map
-dependencies {
-    compile 'com.android.support:support-v4:25.+'
-}
 apply plugin: 'com.google.gms.google-services'
