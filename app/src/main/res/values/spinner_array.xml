@@ -10,6 +10,8 @@
         <item>Ẩm thực</item>
         <item>Tham quan</item>
     </string-array>
+
+    // For fragment deal
     <string-array name="range_price">
         <item>Tất cả loại giá</item>
         <item>Dưới 2tr</item>
@@ -23,4 +25,19 @@
         <item>2 &#8211; 4 ngày</item>
         <item>4 &#8211; 6 ngày</item>
     </string-array>
+
+    // For fragment trend
+    <string-array name="season">
+        <item>Xuân</item>
+        <item>Hạ</item>
+        <item>Thu</item>
+        <item>Đông</item>
+    </string-array>
+    <string-array name="type_travel">
+        <item>Cao nguyên</item>
+        <item>Bãi biển</item>
+        <item>Thành phố</item>
+        <item>Sông nước</item>
+    </string-array>
+
 </resources>

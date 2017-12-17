@@ -112,6 +112,8 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
     protected LinearLayout llSticker;
     @ViewById(R.id.activity_chat_group_ll_input)
     protected LinearLayout llInput;
+    @ViewById(R.id.activity_chat_group_ll_no_message)
+    protected LinearLayout llNoMessage;
 
     private ArrayList<Uri> photoSelectedList;
     private QuickAdapter<Uri> photoSelectedAdapter;
@@ -433,6 +435,9 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 baseMessageList.add(baseMessage);
                 chatGroupAdapter.notifyDataSetChanged();
                 rvList.scrollToPosition(baseMessageList.size() - 1);
+                if (llNoMessage.getVisibility() == View.VISIBLE) {
+                    llNoMessage.setVisibility(View.GONE);
+                }
                 break;
 
             case image:
@@ -477,14 +482,19 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
 
     @Override
     public void getHistorySuccess(List<BaseMessage> baseMessageList, int page) {
-        if (page < 1) {
-            this.baseMessageList.clear();
-            this.baseMessageList.addAll(baseMessageList);
+        if (page < 2) {
+            if (baseMessageList.size() > 0) {
+                this.baseMessageList.clear();
+                this.baseMessageList.addAll(baseMessageList);
+                llNoMessage.setVisibility(View.GONE);
+            } else {
+                llNoMessage.setVisibility(View.VISIBLE);
+            }
         } else {
             this.baseMessageList.addAll(0, baseMessageList);
-            chatGroupAdapter.notifyDataSetChanged();
-            rvList.scrollToPosition(baseMessageList.size() - 1);
         }
+        chatGroupAdapter.notifyDataSetChanged();
+        rvList.scrollToPosition(baseMessageList.size() - 1);
     }
 
     @Override

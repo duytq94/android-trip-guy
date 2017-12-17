@@ -113,8 +113,24 @@ public class MakeFriendFragment extends BaseFragment<MakeFriendView, MakeFriendP
                 this.userList.clear();
             }
             this.userList.addAll(userList);
+            filterUser();
             adapter.setListUser(this.userList);
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    public void filterUser() {
+        // Remove the user send request to current user and the user be friend
+        for (int i = userList.size() - 1; i >= 0; i--) {
+            User user = userList.get(i);
+            if (user.getFriendStatus() == null ||
+                    (user.getFriendStatus().getStatus() == 1 &&
+                            user.getFriendStatus().getIdUserRequest() == presenter.getCurrentUser().getId())) {
+
+            } else {
+                userList.remove(i);
+            }
+
         }
     }
 

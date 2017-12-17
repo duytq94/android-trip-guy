@@ -91,8 +91,20 @@ public class PlaceCallActivity extends BaseVideoCallActivity {
         };
         lvUser.setAdapter(adapter);
 
-        adapter.addAll(plan.getInvitedFriendList());
+        Plan planClone = plan;
+        filterUser(planClone);
+        adapter.addAll(planClone.getInvitedFriendList());
         adapter.notifyDataSetChanged();
+    }
+
+    public void filterUser(Plan planClone) {
+        // Remove current user
+        for (int i = planClone.getInvitedFriendList().size() - 1; i >= 0; i--) {
+            if (planClone.getInvitedFriendList().get(i).getEmail().equals(currentUser.getEmail())) {
+                planClone.getInvitedFriendList().remove(i);
+                break;
+            }
+        }
     }
 
     // invoked when the connection with SinchServer is established

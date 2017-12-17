@@ -5,6 +5,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +40,10 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
     protected TextView tvNoContent;
     @ViewById(R.id.fragment_trend_sv)
     protected SearchView searchView;
+    @ViewById(R.id.fragment_trend_sp_season)
+    protected Spinner spSeason;
+    @ViewById(R.id.fragment_trend_sp_type)
+    protected Spinner spType;
 
     private TrendAdapter adapter;
     private String strQuery = "";
@@ -59,6 +66,7 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
     public void init() {
         setupAdapter();
         setupSearch();
+        setupSpinner();
         presenter.getTrend(strQuery, 1, PAGE_SIZE);
     }
 
@@ -102,6 +110,56 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
                     strQuery = "";
                 }
                 return false;
+            }
+        });
+    }
+
+    public void setupSpinner() {
+        ArrayAdapter<CharSequence> seasonAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.season, R.layout.item_spinner_deal);
+        spSeason.setAdapter(seasonAdapter);
+        spSeason.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.type_travel, R.layout.item_spinner_deal);
+        spType.setAdapter(typeAdapter);
+        spType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
