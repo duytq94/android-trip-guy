@@ -23,6 +23,12 @@ public class Trend implements Serializable {
     private int countView;
     @SerializedName("from_website")
     private String fromWebsite;
+    // -1 is all, 0 is spring, 1 is summer, 2 is autumn, 3 is winter
+    @SerializedName("season")
+    private int season;
+    // -1 is all, 0 is highland, 1 is beach, 2 is city, 3 is river
+    @SerializedName("type")
+    private int type;
 
     public String getFromWebsite() {
         return fromWebsite;
@@ -78,5 +84,21 @@ public class Trend implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public int getSeason() {
+        return season;
+    }
+
+    public void setSeason(int season) {
+        this.season = season;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

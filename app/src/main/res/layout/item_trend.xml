@@ -27,6 +27,13 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/bg_test5"/>
 
+            <ImageView
+                android:id="@+id/item_trend_iv_symbol_season"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/bg_transparent_corner"
+                android:src="@drawable/ic_autumn"/>
+
             <LinearLayout
                 android:layout_width="55dp"
                 android:layout_height="25dp"

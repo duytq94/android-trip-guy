@@ -19,6 +19,8 @@ public interface RestTrendService {
     @GET("trend")
     Observable<RestMessageResponse<List<Trend>>> getTrend(
             @Query("where") String where,
+            @Query("season") int season,
+            @Query("type") int type,
             @Query("page") int page,
             @Query("pageSize") int pageSize
     );

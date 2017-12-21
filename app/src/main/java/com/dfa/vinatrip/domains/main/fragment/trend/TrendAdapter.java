@@ -63,6 +63,29 @@ public class TrendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         trendHolder.tvCountView.setText(String.valueOf(trend.getCountView()));
         trendHolder.tvTitle.setText(trend.getTitle());
         trendHolder.tvIntro.setText(Html.fromHtml(trend.getIntro()));
+
+        switch (trend.getSeason()) {
+            case -1:
+                trendHolder.ivSymbolSeason.setVisibility(View.GONE);
+                break;
+            case 0:
+                trendHolder.ivSymbolSeason.setVisibility(View.VISIBLE);
+                trendHolder.ivSymbolSeason.setImageResource(R.drawable.ic_spring);
+                break;
+            case 1:
+                trendHolder.ivSymbolSeason.setVisibility(View.VISIBLE);
+                trendHolder.ivSymbolSeason.setImageResource(R.drawable.ic_summer);
+                break;
+            case 2:
+                trendHolder.ivSymbolSeason.setVisibility(View.VISIBLE);
+                trendHolder.ivSymbolSeason.setImageResource(R.drawable.ic_autumn);
+                break;
+            case 3:
+                trendHolder.ivSymbolSeason.setVisibility(View.VISIBLE);
+                trendHolder.ivSymbolSeason.setImageResource(R.drawable.ic_winter);
+                break;
+        }
+
         imageLoader.displayImage(background, trendHolder.ivBackground, imageOptions, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
@@ -113,7 +136,7 @@ public class TrendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public class TrendHolder extends RecyclerView.ViewHolder {
 
-        ImageView ivBackground;
+        ImageView ivBackground, ivSymbolSeason;
         TextView tvTitle, tvIntro, tvCountView;
         RotateLoading rotateLoading;
         LinearLayout llRoot;
@@ -126,6 +149,7 @@ public class TrendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             rotateLoading = (RotateLoading) itemView.findViewById(R.id.item_trend_rotate_loading);
             llRoot = (LinearLayout) itemView.findViewById(R.id.item_trend_ll_root);
             tvCountView = (TextView) itemView.findViewById(R.id.item_trend_tv_count_view);
+            ivSymbolSeason = (ImageView) itemView.findViewById(R.id.item_trend_iv_symbol_season);
         }
     }
 }

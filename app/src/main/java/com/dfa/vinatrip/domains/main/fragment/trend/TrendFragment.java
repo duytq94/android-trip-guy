@@ -47,6 +47,8 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
 
     private TrendAdapter adapter;
     private String strQuery = "";
+    private int season = -1;
+    private int type = -1;
 
     @App
     protected MainApplication mainApplication;
@@ -67,7 +69,7 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
         setupAdapter();
         setupSearch();
         setupSpinner();
-        presenter.getTrend(strQuery, 1, PAGE_SIZE);
+        presenter.getTrend(strQuery, season, type, 1, PAGE_SIZE);
     }
 
     public void setupAdapter() {
@@ -81,14 +83,15 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                presenter.getTrend(strQuery, page, PAGE_SIZE);
+                presenter.getTrend(strQuery, season, type, page, PAGE_SIZE);
+
             }
         };
         rvItem.addOnScrollListener(scrollListener);
 
         srlReload.setColorSchemeResources(R.color.colorMain);
         srlReload.setOnRefreshListener(() -> {
-            presenter.getTrend(strQuery, 1, PAGE_SIZE);
+            presenter.getTrend(strQuery, season, type, 1, PAGE_SIZE);
             srlReload.setRefreshing(false);
         });
     }
@@ -100,7 +103,7 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
             @Override
             public boolean onQueryTextSubmit(String query) {
                 strQuery = query;
-                presenter.getTrend(strQuery, 1, PAGE_SIZE);
+                presenter.getTrend(strQuery, season, type, 1, PAGE_SIZE);
                 return false;
             }
 
@@ -123,12 +126,19 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
+                        season = -1;
                         break;
                     case 1:
+                        season = 0;
                         break;
                     case 2:
+                        season = 1;
                         break;
                     case 3:
+                        season = 2;
+                        break;
+                    case 4:
+                        season = 3;
                         break;
                 }
             }
@@ -147,12 +157,19 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
+                        type = -1;
                         break;
                     case 1:
+                        type = 0;
                         break;
                     case 2:
+                        type = 1;
                         break;
                     case 3:
+                        type = 2;
+                        break;
+                    case 4:
+                        type = 3;
                         break;
                 }
             }
@@ -166,7 +183,7 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
 
     @Override
     public void showLoading() {
-        //showHUD();
+        showHUD();
     }
 
     @Override

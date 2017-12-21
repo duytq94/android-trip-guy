@@ -28,12 +28,14 @@
 
     // For fragment trend
     <string-array name="season">
+        <item>Quanh năm</item>
         <item>Xuân</item>
         <item>Hạ</item>
         <item>Thu</item>
         <item>Đông</item>
     </string-array>
     <string-array name="type_travel">
+        <item>Tất cả</item>
         <item>Cao nguyên</item>
         <item>Bãi biển</item>
         <item>Thành phố</item>
