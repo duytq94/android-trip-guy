@@ -152,6 +152,7 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
                         priceMax = 10000000;
                         break;
                 }
+                presenter.getDeal(strQuery, priceMin, priceMax, dayMin, dayMax, 1, PAGE_SIZE);
             }
 
             @Override
@@ -184,6 +185,7 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
                         dayMax = 6;
                         break;
                 }
+                presenter.getDeal(strQuery, priceMin, priceMax, dayMin, dayMax, 1, PAGE_SIZE);
             }
 
             @Override

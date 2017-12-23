@@ -141,6 +141,7 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
                         season = 3;
                         break;
                 }
+                presenter.getTrend(strQuery, season, type, 1, PAGE_SIZE);
             }
 
             @Override
@@ -172,6 +173,7 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
                         type = 3;
                         break;
                 }
+                presenter.getTrend(strQuery, season, type, 1, PAGE_SIZE);
             }
 
             @Override
