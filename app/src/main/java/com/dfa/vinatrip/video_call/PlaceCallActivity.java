@@ -16,10 +16,12 @@ import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.fragment.plan.Plan;
 import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.dfa.vinatrip.models.response.user.User;
+import com.dfa.vinatrip.utils.Constants;
 import com.joanzapata.android.BaseAdapterHelper;
 import com.joanzapata.android.QuickAdapter;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.orhanobut.hawk.Hawk;
 import com.sinch.android.rtc.calling.Call;
 
 import org.androidannotations.annotations.AfterViews;
@@ -35,7 +37,7 @@ public class PlaceCallActivity extends BaseVideoCallActivity {
 
     @Extra
     protected Plan plan;
-    @Extra
+
     protected User currentUser;
 
     @ViewById(R.id.my_toolbar)
@@ -49,6 +51,8 @@ public class PlaceCallActivity extends BaseVideoCallActivity {
 
     @AfterViews
     public void init() {
+        currentUser = Hawk.get(Constants.KEY_USER_AUTH);
+
         setupAppBar();
 
         imageLoader = ImageLoader.getInstance();
