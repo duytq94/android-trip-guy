@@ -16,7 +16,6 @@ apply plugin: 'com.neenbedankt.android-apt'
 dependencies {
     apt "org.androidannotations:androidannotations:4.3.1"
     compile 'org.androidannotations:androidannotations-api:4.3.1'
-    compile files('libs/sinch-android-rtc-3.8.0-VIDEO-SNAPSHOT.jar')
 }
 
 android {

@@ -426,6 +426,10 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
         long timestamp = NUtc.getUtcNow();
         BaseMessage baseMessage;
 
+        if (llNoMessage.getVisibility() == View.VISIBLE) {
+            llNoMessage.setVisibility(View.GONE);
+        }
+
         switch (typeMessage) {
             case text:
                 socket.emit(SEND_MESSAGE, content, timestamp, text);
@@ -435,9 +439,6 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                 baseMessageList.add(baseMessage);
                 chatGroupAdapter.notifyDataSetChanged();
                 rvList.scrollToPosition(baseMessageList.size() - 1);
-                if (llNoMessage.getVisibility() == View.VISIBLE) {
-                    llNoMessage.setVisibility(View.GONE);
-                }
                 break;
 
             case image:

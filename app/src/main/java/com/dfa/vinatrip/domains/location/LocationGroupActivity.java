@@ -435,7 +435,9 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
         this.userInPlanList = userInPlanList;
         plan.setInvitedFriendList(userInPlanList);
         for (UserInPlan userInPlan : this.userInPlanList) {
-            getUserFriendLocation(userInPlan);
+            if (userInPlan.getId() != currentUser.getId()) {
+                getUserFriendLocation(userInPlan);
+            }
         }
 
         socket.on(RECEIVE_LOCATION, args -> {
