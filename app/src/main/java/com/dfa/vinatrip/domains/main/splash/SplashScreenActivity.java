@@ -46,7 +46,8 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         new Handler().postDelayed(() -> {
             MainActivity_.intent(SplashScreenActivity.this)
-                    .flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK).start();
+                    .flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .start();
             overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
         }, 2000);
     }

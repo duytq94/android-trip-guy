@@ -19,7 +19,6 @@ import rx.Subscription;
 public class ChatGroupPresenter extends BasePresenter<ChatGroupView> {
 
     private Subscription subscriptionGetHistory;
-    private Subscription subscriptionGetStatus;
     private ChatService chatService;
     private AccountService accountService;
 

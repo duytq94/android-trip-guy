@@ -113,14 +113,6 @@ public class PlaceCallActivity extends BaseVideoCallActivity {
         // Hide loading here
     }
 
-    @Override
-    public void onDestroy() {
-        if (getSinchServiceInterface() != null) {
-            getSinchServiceInterface().stopClient();
-        }
-        super.onDestroy();
-    }
-
     //to kill the current session of SinchService
     @Click(R.id.activity_place_call_ll_stop)
     public void onBtnCallStopClick() {
