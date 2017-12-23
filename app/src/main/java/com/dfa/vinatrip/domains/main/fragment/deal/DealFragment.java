@@ -110,6 +110,11 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
             public boolean onQueryTextSubmit(String query) {
                 strQuery = query;
                 presenter.getDeal(strQuery, priceMin, priceMax, dayMin, dayMax, 1, PAGE_SIZE);
+                try {
+                    getActivity().getCurrentFocus().clearFocus();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return false;
             }
 

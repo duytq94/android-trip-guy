@@ -104,6 +104,11 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
             public boolean onQueryTextSubmit(String query) {
                 strQuery = query;
                 presenter.getTrend(strQuery, season, type, 1, PAGE_SIZE);
+                try {
+                    getActivity().getCurrentFocus().clearFocus();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return false;
             }
 
