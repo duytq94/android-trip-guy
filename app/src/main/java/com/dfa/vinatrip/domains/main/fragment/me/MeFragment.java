@@ -20,7 +20,6 @@ import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseFragment;
 import com.dfa.vinatrip.domains.auth.sign_in.SignInActivity_;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.UserProfileDetailActivity_;
-import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.squareup.picasso.Picasso;
@@ -32,9 +31,6 @@ import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -79,8 +75,6 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
     protected RelativeLayout rlLogin;
     @ViewById(R.id.fragment_me_rl_not_login)
     protected RelativeLayout rlNotLogin;
-
-    private List<UserFriend> listUserFriends;
 
     @App
     protected MainApplication application;
@@ -141,8 +135,6 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
         tvAppInfo.setText("TripGuy - giúp bạn có chuyến đi trọng vẹn nhất!\n");
         tvAppInfo.append("Version name: " + versionName + "\n");
         tvAppInfo.append("Version code: " + versionCode + "\n");
-
-        listUserFriends = new ArrayList<>();
 
         initFlInfo();
 
@@ -223,12 +215,12 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
 
     @Override
     public void showLoading() {
-//        showHUD();
+        showHUD();
     }
 
     @Override
     public void hideLoading() {
-//        hideHUD();
+        hideHUD();
     }
 
     @Override

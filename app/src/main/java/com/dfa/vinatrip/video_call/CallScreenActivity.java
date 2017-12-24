@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.video_call;
 
+import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,6 +43,7 @@ public class CallScreenActivity extends BaseVideoCallActivity {
     private LinearLayout llSwitchCamera;
     private LinearLayout endCallButton;
     private VideoController videoController;
+    private AudioManager audioManager;
 
     private class UpdateCallDurationTask extends TimerTask {
         @Override
@@ -74,6 +76,7 @@ public class CallScreenActivity extends BaseVideoCallActivity {
         mCallState = (TextView) findViewById(R.id.callState);
         endCallButton = (LinearLayout) findViewById(R.id.activity_call_screen_btn_end_call);
         llSwitchCamera = (LinearLayout) findViewById(R.id.activity_call_screen_btn_switch_camera);
+
         llSwitchCamera.setEnabled(false);
 
         endCallButton.setOnClickListener(v -> endCall());
@@ -110,7 +113,7 @@ public class CallScreenActivity extends BaseVideoCallActivity {
         Call call = getSinchServiceInterface().getCall(mCallId);
         if (call != null) {
             mCallerName.setText(call.getRemoteUserId());
-            mCallState.setText(call.getState().toString());
+            mCallState.setText("ĐANG KẾT NỐI");
             if (call.getState() == CallState.ESTABLISHED) {
                 //when the call is established, addVideoViews configures the video to  be shown
                 addVideoViews();
@@ -131,6 +134,12 @@ public class CallScreenActivity extends BaseVideoCallActivity {
     @Override
     public void onStart() {
         super.onStart();
+
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        if (audioManager != null) {
+            audioManager.setSpeakerphoneOn(true);
+        }
+
         mTimer = new Timer();
         mDurationTask = new UpdateCallDurationTask();
         mTimer.schedule(mDurationTask, 0, 500);
@@ -181,11 +190,6 @@ public class CallScreenActivity extends BaseVideoCallActivity {
             RelativeLayout localView = (RelativeLayout) findViewById(R.id.localVideo);
             localView.addView(videoController.getLocalView());
 
-            localView.setOnClickListener(v -> {
-                //this toggles the front camera to rear camera and vice versa
-                videoController.toggleCaptureDevicePosition();
-            });
-
             RelativeLayout view = (RelativeLayout) findViewById(R.id.remoteVideo);
             view.addView(videoController.getRemoteView());
             mVideoViewsAdded = true;
@@ -218,8 +222,9 @@ public class CallScreenActivity extends BaseVideoCallActivity {
             Log.d(TAG, "Call ended. Reason: " + cause.toString());
             mAudioPlayer.stopProgressTone();
             setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
-            String endMsg = "Call ended: " + call.getDetails().toString();
-            Toast.makeText(CallScreenActivity.this, endMsg, Toast.LENGTH_LONG).show();
+            Toast.makeText(CallScreenActivity.this,
+                    String.format("Kết thúc cuộc gọi sau %ss.\nLý do: %s", call.getDetails().getDuration(), call.getDetails().getEndCause()),
+                    Toast.LENGTH_LONG).show();
 
             endCall();
         }
@@ -228,10 +233,11 @@ public class CallScreenActivity extends BaseVideoCallActivity {
         public void onCallEstablished(Call call) {
             Log.d(TAG, "Call established");
             mAudioPlayer.stopProgressTone();
-            mCallState.setText(call.getState().toString());
+            mCallState.setText("ĐANG TRÒ CHUYỆN");
             setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
             AudioController audioController = getSinchServiceInterface().getAudioController();
             audioController.enableSpeaker();
+
             mCallStart = System.currentTimeMillis();
             Log.d(TAG, "Call offered video: " + call.getDetails().isVideoOffered());
         }
