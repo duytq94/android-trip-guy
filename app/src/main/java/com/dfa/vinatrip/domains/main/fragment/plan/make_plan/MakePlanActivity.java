@@ -374,6 +374,7 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
                 ((EditText) view).setError(message);
             }
         }
+        etTripName.requestFocus();
     }
 
     @Override

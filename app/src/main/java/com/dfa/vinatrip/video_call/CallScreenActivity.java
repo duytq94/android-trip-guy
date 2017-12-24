@@ -3,7 +3,6 @@ package com.dfa.vinatrip.video_call;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -40,6 +39,9 @@ public class CallScreenActivity extends BaseVideoCallActivity {
     private TextView mCallDuration;
     private TextView mCallState;
     private TextView mCallerName;
+    private LinearLayout llSwitchCamera;
+    private LinearLayout endCallButton;
+    private VideoController videoController;
 
     private class UpdateCallDurationTask extends TimerTask {
         @Override
@@ -70,9 +72,12 @@ public class CallScreenActivity extends BaseVideoCallActivity {
         mCallDuration = (TextView) findViewById(R.id.callDuration);
         mCallerName = (TextView) findViewById(R.id.remoteUser);
         mCallState = (TextView) findViewById(R.id.callState);
-        LinearLayout endCallButton = (LinearLayout) findViewById(R.id.activity_call_screen_btn_end_call);
+        endCallButton = (LinearLayout) findViewById(R.id.activity_call_screen_btn_end_call);
+        llSwitchCamera = (LinearLayout) findViewById(R.id.activity_call_screen_btn_switch_camera);
+        llSwitchCamera.setEnabled(false);
 
         endCallButton.setOnClickListener(v -> endCall());
+        llSwitchCamera.setOnClickListener(v -> switchCamera());
 
         mCallId = getIntent().getStringExtra(SinchService.CALL_ID);
         if (savedInstanceState == null) {
@@ -97,7 +102,7 @@ public class CallScreenActivity extends BaseVideoCallActivity {
     }
 
     //method to update video feeds in the UI
-    private void updateUI() {
+    public void updateUI() {
         if (getSinchServiceInterface() == null) {
             return; // early
         }
@@ -138,7 +143,7 @@ public class CallScreenActivity extends BaseVideoCallActivity {
     }
 
     //method to end the call
-    private void endCall() {
+    public void endCall() {
         mAudioPlayer.stopProgressTone();
         Call call = getSinchServiceInterface().getCall(mCallId);
         if (call != null) {
@@ -147,7 +152,11 @@ public class CallScreenActivity extends BaseVideoCallActivity {
         finish();
     }
 
-    private String formatTimespan(long timespan) {
+    public void switchCamera() {
+        videoController.toggleCaptureDevicePosition();
+    }
+
+    public String formatTimespan(long timespan) {
         long totalSeconds = timespan / 1000;
         long minutes = totalSeconds / 60;
         long seconds = totalSeconds % 60;
@@ -155,7 +164,7 @@ public class CallScreenActivity extends BaseVideoCallActivity {
     }
 
     //method to update live duration of the call
-    private void updateCallDuration() {
+    public void updateCallDuration() {
         if (mCallStart > 0) {
             mCallDuration.setText(formatTimespan(System.currentTimeMillis() - mCallStart));
         }
@@ -167,27 +176,25 @@ public class CallScreenActivity extends BaseVideoCallActivity {
             return; //early
         }
 
-        final VideoController vc = getSinchServiceInterface().getVideoController();
-        if (vc != null) {
+        videoController = getSinchServiceInterface().getVideoController();
+        if (videoController != null) {
             RelativeLayout localView = (RelativeLayout) findViewById(R.id.localVideo);
-            localView.addView(vc.getLocalView());
+            localView.addView(videoController.getLocalView());
 
-            localView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //this toggles the front camera to rear camera and vice versa
-                    vc.toggleCaptureDevicePosition();
-                }
+            localView.setOnClickListener(v -> {
+                //this toggles the front camera to rear camera and vice versa
+                videoController.toggleCaptureDevicePosition();
             });
 
             RelativeLayout view = (RelativeLayout) findViewById(R.id.remoteVideo);
-            view.addView(vc.getRemoteView());
+            view.addView(videoController.getRemoteView());
             mVideoViewsAdded = true;
         }
+        llSwitchCamera.setEnabled(true);
     }
 
     //removes video feeds from the app once the call is terminated
-    private void removeVideoViews() {
+    public void removeVideoViews() {
         if (getSinchServiceInterface() == null) {
             return; // early
         }
@@ -203,7 +210,7 @@ public class CallScreenActivity extends BaseVideoCallActivity {
         }
     }
 
-    private class SinchCallListener implements VideoCallListener {
+    public class SinchCallListener implements VideoCallListener {
 
         @Override
         public void onCallEnded(Call call) {

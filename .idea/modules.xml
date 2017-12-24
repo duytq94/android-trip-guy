@@ -4,8 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/caf_android/caf/caf.iml" filepath="$PROJECT_DIR$/caf_android/caf/caf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tripguy.iml" filepath="$PROJECT_DIR$/tripguy.iml" />
       <module fileurl="file://C:\Users\User\Documents\tripguy2\tripguy.iml" filepath="C:\Users\User\Documents\tripguy2\tripguy.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tripguy2.iml" filepath="$PROJECT_DIR$/tripguy2.iml" />
+      <module fileurl="file://D:\AndroidProject\tripguy\tripguy2.iml" filepath="D:\AndroidProject\tripguy\tripguy2.iml" />
     </modules>
   </component>
 </project>

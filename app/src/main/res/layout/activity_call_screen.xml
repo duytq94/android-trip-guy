@@ -62,24 +62,53 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/activity_call_screen_btn_end_call"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:layout_margin="7dp"
-        android:background="@drawable/btn_positive"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:gravity="center"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/activity_call_screen_btn_switch_camera"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_margin="7dp"
+            android:background="@drawable/btn_positive"
             android:gravity="center"
-            android:text="KẾT THÚC"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/text_medium"/>
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="CHUYỂN CAM"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_medium"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_call_screen_btn_end_call"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="7dp"
+            android:background="@drawable/btn_negative"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="KẾT THÚC"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_medium"/>
+
+        </LinearLayout>
     </LinearLayout>
+
 
 </LinearLayout>

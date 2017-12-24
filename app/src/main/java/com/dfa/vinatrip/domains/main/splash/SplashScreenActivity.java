@@ -3,7 +3,6 @@ package com.dfa.vinatrip.domains.main.splash;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -87,15 +86,15 @@ public class SplashScreenActivity extends BaseVideoCallActivity implements Sinch
 
     //Login is Clicked to manually to connect to the Sinch Service
     private void loginSinch() {
-        if (!currentUser.getEmail().isEmpty()) {
+        if (currentUser != null) {
             if (!getSinchServiceInterface().isStarted()) {
                 getSinchServiceInterface().startClient(currentUser.getEmail());
-            } else {
-                MainActivity_.intent(SplashScreenActivity.this)
-                        .flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK)
-                        .start();
-                overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
             }
+        } else {
+            MainActivity_.intent(SplashScreenActivity.this)
+                    .flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .start();
+            overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
         }
     }
 
