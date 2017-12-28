@@ -53,10 +53,7 @@
             android:name=".video_call.IncomingCallScreenActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".video_call.LoginVideoCallActivity_"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+
         <activity
             android:name=".video_call.PlaceCallActivity_"
             android:screenOrientation="portrait"
@@ -82,9 +79,25 @@
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
+            android:name=".domains.province_detail.view_all.place.place_detail.PlaceDetailActivity_"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".domains.province_detail.view_all.place.PlaceSearchActivity_"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
             android:name=".domains.province_detail.view_all.food.FoodSearchActivity_"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>    <!--duonghd-->
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".domains.province_detail.view_all.food.food_detail.FoodDetailActivity_"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+        <!--duonghd-->
 
         <activity
             android:name=".utils.MapActivity_"

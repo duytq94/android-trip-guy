@@ -25,6 +25,10 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
 
+/**
+ * Created by duonghd on 10/13/2017.
+ */
+
 public class RecyclerProvinceHotelAdapter extends RecyclerView.Adapter<RecyclerProvinceHotelAdapter.ViewHolder> {
     private Context context;
     private Province province;

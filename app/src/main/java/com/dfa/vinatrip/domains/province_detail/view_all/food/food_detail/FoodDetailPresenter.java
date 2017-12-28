@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.province_detail.view_all.hotel.hotel_detail;
+package com.dfa.vinatrip.domains.province_detail.view_all.food.food_detail;
 
 import com.beesightsoft.caf.services.schedulers.RxScheduler;
 import com.dfa.vinatrip.base.BasePresenter;
@@ -14,32 +14,32 @@ import javax.inject.Inject;
 import rx.Subscription;
 
 /**
- * Created by duonghd on 10/7/2017.
+ * Created by duonghd on 12/28/2017.
  * duonghd1307@gmail.com
  */
 
-public class HotelDetailPresenter extends BasePresenter<HotelDetailView> {
+public class FoodDetailPresenter extends BasePresenter<FoodDetailView> {
     private AccountService accountService;
     private FeedbackService feedbackService;
     private Subscription subscription;
-    
+
     @Inject
-    public HotelDetailPresenter(EventBus eventBus, AccountService accountService, FeedbackService feedbackService) {
+    public FoodDetailPresenter(EventBus eventBus, AccountService accountService, FeedbackService feedbackService) {
         super(eventBus);
         this.accountService = accountService;
         this.feedbackService = feedbackService;
     }
-    
+
     public User getCurrentUser() {
         return accountService.getCurrentUser();
     }
-    
-    public void sendFeedback(int hotelId, FeedbackRequest feedbackRequest) {
+
+    public void sendFeedback(int foodId, FeedbackRequest feedbackRequest) {
         RxScheduler.onStop(subscription);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription = feedbackService.postHotelFeedback(accountService.getCurrentUser().getAccessToken(), hotelId, feedbackRequest)
+        subscription = feedbackService.postFoodFeedback(accountService.getCurrentUser().getAccessToken(), foodId, feedbackRequest)
                 .compose(RxScheduler.applyIoSchedulers())
                 .doOnTerminate(() -> {
                     if (isViewAttached()) {
@@ -48,7 +48,7 @@ public class HotelDetailPresenter extends BasePresenter<HotelDetailView> {
                 })
                 .subscribe(feedbackResponse -> {
                     if (isViewAttached()) {
-                        getView().postHotelFeedbackSuccess(feedbackResponse);
+                        getView().postFoodFeedbackSuccess(feedbackResponse);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {
@@ -56,13 +56,13 @@ public class HotelDetailPresenter extends BasePresenter<HotelDetailView> {
                     }
                 });
     }
-    
-    public void getHotelFeedback(int hotelId, int page, int per_page) {
+
+    public void getFoodFeedback(int foodId, int page, int per_page) {
         RxScheduler.onStop(subscription);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription = feedbackService.getHotelFeedback(hotelId, page, per_page)
+        subscription = feedbackService.getFoodFeedback(foodId, page, per_page)
                 .compose(RxScheduler.applyIoSchedulers())
                 .doOnTerminate(() -> {
                     if (isViewAttached()) {
@@ -71,7 +71,7 @@ public class HotelDetailPresenter extends BasePresenter<HotelDetailView> {
                 })
                 .subscribe(feedbackResponses -> {
                     if (isViewAttached()) {
-                        getView().getHotelFeedbackSuccess(feedbackResponses);
+                        getView().getFoodFeedbackSuccess(feedbackResponses);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {

@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.province_detail.view_all.hotel;
+package com.dfa.vinatrip.domains.province_detail.view_all.place;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
@@ -15,10 +15,10 @@ import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.custom_view.NToolbar;
-import com.dfa.vinatrip.domains.province_detail.view_all.hotel.adapter.RecyclerHotelSearchAdapter;
+import com.dfa.vinatrip.domains.province_detail.view_all.place.adapter.RecyclerPlaceSearchAdapter;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.Province;
-import com.dfa.vinatrip.models.response.hotel.HotelResponse;
+import com.dfa.vinatrip.models.response.place.PlaceResponse;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.KeyboardVisibility;
 
@@ -43,35 +43,35 @@ import rx.subjects.PublishSubject;
  */
 
 @SuppressLint("Registered")
-@EActivity(R.layout.activity_hotel_search)
-public class HotelSearchActivity extends BaseActivity<HotelSearchView, HotelSearchPresenter>
-        implements HotelSearchView {
+@EActivity(R.layout.activity_place_search)
+public class PlaceSearchActivity extends BaseActivity<PlaceSearchView, PlaceSearchPresenter>
+        implements PlaceSearchView {
     @App
     protected MainApplication mainApplication;
     @Inject
-    protected HotelSearchPresenter presenter;
+    protected PlaceSearchPresenter presenter;
 
-    @ViewById(R.id.activity_hotel_list_ll_root)
+    @ViewById(R.id.activity_place_list_ll_root)
     protected LinearLayout llRoot;
-    @ViewById(R.id.activity_hotel_list_tb_toolbar)
+    @ViewById(R.id.activity_place_list_tb_toolbar)
     protected NToolbar nToolbar;
-    @ViewById(R.id.activity_hotel_list_edt_search)
+    @ViewById(R.id.activity_place_list_edt_search)
     protected EditText edtSearch;
-    @ViewById(R.id.fragment_province_detail_hotels_rcv_hotels)
-    protected RecyclerView rcvHotels;
+    @ViewById(R.id.fragment_province_detail_places_rcv_places)
+    protected RecyclerView rcvPlaces;
 
     @Extra
     protected Province province;
 
-    private List<HotelResponse> hotelResponses;
-    private RecyclerHotelSearchAdapter hotelAdapter;
+    private List<PlaceResponse> placeResponses;
+    private RecyclerPlaceSearchAdapter placeAdapter;
     private PublishSubject<String> publishSubject;
     private static final int page = 0;
     private static final int per_page = 0;
 
     @AfterInject
     void initInject() {
-        DaggerHotelSearchComponent.builder()
+        DaggerPlaceSearchComponent.builder()
                 .applicationComponent(mainApplication.getApplicationComponent())
                 .activityModule(new ActivityModule(this))
                 .build().inject(this);
@@ -86,18 +86,18 @@ public class HotelSearchActivity extends BaseActivity<HotelSearchView, HotelSear
         nToolbar.showLeftIcon().showToolbarColor();
         nToolbar.setOnLeftClickListener(v -> onBackPressed());
 
-        hotelResponses = new ArrayList<>();
-        hotelAdapter = new RecyclerHotelSearchAdapter(this);
-        rcvHotels.setHasFixedSize(true);
-        rcvHotels.setLayoutManager(new LinearLayoutManager(this));
-        rcvHotels.setAdapter(hotelAdapter);
+        placeResponses = new ArrayList<>();
+        placeAdapter = new RecyclerPlaceSearchAdapter(this);
+        rcvPlaces.setHasFixedSize(true);
+        rcvPlaces.setLayoutManager(new LinearLayoutManager(this));
+        rcvPlaces.setAdapter(placeAdapter);
 
-        presenter.getHotels(province.getId(), page, per_page);
+        presenter.getPlaces(province.getId(), page, per_page);
     }
 
     private void showKeyboard() {
         KeyboardVisibility.setEventListener(this, isOpen -> {
-            if (KeyboardVisibility.isKeyboardVisible(HotelSearchActivity.this)) {
+            if (KeyboardVisibility.isKeyboardVisible(PlaceSearchActivity.this)) {
                 Log.e("keyboard", "show");
             } else {
                 if (getCurrentFocus() != null) {
@@ -110,7 +110,7 @@ public class HotelSearchActivity extends BaseActivity<HotelSearchView, HotelSear
 
     @NonNull
     @Override
-    public HotelSearchPresenter createPresenter() {
+    public PlaceSearchPresenter createPresenter() {
         return presenter;
     }
 
@@ -136,9 +136,9 @@ public class HotelSearchActivity extends BaseActivity<HotelSearchView, HotelSear
                 .compose(RxScheduler.applyIoSchedulers())
                 .subscribe(s -> {
                     if (s.length() != 0) {
-                        hotelAdapter.setFilter(filterHotel(s));
+                        placeAdapter.setFilter(filterPlace(s));
                     } else {
-                        hotelAdapter.setFilter(hotelResponses);
+                        placeAdapter.setFilter(placeResponses);
                     }
                 }, Throwable::printStackTrace);
 
@@ -160,22 +160,22 @@ public class HotelSearchActivity extends BaseActivity<HotelSearchView, HotelSear
         });
     }
 
-    private List<HotelResponse> filterHotel(String query) {
-        List<HotelResponse> hotelFilter = new ArrayList<>();
-        for (HotelResponse hotelResponse : hotelResponses) {
-            if (AppUtil.convertStringQuery(hotelResponse.getAddress()).contains(AppUtil.convertStringQuery(query)) ||
-                    AppUtil.convertStringQuery(hotelResponse.getName()).contains(AppUtil.convertStringQuery(query))) {
-                hotelFilter.add(hotelResponse);
+    private List<PlaceResponse> filterPlace(String query) {
+        List<PlaceResponse> placeFilter = new ArrayList<>();
+        for (PlaceResponse placeResponse : placeResponses) {
+            if (AppUtil.convertStringQuery(placeResponse.getAddress()).contains(AppUtil.convertStringQuery(query)) ||
+                    AppUtil.convertStringQuery(placeResponse.getName()).contains(AppUtil.convertStringQuery(query))) {
+                placeFilter.add(placeResponse);
             }
         }
-        return hotelFilter;
+        return placeFilter;
     }
 
     //-----------------------------------------------------------------------------------------------------------------
     @Override
-    public void getHotelsSuccess(List<HotelResponse> hotelResponses) {
-        this.hotelResponses.addAll(hotelResponses);
-        this.hotelAdapter.setFilter(hotelResponses);
+    public void getPlacesSuccess(List<PlaceResponse> placeResponses) {
+        this.placeResponses.addAll(placeResponses);
+        this.placeAdapter.setFilter(placeResponses);
 
         setupSearchListener();
     }

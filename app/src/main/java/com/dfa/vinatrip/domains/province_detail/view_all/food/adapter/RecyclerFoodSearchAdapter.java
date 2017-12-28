@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.province_detail.view_all.hotel.adapter;
+package com.dfa.vinatrip.domains.province_detail.view_all.food.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.custom_view.SimpleRatingBar;
-import com.dfa.vinatrip.domains.province_detail.view_all.hotel.HotelSearchActivity;
-import com.dfa.vinatrip.domains.province_detail.view_all.hotel.hotel_detail.HotelDetailActivity_;
-import com.dfa.vinatrip.models.response.hotel.HotelResponse;
+import com.dfa.vinatrip.domains.province_detail.view_all.food.FoodSearchActivity;
+import com.dfa.vinatrip.domains.province_detail.view_all.food.food_detail.FoodDetailActivity_;
+import com.dfa.vinatrip.models.response.food.FoodResponse;
 import com.dfa.vinatrip.widgets.RotateLoading;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -24,19 +24,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by duonghd on 10/8/2017.
+ * Created by duonghd on 12/28/2017.
  * duonghd1307@gmail.com
  */
 
-public class RecyclerHotelSearchAdapter extends RecyclerView.Adapter<RecyclerHotelSearchAdapter.ViewHolder> {
+public class RecyclerFoodSearchAdapter extends RecyclerView.Adapter<RecyclerFoodSearchAdapter.ViewHolder> {
     private Context context;
-    private List<HotelResponse> hotelResponses;
+    private List<FoodResponse> foodResponses;
     private ImageLoader imageLoader;
     private DisplayImageOptions imageOptions;
 
-    public RecyclerHotelSearchAdapter(Context context) {
+    public RecyclerFoodSearchAdapter(Context context) {
         this.context = context;
-        this.hotelResponses = new ArrayList<>();
+        this.foodResponses = new ArrayList<>();
         imageLoader = ImageLoader.getInstance();
         imageOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.bg_green)
@@ -51,18 +51,18 @@ public class RecyclerHotelSearchAdapter extends RecyclerView.Adapter<RecyclerHot
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_hotel_search, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_food_search, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        HotelResponse hotel = hotelResponses.get(position);
+        FoodResponse food = foodResponses.get(position);
 
-        holder.tvHotelName.setText(hotel.getName());
-        holder.tvHotelAddress.setText(hotel.getAddress());
+        holder.tvFoodName.setText(food.getName());
+        holder.tvFoodAddress.setText(food.getAddress());
 
-        imageLoader.displayImage(hotel.getAvatar(), holder.ivHotelAvatar, imageOptions, new ImageLoadingListener() {
+        imageLoader.displayImage(food.getAvatar(), holder.ivFoodAvatar, imageOptions, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
                 holder.rotateLoading.setVisibility(View.VISIBLE);
@@ -91,41 +91,41 @@ public class RecyclerHotelSearchAdapter extends RecyclerView.Adapter<RecyclerHot
 
     @Override
     public int getItemCount() {
-        return hotelResponses.size();
+        return foodResponses.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView ivHotelAvatar;
-        private TextView tvHotelName;
-        private TextView tvHotelAddress;
-        private SimpleRatingBar srbHotelRate;
-        private TextView tvHotelReview;
-        private TextView tvHotelDistance;
+        private ImageView ivFoodAvatar;
+        private TextView tvFoodName;
+        private TextView tvFoodAddress;
+        private SimpleRatingBar srbFoodRate;
+        private TextView tvFoodReview;
+        private TextView tvFoodDistance;
         private RotateLoading rotateLoading;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ivHotelAvatar = (ImageView) itemView.findViewById(R.id.item_recycler_hotel_search_iv_avatar);
-            tvHotelName = (TextView) itemView.findViewById(R.id.item_recycler_hotel_search_tv_name);
-            tvHotelAddress = (TextView) itemView.findViewById(R.id.item_recycler_hotel_search_tv_address);
-            srbHotelRate = (SimpleRatingBar) itemView.findViewById(R.id.item_recycler_hotel_search_srb_rate);
-            tvHotelReview = (TextView) itemView.findViewById(R.id.item_recycler_hotel_search_tv_number_of_feedback);
-            tvHotelDistance = (TextView) itemView.findViewById(R.id.item_recycler_hotel_search_tv_distance);
-            rotateLoading = (RotateLoading) itemView.findViewById(R.id.item_recycler_hotel_search_rotate_loading);
+            ivFoodAvatar = (ImageView) itemView.findViewById(R.id.item_recycler_food_search_iv_avatar);
+            tvFoodName = (TextView) itemView.findViewById(R.id.item_recycler_food_search_tv_name);
+            tvFoodAddress = (TextView) itemView.findViewById(R.id.item_recycler_food_search_tv_address);
+            srbFoodRate = (SimpleRatingBar) itemView.findViewById(R.id.item_recycler_food_search_srb_rate);
+            tvFoodReview = (TextView) itemView.findViewById(R.id.item_recycler_food_search_tv_number_of_feedback);
+            tvFoodDistance = (TextView) itemView.findViewById(R.id.item_recycler_food_search_tv_distance);
+            rotateLoading = (RotateLoading) itemView.findViewById(R.id.item_recycler_food_search_rotate_loading);
 
             itemView.setOnClickListener(v -> {
-                HotelDetailActivity_.intent(context).hotelResponse(hotelResponses.get(getAdapterPosition())).start();
-                ((HotelSearchActivity) context).finish();
+                FoodDetailActivity_.intent(context).foodResponse(foodResponses.get(getAdapterPosition())).start();
+                ((FoodSearchActivity) context).finish();
             });
         }
     }
 
     /*
-    * filter
-    **/
-    public void setFilter(List<HotelResponse> hotelFilter) {
-        hotelResponses.clear();
-        hotelResponses.addAll(hotelFilter);
+* filter
+**/
+    public void setFilter(List<FoodResponse> foodFilter) {
+        foodResponses.clear();
+        foodResponses.addAll(foodFilter);
         notifyDataSetChanged();
     }
 }

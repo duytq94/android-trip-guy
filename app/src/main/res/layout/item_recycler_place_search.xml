@@ -26,14 +26,14 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/item_recycler_hotel_search_iv_avatar"
+                    android:id="@+id/item_recycler_place_search_iv_avatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:src="@drawable/photo_not_available"/>
 
                 <com.dfa.vinatrip.widgets.RotateLoading
-                    android:id="@+id/item_recycler_hotel_search_rotate_loading"
+                    android:id="@+id/item_recycler_place_search_rotate_loading"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_centerInParent="true"
@@ -47,7 +47,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/item_recycler_hotel_search_tv_name"
+                    android:id="@+id/item_recycler_place_search_tv_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -57,7 +57,7 @@
                     android:textSize="12dp"/>
 
                 <TextView
-                    android:id="@+id/item_recycler_hotel_search_tv_address"
+                    android:id="@+id/item_recycler_place_search_tv_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -74,11 +74,11 @@
                     android:orientation="horizontal">
 
                     <com.dfa.vinatrip.custom_view.SimpleRatingBar
-                        android:id="@+id/item_recycler_hotel_search_srb_rate"
+                        android:id="@+id/item_recycler_place_search_srb_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srb_borderColor="#ffdd00"
-                        app:srb_fillColor="#ffdd00"
+                        app:srb_borderColor="#088b0c"
+                        app:srb_fillColor="#088b0c"
                         app:srb_isIndicator="true"
                         app:srb_numberOfStars="5"
                         app:srb_rating="3.5"
@@ -88,7 +88,7 @@
                         app:srb_stepSize="0.5"/>
 
                     <TextView
-                        android:id="@+id/item_recycler_hotel_search_tv_number_of_feedback"
+                        android:id="@+id/item_recycler_place_search_tv_number_of_feedback"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -103,7 +103,7 @@
                     android:layout_weight="1"/>
 
                 <TextView
-                    android:id="@+id/item_recycler_hotel_search_tv_distance"
+                    android:id="@+id/item_recycler_place_search_tv_distance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
