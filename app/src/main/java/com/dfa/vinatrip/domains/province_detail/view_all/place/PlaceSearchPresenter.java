@@ -12,14 +12,15 @@ import rx.Subscription;
 
 /**
  * Created by duonghd on 10/7/2017.
+ * duonghd1307@gmail.com
  */
 
-public class PlacePresenter extends BasePresenter<PlaceView> {
+public class PlaceSearchPresenter extends BasePresenter<PlaceSearchView> {
     private DataService dataService;
     private Subscription subscription;
 
     @Inject
-    public PlacePresenter(EventBus eventBus, DataService dataService) {
+    public PlaceSearchPresenter(EventBus eventBus, DataService dataService) {
         super(eventBus);
         this.dataService = dataService;
     }

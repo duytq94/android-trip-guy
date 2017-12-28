@@ -7,8 +7,9 @@ import java.util.List;
 
 /**
  * Created by duonghd on 10/7/2017.
+ * duonghd1307@gmail.com
  */
 
-public interface PlaceView extends BaseMvpView {
+public interface PlaceSearchView extends BaseMvpView {
     void getPlacesSuccess(List<PlaceResponse> placeResponses);
 }

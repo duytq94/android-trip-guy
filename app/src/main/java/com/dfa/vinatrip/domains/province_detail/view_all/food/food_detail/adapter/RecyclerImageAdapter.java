@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.province_detail.view_all.hotel.hotel_detail.adapter;
+package com.dfa.vinatrip.domains.province_detail.view_all.food.food_detail.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.chat.ShowFullPhotoActivity_;
-import com.dfa.vinatrip.models.response.hotel.HotelImage;
+import com.dfa.vinatrip.models.response.food.FoodImage;
 import com.dfa.vinatrip.widgets.RotateLoading;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -21,23 +21,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by duonghd on 12/5/2017.
+ * Created by duonghd on 12/28/2017.
  * duonghd1307@gmail.com
  */
 
 public class RecyclerImageAdapter extends RecyclerView.Adapter<RecyclerImageAdapter.ViewHolder> {
     private Context context;
-    private List<HotelImage> hotelImages;
+    private List<FoodImage> foodImages;
     private ArrayList<String> tempUrls;
     private DisplayImageOptions imageOptions;
     private ImageLoader imageLoader;
 
-    public RecyclerImageAdapter(Context context, List<HotelImage> hotelImages) {
+    public RecyclerImageAdapter(Context context, List<FoodImage> foodImages) {
         this.context = context;
-        this.hotelImages = hotelImages;
+        this.foodImages = foodImages;
         this.tempUrls = new ArrayList<>();
-        for (HotelImage hotelImage : hotelImages) {
-            tempUrls.add(hotelImage.getUrl());
+        for (FoodImage foodImage : foodImages) {
+            tempUrls.add(foodImage.getUrl());
         }
         this.imageOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.bg_green)
@@ -52,16 +52,16 @@ public class RecyclerImageAdapter extends RecyclerView.Adapter<RecyclerImageAdap
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.item_recycler_province_image, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerImageAdapter.ViewHolder holder, int position) {
 
-        imageLoader.displayImage(hotelImages.get(position).getUrl(), holder.ivImageView, imageOptions,
+        imageLoader.displayImage(foodImages.get(position).getUrl(), holder.ivImageView, imageOptions,
                 new ImageLoadingListener() {
                     @Override
                     public void onLoadingStarted(String s, View view) {
@@ -92,7 +92,7 @@ public class RecyclerImageAdapter extends RecyclerView.Adapter<RecyclerImageAdap
 
     @Override
     public int getItemCount() {
-        return hotelImages.size();
+        return foodImages.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

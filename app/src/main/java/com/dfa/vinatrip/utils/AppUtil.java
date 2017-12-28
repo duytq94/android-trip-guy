@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.utils;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentUris;
@@ -14,6 +15,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.format.DateUtils;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,17 +57,20 @@ public class AppUtil {
     public static final int NOTIFY_UPDATE_REQUEST = 4;
     // To notify update fragment me when user back from UserProfileDetailActivity
     public static final int REQUEST_UPDATE_INFO = 5;
-    
+
+    @SuppressLint("StaticFieldLeak")
     private static Context context;
-    
+
+    private static DisplayMetrics dm;
+
     public static void init(Context context) {
         AppUtil.context = context;
     }
-    
+
     public Context getContext() {
         return context;
     }
-    
+
     public static int exifToDegrees(int exifOrientation) {
         if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
             return 90;
@@ -76,7 +81,7 @@ public class AppUtil {
         }
         return 0;
     }
-    
+
     // Filter the friend has accepted (because some friend not accepted yet)
     public static List<UserFriend> filterListFriends(List<UserFriend> userFriendList) {
         for (int i = 0; i < userFriendList.size(); i++) {
@@ -86,21 +91,21 @@ public class AppUtil {
         }
         return userFriendList;
     }
-    
+
     public static Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
         float ratio = Math.min(
                 maxImageSize / realImage.getWidth(),
                 maxImageSize / realImage.getHeight());
         int width = Math.round(ratio * realImage.getWidth());
         int height = Math.round(ratio * realImage.getHeight());
-        
+
         return Bitmap.createScaledBitmap(realImage, width, height, filter);
     }
-    
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static String getRealPath(final Context context, final Uri uri) {
         boolean isKitKatOrAbove = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-        
+
         // DocumentProvider
         if (isKitKatOrAbove && DocumentsContract.isDocumentUri(context, uri)) {
             // ExternalStorageProvider
@@ -108,20 +113,20 @@ public class AppUtil {
                 String docId = DocumentsContract.getDocumentId(uri);
                 String[] split = docId.split(":");
                 String type = split[0];
-                
+
                 if ("primary".equalsIgnoreCase(type)) {
                     return Environment.getExternalStorageDirectory() + "/" + split[1];
                 }
-                
+
                 // TODO handle non-primary volumes
             }
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {
-                
+
                 String id = DocumentsContract.getDocumentId(uri);
                 Uri contentUri = ContentUris.withAppendedId(
                         Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-                
+
                 return getDataColumn(context, contentUri, null, null);
             }
             // MediaProvider
@@ -129,7 +134,7 @@ public class AppUtil {
                 String docId = DocumentsContract.getDocumentId(uri);
                 String[] split = docId.split(":");
                 String type = split[0];
-                
+
                 Uri contentUri = null;
                 if ("image".equals(type)) {
                     contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
@@ -138,12 +143,12 @@ public class AppUtil {
                 } else if ("audio".equals(type)) {
                     contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                 }
-                
+
                 String selection = "_id=?";
                 String[] selectionArgs = new String[]{
                         split[1]
                 };
-                
+
                 return getDataColumn(context, contentUri, selection, selectionArgs);
             }
         }
@@ -155,10 +160,10 @@ public class AppUtil {
         else if ("file".equalsIgnoreCase(uri.getScheme())) {
             return uri.getPath();
         }
-        
+
         return null;
     }
-    
+
     /**
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
@@ -171,13 +176,13 @@ public class AppUtil {
      */
     public static String getDataColumn(Context context, Uri uri, String selection,
                                        String[] selectionArgs) {
-        
+
         Cursor cursor = null;
         String column = "_data";
         String[] projection = {
                 column
         };
-        
+
         try {
             cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
                     null);
@@ -190,8 +195,8 @@ public class AppUtil {
         }
         return null;
     }
-    
-    
+
+
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri authority is ExternalStorageProvider.
@@ -199,7 +204,7 @@ public class AppUtil {
     public static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
-    
+
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri authority is DownloadsProvider.
@@ -207,7 +212,7 @@ public class AppUtil {
     public static boolean isDownloadsDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
     }
-    
+
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri authority is MediaProvider.
@@ -215,24 +220,24 @@ public class AppUtil {
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
-    
+
     public static void requestTurnOnGPS(Context context) {
         GoogleApiClient googleApiClient;
-        
+
         googleApiClient = new GoogleApiClient.Builder(context)
                 .addApi(LocationServices.API)
                 .build();
         googleApiClient.connect();
-        
+
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(30 * 1000);
         locationRequest.setFastestInterval(5 * 1000);
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
-        
+
         builder.setAlwaysShow(true);
-        
+
         PendingResult<LocationSettingsResult> result =
                 LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
         result.setResultCallback(result1 -> {
@@ -261,7 +266,7 @@ public class AppUtil {
             }
         });
     }
-    
+
     // 0 is today, 1 is yesterday, 2 is past
     // It auto parse to current device zone
     public static int getDateType(long timeStamp) {
@@ -273,13 +278,13 @@ public class AppUtil {
         }
         return 2;
     }
-    
+
     public static String formatTime(String pattern, final long timeStamp) {
         DateFormat dateFormat = new SimpleDateFormat(pattern, Locale.US);
         Date date = new Date(timeStamp);
         return dateFormat.format(date);
     }
-    
+
     // Convert string date, 20/11/2011 - > 1232112334
     public static long stringDateToTimestamp(String date) {
         Date localTime;
@@ -290,19 +295,19 @@ public class AppUtil {
             return 0;
         }
     }
-    
+
     public static int dpToPx(Context context, float dp) {
         return (int) (TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics()));
     }
-    
+
     public static String convertPrice(double price) {
         DecimalFormat decimalFormat;
         decimalFormat = (DecimalFormat) NumberFormat.getCurrencyInstance();
         decimalFormat.applyPattern("#,###,##0");
         return decimalFormat.format(price);
     }
-    
+
     public static void setupUI(View view) {
         if (!(view instanceof EditText)) {
             view.setOnTouchListener((v, event) -> {
@@ -317,14 +322,14 @@ public class AppUtil {
             }
         }
     }
-    
+
     public static void hideKeyBoard(View view) {
         if (context == null)
             throw new RuntimeException("Context is null, init(Context)");
         InputMethodManager mgr = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         mgr.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-    
+
     public static void hideKeyBoard(Activity ctx) {
         if (context == null)
             throw new RuntimeException("Context is null, init(Context)");
@@ -334,7 +339,7 @@ public class AppUtil {
             mgr.hideSoftInputFromWindow(viewFocus.getWindowToken(), 0);
         }
     }
-    
+
     public static String convertStringQuery(String s) {
         char[] listU = {'ú', 'ù', 'ủ', 'ũ', 'ụ', 'ư', 'ứ', 'ừ', 'ử', 'ữ', 'ự'};
         char[] listE = {'é', 'è', 'ẻ', 'ẽ', 'ẹ', 'ê', 'ế', 'ề', 'ể', 'ễ', 'ệ'};
@@ -343,7 +348,7 @@ public class AppUtil {
         char[] listI = {'í', 'ì', 'ỉ', 'ĩ', 'ị'};
         char[] listY = {'ý', 'ỳ', 'ỷ', 'ỹ', 'ỵ'};
         char[] listD = {'đ'};
-    
+
         ArrayList<char[]> arrTest = new ArrayList<>(Arrays.asList(listU, listE, listO, listA, listI, listY, listD));
         char[] listCharacter = s.replace(" ", "")
                 .replace(".", "")
@@ -387,5 +392,19 @@ public class AppUtil {
             }
         }
         return String.copyValueOf(listCharacter);
+    }
+
+    public static float getDensity(Context context) {
+        if (dm == null) {
+            dm = context.getResources().getDisplayMetrics();
+        }
+        return dm.density;
+    }
+
+    public static int getWidth(Context context) {
+        if (dm == null) {
+            dm = context.getResources().getDisplayMetrics();
+        }
+        return dm.widthPixels;
     }
 }

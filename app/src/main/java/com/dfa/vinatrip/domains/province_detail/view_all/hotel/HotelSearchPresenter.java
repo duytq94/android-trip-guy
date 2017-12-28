@@ -12,6 +12,7 @@ import rx.Subscription;
 
 /**
  * Created by duonghd on 10/7/2017.
+ * duonghd1307@gmail.com
  */
 
 public class HotelSearchPresenter extends BasePresenter<HotelSearchView> {

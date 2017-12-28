@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.province_detail.view_all.hotel.hotel_detail.adapter;
+package com.dfa.vinatrip.domains.province_detail.view_all.place.place_detail.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.chat.ShowFullPhotoActivity_;
-import com.dfa.vinatrip.models.response.hotel.HotelImage;
+import com.dfa.vinatrip.models.response.place.PlaceImage;
 import com.dfa.vinatrip.widgets.RotateLoading;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -27,17 +27,17 @@ import java.util.List;
 
 public class RecyclerImageAdapter extends RecyclerView.Adapter<RecyclerImageAdapter.ViewHolder> {
     private Context context;
-    private List<HotelImage> hotelImages;
+    private List<PlaceImage> placeImages;
     private ArrayList<String> tempUrls;
     private DisplayImageOptions imageOptions;
     private ImageLoader imageLoader;
 
-    public RecyclerImageAdapter(Context context, List<HotelImage> hotelImages) {
+    public RecyclerImageAdapter(Context context, List<PlaceImage> placeImages) {
         this.context = context;
-        this.hotelImages = hotelImages;
+        this.placeImages = placeImages;
         this.tempUrls = new ArrayList<>();
-        for (HotelImage hotelImage : hotelImages) {
-            tempUrls.add(hotelImage.getUrl());
+        for (PlaceImage placeImage : placeImages) {
+            tempUrls.add(placeImage.getUrl());
         }
         this.imageOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.bg_green)
@@ -61,7 +61,7 @@ public class RecyclerImageAdapter extends RecyclerView.Adapter<RecyclerImageAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        imageLoader.displayImage(hotelImages.get(position).getUrl(), holder.ivImageView, imageOptions,
+        imageLoader.displayImage(placeImages.get(position).getUrl(), holder.ivImageView, imageOptions,
                 new ImageLoadingListener() {
                     @Override
                     public void onLoadingStarted(String s, View view) {
@@ -92,7 +92,7 @@ public class RecyclerImageAdapter extends RecyclerView.Adapter<RecyclerImageAdap
 
     @Override
     public int getItemCount() {
-        return hotelImages.size();
+        return placeImages.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

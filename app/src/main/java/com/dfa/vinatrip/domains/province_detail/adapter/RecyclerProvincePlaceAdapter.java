@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.custom_view.SimpleRatingBar;
+import com.dfa.vinatrip.domains.province_detail.view_all.place.PlaceSearchActivity_;
+import com.dfa.vinatrip.domains.province_detail.view_all.place.place_detail.PlaceDetailActivity_;
+import com.dfa.vinatrip.models.response.Province;
 import com.dfa.vinatrip.models.response.place.PlaceResponse;
 import com.dfa.vinatrip.widgets.RotateLoading;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -28,12 +31,14 @@ import java.util.List;
 
 public class RecyclerProvincePlaceAdapter extends RecyclerView.Adapter<RecyclerProvincePlaceAdapter.ViewHolder> {
     private Context context;
+    private Province province;
     private List<PlaceResponse> placeResponses;
     private ImageLoader imageLoader;
     private DisplayImageOptions imageOptions;
 
-    public RecyclerProvincePlaceAdapter(Context context, List<PlaceResponse> placeResponses) {
+    public RecyclerProvincePlaceAdapter(Context context, Province province, List<PlaceResponse> placeResponses) {
         this.context = context;
+        this.province = province;
         this.placeResponses = placeResponses;
         imageLoader = ImageLoader.getInstance();
         imageOptions = new DisplayImageOptions.Builder()
@@ -46,21 +51,21 @@ public class RecyclerProvincePlaceAdapter extends RecyclerView.Adapter<RecyclerP
                 .bitmapConfig(Bitmap.Config.ARGB_4444)
                 .build();
     }
-    
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.item_recycler_province_place, parent, false);
         return new ViewHolder(view);
     }
-    
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         PlaceResponse place = placeResponses.get(position);
         if (position != placeResponses.size() - 1) {
             holder.llMain.setVisibility(View.VISIBLE);
             holder.cvViewAll.setVisibility(View.GONE);
-            
+
             holder.tvPlaceName.setText(place.getName());
 
             imageLoader.displayImage(place.getAvatar(), holder.ivPlaceAvatar, imageOptions, new ImageLoadingListener() {
@@ -93,12 +98,12 @@ public class RecyclerProvincePlaceAdapter extends RecyclerView.Adapter<RecyclerP
             holder.cvViewAll.setVisibility(View.VISIBLE);
         }
     }
-    
+
     @Override
     public int getItemCount() {
         return placeResponses.size();
     }
-    
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private LinearLayout llMain;
         private CardView cvViewAll;
@@ -119,6 +124,14 @@ public class RecyclerProvincePlaceAdapter extends RecyclerView.Adapter<RecyclerP
             tvPlaceReviews = (TextView) itemView.findViewById(R.id.item_recycler_province_place_tv_reviews);
             tvPlaceDistance = (TextView) itemView.findViewById(R.id.item_recycler_province_place_tv_distance);
             rotateLoading = (RotateLoading) itemView.findViewById(R.id.item_recycler_province_place_rotate_loading);
+
+            itemView.setOnClickListener(v -> {
+                if (getAdapterPosition() != placeResponses.size() - 1) {
+                    PlaceDetailActivity_.intent(context).placeResponse(placeResponses.get(getAdapterPosition())).start();
+                } else {
+                    PlaceSearchActivity_.intent(context).province(province).start();
+                }
+            });
         }
     }
 }

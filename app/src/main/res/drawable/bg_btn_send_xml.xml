@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <layer-list>
+            <item android:drawable="@drawable/bg_btn_send"/>
+            <item>
+                <shape android:shape="rectangle">
+                    <corners android:radius="24dp"/>
+                    <solid android:color="#28000000"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    <item android:drawable="@drawable/bg_btn_send" android:state_pressed="false"/>
+</selector>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_food_list_ll_root"
+    android:id="@+id/activity_place_list_ll_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="beforeDescendants"
@@ -9,7 +9,7 @@
     android:orientation="vertical">
 
     <com.dfa.vinatrip.custom_view.NToolbar_
-        android:id="@+id/activity_food_list_tb_toolbar"
+        android:id="@+id/activity_place_list_tb_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"/>
 
@@ -35,14 +35,14 @@
                 android:src="@drawable/ic_search_gray"/>
 
             <EditText
-                android:id="@+id/activity_food_list_edt_search"
+                android:id="@+id/activity_place_list_edt_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@color/transparent"
                 android:gravity="center_vertical"
-                android:hint="Tìm món ăn..."
+                android:hint="Tìm địa điểm..."
                 android:singleLine="true"
                 android:textColor="#0b0b0b"
                 android:textColorHint="@android:color/darker_gray"
@@ -51,7 +51,7 @@
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment_province_detail_foods_rcv_foods"
+        android:id="@+id/fragment_province_detail_places_rcv_places"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </LinearLayout>

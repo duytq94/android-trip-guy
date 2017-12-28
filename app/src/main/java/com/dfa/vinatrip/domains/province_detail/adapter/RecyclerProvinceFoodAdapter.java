@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.custom_view.SimpleRatingBar;
+import com.dfa.vinatrip.domains.province_detail.view_all.food.FoodSearchActivity_;
+import com.dfa.vinatrip.domains.province_detail.view_all.food.food_detail.FoodDetailActivity_;
+import com.dfa.vinatrip.models.response.Province;
 import com.dfa.vinatrip.models.response.food.FoodResponse;
 import com.dfa.vinatrip.widgets.RotateLoading;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -28,12 +31,14 @@ import java.util.List;
 
 public class RecyclerProvinceFoodAdapter extends RecyclerView.Adapter<RecyclerProvinceFoodAdapter.ViewHolder> {
     private Context context;
+    private Province province;
     private List<FoodResponse> foodResponses;
     private ImageLoader imageLoader;
     private DisplayImageOptions imageOptions;
 
-    public RecyclerProvinceFoodAdapter(Context context, List<FoodResponse> foodResponses) {
+    public RecyclerProvinceFoodAdapter(Context context, Province province, List<FoodResponse> foodResponses) {
         this.context = context;
+        this.province = province;
         this.foodResponses = foodResponses;
         imageLoader = ImageLoader.getInstance();
         imageOptions = new DisplayImageOptions.Builder()
@@ -46,14 +51,14 @@ public class RecyclerProvinceFoodAdapter extends RecyclerView.Adapter<RecyclerPr
                 .bitmapConfig(Bitmap.Config.ARGB_4444)
                 .build();
     }
-    
+
     @Override
     public RecyclerProvinceFoodAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.item_recycler_province_food, parent, false);
         return new ViewHolder(view);
     }
-    
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         FoodResponse food = foodResponses.get(position);
@@ -92,12 +97,12 @@ public class RecyclerProvinceFoodAdapter extends RecyclerView.Adapter<RecyclerPr
             holder.cvViewAll.setVisibility(View.VISIBLE);
         }
     }
-    
+
     @Override
     public int getItemCount() {
         return foodResponses.size();
     }
-    
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private LinearLayout llMain;
         private CardView cvViewAll;
@@ -118,6 +123,16 @@ public class RecyclerProvinceFoodAdapter extends RecyclerView.Adapter<RecyclerPr
             tvFoodReviews = (TextView) itemView.findViewById(R.id.item_recycler_province_food_tv_reviews);
             tvFoodDistance = (TextView) itemView.findViewById(R.id.item_recycler_province_food_tv_distance);
             rotateLoading = (RotateLoading) itemView.findViewById(R.id.item_recycler_province_food_rotate_loading);
+
+            itemView.setOnClickListener(v -> {
+                if (getAdapterPosition() == foodResponses.size() - 1) {
+                    FoodSearchActivity_.intent(context)
+                            .province(province).start();
+                } else {
+                    FoodDetailActivity_.intent(context)
+                            .foodResponse(foodResponses.get(getAdapterPosition())).start();
+                }
+            });
         }
     }
 }

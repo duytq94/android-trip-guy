@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.domains.main;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.base.ExitDialog;
 import com.dfa.vinatrip.custom_view.NToolbar;
 import com.dfa.vinatrip.custom_view.NonSwipeViewPager;
 import com.dfa.vinatrip.domains.main.adapter.MainPagerAdapter;
@@ -24,6 +26,7 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressLint("Registered")
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
 
@@ -35,9 +38,14 @@ public class MainActivity extends AppCompatActivity {
     protected BottomNavigationView bnvMenu;
 
     private AlertDialog dialogInfo;
+    private ExitDialog exitDialog;
 
     @AfterViews
     public void init() {
+        exitDialog = new ExitDialog(this,
+                closeListener -> exitDialog.dismiss(),
+                sendListener -> finish());
+
         nToolbar.setup(this, "TripGuy");
         nToolbar.showAppIcon();
         nToolbar.showToolbarColor();
@@ -108,6 +116,11 @@ public class MainActivity extends AppCompatActivity {
                     // Must true so item in bottom bar can transform
                     return true;
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+        exitDialog.show();
     }
 }
 

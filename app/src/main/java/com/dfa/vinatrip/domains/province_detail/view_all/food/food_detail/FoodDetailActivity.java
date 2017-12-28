@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.province_detail.view_all.hotel.hotel_detail;
+package com.dfa.vinatrip.domains.province_detail.view_all.food.food_detail;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
@@ -17,12 +17,11 @@ import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.custom_view.NToolbar;
 import com.dfa.vinatrip.custom_view.SimpleRatingBar;
-import com.dfa.vinatrip.domains.province_detail.view_all.hotel.hotel_detail.adapter.RecyclerHotelFeedbackAdapter;
-import com.dfa.vinatrip.domains.province_detail.view_all.hotel.hotel_detail.adapter.RecyclerImageAdapter;
+import com.dfa.vinatrip.domains.province_detail.view_all.food.food_detail.adapter.RecyclerImageAdapter;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.request.FeedbackRequest;
 import com.dfa.vinatrip.models.response.feedback.FeedbackResponse;
-import com.dfa.vinatrip.models.response.hotel.HotelResponse;
+import com.dfa.vinatrip.models.response.food.FoodResponse;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.KeyboardVisibility;
 import com.dfa.vinatrip.utils.MapActivity_;
@@ -42,8 +41,7 @@ import javax.inject.Inject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.dfa.vinatrip.utils.Constants.TYPE_HOTEL;
-import static com.dfa.vinatrip.utils.Constants.TYPE_PLACE;
+import static com.dfa.vinatrip.utils.Constants.TYPE_FOOD;
 
 /**
  * Created by duonghd on 12/28/2017.
@@ -51,80 +49,78 @@ import static com.dfa.vinatrip.utils.Constants.TYPE_PLACE;
  */
 
 @SuppressLint("Registered")
-@EActivity(R.layout.activity_hotel_detail)
-public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDetailPresenter>
-        implements HotelDetailView {
+@EActivity(R.layout.activity_food_detail)
+public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailPresenter>
+        implements FoodDetailView {
     @App
     protected MainApplication mainApplication;
     @Inject
-    protected HotelDetailPresenter presenter;
-    
-    @ViewById(R.id.activity_hotel_detail_ll_root)
+    protected FoodDetailPresenter presenter;
+
+    @ViewById(R.id.activity_food_detail_ll_root)
     protected LinearLayout llRoot;
-    @ViewById(R.id.activity_province_hotel_detail_tb_toolbar)
+    @ViewById(R.id.activity_province_food_detail_tb_toolbar)
     protected NToolbar nToolbar;
-    @ViewById(R.id.activity_hotel_detail_tv_hotel_name)
-    protected TextView tvHotelName;
-    @ViewById(R.id.activity_hotel_detail_tv_number_of_feedback)
+    @ViewById(R.id.activity_food_detail_tv_food_name)
+    protected TextView tvFoodName;
+    @ViewById(R.id.activity_food_detail_tv_number_of_feedback)
     protected TextView tvNumberOfFeedback;
-    @ViewById(R.id.activity_hotel_detail_iv_banner)
+    @ViewById(R.id.activity_food_detail_iv_banner)
     protected ImageView ivBanner;
-    @ViewById(R.id.activity_hotel_detail_tv_phone)
-    protected TextView tvPhone;
-    @ViewById(R.id.activity_hotel_detail_tv_address)
+    @ViewById(R.id.activity_food_detail_tv_address)
     protected TextView tvAddress;
-    @ViewById(R.id.activity_hotel_detail_iv_map)
+    @ViewById(R.id.activity_food_detail_iv_map)
     protected ImageView ivMap;
-    @ViewById(R.id.activity_hotel_detail_rcv_feedback)
+    @ViewById(R.id.activity_food_detail_rcv_feedback)
     protected RecyclerView rcvFeedback;
-    @ViewById(R.id.activity_hotel_detail_tv_none_feedback)
+    @ViewById(R.id.activity_food_detail_tv_none_feedback)
     protected TextView tvNoneFeedback;
-    @ViewById(R.id.activity_hotel_detail_rcv_photo)
+    @ViewById(R.id.activity_food_detail_rcv_photo)
     protected RecyclerView rcvPhoto;
-    
-    @ViewById(R.id.activity_hotel_detail_ll_is_login)
+
+    @ViewById(R.id.activity_food_detail_ll_is_login)
     protected LinearLayout llIsLogin;
-    @ViewById(R.id.activity_hotel_detail_ll_not_login)
+    @ViewById(R.id.activity_food_detail_ll_not_login)
     protected LinearLayout llNotLogin;
-    @ViewById(R.id.activity_hotel_detail_civ_user_avatar)
+    @ViewById(R.id.activity_food_detail_civ_user_avatar)
     protected CircleImageView civUserAvatar;
-    @ViewById(R.id.activity_hotel_detail_tv_user_name)
+    @ViewById(R.id.activity_food_detail_tv_user_name)
     protected TextView tvUserName;
-    @ViewById(R.id.activity_hotel_detail_edt_feedback_content)
+    @ViewById(R.id.activity_food_detail_edt_feedback_content)
     protected TextView edtFeedbackContent;
-    @ViewById(R.id.activity_hotel_detail_srb_feedback_rating)
+    @ViewById(R.id.activity_food_detail_srb_feedback_rating)
     protected SimpleRatingBar srbFeedbackRating;
-    @ViewById(R.id.activity_hotel_detail_tv_send_feedback)
+    @ViewById(R.id.activity_food_detail_tv_send_feedback)
     protected TextView tvSendFeedback;
-    
+
     @Extra
-    protected HotelResponse hotelResponse;
-    
+    protected FoodResponse foodResponse;
+
     @AfterInject
     void initInject() {
-        DaggerHotelDetailComponent.builder()
+        DaggerFoodDetailComponent.builder()
                 .applicationComponent(mainApplication.getApplicationComponent())
                 .activityModule(new ActivityModule(this))
                 .build().inject(this);
     }
-    
+
     @AfterViews
     void init() {
         AppUtil.setupUI(llRoot);
         showKeyboard();
-        
+
         nToolbar.setup(this, "TripGuy");
         nToolbar.showLeftIcon();
         nToolbar.showToolbarColor();
         nToolbar.setOnLeftClickListener(v -> onBackPressed());
-        
+
         setupViewWithData();
-        presenter.getHotelFeedback(hotelResponse.getId(), 0, 0);
+        presenter.getFoodFeedback(foodResponse.getId(), 0, 0);
     }
-    
+
     private void showKeyboard() {
         KeyboardVisibility.setEventListener(this, isOpen -> {
-            if (KeyboardVisibility.isKeyboardVisible(HotelDetailActivity.this)) {
+            if (KeyboardVisibility.isKeyboardVisible(com.dfa.vinatrip.domains.province_detail.view_all.food.food_detail.FoodDetailActivity.this)) {
                 Log.e("keyboard", "show");
             } else {
                 if (getCurrentFocus() != null) {
@@ -134,38 +130,37 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
             }
         });
     }
-    
+
     private void setupViewWithData() {
-        Picasso.with(this).load(hotelResponse.getAvatar())
+        Picasso.with(this).load(foodResponse.getAvatar())
                 .error(R.drawable.photo_not_available)
                 .into(ivBanner);
-        
+
         ivMap.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
                         int ivMapHeight = ivMap.getHeight();
                         int ivMapWidth = ivMap.getWidth();
-                        double latitude = hotelResponse.getLatitude();
-                        
-                        double longitude = hotelResponse.getLongitude();
-                        
+                        double latitude = foodResponse.getLatitude();
+
+                        double longitude = foodResponse.getLongitude();
+
                         String s1 = "https://maps.googleapis.com/maps/api/staticmap?center=";
                         String s2 = "&zoom=18&scale=2&size=";
                         String s3 = "&markers=size:big%7Ccolor:0xff0000%7Clabel:%7C";
 
-                        String url = s1 + latitude + "," + longitude + s2 + AppUtil.dpToPx(HotelDetailActivity.this, ivMapWidth) + "x" + AppUtil.dpToPx(HotelDetailActivity.this, ivMapHeight) + s3 + latitude + "," + longitude;
-                        Picasso.with(HotelDetailActivity.this).load(url).into(ivMap);
-                        
+                        String url = s1 + latitude + "," + longitude + s2 + AppUtil.dpToPx(FoodDetailActivity.this, ivMapWidth) + "x" + AppUtil.dpToPx(FoodDetailActivity.this, ivMapHeight) + s3 + latitude + "," + longitude;
+                        Picasso.with(FoodDetailActivity.this).load(url).into(ivMap);
+
                         if (ivMap.getViewTreeObserver().isAlive()) {
                             ivMap.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                         }
                     }
                 });
-        
-        tvHotelName.setText(hotelResponse.getName());
-        tvPhone.setText(hotelResponse.getPhone_number());
-        tvAddress.setText(hotelResponse.getAddress());
+
+        tvFoodName.setText(foodResponse.getName());
+        tvAddress.setText(foodResponse.getAddress());
         if (presenter.getCurrentUser() != null) {
             llIsLogin.setVisibility(View.VISIBLE);
             llNotLogin.setVisibility(View.GONE);
@@ -177,46 +172,46 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
             llNotLogin.setVisibility(View.VISIBLE);
             tvSendFeedback.setBackground(getResources().getDrawable(R.drawable.bg_btn_gray_radius_3dp_not_press));
         }
-        
+
         rcvPhoto.setHasFixedSize(true);
         rcvPhoto.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        rcvPhoto.setAdapter(new RecyclerImageAdapter(this, hotelResponse.getImages()));
+        rcvPhoto.setAdapter(new RecyclerImageAdapter(this, foodResponse.getImages()));
     }
-    
+
     @Override
     public void showLoading() {
         showHUD();
     }
-    
+
     @Override
     public void hideLoading() {
         hideHUD();
     }
-    
+
     @Override
     public void apiError(Throwable throwable) {
-        
+
     }
-    
+
     @NonNull
     @Override
-    public HotelDetailPresenter createPresenter() {
+    public FoodDetailPresenter createPresenter() {
         return presenter;
     }
-    
+
     @Override
     public void onBackPressed() {
         finish();
     }
-    
-    @Click(R.id.activity_hotel_detail_tv_send_feedback)
+
+    @Click(R.id.activity_food_detail_tv_send_feedback)
     void sendFeedbackClick() {
         if (presenter.getCurrentUser() != null && validateFeedbackInput()) {
-            presenter.sendFeedback(hotelResponse.getId(),
+            presenter.sendFeedback(foodResponse.getId(),
                     new FeedbackRequest(edtFeedbackContent.getText().toString(), srbFeedbackRating.getRating()));
         }
     }
-    
+
     private boolean validateFeedbackInput() {
         boolean validateResult = false;
         if (edtFeedbackContent.getText().toString().length() == 0) {
@@ -229,34 +224,34 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
         return validateResult;
     }
 
-    @Click(R.id.activity_hotel_detail_iv_map)
-    void ivMapClick(){
+    @Click(R.id.activity_food_detail_iv_map)
+    void ivMapClick() {
         MapActivity_.intent(this)
-                .title(hotelResponse.getName())
-                .latitude(hotelResponse.getLatitude())
-                .longitude(hotelResponse.getLongitude())
+                .title(foodResponse.getName())
+                .latitude(foodResponse.getLatitude())
+                .longitude(foodResponse.getLongitude())
                 .start();
     }
-    
+
     @Override
-    public void getHotelFeedbackSuccess(List<FeedbackResponse> feedbackResponses) {
-        if (feedbackResponses.size() != 0) {
+    public void getFoodFeedbackSuccess(List<FeedbackResponse> feedbackResponses) {
+        /*if (feedbackResponses.size() != 0) {
             rcvFeedback.setVisibility(View.VISIBLE);
             tvNoneFeedback.setVisibility(View.GONE);
-            
+
             this.rcvFeedback.setHasFixedSize(true);
             this.rcvFeedback.setLayoutManager(new LinearLayoutManager(this));
-            this.rcvFeedback.setAdapter(new RecyclerHotelFeedbackAdapter(this, feedbackResponses));
-            
+            this.rcvFeedback.setAdapter(new RecyclerFoodFeedbackAdapter(this, feedbackResponses));
+
             tvNumberOfFeedback.setText(String.format("%s đánh giá", feedbackResponses.size()));
         } else {
             rcvFeedback.setVisibility(View.GONE);
             tvNoneFeedback.setVisibility(View.VISIBLE);
-        }
+        }*/
     }
-    
+
     @Override
-    public void postHotelFeedbackSuccess(FeedbackResponse feedbackResponse) {
+    public void postFoodFeedbackSuccess(FeedbackResponse feedbackResponse) {
         Toast.makeText(this, "Cảm ơn bạn đã gửi đánh giá.", Toast.LENGTH_SHORT).show();
     }
 }
