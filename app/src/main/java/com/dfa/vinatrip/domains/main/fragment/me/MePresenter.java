@@ -6,6 +6,7 @@ import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.services.account.AccountService;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -48,5 +49,13 @@ public class MePresenter extends BasePresenter<MeView> {
                 }, throwable -> {
                     getView().apiError(throwable);
                 });
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------
+    @Subscribe
+    public void onMessageMakeRequestEvent(User user) {
+        if (isViewAttached()) {
+            getView().loginOtherActivity();
+        }
     }
 }

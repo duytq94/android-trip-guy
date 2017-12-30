@@ -33,7 +33,7 @@ public class ProvinceDetailPresenter extends BasePresenter<ProvinceDetailView> {
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription1 = dataService.getEvents(province_id, page, per_page)
+        subscription1 = dataService.getFestivals(province_id, page, per_page)
                 .compose(RxScheduler.applyIoSchedulers())
                 .doOnTerminate(() -> {
                     if (isViewAttached()) {

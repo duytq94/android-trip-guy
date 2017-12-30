@@ -11,17 +11,18 @@ import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.custom_view.NToolbar;
-import com.dfa.vinatrip.domains.province_detail.adapter.RecyclerProvinceEventAdapter;
+import com.dfa.vinatrip.domains.province_detail.adapter.RecyclerProvinceFestivalAdapter;
 import com.dfa.vinatrip.domains.province_detail.adapter.RecyclerProvinceFoodAdapter;
 import com.dfa.vinatrip.domains.province_detail.adapter.RecyclerProvinceHotelAdapter;
 import com.dfa.vinatrip.domains.province_detail.adapter.RecyclerProvinceImageAdapter;
 import com.dfa.vinatrip.domains.province_detail.adapter.RecyclerProvincePlaceAdapter;
+import com.dfa.vinatrip.domains.province_detail.view_all.festival.FestivalSearchActivity_;
 import com.dfa.vinatrip.domains.province_detail.view_all.food.FoodSearchActivity_;
 import com.dfa.vinatrip.domains.province_detail.view_all.hotel.HotelSearchActivity_;
 import com.dfa.vinatrip.domains.province_detail.view_all.place.PlaceSearchActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.Province;
-import com.dfa.vinatrip.models.response.event.EventResponse;
+import com.dfa.vinatrip.models.response.festival.FestivalResponse;
 import com.dfa.vinatrip.models.response.food.FoodResponse;
 import com.dfa.vinatrip.models.response.hotel.HotelResponse;
 import com.dfa.vinatrip.models.response.place.PlaceResponse;
@@ -57,8 +58,8 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
     protected ImageView ivBanner;
     @ViewById(R.id.activity_province_detail_tv_intro)
     protected TextView tvIntro;
-    @ViewById(R.id.activity_province_detail_rcv_featured_event)
-    protected RecyclerView rcvEvents;
+    @ViewById(R.id.activity_province_detail_rcv_festival)
+    protected RecyclerView rcvFestival;
     @ViewById(R.id.activity_province_detail_rcv_hotel)
     protected RecyclerView rcvHotels;
     @ViewById(R.id.activity_province_detail_rcv_food)
@@ -74,10 +75,10 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
     @Extra
     protected Province province;
 
-    private static final int event_page = 1;
-    private static final int event_per_page = 5;
-    private List<EventResponse> eventResponses;
-    private RecyclerProvinceEventAdapter eventAdapter;
+    private static final int festival_page = 1;
+    private static final int festival_per_page = 5;
+    private List<FestivalResponse> festivalResponses;
+    private RecyclerProvinceFestivalAdapter festivalAdapter;
 
     private static final int hotel_page = 1;
     private static final int hotel_per_page = 5;
@@ -119,11 +120,11 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
 
         tvIntro.setText(province.getDescription());
 
-        eventResponses = new ArrayList<>();
-        eventAdapter = new RecyclerProvinceEventAdapter(this, province, eventResponses);
-        rcvEvents.setHasFixedSize(true);
-        rcvEvents.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        rcvEvents.setAdapter(eventAdapter);
+        festivalResponses = new ArrayList<>();
+        festivalAdapter = new RecyclerProvinceFestivalAdapter(this, province, festivalResponses);
+        rcvFestival.setHasFixedSize(true);
+        rcvFestival.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rcvFestival.setAdapter(festivalAdapter);
 
         hotelResponses = new ArrayList<>();
         hotelAdapter = new RecyclerProvinceHotelAdapter(this, province, hotelResponses);
@@ -149,7 +150,7 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
         rcvImages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rcvImages.setAdapter(imageAdapter);
 
-        presenter.getEvents(province.getId(), event_page, event_per_page);
+        presenter.getEvents(province.getId(), festival_page, festival_per_page);
         presenter.getHotels(province.getId(), hotel_page, hotel_per_page);
         presenter.getFoods(province.getId(), food_page, food_per_page);
         presenter.getPlaces(province.getId(), place_page, place_per_page);
@@ -182,6 +183,11 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
         finish();
     }
 
+    @Click(R.id.activity_province_detail_tv_view_all_festival)
+    void viewAllFestivalClick() {
+        FestivalSearchActivity_.intent(this).province(province).start();
+    }
+
     @Click(R.id.activity_province_detail_tv_view_all_hotel)
     void viewAllHotelClick() {
         HotelSearchActivity_.intent(this).province(province).start();
@@ -199,10 +205,10 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
 
     //-----------------------------------------------------------------------------------------------------------------
     @Override
-    public void getEventsSuccess(List<EventResponse> eventResponses) {
-        this.eventResponses.addAll(eventResponses);
-        this.eventResponses.add(new EventResponse());
-        this.eventAdapter.notifyDataSetChanged();
+    public void getEventsSuccess(List<FestivalResponse> festivalResponses) {
+        this.festivalResponses.addAll(festivalResponses);
+        this.festivalResponses.add(new FestivalResponse());
+        this.festivalAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -10,16 +10,20 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
+import com.dfa.vinatrip.base.LoginDialog;
 import com.dfa.vinatrip.custom_view.NToolbar;
 import com.dfa.vinatrip.custom_view.SimpleRatingBar;
 import com.dfa.vinatrip.domains.province_detail.view_all.place.place_detail.adapter.RecyclerImageAdapter;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
+import com.dfa.vinatrip.models.request.AuthRequest;
 import com.dfa.vinatrip.models.response.feedback.FeedbackResponse;
 import com.dfa.vinatrip.models.response.place.PlaceResponse;
+import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.dfa.vinatrip.utils.KeyboardVisibility;
 import com.dfa.vinatrip.utils.MapActivity_;
@@ -39,9 +43,6 @@ import javax.inject.Inject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.dfa.vinatrip.utils.Constants.TYPE_HOTEL;
-import static com.dfa.vinatrip.utils.Constants.TYPE_PLACE;
-
 /**
  * Created by duonghd on 12/28/2017.
  */
@@ -49,7 +50,7 @@ import static com.dfa.vinatrip.utils.Constants.TYPE_PLACE;
 @SuppressLint("Registered")
 @EActivity(R.layout.activity_place_detail)
 public class PlaceDetailActivity extends BaseActivity<PlaceDetailView, PlaceDetailPresenter>
-        implements PlaceDetailView {
+        implements PlaceDetailView, LoginDialog.CallbackActivity {
     @App
     protected MainApplication mainApplication;
     @Inject
@@ -96,6 +97,8 @@ public class PlaceDetailActivity extends BaseActivity<PlaceDetailView, PlaceDeta
     @Extra
     protected PlaceResponse placeResponse;
 
+    private LoginDialog loginDialog;
+
     @AfterInject
     void initInject() {
         DaggerPlaceDetailComponent.builder()
@@ -116,6 +119,12 @@ public class PlaceDetailActivity extends BaseActivity<PlaceDetailView, PlaceDeta
 
         setupViewWithData();
         //presenter.getPlaceFeedback(placeResponse.getId(), 0, 0);
+        loginDialog = new LoginDialog(this);
+        loginDialog.setCancelable(false);
+        loginDialog.setCanceledOnTouchOutside(false);
+        loginDialog.setOnDismissListener(dialog -> {
+            loginDialog.clearData();
+        });
     }
 
     private void showKeyboard() {
@@ -187,26 +196,46 @@ public class PlaceDetailActivity extends BaseActivity<PlaceDetailView, PlaceDeta
 
     @Override
     public void showLoading() {
-
+        showHUD();
     }
 
     @Override
     public void hideLoading() {
-
+        hideHUD();
     }
 
     @Override
     public void apiError(Throwable throwable) {
-
+        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Click(R.id.activity_place_detail_iv_map)
-    void ivMapClick(){
+    void ivMapClick() {
         MapActivity_.intent(this)
                 .title(placeResponse.getName())
                 .latitude(placeResponse.getLatitude())
                 .longitude(placeResponse.getLongitude())
                 .start();
+    }
+
+    @Click(R.id.activity_place_detail_tv_login)
+    void tvLoginCLick() {
+        loginDialog.show();
+    }
+
+    @Override
+    public void loginInfo(String email, String password) {
+        loginDialog.dismiss();
+        presenter.loginWithEmail(new AuthRequest(email, password));
+    }
+
+    @Override
+    public void signInSuccess(User user) {
+        llIsLogin.setVisibility(View.VISIBLE);
+        llNotLogin.setVisibility(View.GONE);
+        tvSendFeedback.setBackground(getResources().getDrawable(R.drawable.bg_btn_green_radius_3dp));
+        Picasso.with(this).load(user.getAvatar()).into(civUserAvatar);
+        tvUserName.setText(user.getUsername());
     }
 
     @Override

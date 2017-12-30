@@ -11,8 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.province_detail.view_all.festival.FestivalSearchActivity_;
+import com.dfa.vinatrip.domains.province_detail.view_all.festival.festival_detail.FestivalDetailActivity_;
 import com.dfa.vinatrip.models.response.Province;
-import com.dfa.vinatrip.models.response.event.EventResponse;
+import com.dfa.vinatrip.models.response.festival.FestivalResponse;
 import com.dfa.vinatrip.widgets.RotateLoading;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -23,19 +25,20 @@ import java.util.List;
 
 /**
  * Created by duonghd on 12/8/2017.
+ * duonghd1307@gmail.com
  */
 
-public class RecyclerProvinceEventAdapter extends RecyclerView.Adapter<RecyclerProvinceEventAdapter.ViewHolder> {
+public class RecyclerProvinceFestivalAdapter extends RecyclerView.Adapter<RecyclerProvinceFestivalAdapter.ViewHolder> {
     private Context context;
     private Province province;
-    private List<EventResponse> eventResponses;
+    private List<FestivalResponse> festivalResponses;
     private ImageLoader imageLoader;
     private DisplayImageOptions imageOptions;
 
-    public RecyclerProvinceEventAdapter(Context context, Province province, List<EventResponse> eventResponses) {
+    public RecyclerProvinceFestivalAdapter(Context context, Province province, List<FestivalResponse> festivalResponses) {
         this.context = context;
         this.province = province;
-        this.eventResponses = eventResponses;
+        this.festivalResponses = festivalResponses;
         imageLoader = ImageLoader.getInstance();
         imageOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.bg_green)
@@ -51,20 +54,20 @@ public class RecyclerProvinceEventAdapter extends RecyclerView.Adapter<RecyclerP
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.item_recycler_province_event, parent, false);
+                R.layout.item_recycler_province_festival, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        EventResponse event = eventResponses.get(position);
-        if (position != eventResponses.size() - 1) {
+        FestivalResponse festival = festivalResponses.get(position);
+        if (position != festivalResponses.size() - 1) {
             holder.cvViewMain.setVisibility(View.VISIBLE);
             holder.cvViewAll.setVisibility(View.GONE);
-            holder.tvEventTime.setText(event.getTime());
-            holder.tvEventName.setText(event.getName());
+            holder.tvEventTime.setText(festival.getTime());
+            holder.tvEventName.setText(festival.getName());
 
-            imageLoader.displayImage(event.getAvatar(), holder.ivEventAvatar, imageOptions, new ImageLoadingListener() {
+            imageLoader.displayImage(festival.getAvatar(), holder.ivEventAvatar, imageOptions, new ImageLoadingListener() {
                 @Override
                 public void onLoadingStarted(String imageUri, View view) {
                     holder.rotateLoading.setVisibility(View.VISIBLE);
@@ -97,7 +100,7 @@ public class RecyclerProvinceEventAdapter extends RecyclerView.Adapter<RecyclerP
 
     @Override
     public int getItemCount() {
-        return eventResponses.size();
+        return festivalResponses.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -110,12 +113,20 @@ public class RecyclerProvinceEventAdapter extends RecyclerView.Adapter<RecyclerP
 
         public ViewHolder(View itemView) {
             super(itemView);
-            cvViewMain = (CardView) itemView.findViewById(R.id.item_recycler_province_event_cv_view_main);
-            cvViewAll = (CardView) itemView.findViewById(R.id.item_recycler_province_event_cv_view_all);
-            ivEventAvatar = (ImageView) itemView.findViewById(R.id.item_recycler_province_event_iv_image);
-            tvEventName = (TextView) itemView.findViewById(R.id.item_recycler_province_event_tv_name);
-            tvEventTime = (TextView) itemView.findViewById(R.id.item_recycler_province_event_tv_time);
-            rotateLoading = (RotateLoading) itemView.findViewById(R.id.item_recycler_province_event_rotate_loading);
+            cvViewMain = (CardView) itemView.findViewById(R.id.item_recycler_province_festival_cv_view_main);
+            cvViewAll = (CardView) itemView.findViewById(R.id.item_recycler_province_festival_cv_view_all);
+            ivEventAvatar = (ImageView) itemView.findViewById(R.id.item_recycler_province_festival_iv_image);
+            tvEventName = (TextView) itemView.findViewById(R.id.item_recycler_province_festival_tv_name);
+            tvEventTime = (TextView) itemView.findViewById(R.id.item_recycler_province_festival_tv_time);
+            rotateLoading = (RotateLoading) itemView.findViewById(R.id.item_recycler_province_festival_rotate_loading);
+
+            itemView.setOnClickListener(v -> {
+                if (getAdapterPosition() != festivalResponses.size() - 1) {
+                    FestivalDetailActivity_.intent(context).festivalResponse(festivalResponses.get(getAdapterPosition())).start();
+                } else {
+                    FestivalSearchActivity_.intent(context).province(province).start();
+                }
+            });
         }
     }
 }

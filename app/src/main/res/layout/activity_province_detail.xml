@@ -88,7 +88,7 @@
                         android:textStyle="bold"/>
 
                     <TextView
-                        android:id="@+id/activity_province_detail_tv_view_all_event"
+                        android:id="@+id/activity_province_detail_tv_view_all_festival"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginRight="5dp"
@@ -104,7 +104,7 @@
                 </LinearLayout>
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/activity_province_detail_rcv_featured_event"
+                    android:id="@+id/activity_province_detail_rcv_festival"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
                     android:layout_marginTop="5dp"/>

@@ -1,5 +1,6 @@
 package com.dfa.vinatrip;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 
 import com.dfa.vinatrip.infrastructures.ApplicationComponent;
@@ -15,8 +16,10 @@ import org.androidannotations.annotations.EApplication;
 
 /**
  * Created by DFA on 5/20/2017.
+ * duonghd1307@gmail.com
  */
 
+@SuppressLint("Registered")
 @EApplication
 public class MainApplication extends Application {
 

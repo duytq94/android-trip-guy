@@ -18,7 +18,7 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.CardView
-            android:id="@+id/item_recycler_province_event_cv_view_main"
+            android:id="@+id/item_recycler_province_festival_cv_view_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
@@ -30,14 +30,14 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/item_recycler_province_event_iv_image"
+                    android:id="@+id/item_recycler_province_festival_iv_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:src="@drawable/photo_not_available"/>
 
                 <com.dfa.vinatrip.widgets.RotateLoading
-                    android:id="@+id/item_recycler_province_event_rotate_loading"
+                    android:id="@+id/item_recycler_province_festival_rotate_loading"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_centerInParent="true"
@@ -57,7 +57,7 @@
                         android:layout_weight="1"/>
 
                     <TextView
-                        android:id="@+id/item_recycler_province_event_tv_time"
+                        android:id="@+id/item_recycler_province_festival_tv_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -69,14 +69,14 @@
                         android:textSize="@dimen/text_small"/>
 
                     <TextView
-                        android:id="@+id/item_recycler_province_event_tv_name"
+                        android:id="@+id/item_recycler_province_festival_tv_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text="event_name"
+                        android:text="festival_name"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/text_small"
                         android:textStyle="bold"/>
@@ -90,7 +90,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/item_recycler_province_event_cv_view_all"
+            android:id="@+id/item_recycler_province_festival_cv_view_all"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"

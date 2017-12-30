@@ -2,6 +2,7 @@ package com.dfa.vinatrip.domains.province_detail.view_all.hotel.hotel_detail;
 
 import com.beesightsoft.caf.services.schedulers.RxScheduler;
 import com.dfa.vinatrip.base.BasePresenter;
+import com.dfa.vinatrip.models.request.AuthRequest;
 import com.dfa.vinatrip.models.request.FeedbackRequest;
 import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.services.account.AccountService;
@@ -72,6 +73,30 @@ public class HotelDetailPresenter extends BasePresenter<HotelDetailView> {
                 .subscribe(feedbackResponses -> {
                     if (isViewAttached()) {
                         getView().getHotelFeedbackSuccess(feedbackResponses);
+                    }
+                }, throwable -> {
+                    if (isViewAttached()) {
+                        getView().apiError(throwable);
+                    }
+                });
+    }
+
+    public void loginWithEmail(AuthRequest authRequest) {
+        RxScheduler.onStop(subscription);
+        if (isViewAttached()) {
+            getView().showLoading();
+        }
+        subscription = accountService.login(authRequest)
+                .compose(RxScheduler.applyIoSchedulers())
+                .doOnTerminate(() -> {
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                    }
+                }).subscribe(user -> {
+                    if (isViewAttached()) {
+                        getView().signInSuccess(user);
+                        EventBus.getDefault().post(user);
+
                     }
                 }, throwable -> {
                     if (isViewAttached()) {

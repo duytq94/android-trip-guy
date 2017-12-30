@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 /**
  * Created by duonghd on 9/27/2017.
+ * duonghd1307@gmail.com
  */
 
 public class User extends BaseEntity implements LoginResponse, Serializable {

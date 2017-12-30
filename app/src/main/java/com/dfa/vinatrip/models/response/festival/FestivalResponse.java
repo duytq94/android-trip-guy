@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.models.response.event;
+package com.dfa.vinatrip.models.response.festival;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -6,9 +6,10 @@ import java.io.Serializable;
 
 /**
  * Created by duonghd on 10/13/2017.
+ * duonghd1307@gmail.com
  */
 
-public class EventResponse implements Serializable {
+public class FestivalResponse implements Serializable {
     @SerializedName("id")
     private int id;
     @SerializedName("province_id")
@@ -36,7 +37,7 @@ public class EventResponse implements Serializable {
     @SerializedName("updated_at")
     private String updatedAt;
     
-    public EventResponse() {
+    public FestivalResponse() {
     }
     
     public int getId() {

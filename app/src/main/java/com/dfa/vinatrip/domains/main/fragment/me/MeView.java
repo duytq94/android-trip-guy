@@ -8,4 +8,6 @@ import com.dfa.vinatrip.base.BaseMvpView;
 
 public interface MeView extends BaseMvpView {
     void signOutSuccess();
+
+    void loginOtherActivity();
 }
