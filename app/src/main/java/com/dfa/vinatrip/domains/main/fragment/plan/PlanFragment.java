@@ -2,6 +2,7 @@ package com.dfa.vinatrip.domains.main.fragment.plan;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -69,6 +70,7 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
                 .build().inject(this);
     }
 
+    @NonNull
     @Override
     public PlanPresenter createPresenter() {
         return presenter;
@@ -219,5 +221,10 @@ public class PlanFragment extends BaseFragment<PlanView, PlanPresenter>
             planList.add((Plan) data.getSerializableExtra(KEY_NEW_PLAN));
             initView();
         }
+    }
+
+    @Override
+    public void loginOtherActivity() {
+        init();
     }
 }

@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.domains.auth.sign_in;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,6 +39,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+@SuppressLint("Registered")
 @EActivity(R.layout.activity_sign_in)
 public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
         implements SignInView, Validator.ValidationListener, KeyboardListener.KeyboardVisibilityListener {
@@ -148,7 +150,7 @@ public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
         }
         return super.dispatchTouchEvent(ev);
     }
-    
+
     @Override
     public void showLoading() {
         showHUD();

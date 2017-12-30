@@ -9,22 +9,23 @@ import rx.Observable;
 
 /**
  * Created by duonghd on 12/7/2017.
+ * duonghd1307@gmail.com
  */
 
 public interface FeedbackService {
     Observable<List<FeedbackResponse>> getHotelFeedback(int hotelId, int page, int pageSize);
-    
+
     Observable<List<FeedbackResponse>> getFoodFeedback(int foodId, int page, int pageSize);
-    
+
     Observable<List<FeedbackResponse>> getPlaceFeedback(int placeId, int page, int pageSize);
-    
-    Observable<List<FeedbackResponse>> getEventFeedback(int eventId, int page, int pageSize);
-    
+
+    Observable<List<FeedbackResponse>> getFestivalFeedback(int eventId, int page, int pageSize);
+
     Observable<FeedbackResponse> postHotelFeedback(String accessToken, int hotelId, FeedbackRequest feedbackRequest);
-    
+
     Observable<FeedbackResponse> postFoodFeedback(String accessToken, int foodId, FeedbackRequest feedbackRequest);
-    
+
     Observable<FeedbackResponse> postPlaceFeedback(String accessToken, int placeId, FeedbackRequest feedbackRequest);
-    
-    Observable<FeedbackResponse> postEventFeedback(String accessToken, int eventId, FeedbackRequest feedbackRequest);
+
+    Observable<FeedbackResponse> postFestivalFeedback(String accessToken, int eventId, FeedbackRequest feedbackRequest);
 }

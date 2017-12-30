@@ -69,17 +69,32 @@
             android:windowSoftInputMode="adjustNothing"/>
 
         <activity
+            android:name=".domains.province_detail.view_all.festival.festival_detail.FestivalDetailActivity_"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
             android:name=".domains.province_detail.view_all.hotel.hotel_detail.HotelDetailActivity_"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".domains.province_detail.view_all.hotel.HotelSearchActivity_"
+            android:name=".domains.province_detail.view_all.place.place_detail.PlaceDetailActivity_"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".domains.province_detail.view_all.place.place_detail.PlaceDetailActivity_"
+            android:name=".domains.province_detail.view_all.food.food_detail.FoodDetailActivity_"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".domains.province_detail.view_all.festival.FestivalSearchActivity_"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".domains.province_detail.view_all.hotel.HotelSearchActivity_"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
 
@@ -93,10 +108,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
 
-        <activity
-            android:name=".domains.province_detail.view_all.food.food_detail.FoodDetailActivity_"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+
         <!--duonghd-->
 
         <activity

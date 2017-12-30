@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.domains.auth.reset_password;
 
+import android.annotation.SuppressLint;
 import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -32,6 +33,7 @@ import java.util.List;
 
 import es.dmoral.toasty.Toasty;
 
+@SuppressLint("Registered")
 @EActivity(R.layout.activity_reset_password)
 public class ResetPasswordActivity extends AppCompatActivity implements Validator.ValidationListener {
 

@@ -38,7 +38,7 @@ public interface RestFeedbackService {
             @Query("per_page") long per_page);
     
     @GET("api/feedback/event/{id}/listing")
-    Observable<RestMessageResponse<List<FeedbackResponse>>> getEventFeedback(
+    Observable<RestMessageResponse<List<FeedbackResponse>>> getFestivalFeedback(
             @Path("id") long eventId,
             @Query("page") long page,
             @Query("per_page") long per_page);
@@ -62,7 +62,7 @@ public interface RestFeedbackService {
             @Body FeedbackRequest feedbackRequest);
     
     @POST("api/feedback/event/{id}")
-    Observable<RestMessageResponse<FeedbackResponse>> postEventFeedback(
+    Observable<RestMessageResponse<FeedbackResponse>> postFestivalFeedback(
             @Header("access-token") String accessToken,
             @Path("id") long eventId,
             @Body FeedbackRequest feedbackRequest);

@@ -38,7 +38,6 @@ import jp.wasabeef.blurry.Blurry;
 
 import static com.dfa.vinatrip.utils.AppUtil.REQUEST_UPDATE_INFO;
 
-
 @EFragment(R.layout.fragment_me)
 public class MeFragment extends BaseFragment<MeView, MePresenter>
         implements MeView {
@@ -232,5 +231,10 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
     public void signOutSuccess() {
         SplashScreenActivity_.intent(getActivity()).start();
         getActivity().finish();
+    }
+
+    @Override
+    public void loginOtherActivity() {
+        init();
     }
 }

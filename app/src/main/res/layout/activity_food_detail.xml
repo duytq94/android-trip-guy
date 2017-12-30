@@ -91,8 +91,8 @@
                                 android:id="@+id/item_list_food_srb_rate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:srb_borderColor="#ffdd00"
-                                app:srb_fillColor="#ffdd00"
+                                app:srb_borderColor="#ff0090"
+                                app:srb_fillColor="#ff0090"
                                 app:srb_isIndicator="true"
                                 app:srb_numberOfStars="5"
                                 app:srb_rating="0"
@@ -306,6 +306,7 @@
                             android:layout_weight="1"/>
 
                         <TextView
+                            android:id="@+id/activity_food_detail_tv_login"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginRight="20dp"
@@ -325,8 +326,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="10dp"
-                        app:srb_borderColor="#ffdd00"
-                        app:srb_fillColor="#ffdd00"
+                        app:srb_borderColor="#ff0090"
+                        app:srb_fillColor="#ff0090"
                         app:srb_numberOfStars="5"
                         app:srb_rating="0"
                         app:srb_starBorderWidth="3"

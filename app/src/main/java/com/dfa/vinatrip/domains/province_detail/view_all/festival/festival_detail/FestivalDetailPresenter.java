@@ -1,110 +1,107 @@
-package com.dfa.vinatrip.domains.main.fragment.plan;
+package com.dfa.vinatrip.domains.province_detail.view_all.festival.festival_detail;
 
 import com.beesightsoft.caf.services.schedulers.RxScheduler;
 import com.dfa.vinatrip.base.BasePresenter;
+import com.dfa.vinatrip.models.request.AuthRequest;
+import com.dfa.vinatrip.models.request.FeedbackRequest;
 import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.services.account.AccountService;
-import com.dfa.vinatrip.services.plan.PlanService;
+import com.dfa.vinatrip.services.feedback.FeedbackService;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
 import rx.Subscription;
 
 /**
- * Created by duytq on 10/30/2017.
+ * Created by duonghd on 12/29/2017.
+ * duonghd1307@gmail.com
  */
 
-public class PlanPresenter extends BasePresenter<PlanView> {
-
+public class FestivalDetailPresenter extends BasePresenter<FestivalDetailView> {
     private AccountService accountService;
-    private PlanService planService;
+    private FeedbackService feedbackService;
     private Subscription subscription;
 
     @Inject
-    public PlanPresenter(EventBus eventBus, AccountService accountService, PlanService planService) {
+    public FestivalDetailPresenter(EventBus eventBus, AccountService accountService, FeedbackService feedbackService) {
         super(eventBus);
         this.accountService = accountService;
-        this.planService = planService;
-    }
-
-    public boolean isLogin() {
-        return accountService.loadFromStorage();
+        this.feedbackService = feedbackService;
     }
 
     public User getCurrentUser() {
         return accountService.getCurrentUser();
     }
 
-    public void getPlan() {
+    public void sendFeedback(int placeId, FeedbackRequest feedbackRequest) {
         RxScheduler.onStop(subscription);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription = planService.getPlan(accountService.getCurrentUser().getId())
+        subscription = feedbackService.postFestivalFeedback(accountService.getCurrentUser().getAccessToken(), placeId, feedbackRequest)
                 .compose(RxScheduler.applyIoSchedulers())
-                .subscribe(planList -> {
+                .doOnTerminate(() -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().getPlanSuccess(planList);
+                    }
+                })
+                .subscribe(feedbackResponse -> {
+                    if (isViewAttached()) {
+                        getView().postFestivalFeedbackSuccess(feedbackResponse);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {
-                        getView().hideLoading();
                         getView().apiError(throwable);
                     }
                 });
     }
 
-    // for member
-    public void cancelPlan(int position, long planId) {
+    public void getFestivalFeedback(int placeId, int page, int per_page) {
         RxScheduler.onStop(subscription);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription = planService.cancelPlan(accountService.getCurrentUser().getId(), planId)
+        subscription = feedbackService.getFestivalFeedback(placeId, page, per_page)
                 .compose(RxScheduler.applyIoSchedulers())
-                .subscribe(message -> {
+                .doOnTerminate(() -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().cancelPlanSuccess(message, position);
+                    }
+                })
+                .subscribe(feedbackResponses -> {
+                    if (isViewAttached()) {
+                        getView().getFestivalFeedbackSuccess(feedbackResponses);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {
-                        getView().hideLoading();
                         getView().apiError(throwable);
                     }
                 });
     }
 
-    // for owner
-    public void removePlan(int position, long planId) {
+    public void loginWithEmail(AuthRequest authRequest) {
         RxScheduler.onStop(subscription);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription = planService.removePlan(planId)
+        subscription = accountService.login(authRequest)
                 .compose(RxScheduler.applyIoSchedulers())
-                .subscribe(message -> {
+                .doOnTerminate(() -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().removePlanSuccess(message, position);
+                    }
+                }).subscribe(user -> {
+                    if (isViewAttached()) {
+                        getView().signInSuccess(user);
+                        EventBus.getDefault().post(user);
+
                     }
                 }, throwable -> {
                     if (isViewAttached()) {
-                        getView().hideLoading();
                         getView().apiError(throwable);
                     }
                 });
-    }
-
-    //-----------------------------------------------------------------------------------------------------------------
-    @Subscribe
-    public void onMessageMakeRequestEvent(User user) {
-        if (isViewAttached()) {
-            getView().loginOtherActivity();
-        }
     }
 }

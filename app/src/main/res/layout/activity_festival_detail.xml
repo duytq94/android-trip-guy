@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_hotel_detail_ll_root"
+    android:id="@+id/activity_festival_detail_ll_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e6eaeaea"
@@ -12,7 +12,7 @@
     android:orientation="vertical">
 
     <com.dfa.vinatrip.custom_view.NToolbar_
-        android:id="@+id/activity_province_hotel_detail_tb_toolbar"
+        android:id="@+id/activity_province_festival_detail_tb_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"/>
 
@@ -37,7 +37,7 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
-                    android:id="@+id/activity_hotel_detail_iv_banner"
+                    android:id="@+id/activity_festival_detail_iv_banner"
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
                     android:scaleType="centerCrop"
@@ -69,13 +69,13 @@
                             android:layout_weight="1"/>
 
                         <TextView
-                            android:id="@+id/activity_hotel_detail_tv_hotel_name"
+                            android:id="@+id/activity_festival_detail_tv_festival_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
                             android:gravity="center_vertical"
                             android:singleLine="true"
-                            android:text="HotelName"
+                            android:text="festivalName"
                             android:textColor="#ffffff"
                             android:textSize="13dp"
                             android:textStyle="bold"/>
@@ -88,11 +88,11 @@
                             android:orientation="horizontal">
 
                             <com.dfa.vinatrip.custom_view.SimpleRatingBar
-                                android:id="@+id/item_list_hotel_srb_rate"
+                                android:id="@+id/item_list_festival_srb_rate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:srb_borderColor="#ffdd00"
-                                app:srb_fillColor="#ffdd00"
+                                app:srb_borderColor="#c31cff"
+                                app:srb_fillColor="#c31cff"
                                 app:srb_isIndicator="true"
                                 app:srb_numberOfStars="5"
                                 app:srb_rating="0"
@@ -102,7 +102,7 @@
                                 app:srb_stepSize="0.5"/>
 
                             <TextView
-                                android:id="@+id/activity_hotel_detail_tv_number_of_feedback"
+                                android:id="@+id/activity_festival_detail_tv_number_of_feedback"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
@@ -135,36 +135,36 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#ffffff"
+                    android:background="@android:color/white"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="10dp"
                         android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_marginLeft="10dp"
-                            android:src="@drawable/ic_call"/>
+                            android:src="@drawable/ic_description"/>
 
                         <TextView
-                            android:id="@+id/activity_hotel_detail_tv_phone"
+                            android:id="@+id/activity_festival_detail_tv_intro"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
                             android:layout_marginLeft="10dp"
-                            android:singleLine="true"
-                            android:text="+84 999 999 999"
-                            android:textColor="#0b0b0b"
-                            android:textSize="12dp"/>
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_small"/>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -177,7 +177,7 @@
                             android:src="@drawable/ic_direction"/>
 
                         <TextView
-                            android:id="@+id/activity_hotel_detail_tv_address"
+                            android:id="@+id/activity_festival_detail_tv_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
@@ -188,10 +188,16 @@
                             android:textColor="#0b0b0b"
                             android:textSize="12dp"/>
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="0.66dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#c9c9c9"/>
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/activity_hotel_detail_iv_map"
+                    android:id="@+id/activity_festival_detail_iv_map"
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
                     android:scaleType="centerCrop"
@@ -220,7 +226,7 @@
                         android:textStyle="bold"/>
 
                     <android.support.v7.widget.RecyclerView
-                        android:id="@+id/activity_hotel_detail_rcv_feedback"
+                        android:id="@+id/activity_festival_detail_rcv_feedback"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -228,7 +234,7 @@
                         android:visibility="gone"/>
 
                     <TextView
-                        android:id="@+id/activity_hotel_detail_tv_none_feedback"
+                        android:id="@+id/activity_festival_detail_tv_none_feedback"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
@@ -238,7 +244,7 @@
                         android:textStyle="italic"/>
 
                     <EditText
-                        android:id="@+id/activity_hotel_detail_edt_feedback_content"
+                        android:id="@+id/activity_festival_detail_edt_feedback_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
@@ -257,7 +263,7 @@
                         android:textSize="10dp"/>
 
                     <LinearLayout
-                        android:id="@+id/activity_hotel_detail_ll_is_login"
+                        android:id="@+id/activity_festival_detail_ll_is_login"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -265,14 +271,14 @@
                         android:visibility="visible">
 
                         <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/activity_hotel_detail_civ_user_avatar"
+                            android:id="@+id/activity_festival_detail_civ_user_avatar"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_marginLeft="20dp"
                             android:src="@drawable/ic_avatar"/>
 
                         <TextView
-                            android:id="@+id/activity_hotel_detail_tv_user_name"
+                            android:id="@+id/activity_festival_detail_tv_user_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -283,7 +289,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/activity_hotel_detail_ll_not_login"
+                        android:id="@+id/activity_festival_detail_ll_not_login"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_marginTop="10dp"
@@ -306,7 +312,7 @@
                             android:layout_weight="1"/>
 
                         <TextView
-                            android:id="@+id/activity_hotel_detail_tv_login"
+                            android:id="@+id/activity_festival_detail_tv_login"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginRight="20dp"
@@ -321,13 +327,13 @@
                     </LinearLayout>
 
                     <com.dfa.vinatrip.custom_view.SimpleRatingBar
-                        android:id="@+id/activity_hotel_detail_srb_feedback_rating"
+                        android:id="@+id/activity_festival_detail_srb_feedback_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="10dp"
-                        app:srb_borderColor="#ffdd00"
-                        app:srb_fillColor="#ffdd00"
+                        app:srb_borderColor="#c31cff"
+                        app:srb_fillColor="#c31cff"
                         app:srb_numberOfStars="5"
                         app:srb_rating="0"
                         app:srb_starBorderWidth="3"
@@ -336,7 +342,7 @@
                         app:srb_stepSize="0.5"/>
 
                     <TextView
-                        android:id="@+id/activity_hotel_detail_tv_send_feedback"
+                        android:id="@+id/activity_festival_detail_tv_send_feedback"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginLeft="20dp"
@@ -349,61 +355,6 @@
                         android:textColor="@android:color/white"
                         android:textSize="14dp"
                         android:textStyle="bold"/>
-
-                    <View
-                        android:layout_width="wrap_content"
-                        android:layout_height="0.66dp"
-                        android:layout_marginTop="10dp"
-                        android:background="#c9c9c9"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@android:color/white"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:layout_weight="1"
-                            android:text="Hình ảnh"
-                            android:textColor="@color/colorMain"
-                            android:textSize="12dp"
-                            android:textStyle="bold"/>
-
-                        <TextView
-                            android:id="@+id/activity_hotel_detail_iv_view_all"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="5dp"
-                            android:background="@drawable/bg_ntoolbar_icon_click"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:paddingLeft="15dp"
-                            android:paddingRight="15dp"
-                            android:text="Xem tất cả"
-                            android:textColor="@color/colorMain"
-                            android:textSize="10dp"
-                            android:textStyle="italic"
-                            android:visibility="gone"/>
-                    </LinearLayout>
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/activity_hotel_detail_rcv_photo"
-                        android:layout_width="match_parent"
-                        android:layout_height="110dp"
-                        android:layout_marginTop="5dp"/>
 
                     <View
                         android:layout_width="wrap_content"

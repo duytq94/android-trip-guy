@@ -14,4 +14,6 @@ public interface PlanView extends BaseMvpView {
     void cancelPlanSuccess(String message, int position);
 
     void removePlanSuccess(String message, int position);
+
+    void loginOtherActivity();
 }
