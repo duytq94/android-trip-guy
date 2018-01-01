@@ -27,6 +27,7 @@ import java.util.List;
 
 /**
  * Created by duonghd on 10/13/2017.
+ * duonghd1307@gmail.com
  */
 
 public class RecyclerProvinceFoodAdapter extends RecyclerView.Adapter<RecyclerProvinceFoodAdapter.ViewHolder> {
@@ -66,6 +67,8 @@ public class RecyclerProvinceFoodAdapter extends RecyclerView.Adapter<RecyclerPr
             holder.llMain.setVisibility(View.VISIBLE);
             holder.cvViewAll.setVisibility(View.GONE);
             holder.tvFoodName.setText(food.getName());
+            holder.srbFoodRate.setRating(food.getStar());
+            holder.tvFoodReviews.setText(String.format("%s Reviews", food.getReview()));
 
             imageLoader.displayImage(food.getAvatar(), holder.ivFoodAvatar, imageOptions, new ImageLoadingListener() {
                 @Override

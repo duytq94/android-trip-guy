@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 /**
  * Created by duonghd on 12/7/2017.
+ * duonghd1307@gmail.com
  */
 
 public class FeedbackResponse implements Serializable{

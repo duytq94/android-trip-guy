@@ -12,12 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beesightsoft.caf.exceptions.ApiThrowable;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.base.LoginDialog;
 import com.dfa.vinatrip.custom_view.NToolbar;
 import com.dfa.vinatrip.custom_view.SimpleRatingBar;
+import com.dfa.vinatrip.domains.province_detail.view_all.food.food_detail.adapter.RecyclerFoodFeedbackAdapter;
 import com.dfa.vinatrip.domains.province_detail.view_all.food.food_detail.adapter.RecyclerImageAdapter;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.request.AuthRequest;
@@ -199,7 +201,8 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
 
     @Override
     public void apiError(Throwable throwable) {
-
+        ApiThrowable apiThrowable = (ApiThrowable) throwable;
+        Toast.makeText(this, apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @NonNull
@@ -255,7 +258,7 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
 
     @Override
     public void getFoodFeedbackSuccess(List<FeedbackResponse> feedbackResponses) {
-        /*if (feedbackResponses.size() != 0) {
+        if (feedbackResponses.size() != 0) {
             rcvFeedback.setVisibility(View.VISIBLE);
             tvNoneFeedback.setVisibility(View.GONE);
 
@@ -267,7 +270,7 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
         } else {
             rcvFeedback.setVisibility(View.GONE);
             tvNoneFeedback.setVisibility(View.VISIBLE);
-        }*/
+        }
     }
 
     @Override

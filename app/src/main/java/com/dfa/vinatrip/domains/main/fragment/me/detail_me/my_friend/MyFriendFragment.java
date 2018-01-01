@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.beesightsoft.caf.exceptions.ApiThrowable;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseFragment;
@@ -106,7 +107,8 @@ public class MyFriendFragment extends BaseFragment<MyFriendView, MyFriendPresent
 
     @Override
     public void apiError(Throwable throwable) {
-        Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
+        ApiThrowable apiThrowable = (ApiThrowable) throwable;
+        Toast.makeText(getContext(), apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -21,7 +21,8 @@ import static com.dfa.vinatrip.utils.ErrorCodes.ERROR_OAUTH2_TOKEN_NOT_BE_VERIFI
 import static com.dfa.vinatrip.utils.ErrorCodes.ERROR_OAUTH2_TOKEN_OWNER_DENIED_REQUEST;
 
 /**
- * Created by duytq on 9/19/2017.
+ * Created by duonghd on 9/19/2017.
+ * duonghd1307@gmail.com
  */
 
 public class ApiErrorFilter implements InterceptFilter {

@@ -27,6 +27,7 @@ import java.util.List;
 
 /**
  * Created by duonghd on 10/13/2017.
+ * duonghd1307@gmail.com
  */
 
 public class RecyclerProvinceHotelAdapter extends RecyclerView.Adapter<RecyclerProvinceHotelAdapter.ViewHolder> {
@@ -51,14 +52,14 @@ public class RecyclerProvinceHotelAdapter extends RecyclerView.Adapter<RecyclerP
                 .bitmapConfig(Bitmap.Config.ARGB_4444)
                 .build();
     }
-    
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.item_recycler_province_hotel, parent, false);
         return new ViewHolder(view);
     }
-    
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         HotelResponse hotel = hotelResponses.get(position);
@@ -66,6 +67,8 @@ public class RecyclerProvinceHotelAdapter extends RecyclerView.Adapter<RecyclerP
             holder.llMain.setVisibility(View.VISIBLE);
             holder.cvViewAll.setVisibility(View.GONE);
             holder.tvHotelName.setText(hotel.getName());
+            holder.srbHotelRate.setRating(hotel.getStar());
+            holder.tvHotelReviews.setText(String.format("%s Reviews", hotel.getReview()));
 
             imageLoader.displayImage(hotel.getAvatar(), holder.ivHotelAvatar, imageOptions, new ImageLoadingListener() {
                 @Override
@@ -97,12 +100,12 @@ public class RecyclerProvinceHotelAdapter extends RecyclerView.Adapter<RecyclerP
             holder.cvViewAll.setVisibility(View.VISIBLE);
         }
     }
-    
+
     @Override
     public int getItemCount() {
         return hotelResponses.size();
     }
-    
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private LinearLayout llMain;
         private CardView cvViewAll;

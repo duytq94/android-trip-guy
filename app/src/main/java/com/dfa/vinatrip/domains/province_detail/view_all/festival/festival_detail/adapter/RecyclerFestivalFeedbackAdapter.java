@@ -1,4 +1,4 @@
-package com.dfa.vinatrip.domains.province_detail.view_all.hotel.hotel_detail.adapter;
+package com.dfa.vinatrip.domains.province_detail.view_all.festival.festival_detail.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -21,11 +21,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * duonghd1307@gmail.com
  */
 
-public class RecyclerHotelFeedbackAdapter extends RecyclerView.Adapter<RecyclerHotelFeedbackAdapter.ViewHolder> {
+public class RecyclerFestivalFeedbackAdapter extends RecyclerView.Adapter<RecyclerFestivalFeedbackAdapter.ViewHolder> {
     private Context context;
     private List<FeedbackResponse> feedbackResponses;
     
-    public RecyclerHotelFeedbackAdapter(Context context, List<FeedbackResponse> feedbackResponses) {
+    public RecyclerFestivalFeedbackAdapter(Context context, List<FeedbackResponse> feedbackResponses) {
         this.context = context;
         this.feedbackResponses = feedbackResponses;
     }
@@ -33,7 +33,7 @@ public class RecyclerHotelFeedbackAdapter extends RecyclerView.Adapter<RecyclerH
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_recycler_feedback_hotel, parent, false);
+                .inflate(R.layout.item_recycler_feedback_festival, parent, false);
         return new ViewHolder(view);
     }
     
@@ -66,10 +66,10 @@ public class RecyclerHotelFeedbackAdapter extends RecyclerView.Adapter<RecyclerH
         
         public ViewHolder(View itemView) {
             super(itemView);
-            civAvatar = (CircleImageView) itemView.findViewById(R.id.item_recycler_feedback_hotel_civ_avatar);
-            tvUsername = (TextView) itemView.findViewById(R.id.item_recycler_feedback_hotel_tv_user_name);
-            srbRate = (SimpleRatingBar) itemView.findViewById(R.id.item_recycler_feedback_hotel_srb_rate);
-            tvContent = (TextView) itemView.findViewById(R.id.item_recycler_feedback_hotel_tv_content);
+            civAvatar = (CircleImageView) itemView.findViewById(R.id.item_recycler_feedback_festival_civ_avatar);
+            tvUsername = (TextView) itemView.findViewById(R.id.item_recycler_feedback_festival_tv_user_name);
+            srbRate = (SimpleRatingBar) itemView.findViewById(R.id.item_recycler_feedback_festival_srb_rate);
+            tvContent = (TextView) itemView.findViewById(R.id.item_recycler_feedback_festival_tv_content);
         }
     }
 }

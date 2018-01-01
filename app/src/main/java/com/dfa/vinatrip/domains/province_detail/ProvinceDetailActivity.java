@@ -6,7 +6,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.beesightsoft.caf.exceptions.ApiThrowable;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
@@ -169,7 +171,8 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
 
     @Override
     public void apiError(Throwable throwable) {
-
+        ApiThrowable apiThrowable = (ApiThrowable) throwable;
+        Toast.makeText(this, apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @NonNull

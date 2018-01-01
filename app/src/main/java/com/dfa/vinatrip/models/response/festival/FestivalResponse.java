@@ -20,6 +20,8 @@ public class FestivalResponse implements Serializable {
     private String description;
     @SerializedName("star")
     private float star;
+    @SerializedName("review")
+    private int review;
     @SerializedName("avatar")
     private String avatar;
     @SerializedName("address")
@@ -146,5 +148,13 @@ public class FestivalResponse implements Serializable {
     
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public int getReview() {
+        return review;
+    }
+
+    public void setReview(int review) {
+        this.review = review;
     }
 }

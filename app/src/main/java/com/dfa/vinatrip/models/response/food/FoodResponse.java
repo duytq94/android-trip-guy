@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Created by duonghd on 10/13/2017.
+ * duonghd1307@gmail.com
  */
 
 public class FoodResponse implements Serializable {
@@ -14,6 +15,10 @@ public class FoodResponse implements Serializable {
     private int id;
     @SerializedName("province_id")
     private int provinceId;
+    @SerializedName("star")
+    private float star;
+    @SerializedName("review")
+    private int review;
     @SerializedName("name")
     private String name;
     @SerializedName("type")
@@ -112,5 +117,21 @@ public class FoodResponse implements Serializable {
     
     public void setImages(List<FoodImage> images) {
         this.images = images;
+    }
+
+    public float getStar() {
+        return star;
+    }
+
+    public void setStar(float star) {
+        this.star = star;
+    }
+
+    public int getReview() {
+        return review;
+    }
+
+    public void setReview(int review) {
+        this.review = review;
     }
 }
