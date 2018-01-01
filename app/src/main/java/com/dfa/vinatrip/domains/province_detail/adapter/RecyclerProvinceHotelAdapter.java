@@ -68,7 +68,7 @@ public class RecyclerProvinceHotelAdapter extends RecyclerView.Adapter<RecyclerP
             holder.cvViewAll.setVisibility(View.GONE);
             holder.tvHotelName.setText(hotel.getName());
             holder.srbHotelRate.setRating(hotel.getStar());
-            holder.tvHotelReviews.setText(String.format("%s Reviews", hotel.getReview()));
+            holder.tvHotelReviews.setText(String.format("%s đánh giá", hotel.getReview()));
 
             imageLoader.displayImage(hotel.getAvatar(), holder.ivHotelAvatar, imageOptions, new ImageLoadingListener() {
                 @Override

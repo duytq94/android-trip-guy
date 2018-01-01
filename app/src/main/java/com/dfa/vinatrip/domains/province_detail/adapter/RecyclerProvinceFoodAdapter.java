@@ -68,7 +68,7 @@ public class RecyclerProvinceFoodAdapter extends RecyclerView.Adapter<RecyclerPr
             holder.cvViewAll.setVisibility(View.GONE);
             holder.tvFoodName.setText(food.getName());
             holder.srbFoodRate.setRating(food.getStar());
-            holder.tvFoodReviews.setText(String.format("%s Reviews", food.getReview()));
+            holder.tvFoodReviews.setText(String.format("%s đánh giá", food.getReview()));
 
             imageLoader.displayImage(food.getAvatar(), holder.ivFoodAvatar, imageOptions, new ImageLoadingListener() {
                 @Override

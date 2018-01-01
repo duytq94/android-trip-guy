@@ -64,6 +64,8 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
     protected NToolbar nToolbar;
     @ViewById(R.id.activity_festival_detail_tv_festival_name)
     protected TextView tvfestivalName;
+    @ViewById(R.id.item_list_festival_srb_rate)
+    protected SimpleRatingBar srbFestivalRate;
     @ViewById(R.id.activity_festival_detail_tv_number_of_feedback)
     protected TextView tvNumberOfFeedback;
     @ViewById(R.id.activity_festival_detail_iv_banner)
@@ -172,6 +174,8 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
                 });
 
         tvfestivalName.setText(festivalResponse.getName());
+        srbFestivalRate.setRating(festivalResponse.getStar());
+        tvNumberOfFeedback.setText(String.format("%s đánh giá", festivalResponse.getReview()));
         tvTime.setText(festivalResponse.getTime());
         tvAddress.setText(festivalResponse.getAddress());
         tvIntro.setText(festivalResponse.getDescription());
@@ -179,7 +183,13 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
             llIsLogin.setVisibility(View.VISIBLE);
             llNotLogin.setVisibility(View.GONE);
             tvSendFeedback.setBackground(getResources().getDrawable(R.drawable.bg_btn_green_radius_3dp));
-            Picasso.with(this).load(presenter.getCurrentUser().getAvatar()).into(civUserAvatar);
+            if (presenter.getCurrentUser().getAvatar() != null) {
+                Picasso.with(this).load(presenter.getCurrentUser().getAvatar())
+                        .error(R.drawable.photo_not_available)
+                        .into(civUserAvatar);
+            } else {
+                civUserAvatar.setImageResource(R.drawable.ic_avatar);
+            }
             tvUserName.setText(presenter.getCurrentUser().getUsername());
         } else {
             llIsLogin.setVisibility(View.GONE);

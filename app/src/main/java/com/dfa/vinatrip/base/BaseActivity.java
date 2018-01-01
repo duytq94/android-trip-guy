@@ -24,7 +24,7 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
     
     @UiThread
     public void showHUD() {
-        /*if (progressDialogLoading != null && progressDialogLoading.isShowing()) {
+        if (progressDialogLoading != null && progressDialogLoading.isShowing()) {
         
         } else {
             View view = getLayoutInflater().inflate(R.layout.layout_progress_loading_ball_spin, null);
@@ -39,7 +39,7 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
                 window.setBackgroundDrawableResource(R.drawable.bg_layout_loading);
             }
             progressDialogLoading.show();
-        }*/
+        }
     }
     
     @UiThread

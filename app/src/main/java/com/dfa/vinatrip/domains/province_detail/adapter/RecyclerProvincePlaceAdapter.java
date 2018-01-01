@@ -68,7 +68,7 @@ public class RecyclerProvincePlaceAdapter extends RecyclerView.Adapter<RecyclerP
             holder.cvViewAll.setVisibility(View.GONE);
             holder.tvPlaceName.setText(place.getName());
             holder.srbPlaceRate.setRating(place.getStar());
-            holder.tvPlaceReviews.setText(String.format("%s Reviews", place.getReview()));
+            holder.tvPlaceReviews.setText(String.format("%s đánh giá", place.getReview()));
 
             imageLoader.displayImage(place.getAvatar(), holder.ivPlaceAvatar, imageOptions, new ImageLoadingListener() {
                 @Override

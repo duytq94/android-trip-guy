@@ -247,6 +247,7 @@
                         android:background="@drawable/bg_search_view_radius_3dp"
                         android:gravity="top"
                         android:hint="Gửi đánh giá của bạn..."
+                        android:imeOptions="actionDone"
                         android:minHeight="60dp"
                         android:paddingBottom="5dp"
                         android:paddingLeft="10dp"

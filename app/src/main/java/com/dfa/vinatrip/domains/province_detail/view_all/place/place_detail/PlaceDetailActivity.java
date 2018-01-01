@@ -65,7 +65,9 @@ public class PlaceDetailActivity extends BaseActivity<PlaceDetailView, PlaceDeta
     @ViewById(R.id.activity_province_place_detail_tb_toolbar)
     protected NToolbar nToolbar;
     @ViewById(R.id.activity_place_detail_tv_place_name)
-    protected TextView tvplaceName;
+    protected TextView tvPlaceName;
+    @ViewById(R.id.item_list_place_srb_rate)
+    protected SimpleRatingBar srbPlaceRate;
     @ViewById(R.id.activity_place_detail_tv_number_of_feedback)
     protected TextView tvNumberOfFeedback;
     @ViewById(R.id.activity_place_detail_iv_banner)
@@ -173,14 +175,22 @@ public class PlaceDetailActivity extends BaseActivity<PlaceDetailView, PlaceDeta
                     }
                 });
 
-        tvplaceName.setText(placeResponse.getName());
+        tvPlaceName.setText(placeResponse.getName());
+        srbPlaceRate.setRating(placeResponse.getStar());
+        tvNumberOfFeedback.setText(String.format("%s đánh giá", placeResponse.getReview()));
         tvAddress.setText(placeResponse.getAddress());
         tvIntro.setText(placeResponse.getDescription());
         if (presenter.getCurrentUser() != null) {
             llIsLogin.setVisibility(View.VISIBLE);
             llNotLogin.setVisibility(View.GONE);
             tvSendFeedback.setBackground(getResources().getDrawable(R.drawable.bg_btn_green_radius_3dp));
-            Picasso.with(this).load(presenter.getCurrentUser().getAvatar()).into(civUserAvatar);
+            if (presenter.getCurrentUser().getAvatar() != null) {
+                Picasso.with(this).load(presenter.getCurrentUser().getAvatar())
+                        .error(R.drawable.photo_not_available)
+                        .into(civUserAvatar);
+            } else {
+                civUserAvatar.setImageResource(R.drawable.ic_avatar);
+            }
             tvUserName.setText(presenter.getCurrentUser().getUsername());
         } else {
             llIsLogin.setVisibility(View.GONE);
