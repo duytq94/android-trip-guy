@@ -240,6 +240,8 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
             Toast.makeText(this, "Nội dung còn trống!", Toast.LENGTH_SHORT).show();
         } else if (srbFeedbackRating.getRating() == 0) {
             Toast.makeText(this, "Bạn chưa chọn số sao!", Toast.LENGTH_SHORT).show();
+        } else if (!AppUtil.isCleanInput(edtFeedbackContent.getText().toString())){
+            Toast.makeText(this, "Nội dung chứa từ không hợp lệ!", Toast.LENGTH_SHORT).show();
         } else {
             validateResult = true;
         }
@@ -267,6 +269,22 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
     }
 
     @Override
+    public void signInSuccess(User user) {
+        llIsLogin.setVisibility(View.VISIBLE);
+        llNotLogin.setVisibility(View.GONE);
+        tvSendFeedback.setBackground(getResources().getDrawable(R.drawable.bg_btn_green_radius_3dp));
+        if (user.getAvatar() != null) {
+            Picasso.with(this).load(user.getAvatar())
+                    .error(R.drawable.photo_not_available)
+                    .into(civUserAvatar);
+        } else {
+            civUserAvatar.setImageResource(R.drawable.ic_avatar);
+        }
+        tvUserName.setText(user.getUsername());
+        Toast.makeText(this, "Đăng nhập thành công.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void getFoodFeedbackSuccess(List<FeedbackResponse> feedbackResponses) {
         if (feedbackResponses.size() != 0) {
             rcvFeedback.setVisibility(View.VISIBLE);
@@ -288,12 +306,5 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
         Toast.makeText(this, "Cảm ơn bạn đã gửi đánh giá.", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void signInSuccess(User user) {
-        llIsLogin.setVisibility(View.VISIBLE);
-        llNotLogin.setVisibility(View.GONE);
-        tvSendFeedback.setBackground(getResources().getDrawable(R.drawable.bg_btn_green_radius_3dp));
-        Picasso.with(this).load(user.getAvatar()).into(civUserAvatar);
-        tvUserName.setText(user.getUsername());
-    }
+
 }

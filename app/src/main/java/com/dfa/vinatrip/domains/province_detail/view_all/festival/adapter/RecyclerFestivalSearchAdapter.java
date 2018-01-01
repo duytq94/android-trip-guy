@@ -60,6 +60,8 @@ public class RecyclerFestivalSearchAdapter extends RecyclerView.Adapter<Recycler
         FestivalResponse festival = festivalResponses.get(position);
 
         holder.tvFestivalName.setText(festival.getName());
+        holder.srbFestivalRate.setRating(festival.getStar());
+        holder.tvFestivalReviews.setText(String.format("%s đánh giá", festival.getReview()));
         holder.tvFestivalAddress.setText(festival.getAddress());
 
         imageLoader.displayImage(festival.getAvatar(), holder.ivFestivalAvatar, imageOptions, new ImageLoadingListener() {
@@ -99,7 +101,7 @@ public class RecyclerFestivalSearchAdapter extends RecyclerView.Adapter<Recycler
         private TextView tvFestivalName;
         private TextView tvFestivalAddress;
         private SimpleRatingBar srbFestivalRate;
-        private TextView tvFestivalReview;
+        private TextView tvFestivalReviews;
         private TextView tvFestivalDistance;
         private RotateLoading rotateLoading;
 
@@ -109,7 +111,7 @@ public class RecyclerFestivalSearchAdapter extends RecyclerView.Adapter<Recycler
             tvFestivalName = (TextView) itemView.findViewById(R.id.item_recycler_festival_search_tv_name);
             tvFestivalAddress = (TextView) itemView.findViewById(R.id.item_recycler_festival_search_tv_address);
             srbFestivalRate = (SimpleRatingBar) itemView.findViewById(R.id.item_recycler_festival_search_srb_rate);
-            tvFestivalReview = (TextView) itemView.findViewById(R.id.item_recycler_festival_search_tv_number_of_feedback);
+            tvFestivalReviews = (TextView) itemView.findViewById(R.id.item_recycler_festival_search_tv_number_of_feedback);
             tvFestivalDistance = (TextView) itemView.findViewById(R.id.item_recycler_festival_search_tv_distance);
             rotateLoading = (RotateLoading) itemView.findViewById(R.id.item_recycler_festival_search_rotate_loading);
 

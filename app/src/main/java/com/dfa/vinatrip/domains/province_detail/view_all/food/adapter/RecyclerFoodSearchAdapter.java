@@ -60,6 +60,8 @@ public class RecyclerFoodSearchAdapter extends RecyclerView.Adapter<RecyclerFood
         FoodResponse food = foodResponses.get(position);
 
         holder.tvFoodName.setText(food.getName());
+        holder.srbFoodRate.setRating(food.getStar());
+        holder.tvFoodReview.setText(String.format("%s đánh giá", food.getReview()));
         holder.tvFoodAddress.setText(food.getAddress());
 
         imageLoader.displayImage(food.getAvatar(), holder.ivFoodAvatar, imageOptions, new ImageLoadingListener() {

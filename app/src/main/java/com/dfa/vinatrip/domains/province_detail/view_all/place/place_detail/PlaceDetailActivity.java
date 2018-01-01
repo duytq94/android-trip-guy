@@ -220,15 +220,6 @@ public class PlaceDetailActivity extends BaseActivity<PlaceDetailView, PlaceDeta
     }
 
     @Override
-    public void signInSuccess(User user) {
-        llIsLogin.setVisibility(View.VISIBLE);
-        llNotLogin.setVisibility(View.GONE);
-        tvSendFeedback.setBackground(getResources().getDrawable(R.drawable.bg_btn_green_radius_3dp));
-        Picasso.with(this).load(user.getAvatar()).into(civUserAvatar);
-        tvUserName.setText(user.getUsername());
-    }
-
-    @Override
     public void apiError(Throwable throwable) {
         ApiThrowable apiThrowable = (ApiThrowable) throwable;
         Toast.makeText(this, apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
@@ -253,6 +244,8 @@ public class PlaceDetailActivity extends BaseActivity<PlaceDetailView, PlaceDeta
             Toast.makeText(this, "Nội dung còn trống!", Toast.LENGTH_SHORT).show();
         } else if (srbFeedbackRating.getRating() == 0) {
             Toast.makeText(this, "Bạn chưa chọn số sao!", Toast.LENGTH_SHORT).show();
+        } else if (!AppUtil.isCleanInput(edtFeedbackContent.getText().toString())) {
+            Toast.makeText(this, "Nội dung chứa từ không hợp lệ!", Toast.LENGTH_SHORT).show();
         } else {
             validateResult = true;
         }
@@ -277,6 +270,22 @@ public class PlaceDetailActivity extends BaseActivity<PlaceDetailView, PlaceDeta
     public void loginInfo(String email, String password) {
         loginDialog.dismiss();
         presenter.loginWithEmail(new AuthRequest(email, password));
+    }
+
+    @Override
+    public void signInSuccess(User user) {
+        llIsLogin.setVisibility(View.VISIBLE);
+        llNotLogin.setVisibility(View.GONE);
+        tvSendFeedback.setBackground(getResources().getDrawable(R.drawable.bg_btn_green_radius_3dp));
+        if (user.getAvatar() != null) {
+            Picasso.with(this).load(user.getAvatar())
+                    .error(R.drawable.photo_not_available)
+                    .into(civUserAvatar);
+        } else {
+            civUserAvatar.setImageResource(R.drawable.ic_avatar);
+        }
+        tvUserName.setText(user.getUsername());
+        Toast.makeText(this, "Đăng nhập thành công.", Toast.LENGTH_SHORT).show();
     }
 
     @Override

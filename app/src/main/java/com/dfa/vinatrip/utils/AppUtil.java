@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend.UserFriend;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -392,6 +393,18 @@ public class AppUtil {
             }
         }
         return String.copyValueOf(listCharacter);
+    }
+
+    public static boolean isCleanInput(String input) {
+        boolean result = true;
+        String[] badWords = context.getResources().getStringArray(R.array.bad_words);
+        for (String s : badWords) {
+            if (input.contains(s)) {
+                result = false;
+                break;
+            }
+        }
+        return result;
     }
 
     public static float getDensity(Context context) {

@@ -107,6 +107,31 @@
         <item>"Ảnh đẹp"</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string-array name="bad_words">
+        <item>"lồn"</item>
+        <item>"lon"</item>
+        <item>"cặc"</item>
+        <item>"cac"</item>
+        <item>"đụ"</item>
+        <item>"đù"</item>
+        <item>"má"</item>
+        <item>"dâm"</item>
+        <item>"địt"</item>
+        <item>"dit"</item>
+        <item>"dis"</item>
+        <item>"djs"</item>
+        <item>"cứt"</item>
+        <item>"cút"</item>
+        <item>"đéo"</item>
+        <item>"buồi"</item>
+        <item>"fuck"</item>
+        <item>"chó chết"</item>
+        <item>"óc chó"</item>
+        <item>"đĩ"</item>
+        <item>"câm"</item>
+        <item>"chết"</item>
+    </string-array>
+
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

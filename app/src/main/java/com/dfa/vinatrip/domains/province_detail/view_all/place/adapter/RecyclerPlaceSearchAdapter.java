@@ -60,6 +60,8 @@ public class RecyclerPlaceSearchAdapter extends RecyclerView.Adapter<RecyclerPla
         PlaceResponse place = placeResponses.get(position);
 
         holder.tvPlaceName.setText(place.getName());
+        holder.srbPlaceRate.setRating(place.getStar());
+        holder.tvPlaceReview.setText(String.format("%s đánh giá", place.getReview()));
         holder.tvPlaceAddress.setText(place.getAddress());
 
         imageLoader.displayImage(place.getAvatar(), holder.ivPlaceAvatar, imageOptions, new ImageLoadingListener() {

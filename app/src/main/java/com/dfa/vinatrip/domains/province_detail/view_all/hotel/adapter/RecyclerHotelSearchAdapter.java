@@ -60,6 +60,8 @@ public class RecyclerHotelSearchAdapter extends RecyclerView.Adapter<RecyclerHot
         HotelResponse hotel = hotelResponses.get(position);
 
         holder.tvHotelName.setText(hotel.getName());
+        holder.srbHotelRate.setRating(hotel.getStar());
+        holder.tvHotelReview.setText(String.format("%s đánh giá", hotel.getReview()));
         holder.tvHotelAddress.setText(hotel.getAddress());
 
         imageLoader.displayImage(hotel.getAvatar(), holder.ivHotelAvatar, imageOptions, new ImageLoadingListener() {
