@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beesightsoft.caf.exceptions.ApiThrowable;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
@@ -53,7 +54,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 @SuppressLint("Registered")
 @EActivity(R.layout.activity_hotel_detail)
 public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDetailPresenter>
-        implements HotelDetailView ,LoginDialog.CallbackActivity {
+        implements HotelDetailView, LoginDialog.CallbackActivity {
     @App
     protected MainApplication mainApplication;
     @Inject
@@ -65,6 +66,8 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
     protected NToolbar nToolbar;
     @ViewById(R.id.activity_hotel_detail_tv_hotel_name)
     protected TextView tvHotelName;
+    @ViewById(R.id.item_list_hotel_srb_rate)
+    protected SimpleRatingBar srbHotelRate;
     @ViewById(R.id.activity_hotel_detail_tv_number_of_feedback)
     protected TextView tvNumberOfFeedback;
     @ViewById(R.id.activity_hotel_detail_iv_banner)
@@ -173,13 +176,21 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
                 });
 
         tvHotelName.setText(hotelResponse.getName());
+        srbHotelRate.setRating(hotelResponse.getStar());
+        tvNumberOfFeedback.setText(String.format("%s đánh giá", hotelResponse.getReview()));
         tvPhone.setText(hotelResponse.getPhone_number());
         tvAddress.setText(hotelResponse.getAddress());
         if (presenter.getCurrentUser() != null) {
             llIsLogin.setVisibility(View.VISIBLE);
             llNotLogin.setVisibility(View.GONE);
             tvSendFeedback.setBackground(getResources().getDrawable(R.drawable.bg_btn_green_radius_3dp));
-            Picasso.with(this).load(presenter.getCurrentUser().getAvatar()).into(civUserAvatar);
+            if (presenter.getCurrentUser().getAvatar() != null) {
+                Picasso.with(this).load(presenter.getCurrentUser().getAvatar())
+                        .error(R.drawable.photo_not_available)
+                        .into(civUserAvatar);
+            } else {
+                civUserAvatar.setImageResource(R.drawable.ic_avatar);
+            }
             tvUserName.setText(presenter.getCurrentUser().getUsername());
         } else {
             llIsLogin.setVisibility(View.GONE);
@@ -219,7 +230,8 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
 
     @Override
     public void apiError(Throwable throwable) {
-        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+        ApiThrowable apiThrowable = (ApiThrowable) throwable;
+        Toast.makeText(this, apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -288,5 +300,4 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
     public void postHotelFeedbackSuccess(FeedbackResponse feedbackResponse) {
         Toast.makeText(this, "Cảm ơn bạn đã gửi đánh giá.", Toast.LENGTH_SHORT).show();
     }
-
 }

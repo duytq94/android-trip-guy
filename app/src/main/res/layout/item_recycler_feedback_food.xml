@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/item_recycler_feedback_food_civ_avatar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/ic_avatar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="30dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_recycler_feedback_food_tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="user name"
+                android:textColor="#0b0b0b"
+                android:textSize="12dp"/>
+
+            <com.dfa.vinatrip.custom_view.SimpleRatingBar
+                android:id="@+id/item_recycler_feedback_food_srb_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srb_borderColor="#ff0090"
+                app:srb_fillColor="#ff0090"
+                app:srb_isIndicator="true"
+                app:srb_numberOfStars="5"
+                app:srb_rating="3.5"
+                app:srb_starBorderWidth="1.5"
+                app:srb_starSize="10dp"
+                app:srb_starsSeparation="3dp"
+                app:srb_stepSize="0.5"/>
+
+            <TextView
+                android:id="@+id/item_recycler_feedback_food_tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="feedback content"
+                android:textColor="#333333"
+                android:textSize="10dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.66dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:background="#64d7d7d7"/>
+</LinearLayout>

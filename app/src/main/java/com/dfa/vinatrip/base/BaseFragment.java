@@ -15,6 +15,7 @@ import org.androidannotations.annotations.EFragment;
 
 /**
  * Created by duonghd on 10/6/2017.
+ * duonghd1307@gmail.com
  */
 
 @EFragment
@@ -26,6 +27,7 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
         if (currentView != null) {
             InputMethodManager inputMethodManager =
                     (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            assert inputMethodManager != null;
             inputMethodManager.hideSoftInputFromWindow(currentView.getWindowToken(), 0);
         }
     }

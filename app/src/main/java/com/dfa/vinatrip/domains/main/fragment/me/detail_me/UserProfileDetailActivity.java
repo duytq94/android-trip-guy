@@ -11,7 +11,9 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.beesightsoft.caf.exceptions.ApiThrowable;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
@@ -162,6 +164,7 @@ public class UserProfileDetailActivity extends BaseActivity<UserProfileDetailVie
 
     @Override
     public void apiError(Throwable throwable) {
-
+        ApiThrowable apiThrowable = (ApiThrowable) throwable;
+        Toast.makeText(this, apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
     }
 }

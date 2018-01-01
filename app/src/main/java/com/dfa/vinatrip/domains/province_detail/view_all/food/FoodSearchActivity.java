@@ -9,7 +9,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.beesightsoft.caf.exceptions.ApiThrowable;
 import com.beesightsoft.caf.services.schedulers.RxScheduler;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
@@ -126,7 +128,8 @@ public class FoodSearchActivity extends BaseActivity<FoodSearchView, FoodSearchP
 
     @Override
     public void apiError(Throwable throwable) {
-
+        ApiThrowable apiThrowable = (ApiThrowable) throwable;
+        Toast.makeText(this, apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
     }
 
     private void setupSearchListener() {

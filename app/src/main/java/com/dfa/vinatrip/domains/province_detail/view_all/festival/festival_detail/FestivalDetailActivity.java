@@ -2,6 +2,7 @@ package com.dfa.vinatrip.domains.province_detail.view_all.festival.festival_deta
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -10,14 +11,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beesightsoft.caf.exceptions.ApiThrowable;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.base.LoginDialog;
 import com.dfa.vinatrip.custom_view.NToolbar;
 import com.dfa.vinatrip.custom_view.SimpleRatingBar;
+import com.dfa.vinatrip.domains.province_detail.view_all.festival.festival_detail.adapter.RecyclerFestivalFeedbackAdapter;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.request.AuthRequest;
+import com.dfa.vinatrip.models.request.FeedbackRequest;
 import com.dfa.vinatrip.models.response.feedback.FeedbackResponse;
 import com.dfa.vinatrip.models.response.festival.FestivalResponse;
 import com.dfa.vinatrip.models.response.user.User;
@@ -60,10 +64,14 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
     protected NToolbar nToolbar;
     @ViewById(R.id.activity_festival_detail_tv_festival_name)
     protected TextView tvfestivalName;
+    @ViewById(R.id.item_list_festival_srb_rate)
+    protected SimpleRatingBar srbFestivalRate;
     @ViewById(R.id.activity_festival_detail_tv_number_of_feedback)
     protected TextView tvNumberOfFeedback;
     @ViewById(R.id.activity_festival_detail_iv_banner)
     protected ImageView ivBanner;
+    @ViewById(R.id.activity_festival_detail_tv_time)
+    protected TextView tvTime;
     @ViewById(R.id.activity_festival_detail_tv_intro)
     protected TextView tvIntro;
     @ViewById(R.id.activity_festival_detail_tv_address)
@@ -114,7 +122,7 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
         nToolbar.setOnLeftClickListener(v -> onBackPressed());
 
         setupViewWithData();
-        //presenter.getFestivalFeedback(festivalResponse.getId(), 0, 0);
+        presenter.getFestivalFeedback(festivalResponse.getId(), 0, 0);
         loginDialog = new LoginDialog(this);
         loginDialog.setCancelable(false);
         loginDialog.setCanceledOnTouchOutside(false);
@@ -166,25 +174,28 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
                 });
 
         tvfestivalName.setText(festivalResponse.getName());
+        srbFestivalRate.setRating(festivalResponse.getStar());
+        tvNumberOfFeedback.setText(String.format("%s đánh giá", festivalResponse.getReview()));
+        tvTime.setText(festivalResponse.getTime());
         tvAddress.setText(festivalResponse.getAddress());
         tvIntro.setText(festivalResponse.getDescription());
         if (presenter.getCurrentUser() != null) {
             llIsLogin.setVisibility(View.VISIBLE);
             llNotLogin.setVisibility(View.GONE);
             tvSendFeedback.setBackground(getResources().getDrawable(R.drawable.bg_btn_green_radius_3dp));
-            Picasso.with(this).load(presenter.getCurrentUser().getAvatar()).into(civUserAvatar);
+            if (presenter.getCurrentUser().getAvatar() != null) {
+                Picasso.with(this).load(presenter.getCurrentUser().getAvatar())
+                        .error(R.drawable.photo_not_available)
+                        .into(civUserAvatar);
+            } else {
+                civUserAvatar.setImageResource(R.drawable.ic_avatar);
+            }
             tvUserName.setText(presenter.getCurrentUser().getUsername());
         } else {
             llIsLogin.setVisibility(View.GONE);
             llNotLogin.setVisibility(View.VISIBLE);
             tvSendFeedback.setBackground(getResources().getDrawable(R.drawable.bg_btn_gray_radius_3dp_not_press));
         }
-    }
-
-    @NonNull
-    @Override
-    public FestivalDetailPresenter createPresenter() {
-        return presenter;
     }
 
     @Override
@@ -195,6 +206,52 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
     @Override
     public void hideLoading() {
         hideHUD();
+    }
+
+    @NonNull
+    @Override
+    public FestivalDetailPresenter createPresenter() {
+        return presenter;
+    }
+
+    @Override
+    public void signInSuccess(User user) {
+        llIsLogin.setVisibility(View.VISIBLE);
+        llNotLogin.setVisibility(View.GONE);
+        tvSendFeedback.setBackground(getResources().getDrawable(R.drawable.bg_btn_green_radius_3dp));
+        Picasso.with(this).load(user.getAvatar()).into(civUserAvatar);
+        tvUserName.setText(user.getUsername());
+    }
+
+    @Override
+    public void apiError(Throwable throwable) {
+        ApiThrowable apiThrowable = (ApiThrowable) throwable;
+        Toast.makeText(this, apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Click(R.id.activity_festival_detail_tv_send_feedback)
+    void sendFeedbackClick() {
+        if (presenter.getCurrentUser() != null && validateFeedbackInput()) {
+            presenter.sendFeedback(festivalResponse.getId(),
+                    new FeedbackRequest(edtFeedbackContent.getText().toString(), srbFeedbackRating.getRating()));
+        }
+    }
+
+    private boolean validateFeedbackInput() {
+        boolean validateResult = false;
+        if (edtFeedbackContent.getText().toString().length() == 0) {
+            Toast.makeText(this, "Nội dung còn trống!", Toast.LENGTH_SHORT).show();
+        } else if (srbFeedbackRating.getRating() == 0) {
+            Toast.makeText(this, "Bạn chưa chọn số sao!", Toast.LENGTH_SHORT).show();
+        } else {
+            validateResult = true;
+        }
+        return validateResult;
     }
 
     @Click(R.id.activity_festival_detail_iv_map)
@@ -218,26 +275,24 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
     }
 
     @Override
-    public void signInSuccess(User user) {
-        llIsLogin.setVisibility(View.VISIBLE);
-        llNotLogin.setVisibility(View.GONE);
-        tvSendFeedback.setBackground(getResources().getDrawable(R.drawable.bg_btn_green_radius_3dp));
-        Picasso.with(this).load(user.getAvatar()).into(civUserAvatar);
-        tvUserName.setText(user.getUsername());
-    }
-
-    @Override
-    public void apiError(Throwable throwable) {
-        Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void getFestivalFeedbackSuccess(List<FeedbackResponse> feedbackResponses) {
+        if (feedbackResponses.size() != 0) {
+            rcvFeedback.setVisibility(View.VISIBLE);
+            tvNoneFeedback.setVisibility(View.GONE);
 
+            this.rcvFeedback.setHasFixedSize(true);
+            this.rcvFeedback.setLayoutManager(new LinearLayoutManager(this));
+            this.rcvFeedback.setAdapter(new RecyclerFestivalFeedbackAdapter(this, feedbackResponses));
+
+            tvNumberOfFeedback.setText(String.format("%s đánh giá", feedbackResponses.size()));
+        } else {
+            rcvFeedback.setVisibility(View.GONE);
+            tvNoneFeedback.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void postFestivalFeedbackSuccess(FeedbackResponse feedbackResponse) {
-
+        Toast.makeText(this, "Cảm ơn bạn đã gửi đánh giá.", Toast.LENGTH_SHORT).show();
     }
 }

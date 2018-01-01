@@ -12,12 +12,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beesightsoft.caf.exceptions.ApiThrowable;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.base.LoginDialog;
 import com.dfa.vinatrip.custom_view.NToolbar;
 import com.dfa.vinatrip.custom_view.SimpleRatingBar;
+import com.dfa.vinatrip.domains.province_detail.view_all.food.food_detail.adapter.RecyclerFoodFeedbackAdapter;
 import com.dfa.vinatrip.domains.province_detail.view_all.food.food_detail.adapter.RecyclerImageAdapter;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.request.AuthRequest;
@@ -64,6 +66,8 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
     protected NToolbar nToolbar;
     @ViewById(R.id.activity_food_detail_tv_food_name)
     protected TextView tvFoodName;
+    @ViewById(R.id.item_list_food_srb_rate)
+    protected SimpleRatingBar srbFoodRate;
     @ViewById(R.id.activity_food_detail_tv_number_of_feedback)
     protected TextView tvNumberOfFeedback;
     @ViewById(R.id.activity_food_detail_iv_banner)
@@ -169,12 +173,20 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
                 });
 
         tvFoodName.setText(foodResponse.getName());
+        srbFoodRate.setRating(foodResponse.getStar());
+        tvNumberOfFeedback.setText(String.format("%s đánh giá", foodResponse.getReview()));
         tvAddress.setText(foodResponse.getAddress());
         if (presenter.getCurrentUser() != null) {
             llIsLogin.setVisibility(View.VISIBLE);
             llNotLogin.setVisibility(View.GONE);
             tvSendFeedback.setBackground(getResources().getDrawable(R.drawable.bg_btn_green_radius_3dp));
-            Picasso.with(this).load(presenter.getCurrentUser().getAvatar()).into(civUserAvatar);
+            if (presenter.getCurrentUser().getAvatar() != null) {
+                Picasso.with(this).load(presenter.getCurrentUser().getAvatar())
+                        .error(R.drawable.photo_not_available)
+                        .into(civUserAvatar);
+            } else {
+                civUserAvatar.setImageResource(R.drawable.ic_avatar);
+            }
             tvUserName.setText(presenter.getCurrentUser().getUsername());
         } else {
             llIsLogin.setVisibility(View.GONE);
@@ -199,7 +211,8 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
 
     @Override
     public void apiError(Throwable throwable) {
-
+        ApiThrowable apiThrowable = (ApiThrowable) throwable;
+        Toast.makeText(this, apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @NonNull
@@ -255,7 +268,7 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
 
     @Override
     public void getFoodFeedbackSuccess(List<FeedbackResponse> feedbackResponses) {
-        /*if (feedbackResponses.size() != 0) {
+        if (feedbackResponses.size() != 0) {
             rcvFeedback.setVisibility(View.VISIBLE);
             tvNoneFeedback.setVisibility(View.GONE);
 
@@ -267,7 +280,7 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
         } else {
             rcvFeedback.setVisibility(View.GONE);
             tvNoneFeedback.setVisibility(View.VISIBLE);
-        }*/
+        }
     }
 
     @Override

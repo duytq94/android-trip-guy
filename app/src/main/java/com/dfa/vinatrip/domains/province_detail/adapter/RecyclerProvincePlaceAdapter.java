@@ -27,6 +27,7 @@ import java.util.List;
 
 /**
  * Created by duonghd on 11/3/2017.
+ * duonghd1307@gmail.com
  */
 
 public class RecyclerProvincePlaceAdapter extends RecyclerView.Adapter<RecyclerProvincePlaceAdapter.ViewHolder> {
@@ -65,8 +66,9 @@ public class RecyclerProvincePlaceAdapter extends RecyclerView.Adapter<RecyclerP
         if (position != placeResponses.size() - 1) {
             holder.llMain.setVisibility(View.VISIBLE);
             holder.cvViewAll.setVisibility(View.GONE);
-
             holder.tvPlaceName.setText(place.getName());
+            holder.srbPlaceRate.setRating(place.getStar());
+            holder.tvPlaceReviews.setText(String.format("%s đánh giá", place.getReview()));
 
             imageLoader.displayImage(place.getAvatar(), holder.ivPlaceAvatar, imageOptions, new ImageLoadingListener() {
                 @Override

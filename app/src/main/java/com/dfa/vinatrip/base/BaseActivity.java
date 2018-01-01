@@ -14,6 +14,7 @@ import org.androidannotations.annotations.UiThread;
 
 /**
  * Created by duonghd on 9/19/2017.
+ * duonghd1307@gmail.com
  */
 
 @EActivity

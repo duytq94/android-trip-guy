@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Created by duonghd on 10/7/2017.
+ * duonghd1307@gmail.com
  */
 
 public class HotelResponse implements Serializable {
@@ -16,6 +17,8 @@ public class HotelResponse implements Serializable {
     private int province_id;
     @SerializedName("star")
     private float star;
+    @SerializedName("review")
+    private int review;
     @SerializedName("name")
     private String name;
     @SerializedName("phone_number")
@@ -142,5 +145,13 @@ public class HotelResponse implements Serializable {
     
     public void setImages(List<HotelImage> images) {
         this.images = images;
+    }
+
+    public int getReview() {
+        return review;
+    }
+
+    public void setReview(int review) {
+        this.review = review;
     }
 }
