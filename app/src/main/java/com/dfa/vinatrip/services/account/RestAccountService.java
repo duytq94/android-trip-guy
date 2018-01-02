@@ -2,6 +2,7 @@ package com.dfa.vinatrip.services.account;
 
 import com.beesightsoft.caf.services.common.RestMessageResponse;
 import com.dfa.vinatrip.models.request.AuthRequest;
+import com.dfa.vinatrip.models.request.ResetPasswordRequest;
 import com.dfa.vinatrip.models.response.user.User;
 
 import retrofit2.http.Body;
@@ -26,4 +27,7 @@ public interface RestAccountService {
 
     @PUT("api/user/edit")
     Observable<RestMessageResponse<User>> editProfile(@Header("access-token") String userToken, @Body User user);
+
+    @POST("api/auth/reset")
+    Observable<RestMessageResponse<String>> resetPassword(@Body ResetPasswordRequest resetPasswordRequest);
 }

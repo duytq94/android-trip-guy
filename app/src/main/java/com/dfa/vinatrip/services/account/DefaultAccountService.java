@@ -4,6 +4,7 @@ import com.beesightsoft.caf.services.authentication.AbstractAccountManager;
 import com.beesightsoft.caf.services.authentication.AuthenticationManagerConfiguration;
 import com.beesightsoft.caf.services.network.NetworkProvider;
 import com.dfa.vinatrip.models.request.AuthRequest;
+import com.dfa.vinatrip.models.request.ResetPasswordRequest;
 import com.dfa.vinatrip.models.request.SignInSocialRequest;
 import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.services.filter.ApiErrorFilter;
@@ -66,6 +67,13 @@ public class DefaultAccountService
     public Observable<User> editProfile(User user) {
         return networkProvider
                 .transformResponse(restAccountService.editProfile(getCurrentUser().getAccessToken(), user))
+                .compose(apiErrorFilter.execute());
+    }
+
+    @Override
+    public Observable<String> resetPassword(ResetPasswordRequest resetPasswordRequest) {
+        return networkProvider
+                .transformResponse(restAccountService.resetPassword(resetPasswordRequest))
                 .compose(apiErrorFilter.execute());
     }
 }

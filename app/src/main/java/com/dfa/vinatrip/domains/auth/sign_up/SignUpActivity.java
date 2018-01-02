@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.domains.auth.sign_up;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,6 +40,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+@SuppressLint("Registered")
 @EActivity(R.layout.activity_sign_up)
 public class SignUpActivity extends BaseActivity<SignUpView, SignUpPresenter>
         implements SignUpView, Validator.ValidationListener, KeyboardListener.KeyboardVisibilityListener {
@@ -84,14 +86,7 @@ public class SignUpActivity extends BaseActivity<SignUpView, SignUpPresenter>
 
     @Click(R.id.activity_sign_up_btn_sign_in)
     public void btnSignInClicked() {
-        SignInActivity_.intent(this).start();
-        finish();
-    }
-
-    @Click(R.id.activity_sign_up_btn_reset_password)
-    public void btnResetPasswordClicked() {
-        ResetPasswordActivity_.intent(this).start();
-        finish();
+        onBackPressed();
     }
 
     @Override
@@ -198,6 +193,11 @@ public class SignUpActivity extends BaseActivity<SignUpView, SignUpPresenter>
     @Override
     public void signUpSuccess(User user) {
         SplashScreenActivity_.intent(this).start();
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
         finish();
     }
 }

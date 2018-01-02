@@ -2,7 +2,7 @@ package com.dfa.vinatrip.domains.auth.reset_password;
 
 import android.annotation.SuppressLint;
 import android.graphics.Rect;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,26 +16,39 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.beesightsoft.caf.exceptions.ApiThrowable;
+import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.base.BaseActivity;
 import com.dfa.vinatrip.domains.auth.sign_in.SignInActivity_;
+import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import es.dmoral.toasty.Toasty;
 
 @SuppressLint("Registered")
 @EActivity(R.layout.activity_reset_password)
-public class ResetPasswordActivity extends AppCompatActivity implements Validator.ValidationListener {
+public class ResetPasswordActivity extends BaseActivity<ResetPasswordView, ResetPasswordPresenter>
+        implements ResetPasswordView, Validator.ValidationListener {
+    @App
+    protected MainApplication mainApplication;
+    @Inject
+    protected ResetPasswordPresenter presenter;
 
     @NotEmpty
     @Email
@@ -58,6 +71,14 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
 
     // To keep icon not run anim when click done
     private boolean isBtnSignInClick = false;
+
+    @AfterInject
+    void initInject() {
+        DaggerResetPasswordComponent.builder()
+                .applicationComponent(mainApplication.getApplicationComponent())
+                .activityModule(new ActivityModule(this))
+                .build().inject(this);
+    }
 
     @AfterViews
     void onCreate() {
@@ -90,13 +111,11 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
 
         validator = new Validator(this);
         validator.setValidationListener(this);
-
     }
 
     @Click(R.id.activity_reset_password_btn_back)
     void btnBackClicked() {
-        SignInActivity_.intent(this).start();
-        finish();
+        onBackPressed();
     }
 
     @Click(R.id.activity_reset_password_btn_reset_password)
@@ -131,8 +150,8 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
             Toasty.warning(ResetPasswordActivity.this, "Nhập email của bạn!", Toast.LENGTH_SHORT).show();
             return;
         }
-        progressBar.setVisibility(View.VISIBLE);
-        // TODO for reset password
+
+        presenter.sendResetPassword(etEmail.getText().toString());
     }
 
     @Override
@@ -152,5 +171,38 @@ public class ResetPasswordActivity extends AppCompatActivity implements Validato
             }
             ((EditText) view).setError(message);
         }
+    }
+
+    @Override
+    public void showLoading() {
+        showHUD();
+    }
+
+    @Override
+    public void hideLoading() {
+        hideHUD();
+    }
+
+    @Override
+    public void apiError(Throwable throwable) {
+        ApiThrowable apiThrowable = (ApiThrowable) throwable;
+        Toast.makeText(this, apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @NonNull
+    @Override
+    public ResetPasswordPresenter createPresenter() {
+        return presenter;
+    }
+
+    @Override
+    public void sendResetSuccess(String s) {
+        Toast.makeText(this, "Gửi thành công. Vui lòng kiểm tra email.", Toast.LENGTH_SHORT).show();
+        onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

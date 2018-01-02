@@ -118,7 +118,6 @@ public class SignInActivity extends BaseActivity<SignInView, SignInPresenter>
     @Click(R.id.activity_sign_in_btn_sign_up)
     public void btnSignUpClicked() {
         SignUpActivity_.intent(this).start();
-        finish();
     }
 
     @Click(R.id.activity_sign_in_btn_sign_in)

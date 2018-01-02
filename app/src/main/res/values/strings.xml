@@ -32,8 +32,8 @@
     <string name="btn_login">Đăng nhập</string>
     <string name="btn_link_to_register">Chưa có tài khoản? Đăng ký ngay</string>
     <string name="title_forgot_password">Quên mật khẩu?</string>
-    <string name="body_forgot_password">Bạn hãy nhập địa chỉ email, chúng tôi sẽ gửi lại bạn mật khẩu mới</string>
-    <string name="btn_reset_password">Reset mật khẩu</string>
+    <string name="body_forgot_password">Vui lòng nhập địa chỉ email, chúng tôi sẽ thực hiện cập nhật mật khẩu mới</string>
+    <string name="btn_reset_password">Cập nhật mật khẩu</string>
     <string name="btn_back">&#8810; Trở về</string>
 
     <!-- String for personal settings -->
