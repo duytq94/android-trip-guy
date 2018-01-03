@@ -8,13 +8,8 @@ import com.dfa.vinatrip.models.response.user.User;
 
 import rx.Observable;
 
-
-/**
- * Created by duytq on 9/17/2017.
- */
-
 public interface AccountService extends AuthenticationManager<User, AuthRequest, SignInSocialRequest> {
-    Observable<User> signUp(AuthRequest authRequest);
+    Observable<String> signUp(AuthRequest authRequest);
 
     Observable<User> editProfile(User user);
 

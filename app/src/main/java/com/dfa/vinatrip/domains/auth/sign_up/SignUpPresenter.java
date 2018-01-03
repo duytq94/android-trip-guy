@@ -32,15 +32,17 @@ public class SignUpPresenter extends BasePresenter<SignUpView> {
         }
         subscription = accountService.signUp(authRequest)
                 .compose(RxScheduler.applyIoSchedulers())
-                .subscribe(user -> {
+                .doOnTerminate(() ->{
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        accountService.setCurrentUser(user);
-                        getView().signUpSuccess(user);
+                    }
+                })
+                .subscribe(s -> {
+                    if (isViewAttached()) {
+                        getView().signUpSuccess();
                     }
                 }, throwable -> {
                     if (isViewAttached()) {
-                        getView().hideLoading();
                         getView().apiError(throwable);
                     }
                 });

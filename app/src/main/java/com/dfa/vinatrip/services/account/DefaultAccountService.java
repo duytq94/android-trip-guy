@@ -11,11 +11,6 @@ import com.dfa.vinatrip.services.filter.ApiErrorFilter;
 
 import rx.Observable;
 
-
-/**
- * Created by duytq on 9/17/2017.
- */
-
 public class DefaultAccountService
         extends AbstractAccountManager<User, AuthRequest, SignInSocialRequest>
         implements AccountService {
@@ -57,7 +52,7 @@ public class DefaultAccountService
     }
 
     @Override
-    public Observable<User> signUp(AuthRequest authRequest) {
+    public Observable<String> signUp(AuthRequest authRequest) {
         return networkProvider
                 .transformResponse(restAccountService.signUp(authRequest))
                 .compose(apiErrorFilter.execute());
