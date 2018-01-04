@@ -20,10 +20,14 @@ import com.dfa.vinatrip.BuildConfig;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseFragment;
+import com.dfa.vinatrip.base.ChangePasswordDialog;
 import com.dfa.vinatrip.domains.auth.sign_in.SignInActivity_;
 import com.dfa.vinatrip.domains.main.fragment.me.detail_me.UserProfileDetailActivity_;
 import com.dfa.vinatrip.domains.main.splash.SplashScreenActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
+import com.dfa.vinatrip.models.request.ChangePasswordRequest;
+import com.dfa.vinatrip.utils.AppUtil;
+import com.dfa.vinatrip.utils.KeyboardVisibility;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -42,7 +46,11 @@ import static com.dfa.vinatrip.utils.AppUtil.REQUEST_UPDATE_INFO;
 
 @EFragment(R.layout.fragment_me)
 public class MeFragment extends BaseFragment<MeView, MePresenter>
-        implements MeView {
+        implements MeView, ChangePasswordDialog.CallbackMeFragment {
+    @App
+    protected MainApplication application;
+    @Inject
+    protected MePresenter presenter;
 
     @ViewById(R.id.fragment_me_tv_nickname)
     protected TextView tvNickname;
@@ -77,10 +85,7 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
     @ViewById(R.id.fragment_me_rl_not_login)
     protected RelativeLayout rlNotLogin;
 
-    @App
-    protected MainApplication application;
-    @Inject
-    protected MePresenter presenter;
+    private ChangePasswordDialog changePasswordDialog;
 
     @AfterInject
     protected void initInject() {
@@ -98,7 +103,8 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
 
     @AfterViews
     public void init() {
-
+        AppUtil.setupUI(rlLogin);
+        showKeyboard();
         showAppInfo();
         srlReload.setColorSchemeResources(R.color.colorMain);
 
@@ -114,6 +120,25 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
                 initView();
             }
             srlReload.setRefreshing(false);
+        });
+
+        changePasswordDialog = new ChangePasswordDialog(this, closeListener -> changePasswordDialog.dismiss());
+        changePasswordDialog.setCancelable(false);
+        changePasswordDialog.setCanceledOnTouchOutside(false);
+        changePasswordDialog.setOnDismissListener(dialog -> changePasswordDialog.clearData());
+    }
+
+    private void showKeyboard() {
+        KeyboardVisibility.setEventListener(getActivity(), isOpen -> {
+            if (!KeyboardVisibility.isKeyboardVisible(getActivity())) {
+                if (getActivity().getCurrentFocus() != null) {
+                    getActivity().getCurrentFocus().clearFocus();
+                }
+
+                if (changePasswordDialog != null && changePasswordDialog.getCurrentFocus() != null) {
+                    changePasswordDialog.getCurrentFocus().clearFocus();
+                }
+            }
         });
     }
 
@@ -157,6 +182,16 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
                     .load(presenter.getCurrentUser().getAvatar())
                     .into(target);
         }
+    }
+
+    @Click(R.id.fragment_me_ll_change_password)
+    public void onChangePasswordClick() {
+        changePasswordDialog.show();
+    }
+
+    @Override
+    public void sendClickListener(String currentPass, String newPass) {
+        presenter.changePassword(new ChangePasswordRequest(currentPass, newPass));
     }
 
     @Click(R.id.fragment_me_ll_sign_out)
@@ -227,7 +262,15 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
     @Override
     public void apiError(Throwable throwable) {
         ApiThrowable apiThrowable = (ApiThrowable) throwable;
-        Toast.makeText(getContext(), apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
+        switch (apiThrowable.firstErrorCode()) {
+            case 2103:
+                Toast.makeText(getContext(), "Mật khẩu hiện tại không chính xác.", Toast.LENGTH_SHORT).show();
+                break;
+
+            default:
+                Toast.makeText(getContext(), apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     @Override
@@ -239,5 +282,10 @@ public class MeFragment extends BaseFragment<MeView, MePresenter>
     @Override
     public void loginOtherActivity() {
         init();
+    }
+
+    @Override
+    public void changePasswordSuccess() {
+        Toast.makeText(getContext(), "Thay đổi thành công. Vui lòng đăng nhập lại.", Toast.LENGTH_SHORT).show();
     }
 }

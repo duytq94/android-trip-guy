@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.domains.main.fragment.me.detail_me;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
@@ -40,6 +41,7 @@ import org.androidannotations.annotations.ViewById;
 
 import javax.inject.Inject;
 
+@SuppressLint("Registered")
 @EActivity(R.layout.activity_user_profile_detail)
 public class UserProfileDetailActivity extends BaseActivity<UserProfileDetailView, UserProfileDetailPresenter>
         implements UserProfileDetailView {

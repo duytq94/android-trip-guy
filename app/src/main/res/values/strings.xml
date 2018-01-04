@@ -33,7 +33,7 @@
     <string name="btn_link_to_register">Chưa có tài khoản? Đăng ký ngay</string>
     <string name="title_forgot_password">Quên mật khẩu?</string>
     <string name="body_forgot_password">Vui lòng nhập địa chỉ email, chúng tôi sẽ thực hiện cập nhật mật khẩu mới</string>
-    <string name="btn_reset_password">Cập nhật mật khẩu</string>
+    <string name="btn_reset_password">Reset mật khẩu</string>
     <string name="btn_back">&#8810; Trở về</string>
 
     <!-- String for personal settings -->
@@ -53,6 +53,7 @@
     <string name="settings">Cài đặt</string>
     <string name="btn_save">Lưu</string>
     <string name="update_profile">Chỉnh sửa trang cá nhân</string>
+    <string name="change_password">Thay đổi mật khẩu</string>
     <string name="done">Xong</string>
     <string name="cancel">Hủy</string>
 

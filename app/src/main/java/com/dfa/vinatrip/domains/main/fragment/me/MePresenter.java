@@ -2,6 +2,7 @@ package com.dfa.vinatrip.domains.main.fragment.me;
 
 import com.beesightsoft.caf.services.schedulers.RxScheduler;
 import com.dfa.vinatrip.base.BasePresenter;
+import com.dfa.vinatrip.models.request.ChangePasswordRequest;
 import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.services.account.AccountService;
 
@@ -17,9 +18,9 @@ import rx.Subscription;
  */
 
 public class MePresenter extends BasePresenter<MeView> {
-
     private AccountService accountService;
-    private Subscription subscription;
+    private Subscription subscription1;
+    private Subscription subscription2;
 
     @Inject
     public MePresenter(EventBus eventBus, AccountService accountService) {
@@ -35,12 +36,35 @@ public class MePresenter extends BasePresenter<MeView> {
         return accountService.getCurrentUser();
     }
 
-    public void signOut() {
-        RxScheduler.onStop(subscription);
+    public void changePassword(ChangePasswordRequest changePasswordRequest) {
+        RxScheduler.onStop(subscription2);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription = accountService.logout()
+        subscription2 = accountService.changePassword(changePasswordRequest)
+                .compose(RxScheduler.applyIoSchedulers())
+                .doOnTerminate(() -> {
+                    if (isViewAttached()) {
+                        getView().hideLoading();
+                    }
+                }).subscribe(s -> {
+                    if (isViewAttached()) {
+                        getView().changePasswordSuccess();
+                        signOut();
+                    }
+                }, throwable -> {
+                    if (isViewAttached()) {
+                        getView().apiError(throwable);
+                    }
+                });
+    }
+
+    public void signOut() {
+        RxScheduler.onStop(subscription1);
+        if (isViewAttached()) {
+            getView().showLoading();
+        }
+        subscription1 = accountService.logout()
                 .compose(RxScheduler.applyIoSchedulers())
                 .subscribe(s -> {
                     if (isViewAttached()) {

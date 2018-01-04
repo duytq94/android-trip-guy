@@ -2,6 +2,7 @@ package com.dfa.vinatrip.services.account;
 
 import com.beesightsoft.caf.services.common.RestMessageResponse;
 import com.dfa.vinatrip.models.request.AuthRequest;
+import com.dfa.vinatrip.models.request.ChangePasswordRequest;
 import com.dfa.vinatrip.models.request.ResetPasswordRequest;
 import com.dfa.vinatrip.models.response.user.User;
 
@@ -22,8 +23,13 @@ public interface RestAccountService {
     Observable<RestMessageResponse<String>> signOut(@Header("access-token") String userToken);
 
     @PUT("api/user/edit")
-    Observable<RestMessageResponse<User>> editProfile(@Header("access-token") String userToken, @Body User user);
+    Observable<RestMessageResponse<User>> editProfile(@Header("access-token") String userToken,
+                                                      @Body User user);
 
     @POST("api/auth/reset")
     Observable<RestMessageResponse<String>> resetPassword(@Body ResetPasswordRequest resetPasswordRequest);
+
+    @POST("api/auth/change-password")
+    Observable<RestMessageResponse<String>> changePassword(@Header("access-token") String userToken,
+                                                           @Body ChangePasswordRequest changePasswordRequest);
 }

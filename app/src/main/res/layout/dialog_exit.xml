@@ -39,9 +39,9 @@
     <LinearLayout
         android:id="@+id/dialog_exit_ll_send"
         android:layout_width="150dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="-25dp"
+        android:layout_marginTop="-20dp"
         android:background="@drawable/bg_btn_send_xml"
         android:clickable="true"
         android:orientation="horizontal">
@@ -52,19 +52,20 @@
             android:layout_weight="1"/>
 
         <TextView
+            android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="Xác nhận"
-            android:textColor="#0e0f3d"
+            android:textColor="#ffffff"
             android:textStyle="bold"/>
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_exit"/>
+            android:src="@drawable/ic_launcher"/>
 
         <View
             android:layout_width="0dp"

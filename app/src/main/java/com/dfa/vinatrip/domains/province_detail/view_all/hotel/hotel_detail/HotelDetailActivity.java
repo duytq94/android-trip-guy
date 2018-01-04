@@ -222,7 +222,19 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
     @Override
     public void apiError(Throwable throwable) {
         ApiThrowable apiThrowable = (ApiThrowable) throwable;
-        Toast.makeText(this, apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
+        switch (apiThrowable.firstErrorCode()) {
+            case 2103:
+                Toast.makeText(this, "Mật khẩu không chính xác.", Toast.LENGTH_SHORT).show();
+                break;
+
+            case 2105:
+                Toast.makeText(this, "Email không tồn tại.", Toast.LENGTH_SHORT).show();
+                break;
+
+            default:
+                Toast.makeText(this, apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     @Override

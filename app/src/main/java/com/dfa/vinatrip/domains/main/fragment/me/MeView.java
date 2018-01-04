@@ -10,4 +10,6 @@ public interface MeView extends BaseMvpView {
     void signOutSuccess();
 
     void loginOtherActivity();
+
+    void changePasswordSuccess();
 }

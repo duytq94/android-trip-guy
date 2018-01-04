@@ -126,9 +126,7 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
         loginDialog = new LoginDialog(this);
         loginDialog.setCancelable(false);
         loginDialog.setCanceledOnTouchOutside(false);
-        loginDialog.setOnDismissListener(dialog -> {
-            loginDialog.clearData();
-        });
+        loginDialog.setOnDismissListener(dialog -> loginDialog.clearData());
     }
 
     private void showKeyboard() {
@@ -217,7 +215,19 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
     @Override
     public void apiError(Throwable throwable) {
         ApiThrowable apiThrowable = (ApiThrowable) throwable;
-        Toast.makeText(this, apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
+        switch (apiThrowable.firstErrorCode()) {
+            case 2103:
+                Toast.makeText(this, "Mật khẩu không chính xác.", Toast.LENGTH_SHORT).show();
+                break;
+
+            case 2105:
+                Toast.makeText(this, "Email không tồn tại.", Toast.LENGTH_SHORT).show();
+                break;
+
+            default:
+                Toast.makeText(this, apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     @Override
@@ -239,7 +249,7 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
             Toast.makeText(this, "Nội dung còn trống!", Toast.LENGTH_SHORT).show();
         } else if (srbFeedbackRating.getRating() == 0) {
             Toast.makeText(this, "Bạn chưa chọn số sao!", Toast.LENGTH_SHORT).show();
-        } else if (!AppUtil.isCleanInput(edtFeedbackContent.getText().toString())){
+        } else if (!AppUtil.isCleanInput(edtFeedbackContent.getText().toString())) {
             Toast.makeText(this, "Nội dung chứa từ không hợp lệ!", Toast.LENGTH_SHORT).show();
         } else {
             validateResult = true;
