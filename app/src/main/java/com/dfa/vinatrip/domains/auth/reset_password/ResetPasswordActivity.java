@@ -20,7 +20,6 @@ import com.beesightsoft.caf.exceptions.ApiThrowable;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.BaseActivity;
-import com.dfa.vinatrip.domains.auth.sign_in.SignInActivity_;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.utils.AppUtil;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -186,7 +185,19 @@ public class ResetPasswordActivity extends BaseActivity<ResetPasswordView, Reset
     @Override
     public void apiError(Throwable throwable) {
         ApiThrowable apiThrowable = (ApiThrowable) throwable;
-        Toast.makeText(this, apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
+        switch (apiThrowable.firstErrorCode()) {
+            case 2010:
+                Toast.makeText(this, String.format("Vui lòng thử lại sau %s giây.", apiThrowable.firstErrorMessage().split(" ")[4]), Toast.LENGTH_SHORT).show();
+                break;
+
+            case 2105:
+                Toast.makeText(this, "Email không tồn tại.", Toast.LENGTH_SHORT).show();
+                break;
+
+            default:
+                Toast.makeText(this, apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     @NonNull
