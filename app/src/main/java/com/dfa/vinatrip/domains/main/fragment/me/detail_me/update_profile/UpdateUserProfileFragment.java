@@ -53,7 +53,6 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import es.dmoral.toasty.Toasty;
 import jp.wasabeef.blurry.Blurry;
 
 import static android.app.Activity.RESULT_OK;
@@ -233,7 +232,7 @@ public class UpdateUserProfileFragment extends BaseFragment<UpdateUserProfileVie
                 .exceptGif(true)
                 .setReachLimitAutomaticClose(true)
                 .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_arrow_back_white_24dp))
-                .setOkButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_check_white_48dp))
+                .setOkButtonDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_check_white))
                 .setAllViewTitle("Tất cả ảnh")
                 .setActionBarTitle("Chọn ảnh")
                 .textOnNothingSelected("Hãy chọn ít nhất 1 ảnh")
@@ -286,7 +285,7 @@ public class UpdateUserProfileFragment extends BaseFragment<UpdateUserProfileVie
             Place place = PlaceAutocomplete.getPlace(getActivity(), data);
             tvCity.setText(place.getAddress());
         } else if (data == null) {
-            Toasty.error(getActivity(), "Không chọn được địa điểm, bạn hãy thử lại", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Không chọn được địa điểm, bạn hãy thử lại", Toast.LENGTH_SHORT).show();
         }
     }
 

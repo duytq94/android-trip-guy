@@ -1,11 +1,17 @@
 package com.dfa.vinatrip.domains.main;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.base.ExitDialog;
@@ -26,6 +32,8 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.dfa.vinatrip.utils.Constants.REQUEST_PERMISSION_VIDEO_CALL;
+
 @SuppressLint("Registered")
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
     @AfterViews
     public void init() {
+        requestPermission();
+
         exitDialog = new ExitDialog(this,
                 closeListener -> exitDialog.dismiss(),
                 sendListener -> finish());
@@ -121,6 +131,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         exitDialog.show();
+    }
+
+    public void requestPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.READ_PHONE_STATE};
+                ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSION_VIDEO_CALL);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_PERMISSION_VIDEO_CALL) {
+            if (grantResults.length != 3 || grantResults[0] != PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] != PackageManager.PERMISSION_GRANTED || grantResults[2] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Bạn đã không cấp quyền, một số chức năng có thể không hoạt động", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
 

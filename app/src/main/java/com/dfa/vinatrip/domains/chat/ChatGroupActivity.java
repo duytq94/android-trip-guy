@@ -597,7 +597,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                     .exceptGif(true)
                     .setReachLimitAutomaticClose(true)
                     .setHomeAsUpIndicatorDrawable(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_white_24dp))
-                    .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_white_48dp))
+                    .setOkButtonDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check_white))
                     .setAllViewTitle("Tất cả ảnh")
                     .setActionBarTitle("Chọn ảnh")
                     .textOnNothingSelected("Hãy chọn ít nhất 1 ảnh")
