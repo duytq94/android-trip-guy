@@ -15,7 +15,7 @@
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="2"
         android:gravity="center"
         android:orientation="vertical"
@@ -25,6 +25,8 @@
             android:id="@+id/item_user_profile_tv_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="username"
             android:textColor="@android:color/black"/>
 
@@ -32,6 +34,8 @@
             android:id="@+id/item_user_profile_tv_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:text="email"/>
 
         <TextView

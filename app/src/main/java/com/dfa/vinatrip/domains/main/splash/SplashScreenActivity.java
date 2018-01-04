@@ -82,6 +82,7 @@ public class SplashScreenActivity extends BaseVideoCallActivity implements Sinch
                 .flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK)
                 .start();
         overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
+        Toast.makeText(this, "Đang lắng nghe cuộc gọi đến", Toast.LENGTH_SHORT).show();
     }
 
     //Login is Clicked to manually to connect to the Sinch Service
@@ -89,12 +90,15 @@ public class SplashScreenActivity extends BaseVideoCallActivity implements Sinch
         if (currentUser != null) {
             if (!getSinchServiceInterface().isStarted()) {
                 getSinchServiceInterface().startClient(currentUser.getEmail());
+            } else {
+                onStarted();
             }
         } else {
             MainActivity_.intent(SplashScreenActivity.this)
                     .flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK)
                     .start();
             overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
+            Toast.makeText(this, "Bạn chưa đăng nhập, một số tính năng có thể không sử dụng được", Toast.LENGTH_SHORT).show();
         }
     }
 

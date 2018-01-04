@@ -17,7 +17,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="14dp"
-            android:text="Sample user"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="duy@gmail.com"
             android:textSize="28sp"/>
 
         <TextView
