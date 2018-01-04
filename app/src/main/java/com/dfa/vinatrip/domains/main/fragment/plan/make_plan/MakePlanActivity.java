@@ -51,7 +51,6 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import es.dmoral.toasty.Toasty;
 
 import static com.dfa.vinatrip.utils.AppUtil.REQUEST_PLACE_AUTO_COMPLETE;
 import static com.dfa.vinatrip.utils.Constants.FORMAT_DAY_VN;
@@ -325,7 +324,7 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
             Place place = PlaceAutocomplete.getPlace(this, data);
             tvDestination.setText(place.getAddress());
         } else if (data == null) {
-            Toasty.error(this, "Không chọn được địa điểm, bạn hãy thử lại", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Không chọn được địa điểm, bạn hãy thử lại", Toast.LENGTH_SHORT).show();
         }
     }
 

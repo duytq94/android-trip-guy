@@ -19,7 +19,7 @@
     <!-- String for bottom menu -->
     <string name="menu_location">Địa điểm</string>
     <string name="menu_plan">Kế hoạch</string>
-    <string name="menu_deal">Tìm deal</string>
+    <string name="menu_deal">Tìm vé</string>
     <string name="menu_me">Cá nhân</string>
     <string name="menu_trend">Xu hướng</string>
 

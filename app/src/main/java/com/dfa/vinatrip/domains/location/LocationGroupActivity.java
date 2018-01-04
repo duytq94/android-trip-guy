@@ -67,7 +67,6 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import es.dmoral.toasty.Toasty;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
@@ -410,7 +409,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 setup();
             } else {
-                Toasty.warning(this, "Bạn đã không cấp quyền, chức năng có thể không hoạt động được", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Bạn đã không cấp quyền, chức năng có thể không hoạt động được", Toast.LENGTH_SHORT).show();
             }
         }
     }

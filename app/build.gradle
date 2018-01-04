@@ -122,9 +122,6 @@ dependencies {
     // Check field edit text
     compile 'com.mobsandgeeks:android-saripaar:2.0.3'
 
-    // Toasty
-    compile 'com.github.GrenderG:Toasty:1.2.5'
-
     // Network
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'

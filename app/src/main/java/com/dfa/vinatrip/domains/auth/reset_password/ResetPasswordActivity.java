@@ -38,8 +38,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import es.dmoral.toasty.Toasty;
-
 @SuppressLint("Registered")
 @EActivity(R.layout.activity_reset_password)
 public class ResetPasswordActivity extends BaseActivity<ResetPasswordView, ResetPasswordPresenter>
@@ -146,7 +144,7 @@ public class ResetPasswordActivity extends BaseActivity<ResetPasswordView, Reset
     public void onValidationSucceeded() {
         String email = etEmail.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            Toasty.warning(ResetPasswordActivity.this, "Nhập email của bạn!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ResetPasswordActivity.this, "Nhập email của bạn!", Toast.LENGTH_SHORT).show();
             return;
         }
 

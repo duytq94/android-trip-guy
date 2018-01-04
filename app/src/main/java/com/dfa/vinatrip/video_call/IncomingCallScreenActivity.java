@@ -1,11 +1,17 @@
 package com.dfa.vinatrip.video_call;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dfa.vinatrip.R;
 import com.sinch.android.rtc.calling.Call;
@@ -13,6 +19,8 @@ import com.sinch.android.rtc.calling.CallEndCause;
 import com.sinch.android.rtc.video.VideoCallListener;
 
 import java.util.List;
+
+import static com.dfa.vinatrip.utils.Constants.REQUEST_PERMISSION_VIDEO_CALL;
 
 public class IncomingCallScreenActivity extends BaseVideoCallActivity {
 
@@ -30,10 +38,13 @@ public class IncomingCallScreenActivity extends BaseVideoCallActivity {
         LinearLayout decline = (LinearLayout) findViewById(R.id.activity_incoming_call_screen_ll_cancel);
         decline.setOnClickListener(mClickListener);
 
+        requestPermission();
+
         mAudioPlayer = new AudioPlayer(this);
         mAudioPlayer.playRingtone();
         mCallId = getIntent().getStringExtra(SinchService.CALL_ID);
     }
+
 
     @Override
     protected void onServiceConnected() {
@@ -125,4 +136,28 @@ public class IncomingCallScreenActivity extends BaseVideoCallActivity {
             }
         }
     };
+
+    public void requestPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.READ_PHONE_STATE};
+                ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSION_VIDEO_CALL);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_PERMISSION_VIDEO_CALL) {
+            if (grantResults.length != 3 || grantResults[0] != PackageManager.PERMISSION_GRANTED ||
+                    grantResults[1] != PackageManager.PERMISSION_GRANTED || grantResults[2] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Bạn đã không cấp quyền, một số chức năng có thể không hoạt động", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+    }
 }

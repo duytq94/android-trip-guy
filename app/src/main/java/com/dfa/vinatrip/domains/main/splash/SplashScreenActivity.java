@@ -1,8 +1,6 @@
 package com.dfa.vinatrip.domains.main.splash;
 
-import android.Manifest;
 import android.content.Intent;
-import android.os.Build;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -56,11 +54,6 @@ public class SplashScreenActivity extends BaseVideoCallActivity implements Sinch
         if (Hawk.get(Constants.KEY_USER_AUTH) != null) {
             currentUser = Hawk.get(Constants.KEY_USER_AUTH);
         }
-
-        //asking for permissions here
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.READ_PHONE_STATE}, 100);
-        }
     }
 
     //this method is invoked when the connection is established with the SinchService
@@ -82,7 +75,6 @@ public class SplashScreenActivity extends BaseVideoCallActivity implements Sinch
                 .flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK)
                 .start();
         overridePendingTransition(R.anim.anim_right_to_center, R.anim.anim_center_to_left);
-        Toast.makeText(this, "Đang lắng nghe cuộc gọi đến", Toast.LENGTH_SHORT).show();
     }
 
     //Login is Clicked to manually to connect to the Sinch Service

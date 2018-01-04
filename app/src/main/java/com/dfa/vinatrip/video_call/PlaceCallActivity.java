@@ -1,7 +1,12 @@
 package com.dfa.vinatrip.video_call;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -32,6 +37,8 @@ import org.androidannotations.annotations.ViewById;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.dfa.vinatrip.utils.Constants.REQUEST_PERMISSION_VIDEO_CALL;
+
 @EActivity(R.layout.activity_place_call)
 public class PlaceCallActivity extends BaseVideoCallActivity {
 
@@ -51,6 +58,10 @@ public class PlaceCallActivity extends BaseVideoCallActivity {
 
     @AfterViews
     public void init() {
+        requestPermission();
+    }
+
+    public void setup() {
         currentUser = Hawk.get(Constants.KEY_USER_AUTH);
 
         setupAppBar();
@@ -159,5 +170,34 @@ public class PlaceCallActivity extends BaseVideoCallActivity {
             return true;
         }
         return false;
+    }
+
+    public void requestPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO,
+                        Manifest.permission.READ_PHONE_STATE};
+                ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSION_VIDEO_CALL);
+            } else {
+                setup();
+            }
+        } else {
+            setup();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_PERMISSION_VIDEO_CALL) {
+            if (grantResults.length == 3 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                setup();
+            } else {
+                Toast.makeText(this, "Bạn đã không cấp quyền, một số chức năng có thể không hoạt động", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
