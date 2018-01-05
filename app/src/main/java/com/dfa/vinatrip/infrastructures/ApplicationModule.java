@@ -7,6 +7,7 @@ import com.beesightsoft.caf.services.authentication.AuthenticationManagerConfigu
 import com.beesightsoft.caf.services.log.DefaultLogService;
 import com.beesightsoft.caf.services.log.LogService;
 import com.beesightsoft.caf.services.network.DefaultNetworkProvider;
+import com.beesightsoft.caf.services.network.HttpLoggingInterceptor;
 import com.beesightsoft.caf.services.network.NetworkProvider;
 import com.dfa.vinatrip.ApiUrls;
 import com.dfa.vinatrip.services.account.AccountService;
@@ -79,7 +80,17 @@ public class ApplicationModule {
     @Provides
     @ApplicationScope
     public NetworkProvider provideNetworkProvider(LogService logService) {
-        NetworkProvider networkProvider = new DefaultNetworkProvider(application, true);
+        NetworkProvider networkProvider = new DefaultNetworkProvider(application, true) {
+            @Override
+            public int getTimeout() {
+                return 60;
+            }
+            
+            @Override
+            public HttpLoggingInterceptor.Level getLevel() {
+                return HttpLoggingInterceptor.Level.BODY;
+            }
+        };
         networkProvider.enableFilter(true).addFilter(new ApiErrorFilter(networkProvider, logService));
         return networkProvider;
     }
