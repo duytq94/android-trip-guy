@@ -50,6 +50,7 @@ public class PlaceDetailPresenter extends BasePresenter<PlaceDetailView> {
                 .subscribe(feedbackResponse -> {
                     if (isViewAttached()) {
                         getView().postPlaceFeedbackSuccess(feedbackResponse);
+                        getPlaceFeedback(placeId, 0, 0);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {

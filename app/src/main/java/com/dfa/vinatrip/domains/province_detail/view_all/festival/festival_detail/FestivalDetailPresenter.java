@@ -50,6 +50,7 @@ public class FestivalDetailPresenter extends BasePresenter<FestivalDetailView> {
                 .subscribe(feedbackResponse -> {
                     if (isViewAttached()) {
                         getView().postFestivalFeedbackSuccess(feedbackResponse);
+                        getFestivalFeedback(placeId, 0, 0);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {

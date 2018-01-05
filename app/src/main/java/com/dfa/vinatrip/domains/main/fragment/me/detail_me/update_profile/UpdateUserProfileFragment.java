@@ -8,6 +8,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -103,6 +104,7 @@ public class UpdateUserProfileFragment extends BaseFragment<UpdateUserProfileVie
                 .build().inject(this);
     }
 
+    @NonNull
     @Override
     public UpdateUserProfilePresenter createPresenter() {
         return presenter;

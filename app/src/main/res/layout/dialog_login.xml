@@ -71,10 +71,10 @@
     <LinearLayout
         android:id="@+id/dialog_login_ll_send"
         android:layout_width="150dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="-25dp"
-        android:background="@drawable/bg_btn_send_xml"
+        android:layout_marginTop="-20dp"
+        android:background="@drawable/bg_btn_send_xml_radius_20"
         android:clickable="true"
         android:orientation="horizontal">
 
@@ -89,14 +89,14 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:text="ĐĂNG NHẬP"
-            android:textColor="#0e0f3d"
+            android:textColor="#ffffff"
             android:textStyle="bold"/>
 
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_check"/>
+            android:src="@drawable/ic_check_white"/>
 
         <View
             android:layout_width="0dp"

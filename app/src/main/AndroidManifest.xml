@@ -165,6 +165,10 @@
             android:name=".domains.location.LocationGroupActivity_"
             android:windowSoftInputMode="adjustNothing"/>
 
+        <activity
+            android:name=".domains.other_user_profile.OtherUserProfileActivity_"
+            android:windowSoftInputMode="adjustNothing"/>
+
         <activity android:name=".domains.web.WebActivity_"/>
 
         <activity android:name=".domains.main.fragment.trend.detail_trend.DetailTrendActivity_"/>

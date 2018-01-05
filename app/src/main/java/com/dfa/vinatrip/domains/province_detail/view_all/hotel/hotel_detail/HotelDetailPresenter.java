@@ -23,18 +23,18 @@ public class HotelDetailPresenter extends BasePresenter<HotelDetailView> {
     private AccountService accountService;
     private FeedbackService feedbackService;
     private Subscription subscription;
-    
+
     @Inject
     public HotelDetailPresenter(EventBus eventBus, AccountService accountService, FeedbackService feedbackService) {
         super(eventBus);
         this.accountService = accountService;
         this.feedbackService = feedbackService;
     }
-    
+
     public User getCurrentUser() {
         return accountService.getCurrentUser();
     }
-    
+
     public void sendFeedback(int hotelId, FeedbackRequest feedbackRequest) {
         RxScheduler.onStop(subscription);
         if (isViewAttached()) {
@@ -50,6 +50,7 @@ public class HotelDetailPresenter extends BasePresenter<HotelDetailView> {
                 .subscribe(feedbackResponse -> {
                     if (isViewAttached()) {
                         getView().postHotelFeedbackSuccess(feedbackResponse);
+                        getHotelFeedback(hotelId, 0, 0);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {
@@ -57,7 +58,7 @@ public class HotelDetailPresenter extends BasePresenter<HotelDetailView> {
                     }
                 });
     }
-    
+
     public void getHotelFeedback(int hotelId, int page, int per_page) {
         RxScheduler.onStop(subscription);
         if (isViewAttached()) {

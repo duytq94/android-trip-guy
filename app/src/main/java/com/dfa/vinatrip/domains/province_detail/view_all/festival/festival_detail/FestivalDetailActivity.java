@@ -38,6 +38,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -102,6 +103,8 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
     protected FestivalResponse festivalResponse;
 
     private LoginDialog loginDialog;
+    private RecyclerFestivalFeedbackAdapter feedbackAdapter;
+    private List<FeedbackResponse> feedbackResponses;
 
     @AfterInject
     void initInject() {
@@ -127,6 +130,12 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
         loginDialog.setCancelable(false);
         loginDialog.setCanceledOnTouchOutside(false);
         loginDialog.setOnDismissListener(dialog -> loginDialog.clearData());
+
+        feedbackResponses = new ArrayList<>();
+        feedbackAdapter = new RecyclerFestivalFeedbackAdapter(this, feedbackResponses);
+        rcvFeedback.setHasFixedSize(true);
+        rcvFeedback.setLayoutManager(new LinearLayoutManager(this));
+        rcvFeedback.setAdapter(feedbackAdapter);
     }
 
     private void showKeyboard() {
@@ -295,23 +304,41 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
 
     @Override
     public void getFestivalFeedbackSuccess(List<FeedbackResponse> feedbackResponses) {
-        if (feedbackResponses.size() != 0) {
+        this.feedbackResponses.clear();
+        this.feedbackResponses.addAll(feedbackResponses);
+        this.feedbackAdapter.notifyDataSetChanged();
+        tvNumberOfFeedback.setText(String.format("%s đánh giá", feedbackResponses.size()));
+        srbFestivalRate.setRating(countStar());
+        if (this.feedbackResponses.size() != 0) {
             rcvFeedback.setVisibility(View.VISIBLE);
             tvNoneFeedback.setVisibility(View.GONE);
-
-            this.rcvFeedback.setHasFixedSize(true);
-            this.rcvFeedback.setLayoutManager(new LinearLayoutManager(this));
-            this.rcvFeedback.setAdapter(new RecyclerFestivalFeedbackAdapter(this, feedbackResponses));
-
-            tvNumberOfFeedback.setText(String.format("%s đánh giá", feedbackResponses.size()));
         } else {
             rcvFeedback.setVisibility(View.GONE);
             tvNoneFeedback.setVisibility(View.VISIBLE);
         }
     }
 
+    private float countStar() {
+        if (feedbackResponses.size() != 0) {
+            float sum = 0;
+            for (FeedbackResponse feedbackResponse : feedbackResponses) {
+                sum += feedbackResponse.getRate();
+            }
+            sum = 1f * sum / feedbackResponses.size();
+            sum = Math.round(sum * 100) / 100f;
+            float term = sum % 0.5f;
+            return term < 0.25f ? (sum - term) : (sum - term + 0.5f);
+        } else {
+            return 0f;
+        }
+    }
+
     @Override
     public void postFestivalFeedbackSuccess(FeedbackResponse feedbackResponse) {
+        edtFeedbackContent.setText("");
+        edtFeedbackContent.setEnabled(false);
+        srbFeedbackRating.setRating(0f);
+        srbFeedbackRating.setIndicator(true);
         Toast.makeText(this, "Cảm ơn bạn đã gửi đánh giá.", Toast.LENGTH_SHORT).show();
     }
 }

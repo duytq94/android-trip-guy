@@ -11,6 +11,7 @@ import rx.Observable;
 
 /**
  * Created by duonghd on 12/7/2017.
+ * duonghd1307@gmail.com
  */
 
 public class DefaultFeedbackService implements FeedbackService {
@@ -56,21 +57,21 @@ public class DefaultFeedbackService implements FeedbackService {
 
     @Override
     public Observable<FeedbackResponse> postFoodFeedback(String accessToken, int foodId, FeedbackRequest feedbackRequest) {
-        return networkProvider.transformResponse(restFeedbackService.postHotelFeedback(accessToken, foodId, feedbackRequest))
+        return networkProvider.transformResponse(restFeedbackService.postFoodFeedback(accessToken, foodId, feedbackRequest))
                 .compose(apiErrorFilter.execute());
     }
 
     @Override
     public Observable<FeedbackResponse> postPlaceFeedback(String accessToken, int placeId, FeedbackRequest
             feedbackRequest) {
-        return networkProvider.transformResponse(restFeedbackService.postHotelFeedback(accessToken, placeId, feedbackRequest))
+        return networkProvider.transformResponse(restFeedbackService.postPlaceFeedback(accessToken, placeId, feedbackRequest))
                 .compose(apiErrorFilter.execute());
     }
 
     @Override
     public Observable<FeedbackResponse> postFestivalFeedback(String accessToken, int eventId, FeedbackRequest
             feedbackRequest) {
-        return networkProvider.transformResponse(restFeedbackService.postHotelFeedback(accessToken, eventId, feedbackRequest))
+        return networkProvider.transformResponse(restFeedbackService.postFestivalFeedback(accessToken, eventId, feedbackRequest))
                 .compose(apiErrorFilter.execute());
     }
 }
