@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.domains.main.fragment.province;
 
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
@@ -44,7 +45,7 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
     protected MainApplication mainApplication;
     @Inject
     protected ProvincePresenter presenter;
-    
+
     @ViewById(R.id.fragment_province_srl_swipe)
     protected SwipeRefreshLayout srlReload;
     @ViewById(R.id.fragment_province_nsv_scrollview)
@@ -55,16 +56,20 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
     protected LinearLayout llBannerPosition;
     @ViewById(R.id.fragment_province_rcv_recycler)
     protected RecyclerView rcvProvince;
-    
+
     private List<String> banners;
     private PagerBannerAdapter bannerAdapter;
-    
+
     private List<Province> provinceList;
     private RecyclerProvinceAdapter provinceAdapter;
     private int nsvHeight;
     private long pageProvince = 1;
     private boolean canLoadMore = false;
-    
+
+    private Handler handler;
+    private Runnable runnable;
+    private int bannerPosition = 0;
+
     @AfterInject
     protected void initInject() {
         DaggerProvinceComponent.builder()
@@ -72,7 +77,7 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
                 .applicationComponent(mainApplication.getApplicationComponent())
                 .build().inject(this);
     }
-    
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @AfterViews
     public void init() {
@@ -81,7 +86,7 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
         vpBanner.setAdapter(bannerAdapter);
         vpBanner.setPageTransformer(true, new ViewPager.PageTransformer() {
             static final float MIN_SCALE = 0.75f;
-            
+
             @Override
             public void transformPage(View page, float position) {
                 int pageWidth = page.getWidth();
@@ -95,7 +100,7 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
                 } else if (position <= 1) {
                     page.setAlpha(1 - position);
                     page.setTranslationX(pageWidth * -position);
-                    
+
                     float scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - Math.abs(position));
                     page.setScaleX(scaleFactor);
                     page.setScaleY(scaleFactor);
@@ -104,13 +109,13 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
                 }
             }
         });
-        
+
         provinceList = new ArrayList<>();
         provinceAdapter = new RecyclerProvinceAdapter(getContext(), provinceList);
         rcvProvince.setHasFixedSize(true);
         rcvProvince.setLayoutManager(new GridLayoutManager(getContext(), 2));
         rcvProvince.setAdapter(provinceAdapter);
-        
+
         nestedScrollView.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
@@ -121,7 +126,7 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
                         }
                     }
                 });
-        
+
         nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
                 (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
                     int maxScrollY = rcvProvince.getMeasuredHeight() + AppUtil.dpToPx(getContext(), 158) - nsvHeight;
@@ -131,10 +136,11 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
                         canLoadMore = false;
                     }
                 });
-        
+
+        handler = new Handler();
         presenter.getBanner();
         presenter.getProvince(pageProvince, PAGE_SIZE);
-        
+
         srlReload.setColorSchemeResources(R.color.colorMain);
         srlReload.setOnRefreshListener(() -> {
             provinceList.clear();
@@ -143,56 +149,52 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
             srlReload.setRefreshing(false);
         });
     }
-    
+
     @NonNull
     @Override
     public ProvincePresenter createPresenter() {
         return presenter;
     }
-    
+
     @Override
     public void showLoading() {
         showHUD();
     }
-    
+
     @Override
     public void hideLoading() {
         hideHUD();
     }
-    
+
     @Override
     public void apiError(Throwable throwable) {
         ApiThrowable apiThrowable = (ApiThrowable) throwable;
         Toast.makeText(getContext(), apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
     }
-    
+
     @Override
     public void getBannerSuccess(List<String> banners) {
         this.banners.addAll(banners);
         bannerAdapter.notifyDataSetChanged();
-        
+
         for (int i = 0; i < this.banners.size(); i++) {
             LinearLayout.LayoutParams layoutParams =
                     new LinearLayout.LayoutParams(AppUtil.dpToPx(getContext(), 8f), AppUtil.dpToPx(getContext(), 8f));
             layoutParams.setMargins(AppUtil.dpToPx(getContext(), 4f), 0, AppUtil.dpToPx(getContext(), 4f), 0);
-            
+
             ImageView imageView = new ImageView(getContext());
             imageView.setLayoutParams(layoutParams);
-            
-            if (i == 0) {
-                imageView.setBackgroundResource(R.drawable.bg_oval_select);
-            } else {
-                imageView.setBackgroundResource(R.drawable.bg_oval_not_select);
-            }
+
+            imageView.setBackgroundResource(i == 0 ? R.drawable.bg_oval_select : R.drawable.bg_oval_not_select);
             llBannerPosition.addView(imageView);
         }
-        
+
         vpBanner.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            
+
             }
-            
+
             @Override
             public void onPageSelected(int position) {
                 for (int i = 0; i < banners.size(); i++) {
@@ -204,18 +206,44 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
                     }
                 }
             }
-            
+
             @Override
             public void onPageScrollStateChanged(int state) {
-            
+
             }
         });
+
+        runnable = () -> {
+            bannerPosition = bannerPosition == this.banners.size() ? 0 : bannerPosition;
+            if (vpBanner != null) {
+                vpBanner.setCurrentItem(bannerPosition++, bannerPosition != 0);
+            }
+            handler.postDelayed(runnable, 5000);
+        };
+
+        handler.post(runnable);
     }
-    
+
     @Override
     public void getProvinceSuccess(List<Province> provinces) {
         provinceList.addAll(provinces);
         provinceAdapter.notifyDataSetChanged();
         canLoadMore = provinces.size() == PAGE_SIZE;
+    }
+
+    @Override
+    public void onStop() {
+        if (handler != null && runnable != null) {
+            handler.removeCallbacks(runnable);
+        }
+        super.onStop();
+    }
+
+    @Override
+    public void onStart() {
+        if (handler != null && runnable != null) {
+            handler.post(runnable);
+        }
+        super.onStart();
     }
 }

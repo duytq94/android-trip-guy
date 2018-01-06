@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.domains.main.fragment.trend;
 
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -205,6 +206,7 @@ public class TrendFragment extends BaseFragment<TrendView, TrendPresenter> imple
         Toast.makeText(getContext(), apiThrowable.firstErrorMessage(), Toast.LENGTH_SHORT).show();
     }
 
+    @NonNull
     @Override
     public TrendPresenter createPresenter() {
         return presenter;
