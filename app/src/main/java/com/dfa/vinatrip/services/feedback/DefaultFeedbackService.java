@@ -74,4 +74,10 @@ public class DefaultFeedbackService implements FeedbackService {
         return networkProvider.transformResponse(restFeedbackService.postFestivalFeedback(accessToken, eventId, feedbackRequest))
                 .compose(apiErrorFilter.execute());
     }
+
+    @Override
+    public Observable<List<FeedbackResponse>> getMyFeedback(String accessToken, int page, int pageSize) {
+        return networkProvider.transformResponse(restFeedbackService.getMyFeedback(accessToken, page, pageSize))
+                .compose(apiErrorFilter.execute());
+    }
 }

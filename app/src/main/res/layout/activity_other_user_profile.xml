@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
@@ -11,6 +12,7 @@
         android:id="@+id/activity_other_user_profile_sv_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         android:scrollbars="none">
 
         <LinearLayout
@@ -18,150 +20,185 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <com.dfa.vinatrip.custom_view.NToolbar_
+                android:id="@+id/activity_other_user_profile_tv_ntoolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="#d9d9d9"/>
+
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_margin="@dimen/activity_vertical_margin">
+                android:layout_height="200dp"
+                android:background="#ffffff">
 
                 <ImageView
                     android:id="@+id/activity_other_user_profile_iv_blur_avatar"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="150dp"
                     android:background="@color/colorBlackTransparent"
                     android:scaleType="centerCrop"/>
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/activity_other_user_profile_iv_avatar"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal|bottom"
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:src="@drawable/ic_avatar"/>
             </FrameLayout>
 
+            <TextView
+                android:id="@+id/activity_other_user_profile_tv_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="@dimen/text_view_padding"
+                android:paddingTop="@dimen/text_view_padding"
+                android:textColor="@color/colorMain"
+                android:textSize="@dimen/text_large"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="3dp"
+                android:background="#d9d9d9"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_vertical_margin"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textView2"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingBottom="@dimen/text_view_padding"
-                    android:paddingTop="@dimen/text_view_padding"
-                    android:text="@string/personal_info"
-                    android:textColor="@color/colorMain"
-                    android:textSize="@dimen/text_large"
-                    android:textStyle="bold"/>
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/activity_other_user_profile_et_nickname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:hint="@string/nickname"
-                    android:inputType="textCapSentences"
-                    android:paddingLeft="10dp"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_medium"/>
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_mail"/>
+
+                    <TextView
+                        android:id="@+id/activity_other_user_profile_tv_user_mail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:maxLines="2"
+                        android:textColor="@android:color/black"/>
+                </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/activity_other_user_profile_ll_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_location2"/>
+
+                    <TextView
+                        android:id="@+id/activity_other_user_profile_tv_user_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:maxLines="2"
+                        android:textColor="@android:color/black"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="#d9d9d9"/>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="25dp"
-                    android:paddingTop="5dp">
+                    android:minHeight="50dp"
+                    android:orientation="horizontal"
+                    android:weightSum="5">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:paddingLeft="10dp"
-                        android:text="Nơi ở"
-                        android:textColor="@color/colorMain"/>
-
-                    <TextView
-                        android:id="@+id/activity_other_user_profile_tv_city"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="-3dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="15dp"
+                        android:text="Giới thiệu"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_medium"/>
 
-                    <View
+                    <TextView
+                        android:id="@+id/activity_other_user_profile_tv_description"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginTop="5dp"
-                        android:background="#686767"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_medium"/>
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/activity_other_user_profile_et_introduce_your_self"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:hint="@string/introduce_your_self"
-                    android:inputType="textCapSentences"
-                    android:paddingLeft="10dp"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_medium"/>
 
                 <LinearLayout
                     android:id="@+id/activity_other_user_profile_ll_birthday"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:orientation="horizontal"
-                    android:padding="@dimen/text_view_padding"
                     android:weightSum="5">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="2"
+                        android:layout_marginLeft="20dp"
                         android:text="@string/birthday"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_medium"/>
 
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/activity_other_user_profile_tv_birthday"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/activity_other_user_profile_tv_birthday"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="8dp"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_medium"/>
-
-                    </LinearLayout>
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="10dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_medium"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/text_view_padding"
-                    android:weightSum="5">
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="2"
+                        android:layout_marginLeft="20dp"
                         android:text="@string/sex"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/text_medium"/>
+
+                    <TextView
+                        android:id="@+id/activity_other_user_profile_tv_sex"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="10dp"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/text_medium"/>
                 </LinearLayout>

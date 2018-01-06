@@ -79,4 +79,11 @@ public class DefaultAccountService
                 .transformResponse(restAccountService.changePassword(getCurrentUser().getAccessToken(), changePasswordRequest))
                 .compose(apiErrorFilter.execute());
     }
+
+    @Override
+    public Observable<User> getUserInfo(long userId) {
+        return networkProvider
+                .transformResponse(restAccountService.getUserInfo(userId))
+                .compose(apiErrorFilter.execute());
+    }
 }

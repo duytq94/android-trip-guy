@@ -28,4 +28,6 @@ public interface FeedbackService {
     Observable<FeedbackResponse> postPlaceFeedback(String accessToken, int placeId, FeedbackRequest feedbackRequest);
 
     Observable<FeedbackResponse> postFestivalFeedback(String accessToken, int eventId, FeedbackRequest feedbackRequest);
+
+    Observable<List<FeedbackResponse>> getMyFeedback(String accessToken, int page, int pageSize );
 }

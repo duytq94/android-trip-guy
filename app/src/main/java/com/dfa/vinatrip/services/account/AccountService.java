@@ -17,4 +17,6 @@ public interface AccountService extends AuthenticationManager<User, AuthRequest,
     Observable<String> resetPassword(ResetPasswordRequest resetPasswordRequest);
 
     Observable<String> changePassword(ChangePasswordRequest changePasswordRequest);
+
+    Observable<User> getUserInfo(long userId);
 }

@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.domains.main.fragment.me.detail_me.make_friend;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.other_user_profile.OtherUserProfileActivity_;
 import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.utils.AdapterUserListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -21,13 +23,14 @@ import java.util.List;
 import static com.dfa.vinatrip.utils.Constants.CANCEL_REQUEST;
 import static com.dfa.vinatrip.utils.Constants.MAKE_REQUEST;
 
-public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ProfileViewHolder> {
+public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHolder> {
 
     private List<User> userList;
     private ImageLoader imageLoader;
     private DisplayImageOptions imageOptions;
     private AdapterUserListener adapterUserListener;
     private User currentUser;
+    private Context context;
 
     public ListUserAdapter(AdapterUserListener adapterUserListener, User currentUser) {
         this.imageLoader = ImageLoader.getInstance();
@@ -49,13 +52,14 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.Profil
     }
 
     @Override
-    public ProfileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_profile, parent, false);
-        return new ProfileViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ProfileViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         User user = userList.get(position);
 
         if (user.getFriendStatus() == null) {
@@ -100,13 +104,13 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.Profil
         return 0;
     }
 
-    public static class ProfileViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tvNickname, tvEmail, tvSex;
         private ImageView ivAvatar;
         private Button btnAction;
         private LinearLayout llRoot;
 
-        public ProfileViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             tvNickname = (TextView) itemView.findViewById(R.id.item_user_profile_tv_nickname);
             tvEmail = (TextView) itemView.findViewById(R.id.item_user_profile_tv_email);
@@ -114,6 +118,10 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.Profil
             ivAvatar = (ImageView) itemView.findViewById(R.id.item_user_profile_iv_avatar);
             btnAction = (Button) itemView.findViewById(R.id.item_user_profile_btn_action);
             llRoot = (LinearLayout) itemView.findViewById(R.id.item_user_profile_ll_root);
+
+            itemView.setOnClickListener(v -> {
+                OtherUserProfileActivity_.intent(context).userId(userList.get(getAdapterPosition()).getId()).start();
+            });
         }
     }
 }

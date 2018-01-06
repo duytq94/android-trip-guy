@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 /**
  * Created by duonghd on 11/3/2017.
+ * duonghd1307@gmail.com
  */
 
 public class ProvinceImageResponse implements Serializable {

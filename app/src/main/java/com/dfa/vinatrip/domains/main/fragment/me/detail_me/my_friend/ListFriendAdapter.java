@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.domains.main.fragment.me.detail_me.my_friend;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.other_user_profile.OtherUserProfileActivity_;
 import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.utils.AdapterUserListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -26,6 +28,7 @@ public class ListFriendAdapter extends RecyclerView.Adapter<ListFriendAdapter.Pr
     private ImageLoader imageLoader;
     private DisplayImageOptions imageOptions;
     private AdapterUserListener adapterUserListener;
+    private Context context;
 
     public ListFriendAdapter(AdapterUserListener adapterUserListener) {
         this.imageLoader = ImageLoader.getInstance();
@@ -47,6 +50,7 @@ public class ListFriendAdapter extends RecyclerView.Adapter<ListFriendAdapter.Pr
 
     @Override
     public ProfileViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        this.context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_profile, parent, false);
         return new ProfileViewHolder(view);
     }
@@ -77,7 +81,7 @@ public class ListFriendAdapter extends RecyclerView.Adapter<ListFriendAdapter.Pr
         return 0;
     }
 
-    public static class ProfileViewHolder extends RecyclerView.ViewHolder {
+    public class ProfileViewHolder extends RecyclerView.ViewHolder {
         private TextView tvNickname, tvEmail, tvSex;
         private ImageView ivAvatar;
         private Button btnAction;
@@ -91,6 +95,11 @@ public class ListFriendAdapter extends RecyclerView.Adapter<ListFriendAdapter.Pr
             ivAvatar = (ImageView) itemView.findViewById(R.id.item_user_profile_iv_avatar);
             btnAction = (Button) itemView.findViewById(R.id.item_user_profile_btn_action);
             llRoot = (LinearLayout) itemView.findViewById(R.id.item_user_profile_ll_root);
+
+            itemView.setOnClickListener(v ->
+                    OtherUserProfileActivity_.intent(context)
+                            .userId(friendList.get(getAdapterPosition()).getId())
+                            .start());
         }
     }
 }

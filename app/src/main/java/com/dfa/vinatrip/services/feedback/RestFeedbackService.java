@@ -24,46 +24,52 @@ public interface RestFeedbackService {
             @Path("id") long hotelId,
             @Query("page") long page,
             @Query("per_page") long per_page);
-    
+
     @GET("api/feedback/food/{id}/listing")
     Observable<RestMessageResponse<List<FeedbackResponse>>> getFoodFeedback(
             @Path("id") long foodId,
             @Query("page") long page,
             @Query("per_page") long per_page);
-    
+
     @GET("api/feedback/place/{id}/listing")
     Observable<RestMessageResponse<List<FeedbackResponse>>> getPlaceFeedback(
             @Path("id") long placeId,
             @Query("page") long page,
             @Query("per_page") long per_page);
-    
+
     @GET("api/feedback/event/{id}/listing")
     Observable<RestMessageResponse<List<FeedbackResponse>>> getFestivalFeedback(
             @Path("id") long eventId,
             @Query("page") long page,
             @Query("per_page") long per_page);
-    
+
     @POST("api/feedback/hotel/{id}")
     Observable<RestMessageResponse<FeedbackResponse>> postHotelFeedback(
             @Header("access-token") String accessToken,
             @Path("id") long hotelId,
             @Body FeedbackRequest feedbackRequest);
-    
+
     @POST("api/feedback/food/{id}")
     Observable<RestMessageResponse<FeedbackResponse>> postFoodFeedback(
             @Header("access-token") String accessToken,
             @Path("id") long foodId,
             @Body FeedbackRequest feedbackRequest);
-    
+
     @POST("api/feedback/place/{id}")
     Observable<RestMessageResponse<FeedbackResponse>> postPlaceFeedback(
             @Header("access-token") String accessToken,
             @Path("id") long placeId,
             @Body FeedbackRequest feedbackRequest);
-    
+
     @POST("api/feedback/event/{id}")
     Observable<RestMessageResponse<FeedbackResponse>> postFestivalFeedback(
             @Header("access-token") String accessToken,
             @Path("id") long eventId,
             @Body FeedbackRequest feedbackRequest);
+
+    @GET("api/feedback/me")
+    Observable<RestMessageResponse<List<FeedbackResponse>>> getMyFeedback(
+            @Header("access-token") String accessToken,
+            @Query("page") long page,
+            @Query("per_page") long per_page);
 }

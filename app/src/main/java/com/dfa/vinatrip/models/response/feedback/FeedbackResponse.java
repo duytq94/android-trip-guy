@@ -1,5 +1,6 @@
 package com.dfa.vinatrip.models.response.feedback;
 
+import com.dfa.vinatrip.models.response.hotel.HotelResponse;
 import com.dfa.vinatrip.models.response.user.User;
 import com.google.gson.annotations.SerializedName;
 
@@ -35,6 +36,14 @@ public class FeedbackResponse implements Serializable{
     private String updatedAt;
     @SerializedName("profile")
     private User profile;
+    @SerializedName("event")
+    private SimpleObject event;
+    @SerializedName("hotel")
+    private SimpleObject hotel;
+    @SerializedName("food")
+    private SimpleObject food;
+    @SerializedName("place")
+    private SimpleObject place;
     
     public int getId() {
         return id;
@@ -130,5 +139,37 @@ public class FeedbackResponse implements Serializable{
     
     public void setProfile(User profile) {
         this.profile = profile;
+    }
+
+    public SimpleObject getEvent() {
+        return event;
+    }
+
+    public void setEvent(SimpleObject event) {
+        this.event = event;
+    }
+
+    public SimpleObject getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(SimpleObject hotel) {
+        this.hotel = hotel;
+    }
+
+    public SimpleObject getFood() {
+        return food;
+    }
+
+    public void setFood(SimpleObject food) {
+        this.food = food;
+    }
+
+    public SimpleObject getPlace() {
+        return place;
+    }
+
+    public void setPlace(SimpleObject place) {
+        this.place = place;
     }
 }
