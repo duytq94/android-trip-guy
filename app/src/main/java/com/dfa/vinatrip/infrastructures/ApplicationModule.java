@@ -83,7 +83,7 @@ public class ApplicationModule {
         NetworkProvider networkProvider = new DefaultNetworkProvider(application, true) {
             @Override
             public int getTimeout() {
-                return 60;
+                return 20;
             }
             
             @Override

@@ -214,14 +214,14 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
         });
 
         runnable = () -> {
-            bannerPosition = bannerPosition == this.banners.size() ? 0 : bannerPosition;
+            bannerPosition = bannerPosition % this.banners.size();
             if (vpBanner != null) {
                 vpBanner.setCurrentItem(bannerPosition++, bannerPosition != 0);
+                handler.postDelayed(runnable, 5000);
+            } else {
+                handler.removeCallbacks(runnable);
             }
-            handler.postDelayed(runnable, 5000);
         };
-
-        handler.post(runnable);
     }
 
     @Override
@@ -241,7 +241,7 @@ public class ProvinceFragment extends BaseFragment<ProvinceView, ProvincePresent
 
     @Override
     public void onStart() {
-        if (handler != null && runnable != null) {
+        if (handler != null && runnable != null){
             handler.post(runnable);
         }
         super.onStart();

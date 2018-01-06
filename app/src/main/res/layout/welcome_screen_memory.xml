@@ -27,6 +27,7 @@
             android:text="@string/welcome_screen_title4"
             android:textColor="@android:color/white"
             android:textSize="@dimen/welcome_screen_title"
+            android:gravity="center"
             android:textStyle="bold"
             />
 

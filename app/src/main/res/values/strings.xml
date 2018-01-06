@@ -98,7 +98,7 @@
     <string name="message_trend">TripGuy theo dõi các địa điểm du lịch hot nhất hiện nay, hãy cùng bạn bè và người thân xách balo lên và đi
     đến những nơi này ngay nào.</string>
     <string name="message_deal">TripGuy giúp bạn tìm deal nhanh và hiệu quả nhất, hãy đặt ngay vé cho bạn cùng gia đình nào.</string>
-    <string name="message_personal">TripGuy giúp bãn quản lý thông tin cá nhân một cách đơn giản và hiệu quả nhất.</string>
+    <string name="message_personal">TripGuy giúp bạn quản lý thông tin cá nhân một cách đơn giản và hiệu quả nhất.</string>
 
     <string-array name="province_detail_tab_pager">
         <item>"Giới thiệu"</item>
