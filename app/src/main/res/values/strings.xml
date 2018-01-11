@@ -135,4 +135,6 @@
 
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="api_key">AIzaSyCyIPbgc4_qtZCXdaq945UK-sx_SQwYXd8</string-array>
 </resources>

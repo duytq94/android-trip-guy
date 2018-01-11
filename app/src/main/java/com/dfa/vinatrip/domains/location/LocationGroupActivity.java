@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -26,6 +27,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.akexorcist.googledirection.DirectionCallback;
+import com.akexorcist.googledirection.GoogleDirection;
+import com.akexorcist.googledirection.constant.AvoidType;
+import com.akexorcist.googledirection.model.Direction;
+import com.akexorcist.googledirection.model.Route;
+import com.akexorcist.googledirection.util.DirectionConverter;
 import com.beesightsoft.caf.exceptions.ApiThrowable;
 import com.dfa.vinatrip.MainApplication;
 import com.dfa.vinatrip.R;
@@ -35,14 +42,13 @@ import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.dfa.vinatrip.infrastructures.ActivityModule;
 import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.utils.AppUtil;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
@@ -105,6 +111,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
     private BroadcastReceiver broadcastReceiver;
     private IntentFilter filter;
     private Socket socket;
+    private Polyline currentPolyline;
 
     @App
     protected MainApplication application;
@@ -215,6 +222,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
+    @SuppressLint("MissingPermission")
     public void setup() {
         if (isPermissionGranted()) {
             imageLoader = ImageLoader.getInstance();
@@ -228,6 +236,11 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             smfMyFriend.onResume();
             smfMyFriend.getMapAsync(mMap -> {
                 googleMap = mMap;
+                if (isPermissionGranted()) {
+                    googleMap.setMyLocationEnabled(true);
+                } else {
+                    googleMap.setMyLocationEnabled(false);
+                }
                 userFriendMarkerList = new ArrayList<>();
                 presenter.getPlanUser(plan.getId());
             });
@@ -288,8 +301,8 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
                             markerCurrentUser.showInfoWindow();
 
                             // For zooming automatically to the location of the markerCurrentUser
-                            CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(17).build();
-                            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//                            CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(17).build();
+//                            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -327,8 +340,16 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
                 Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(latLng)
                         .title(userInPlan.getUsername())
+                        .snippet("Chỉ đường tới đây")
                         .icon(BitmapDescriptorFactory.fromBitmap(bmAvatar)));
                 marker.showInfoWindow();
+
+                googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        getDirection(new LatLng(location.getLatitude(), location.getLongitude()), marker.getPosition());
+                    }
+                });
 
                 UserFriendMarker userFriendMarker = new UserFriendMarker(marker, userInPlan.getEmail());
                 userFriendMarkerList.add(userFriendMarker);
@@ -478,5 +499,35 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
                 e.printStackTrace();
             }
         });
+    }
+
+    public void getDirection(LatLng from, LatLng to) {
+        GoogleDirection.withServerKey(getString(R.string.google_api_key))
+                .from(new LatLng(from.latitude, from.longitude))
+                .to(new LatLng(to.latitude, to.longitude))
+                .avoid(AvoidType.FERRIES)
+                .avoid(AvoidType.HIGHWAYS)
+                .execute(new DirectionCallback() {
+                    @Override
+                    public void onDirectionSuccess(Direction direction, String rawBody) {
+                        if (direction.isOK()) {
+                            if (currentPolyline != null) {
+                                currentPolyline.remove();
+                            }
+
+                            Route route = direction.getRouteList().get(0);
+                            ArrayList<LatLng> directionPositionList = route.getLegList().get(0).getDirectionPoint();
+                            currentPolyline = googleMap.addPolyline(DirectionConverter.createPolyline(LocationGroupActivity.this,
+                                    directionPositionList, 5, Color.RED));
+                        } else {
+                            Toast.makeText(LocationGroupActivity.this, direction.getStatus(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onDirectionFailure(Throwable t) {
+                        Toast.makeText(LocationGroupActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 }
