@@ -21,6 +21,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by duonghd on 10/9/2017.
+ * duonghd1307@gmail.com
  */
 
 @EViewGroup(R.layout.view_ntoolbar)

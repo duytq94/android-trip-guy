@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background_pager_ll_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_location"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix,KeyboardInaccessibleWidget,ContentDescription,HardcodedText,SpUsage,RtlHardcoded,RelativeOverlap,UselessParent">
+
+    <ImageView
+        android:id="@+id/background_pager_iv_icon"
+        android:layout_width="@dimen/img_width_height"
+        android:layout_height="@dimen/img_width_height"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/ic_location"/>
+
+    <TextView
+        android:id="@+id/background_pager_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/welcome_screen_title"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/background_pager_tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:paddingLeft="@dimen/desc_padding"
+        android:paddingRight="@dimen/desc_padding"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/welcome_screen_desc"/>
+</LinearLayout>

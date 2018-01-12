@@ -19,17 +19,18 @@ import java.util.List;
 
 /**
  * Created by duonghd on 10/10/2017.
+ * duonghd1307@gmail.com
  */
 
 public class PagerBannerAdapter extends PagerAdapter {
     private Context context;
-    private List<String> banners;
+    private List<String> bannerURLs;
     private ImageLoader imageLoader;
     private DisplayImageOptions imageOptions;
 
-    public PagerBannerAdapter(Context context, List<String> banners) {
+    public PagerBannerAdapter(Context context, List<String> bannerURLs) {
         this.context = context;
-        this.banners = banners;
+        this.bannerURLs = bannerURLs;
         this.imageOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.bg_green)
                 .showImageForEmptyUri(R.drawable.photo_not_available)
@@ -44,7 +45,7 @@ public class PagerBannerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return banners.size();
+        return bannerURLs.size();
     }
 
     @Override
@@ -59,7 +60,7 @@ public class PagerBannerAdapter extends PagerAdapter {
         ImageView ivBanner = (ImageView) view.findViewById(R.id.item_pager_banner_iv_banner);
         RotateLoading rotateLoading = (RotateLoading) view.findViewById((R.id.item_pager_banner_rotate_loading));
 
-        imageLoader.displayImage(banners.get(position), ivBanner, imageOptions,
+        imageLoader.displayImage(bannerURLs.get(position), ivBanner, imageOptions,
                 new ImageLoadingListener() {
                     @Override
                     public void onLoadingStarted(String s, View view) {
