@@ -226,7 +226,7 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                     }
                 });
             }
-        } catch (URISyntaxException e) {
+        } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }

@@ -64,7 +64,6 @@ import org.androidannotations.annotations.ViewById;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -148,7 +147,7 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
             initBroadcastReceiver();
             locationListener();
             requestPermission();
-        } catch (URISyntaxException e) {
+        } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -347,7 +346,9 @@ public class LocationGroupActivity extends BaseActivity<LocationGroupView, Locat
                 googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
                     public void onInfoWindowClick(Marker marker) {
-                        getDirection(new LatLng(location.getLatitude(), location.getLongitude()), marker.getPosition());
+                        if (location != null) {
+                            getDirection(new LatLng(location.getLatitude(), location.getLongitude()), marker.getPosition());
+                        }
                     }
                 });
 
