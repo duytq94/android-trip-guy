@@ -93,6 +93,7 @@
             </LinearLayout>
 
             <TextView
+                android:visibility="invisible"
                 android:id="@+id/item_recycler_province_food_tv_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

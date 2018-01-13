@@ -73,6 +73,8 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
     protected TextView tvNumberOfFeedback;
     @ViewById(R.id.activity_food_detail_iv_banner)
     protected ImageView ivBanner;
+    @ViewById(R.id.activity_food_detail_tv_description)
+    protected TextView tvDescription;
     @ViewById(R.id.activity_food_detail_tv_address)
     protected TextView tvAddress;
     @ViewById(R.id.activity_food_detail_iv_map)
@@ -182,6 +184,7 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
         tvFoodName.setText(foodResponse.getName());
         srbFoodRate.setRating(foodResponse.getStar());
         tvNumberOfFeedback.setText(String.format("%s đánh giá", foodResponse.getReview()));
+        tvDescription.setText(foodResponse.getDescription());
         tvAddress.setText(foodResponse.getAddress());
         if (presenter.getCurrentUser() != null) {
             llIsLogin.setVisibility(View.VISIBLE);
