@@ -144,6 +144,8 @@ dependencies {
 
     compile 'com.akexorcist:googledirectionlibrary:1.1.1'
 
+    compile 'com.skyfishjy.ripplebackground:library:1.0.1'
+
     compile('com.sangcomz:FishBun:0.7.2') {
         transitive = true
     }

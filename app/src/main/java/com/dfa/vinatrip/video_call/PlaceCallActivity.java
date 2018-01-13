@@ -100,7 +100,7 @@ public class PlaceCallActivity extends BaseVideoCallActivity {
                 tvType.setVisibility(View.GONE);
 
                 llRoot.setOnClickListener(v -> {
-                    callSomeone(item.getEmail());
+                    callSomeone(item);
                 });
             }
         };
@@ -138,16 +138,17 @@ public class PlaceCallActivity extends BaseVideoCallActivity {
     }
 
     //to place the call to the entered name
-    public void callSomeone(String username) {
-        if (username.isEmpty()) {
+    public void callSomeone(UserInPlan remoteUser) {
+        if (remoteUser.getEmail().isEmpty()) {
             Toast.makeText(this, "Không có dữ liệu cho user này", Toast.LENGTH_LONG).show();
             return;
         }
 
-        Call call = getSinchServiceInterface().callUserVideo(username);
+        Call call = getSinchServiceInterface().callUserVideo(remoteUser.getEmail());
         String callId = call.getCallId();
 
         Intent callScreen = new Intent(this, CallScreenActivity.class);
+        callScreen.putExtra("remoteUser", remoteUser);
         callScreen.putExtra(SinchService.CALL_ID, callId);
         startActivity(callScreen);
     }

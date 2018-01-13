@@ -4,23 +4,29 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.R;
+import com.dfa.vinatrip.domains.main.fragment.plan.UserInPlan;
 import com.sinch.android.rtc.AudioController;
 import com.sinch.android.rtc.calling.Call;
 import com.sinch.android.rtc.calling.CallEndCause;
 import com.sinch.android.rtc.calling.CallState;
 import com.sinch.android.rtc.video.VideoCallListener;
 import com.sinch.android.rtc.video.VideoController;
+import com.skyfishjy.library.RippleBackground;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CallScreenActivity extends BaseVideoCallActivity {
 
@@ -36,14 +42,15 @@ public class CallScreenActivity extends BaseVideoCallActivity {
     private long mCallStart = 0;
     private boolean mAddedListener = false;
     private boolean mVideoViewsAdded = false;
+    private UserInPlan remoteUser;
 
     private TextView mCallDuration;
     private TextView mCallState;
     private TextView mCallerName;
     private LinearLayout llSwitchCamera;
-    private LinearLayout endCallButton;
     private VideoController videoController;
-    private AudioManager audioManager;
+    private RippleBackground rippleBackground;
+    private RelativeLayout rlContent;
 
     private class UpdateCallDurationTask extends TimerTask {
         @Override
@@ -74,15 +81,30 @@ public class CallScreenActivity extends BaseVideoCallActivity {
         mCallDuration = (TextView) findViewById(R.id.callDuration);
         mCallerName = (TextView) findViewById(R.id.remoteUser);
         mCallState = (TextView) findViewById(R.id.callState);
-        endCallButton = (LinearLayout) findViewById(R.id.activity_call_screen_btn_end_call);
+        LinearLayout endCallButton = (LinearLayout) findViewById(R.id.activity_call_screen_btn_end_call);
         llSwitchCamera = (LinearLayout) findViewById(R.id.activity_call_screen_btn_switch_camera);
+
+        CircleImageView civRemoteAvatar = (CircleImageView) findViewById(R.id.activity_call_screen_civ_remote_user_avatar);
+
+        rippleBackground = (RippleBackground) findViewById(R.id.activity_call_screen_rb);
+        rippleBackground.setVisibility(View.VISIBLE);
+        rippleBackground.startRippleAnimation();
+
+        rlContent = (RelativeLayout) findViewById(R.id.activity_call_screen_rl_content);
+        rlContent.setVisibility(View.GONE);
 
         llSwitchCamera.setEnabled(false);
 
         endCallButton.setOnClickListener(v -> endCall());
         llSwitchCamera.setOnClickListener(v -> switchCamera());
 
+        remoteUser = (UserInPlan) getIntent().getSerializableExtra("remoteUser");
         mCallId = getIntent().getStringExtra(SinchService.CALL_ID);
+
+        if (remoteUser != null) {
+            Picasso.with(this).load(remoteUser.getAvatar()).into(civRemoteAvatar);
+        }
+
         if (savedInstanceState == null) {
             mCallStart = System.currentTimeMillis();
         }
@@ -135,7 +157,7 @@ public class CallScreenActivity extends BaseVideoCallActivity {
     public void onStart() {
         super.onStart();
 
-        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         if (audioManager != null) {
             audioManager.setSpeakerphoneOn(true);
         }
@@ -187,6 +209,11 @@ public class CallScreenActivity extends BaseVideoCallActivity {
 
         videoController = getSinchServiceInterface().getVideoController();
         if (videoController != null) {
+            rippleBackground.startRippleAnimation();
+            rippleBackground.setVisibility(View.GONE);
+
+            rlContent.setVisibility(View.VISIBLE);
+
             RelativeLayout localView = (RelativeLayout) findViewById(R.id.localVideo);
             localView.addView(videoController.getLocalView());
 

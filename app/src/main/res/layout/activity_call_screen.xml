@@ -2,13 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#ffffffff"
               android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:background="#fffafafa"
         android:orientation="vertical">
 
         <TextView
@@ -45,23 +43,52 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
-        android:background="@android:color/darker_gray"
-        android:orientation="vertical">
+        android:layout_weight="3">
 
         <RelativeLayout
-            android:id="@+id/remoteVideo"
+            android:visibility="gone"
+            android:id="@+id/activity_call_screen_rl_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/localVideo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"/>
+            <RelativeLayout
+                android:id="@+id/remoteVideo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <RelativeLayout
+                android:id="@+id/localVideo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"/>
+
+        </RelativeLayout>
+
+        <com.skyfishjy.library.RippleBackground
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/activity_call_screen_rb"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            app:rb_color="#228B22"
+            app:rb_duration="3000"
+            app:rb_radius="32dp"
+            app:rb_rippleAmount="4"
+            app:rb_scale="6">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/activity_call_screen_civ_remote_user_avatar"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_avatar"/>
+        </com.skyfishjy.library.RippleBackground>
 
     </RelativeLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

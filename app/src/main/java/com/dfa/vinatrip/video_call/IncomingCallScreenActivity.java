@@ -17,6 +17,7 @@ import com.dfa.vinatrip.R;
 import com.sinch.android.rtc.calling.Call;
 import com.sinch.android.rtc.calling.CallEndCause;
 import com.sinch.android.rtc.video.VideoCallListener;
+import com.skyfishjy.library.RippleBackground;
 
 import java.util.List;
 
@@ -37,6 +38,8 @@ public class IncomingCallScreenActivity extends BaseVideoCallActivity {
         answer.setOnClickListener(mClickListener);
         LinearLayout decline = (LinearLayout) findViewById(R.id.activity_incoming_call_screen_ll_cancel);
         decline.setOnClickListener(mClickListener);
+        RippleBackground rippleBackground = (RippleBackground) findViewById(R.id.activity_incoming_call_screen_rb);
+        rippleBackground.startRippleAnimation();
 
         requestPermission();
 
@@ -51,8 +54,8 @@ public class IncomingCallScreenActivity extends BaseVideoCallActivity {
         Call call = getSinchServiceInterface().getCall(mCallId);
         if (call != null) {
             call.addCallListener(new SinchCallListener());
-            TextView remoteUser = (TextView) findViewById(R.id.remoteUser);
-            remoteUser.setText(call.getRemoteUserId());
+            TextView tvRemoteUser = (TextView) findViewById(R.id.activity_incoming_call_screen_remote_user);
+            tvRemoteUser.setText(call.getRemoteUserId());
 
         } else {
             Log.e(TAG, "Started with invalid callId, aborting");
@@ -68,6 +71,7 @@ public class IncomingCallScreenActivity extends BaseVideoCallActivity {
             Intent intent = new Intent(this, CallScreenActivity.class);
             intent.putExtra(SinchService.CALL_ID, mCallId);
             startActivity(intent);
+            finish();
         } else {
             finish();
         }

@@ -2,17 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#ffffffff"
               android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="#fffafafa"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/remoteUser"
+            android:id="@+id/activity_incoming_call_screen_remote_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -23,7 +21,6 @@
             android:textSize="28sp"/>
 
         <TextView
-            android:id="@+id/callState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -33,15 +30,25 @@
 
     </LinearLayout>
 
-    <ImageView
+    <com.skyfishjy.library.RippleBackground
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/activity_incoming_call_screen_rb"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@android:color/darker_gray"
-        android:contentDescription="Call background"
-        android:padding="0dip">
+        app:rb_color="#228B22"
+        app:rb_duration="3000"
+        app:rb_radius="32dp"
+        app:rb_rippleAmount="4"
+        app:rb_scale="6">
 
-    </ImageView>
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_symbol"/>
+    </com.skyfishjy.library.RippleBackground>
 
     <LinearLayout
         android:id="@+id/bottomPanel"
