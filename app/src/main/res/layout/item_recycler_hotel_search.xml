@@ -108,7 +108,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:text="10.3 km"
-                    android:textSize="8dp"/>
+                    android:textSize="8dp"
+                    android:visibility="invisible"/>
             </LinearLayout>
         </LinearLayout>
 
