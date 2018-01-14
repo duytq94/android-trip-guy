@@ -13,6 +13,8 @@ import javax.inject.Inject;
 
 import rx.Subscription;
 
+import static com.dfa.vinatrip.utils.Constants.SIGN_OUT_VIDEO_CALL;
+
 /**
  * Created by duytq on 10/30/2017.
  */
@@ -69,6 +71,7 @@ public class MePresenter extends BasePresenter<MeView> {
                 .subscribe(s -> {
                     if (isViewAttached()) {
                         getView().signOutSuccess();
+                        EventBus.getDefault().post(SIGN_OUT_VIDEO_CALL);
                     }
                 }, throwable -> {
                     getView().apiError(throwable);

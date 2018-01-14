@@ -53,6 +53,9 @@ public class Constants {
     public static final int REQUEST_MAKE_PLAN = 3;
     public static final String KEY_NEW_PLAN = "newPlan";
 
+    // Video call
+    public static final String SIGN_OUT_VIDEO_CALL = "SignOutVideoCall";
+
     public static final int TYPE_EVENT = 101;
     public static final int TYPE_HOTEL = 102;
     public static final int TYPE_FOOD = 103;

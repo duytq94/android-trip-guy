@@ -10,7 +10,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.dfa.vinatrip.R;
@@ -24,19 +23,24 @@ import com.dfa.vinatrip.domains.main.fragment.plan.PlanFragment_;
 import com.dfa.vinatrip.domains.main.fragment.province.ProvinceFragment_;
 import com.dfa.vinatrip.domains.main.fragment.trend.TrendFragment_;
 import com.dfa.vinatrip.utils.StopShiftModeBottomNavView;
+import com.dfa.vinatrip.video_call.BaseVideoCallActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.dfa.vinatrip.utils.Constants.REQUEST_PERMISSION_VIDEO_CALL;
+import static com.dfa.vinatrip.utils.Constants.SIGN_OUT_VIDEO_CALL;
 
 @SuppressLint("Registered")
 @EActivity(R.layout.activity_main)
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseVideoCallActivity {
 
     @ViewById(R.id.activity_main_toolbar)
     protected NToolbar nToolbar;
@@ -133,6 +137,18 @@ public class MainActivity extends AppCompatActivity {
         exitDialog.show();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
     public void requestPermission() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
@@ -153,6 +169,13 @@ public class MainActivity extends AppCompatActivity {
                     grantResults[1] != PackageManager.PERMISSION_GRANTED || grantResults[2] != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Bạn đã không cấp quyền, một số chức năng có thể không hoạt động", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLogout(String event) {
+        if (getSinchServiceInterface() != null && event.equals(SIGN_OUT_VIDEO_CALL)) {
+            getSinchServiceInterface().stopClient();
         }
     }
 }
