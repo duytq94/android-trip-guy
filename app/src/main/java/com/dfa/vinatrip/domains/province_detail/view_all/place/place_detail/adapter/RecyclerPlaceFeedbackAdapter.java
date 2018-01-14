@@ -40,12 +40,15 @@ public class RecyclerPlaceFeedbackAdapter extends RecyclerView.Adapter<RecyclerP
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         FeedbackResponse feedbackResponse = feedbackResponses.get(position);
-        if (feedbackResponse.getProfile().getAvatar() != null) {
-            Picasso.with(context).load(feedbackResponse.getProfile().getAvatar())
-                    .error(R.drawable.photo_not_available)
-                    .into(holder.civAvatar);
-        } else {
-            holder.civAvatar.setImageResource(R.drawable.ic_avatar);
+        if (feedbackResponse.getProfile() != null) {
+            if (feedbackResponse.getProfile().getAvatar() != null) {
+                Picasso.with(context).load(feedbackResponse.getProfile().getAvatar())
+                        .error(R.drawable.photo_not_available)
+                        .into(holder.civAvatar);
+            } else {
+                holder.civAvatar.setImageResource(R.drawable.ic_avatar);
+            }
+            holder.tvUsername.setText(feedbackResponse.getProfile().getUsername());
         }
         
         holder.tvUsername.setText(feedbackResponse.getProfile().getUsername());

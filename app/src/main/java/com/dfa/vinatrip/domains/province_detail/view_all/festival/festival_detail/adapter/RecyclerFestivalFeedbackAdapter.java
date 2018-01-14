@@ -24,46 +24,49 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RecyclerFestivalFeedbackAdapter extends RecyclerView.Adapter<RecyclerFestivalFeedbackAdapter.ViewHolder> {
     private Context context;
     private List<FeedbackResponse> feedbackResponses;
-    
+
     public RecyclerFestivalFeedbackAdapter(Context context, List<FeedbackResponse> feedbackResponses) {
         this.context = context;
         this.feedbackResponses = feedbackResponses;
     }
-    
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_recycler_feedback_festival, parent, false);
         return new ViewHolder(view);
     }
-    
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         FeedbackResponse feedbackResponse = feedbackResponses.get(position);
-        if (feedbackResponse.getProfile().getAvatar() != null) {
-            Picasso.with(context).load(feedbackResponse.getProfile().getAvatar())
-                    .error(R.drawable.photo_not_available)
-                    .into(holder.civAvatar);
-        } else {
-            holder.civAvatar.setImageResource(R.drawable.ic_avatar);
+        if (feedbackResponse.getProfile() != null) {
+            if (feedbackResponse.getProfile().getAvatar() != null) {
+                Picasso.with(context).load(feedbackResponse.getProfile().getAvatar())
+                        .error(R.drawable.photo_not_available)
+                        .into(holder.civAvatar);
+            } else {
+                holder.civAvatar.setImageResource(R.drawable.ic_avatar);
+            }
+            holder.tvUsername.setText(feedbackResponse.getProfile().getUsername());
         }
-        
+
         holder.tvUsername.setText(feedbackResponse.getProfile().getUsername());
         holder.srbRate.setRating(feedbackResponse.getRate());
         holder.tvContent.setText(feedbackResponse.getContent());
     }
-    
+
     @Override
     public int getItemCount() {
         return feedbackResponses.size();
     }
-    
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private CircleImageView civAvatar;
         private TextView tvUsername;
         private SimpleRatingBar srbRate;
         private TextView tvContent;
-        
+
         public ViewHolder(View itemView) {
             super(itemView);
             civAvatar = (CircleImageView) itemView.findViewById(R.id.item_recycler_feedback_festival_civ_avatar);
