@@ -104,7 +104,7 @@ public class DealFragment extends BaseFragment<DealView, DealPresenter>
     }
 
     public void setupSearch() {
-        searchView.setQueryHint("Tìm deal...");
+        searchView.setQueryHint("Tìm vé...");
         searchView.setIconifiedByDefault(false);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
