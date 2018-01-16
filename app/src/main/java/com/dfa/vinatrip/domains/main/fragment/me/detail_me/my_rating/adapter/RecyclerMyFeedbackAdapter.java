@@ -11,10 +11,14 @@ import android.widget.TextView;
 import com.dfa.vinatrip.R;
 import com.dfa.vinatrip.custom_view.SimpleRatingBar;
 import com.dfa.vinatrip.models.response.feedback.FeedbackResponse;
-import com.dfa.vinatrip.models.response.user.User;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -95,6 +99,16 @@ public class RecyclerMyFeedbackAdapter extends RecyclerView.Adapter<RecyclerMyFe
 
         holder.srbRate.setRating(feedbackResponse.getRate());
         holder.tvContent.setText(feedbackResponse.getContent());
+        try {
+            String time = feedbackResponse.getUpdatedAt();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'h:mm:ss");
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("HH:mm dd-MM-yyyy");
+            Date parseInput = simpleDateFormat.parse(time.split(Pattern.quote("."))[0]);
+            holder.tvTime.setText(simpleDateFormat2.format(parseInput));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -107,6 +121,7 @@ public class RecyclerMyFeedbackAdapter extends RecyclerView.Adapter<RecyclerMyFe
         private TextView tvUsername;
         private SimpleRatingBar srbRate;
         private TextView tvContent;
+        private TextView tvTime;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -114,6 +129,7 @@ public class RecyclerMyFeedbackAdapter extends RecyclerView.Adapter<RecyclerMyFe
             tvUsername = (TextView) itemView.findViewById(R.id.item_recycler_feedback_me_tv_user_name);
             srbRate = (SimpleRatingBar) itemView.findViewById(R.id.item_recycler_feedback_me_srb_rate);
             tvContent = (TextView) itemView.findViewById(R.id.item_recycler_feedback_me_tv_content);
+            tvTime = (TextView) itemView.findViewById(R.id.item_recycler_feedback_me_tv_time);
         }
     }
 }

@@ -64,10 +64,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:textColor="#919191"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="30dp"
         android:layout_marginTop="3dp"
-        android:text="10:21 12/01/2018"
+        android:textColor="#919191"
         android:textSize="8dp"
         android:textStyle="italic"/>
 
