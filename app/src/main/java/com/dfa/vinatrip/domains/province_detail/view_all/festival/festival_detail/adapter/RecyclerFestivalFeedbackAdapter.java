@@ -54,6 +54,9 @@ public class RecyclerFestivalFeedbackAdapter extends RecyclerView.Adapter<Recycl
         holder.tvUsername.setText(feedbackResponse.getProfile().getUsername());
         holder.srbRate.setRating(feedbackResponse.getRate());
         holder.tvContent.setText(feedbackResponse.getContent());
+
+        String time = feedbackResponse.getUpdatedAt();
+
     }
 
     @Override
@@ -66,6 +69,7 @@ public class RecyclerFestivalFeedbackAdapter extends RecyclerView.Adapter<Recycl
         private TextView tvUsername;
         private SimpleRatingBar srbRate;
         private TextView tvContent;
+        private TextView tvTime;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -73,6 +77,7 @@ public class RecyclerFestivalFeedbackAdapter extends RecyclerView.Adapter<Recycl
             tvUsername = (TextView) itemView.findViewById(R.id.item_recycler_feedback_festival_tv_user_name);
             srbRate = (SimpleRatingBar) itemView.findViewById(R.id.item_recycler_feedback_festival_srb_rate);
             tvContent = (TextView) itemView.findViewById(R.id.item_recycler_feedback_festival_tv_content);
+            tvTime = (TextView) itemView.findViewById(R.id.item_recycler_feedback_festival_tv_time);
         }
     }
 }
