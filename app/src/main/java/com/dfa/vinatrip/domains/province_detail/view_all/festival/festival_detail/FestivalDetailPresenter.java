@@ -40,7 +40,8 @@ public class FestivalDetailPresenter extends BasePresenter<FestivalDetailView> {
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription = feedbackService.postFestivalFeedback(accountService.getCurrentUser().getAccessToken(), placeId, feedbackRequest)
+        String token = accountService.getCurrentUser().getAccessToken();
+        subscription = feedbackService.postFestivalFeedback(token, placeId, feedbackRequest)
                 .compose(RxScheduler.applyIoSchedulers())
                 .doOnTerminate(() -> {
                     if (isViewAttached()) {
@@ -49,8 +50,8 @@ public class FestivalDetailPresenter extends BasePresenter<FestivalDetailView> {
                 })
                 .subscribe(feedbackResponse -> {
                     if (isViewAttached()) {
+                        feedbackResponse.setProfile(accountService.getCurrentUser());
                         getView().postFestivalFeedbackSuccess(feedbackResponse);
-                        getFestivalFeedback(placeId, 0, 0);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {

@@ -60,4 +60,6 @@ public class Constants {
     public static final int TYPE_HOTEL = 102;
     public static final int TYPE_FOOD = 103;
     public static final int TYPE_PLACE = 104;
+
+    public static final int FEEDBACK_PAGE_SIZE = 5;
 }
