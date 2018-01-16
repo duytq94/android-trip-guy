@@ -15,8 +15,12 @@ public class Plan implements Serializable {
     private String destination;
     @SerializedName("date_go")
     private String dateGo;
+    @SerializedName("timestamp_date_go")
+    private long timestampDateGo;
     @SerializedName("date_back")
     private String dateBack;
+    @SerializedName("timestamp_date_back")
+    private long timestampDateBack;
     @SerializedName("id_background")
     private int idBackground;
     @SerializedName("plan_schedule_list")
@@ -33,13 +37,16 @@ public class Plan implements Serializable {
     private List<UserInPlan> invitedFriendList;
     private boolean isExpired = false;
 
-    public Plan(String name, String destination, String dateGo, String dateBack, int idBackground,
-                List<PlanSchedule> planScheduleList, long idUserMakePlan, String emailUserMakePlan,
+    public Plan(long id, String name, String destination, String dateGo, long timestampDateGo, String dateBack, long timestampDateBack,
+                int idBackground, List<PlanSchedule> planScheduleList, long idUserMakePlan, String emailUserMakePlan,
                 String avatarUserMakePlan, String usernameUserMakePlan, List<UserInPlan> invitedFriendList) {
+        this.id = id;
         this.name = name;
         this.destination = destination;
         this.dateGo = dateGo;
+        this.timestampDateGo = timestampDateGo;
         this.dateBack = dateBack;
+        this.timestampDateBack = timestampDateBack;
         this.idBackground = idBackground;
         this.planScheduleList = planScheduleList;
         this.idUserMakePlan = idUserMakePlan;

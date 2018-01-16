@@ -32,6 +32,7 @@ import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.nhancv.nutc.NUtc;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -348,8 +349,8 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
 
             presenter.updatePlan(plan);
         } else {
-            plan = new Plan(etTripName.getText().toString().trim(), tvDestination.getText().toString(),
-                    dateGo, dateBack, idBackground, planScheduleList, currentUser.getId(),
+            plan = new Plan(NUtc.getUtcNow(), etTripName.getText().toString().trim(), tvDestination.getText().toString(),
+                    dateGo, AppUtil.stringDateToTimestamp(dateGo), dateBack, AppUtil.stringDateToTimestamp(dateBack) + 86400000, idBackground, planScheduleList, currentUser.getId(),
                     currentUser.getEmail(), currentUser.getAvatar(), currentUser.getUsername(), invitedFriendList);
             presenter.createPlan(plan);
         }

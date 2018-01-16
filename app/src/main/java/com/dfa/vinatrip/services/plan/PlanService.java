@@ -17,7 +17,7 @@ public interface PlanService {
 
     Observable<String> updatePlan(Plan newPlan);
 
-    Observable<List<Plan>> getPlan(long userId);
+    Observable<List<Plan>> getPlan(long userId, String title, int type, int expired, long currentTimestamp, int page, int pageSize);
 
     Observable<List<PlanSchedule>> getPlanSchedule(long planId);
 

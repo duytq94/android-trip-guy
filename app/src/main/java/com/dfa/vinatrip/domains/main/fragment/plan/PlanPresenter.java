@@ -5,6 +5,7 @@ import com.dfa.vinatrip.base.BasePresenter;
 import com.dfa.vinatrip.models.response.user.User;
 import com.dfa.vinatrip.services.account.AccountService;
 import com.dfa.vinatrip.services.plan.PlanService;
+import com.nhancv.nutc.NUtc;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -38,17 +39,18 @@ public class PlanPresenter extends BasePresenter<PlanView> {
         return accountService.getCurrentUser();
     }
 
-    public void getPlan() {
+    public void getPlan(String title, int type, int expired, int page, int pageSize) {
         RxScheduler.onStop(subscription);
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription = planService.getPlan(accountService.getCurrentUser().getId())
+        subscription = planService.getPlan(accountService.getCurrentUser().getId(), title, type, expired,
+                NUtc.getUtcNow(), page, pageSize)
                 .compose(RxScheduler.applyIoSchedulers())
                 .subscribe(planList -> {
                     if (isViewAttached()) {
                         getView().hideLoading();
-                        getView().getPlanSuccess(planList);
+                        getView().getPlanSuccess(planList, page);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {

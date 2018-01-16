@@ -32,7 +32,13 @@ public interface RestPlanService {
 
     @GET("plan/{userId}")
     Observable<RestMessageResponse<List<Plan>>> getPlan(
-            @Path("userId") long userId
+            @Path("userId") long userId,
+            @Query("title") String title,
+            @Query("type") int type,
+            @Query("expired") int expired,
+            @Query("currentTimestamp") long currentTimestamp,
+            @Query("page") int page,
+            @Query("pageSize") int pageSize
     );
 
     @GET("planSchedule/{planId}")
