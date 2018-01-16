@@ -15,7 +15,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="42dp"
             android:background="@color/colorMain"
             android:orientation="horizontal"
             android:paddingBottom="7dp"
@@ -24,9 +24,8 @@
 
             <android.support.v7.widget.SearchView
                 android:id="@+id/fragment_plan_sv"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:background="@drawable/bg_white_corner"
                 android:theme="@style/DealSearchView"/>
 

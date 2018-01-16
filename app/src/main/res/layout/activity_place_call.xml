@@ -23,7 +23,8 @@
         android:background="@drawable/btn_positive"
         android:gravity="center"
         android:orientation="vertical"
-        android:textColor="@color/colorMain">
+        android:textColor="@color/colorMain"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,7 +32,8 @@
             android:gravity="center"
             android:text="DỪNG NHẬN CUỘC GỌI"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/text_medium"/>
+            android:textSize="@dimen/text_medium"
+            />
     </LinearLayout>
 
 </LinearLayout>

@@ -61,7 +61,6 @@ import org.lucasr.twowayview.TwoWayView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -187,6 +186,9 @@ public class ChatGroupActivity extends BaseActivity<ChatGroupView, ChatGroupPres
                     BaseMessage baseMessage = gson.fromJson(args[0].toString(), BaseMessage.class);
                     baseMessageList.add(baseMessage);
                     runOnUiThread(() -> {
+                        if (llNoMessage.getVisibility() == View.VISIBLE) {
+                            llNoMessage.setVisibility(View.GONE);
+                        }
                         chatGroupAdapter.notifyDataSetChanged();
                         rvList.scrollToPosition(baseMessageList.size() - 1);
                     });
