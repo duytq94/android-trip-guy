@@ -11,7 +11,7 @@
         <item>Tham quan</item>
     </string-array>
 
-    // For fragment deal
+    <!--For fragment deal-->
     <string-array name="range_price">
         <item>Tất cả loại giá</item>
         <item>Dưới 2tr</item>
@@ -26,7 +26,7 @@
         <item>4 &#8211; 6 ngày</item>
     </string-array>
 
-    // For fragment trend
+    <!--For fragment trend-->
     <string-array name="season">
         <item>Quanh năm</item>
         <item>Xuân</item>
@@ -42,4 +42,16 @@
         <item>Sông nước</item>
     </string-array>
 
+    <!--For fragment plan-->
+    <string-array name="type_plan">
+        <item>Tất cả kế hoạch</item>
+        <item>Kế hoạch tôi tạo</item>
+        <item>Kế hoạch được mời</item>
+    </string-array>
+    <string-array name="expired_plan">
+        <item>Tất cả loại</item>
+        <item>Đang diễn ra</item>
+        <item>Sắp diễn ra</item>
+        <item>Đã kết thúc</item>
+    </string-array>
 </resources>

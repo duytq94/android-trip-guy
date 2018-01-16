@@ -42,9 +42,9 @@ public class DefaultPlanService implements PlanService {
     }
 
     @Override
-    public Observable<List<Plan>> getPlan(long userId) {
+    public Observable<List<Plan>> getPlan(long userId, String title, int type, int expired, long currentTimestamp, int page, int pageSize) {
         return networkProvider
-                .transformResponse(restPlanService.getPlan(userId))
+                .transformResponse(restPlanService.getPlan(userId, title, type, expired, currentTimestamp, page, pageSize))
                 .compose(apiErrorFilter.execute());
     }
 

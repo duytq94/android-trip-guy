@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 public interface PlanView extends BaseMvpView {
-    void getPlanSuccess(List<Plan> planList);
+    void getPlanSuccess(List<Plan> planList, int page);
 
     void cancelPlanSuccess(String message, int position);
 
