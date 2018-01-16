@@ -11,302 +11,308 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"/>
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/activity_province_detail_srl_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#e6eaeaea"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/activity_province_detail_iv_banner"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@drawable/photo_not_available"
-                android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"/>
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
+                android:layout_height="match_parent"
+                android:background="#e6eaeaea"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Giới thiệu"
-                    android:textColor="@color/colorMain"
-                    android:textSize="@dimen/text_medium"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/activity_province_detail_tv_intro"
+                <ImageView
+                    android:id="@+id/activity_province_detail_iv_banner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/text_small"/>
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="0.66dp"
-                    android:layout_marginTop="10dp"
-                    android:background="#c9c9c9"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/white"
-                android:orientation="vertical">
+                    android:layout_height="200dp"
+                    android:background="@drawable/photo_not_available"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="centerCrop"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_weight="1"
-                        android:text="Lễ hội trong năm"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Giới thiệu"
+                        android:textColor="@color/colorMain"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/activity_province_detail_tv_intro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="5dp"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/text_medium"
-                        android:textStyle="bold"/>
+                        android:textSize="@dimen/text_small"/>
 
-                    <TextView
-                        android:id="@+id/activity_province_detail_tv_view_all_festival"
+                    <View
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/bg_ntoolbar_icon_click"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:text="Xem tất cả"
-                        android:textColor="@color/colorMain"
-                        android:textSize="10dp"
-                        android:textStyle="italic"/>
+                        android:layout_height="0.66dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#c9c9c9"/>
                 </LinearLayout>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/activity_province_detail_rcv_festival"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginTop="5dp"/>
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="0.66dp"
-                    android:layout_marginTop="20dp"
-                    android:background="#c9c9c9"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/white"
-                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_weight="1"
-                        android:text="Nghỉ ngơi"
-                        android:textColor="@color/colorMain"
-                        android:textSize="@dimen/text_medium"
-                        android:textStyle="bold"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/activity_province_detail_tv_view_all_hotel"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:text="Lễ hội trong năm"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/text_medium"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/activity_province_detail_tv_view_all_festival"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/bg_ntoolbar_icon_click"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:text="Xem tất cả"
+                            android:textColor="@color/colorMain"
+                            android:textSize="10dp"
+                            android:textStyle="italic"/>
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/activity_province_detail_rcv_festival"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:layout_marginTop="5dp"/>
+
+                    <View
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/bg_ntoolbar_icon_click"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:text="Xem tất cả"
-                        android:textColor="@color/colorMain"
-                        android:textSize="10dp"
-                        android:textStyle="italic"/>
+                        android:layout_height="0.66dp"
+                        android:layout_marginTop="20dp"
+                        android:background="#c9c9c9"/>
                 </LinearLayout>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/activity_province_detail_rcv_hotel"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginTop="5dp"/>
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="0.66dp"
-                    android:layout_marginTop="5dp"
-                    android:background="#c9c9c9"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/white"
-                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_weight="1"
-                        android:text="Ẩm thực"
-                        android:textColor="@color/colorMain"
-                        android:textSize="@dimen/text_medium"
-                        android:textStyle="bold"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/activity_province_detail_tv_view_all_food"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:text="Nghỉ ngơi"
+                            android:textColor="@color/colorMain"
+                            android:textSize="@dimen/text_medium"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/activity_province_detail_tv_view_all_hotel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/bg_ntoolbar_icon_click"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:text="Xem tất cả"
+                            android:textColor="@color/colorMain"
+                            android:textSize="10dp"
+                            android:textStyle="italic"/>
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/activity_province_detail_rcv_hotel"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="5dp"/>
+
+                    <View
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/bg_ntoolbar_icon_click"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:text="Xem tất cả"
-                        android:textColor="@color/colorMain"
-                        android:textSize="10dp"
-                        android:textStyle="italic"/>
+                        android:layout_height="0.66dp"
+                        android:layout_marginTop="5dp"
+                        android:background="#c9c9c9"/>
                 </LinearLayout>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/activity_province_detail_rcv_food"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginTop="5dp"/>
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="0.66dp"
-                    android:layout_marginTop="5dp"
-                    android:background="#c9c9c9"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/white"
-                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:text="Ẩm thực"
+                            android:textColor="@color/colorMain"
+                            android:textSize="@dimen/text_medium"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/activity_province_detail_tv_view_all_food"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/bg_ntoolbar_icon_click"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:text="Xem tất cả"
+                            android:textColor="@color/colorMain"
+                            android:textSize="10dp"
+                            android:textStyle="italic"/>
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/activity_province_detail_rcv_food"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="5dp"/>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="0.66dp"
+                        android:layout_marginTop="5dp"
+                        android:background="#c9c9c9"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:text="Địa điểm du lịch"
+                            android:textColor="@color/colorMain"
+                            android:textSize="@dimen/text_medium"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/activity_province_detail_tv_view_all_place"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/bg_ntoolbar_icon_click"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:text="Xem tất cả"
+                            android:textColor="@color/colorMain"
+                            android:textSize="10dp"
+                            android:textStyle="italic"/>
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/activity_province_detail_rcv_place"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="5dp"/>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="0.66dp"
+                        android:layout_marginTop="5dp"
+                        android:background="#c9c9c9"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
                         android:layout_weight="1"
-                        android:text="Địa điểm du lịch"
+                        android:gravity="center_vertical"
+                        android:text="Ảnh đẹp"
                         android:textColor="@color/colorMain"
                         android:textSize="@dimen/text_medium"
                         android:textStyle="bold"/>
 
-                    <TextView
-                        android:id="@+id/activity_province_detail_tv_view_all_place"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/activity_province_detail_rcv_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="110dp"
+                        android:layout_marginTop="5dp"/>
+
+                    <View
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/bg_ntoolbar_icon_click"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:text="Xem tất cả"
-                        android:textColor="@color/colorMain"
-                        android:textSize="10dp"
-                        android:textStyle="italic"/>
+                        android:layout_height="0.66dp"
+                        android:layout_marginTop="15dp"
+                        android:background="#c9c9c9"/>
                 </LinearLayout>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/activity_province_detail_rcv_place"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginTop="5dp"/>
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="0.66dp"
-                    android:layout_marginTop="5dp"
-                    android:background="#c9c9c9"/>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/white"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Ảnh đẹp"
-                    android:textColor="@color/colorMain"
-                    android:textSize="@dimen/text_medium"
-                    android:textStyle="bold"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/activity_province_detail_rcv_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="110dp"
-                    android:layout_marginTop="5dp"/>
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="0.66dp"
-                    android:layout_marginTop="15dp"
-                    android:background="#c9c9c9"/>
-            </LinearLayout>
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

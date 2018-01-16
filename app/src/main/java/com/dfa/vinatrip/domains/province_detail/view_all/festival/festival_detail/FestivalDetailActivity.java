@@ -372,6 +372,8 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
 
     @Override
     public void postFestivalFeedbackSuccess(FeedbackResponse feedbackResponse) {
+        rcvFeedback.setVisibility(View.VISIBLE);
+        tvNoneFeedback.setVisibility(View.GONE);
         this.feedbackResponses.add(0, feedbackResponse);
         this.feedbackResponsesTerm.add(0, feedbackResponse);
         this.feedbackAdapter.notifyDataSetChanged();

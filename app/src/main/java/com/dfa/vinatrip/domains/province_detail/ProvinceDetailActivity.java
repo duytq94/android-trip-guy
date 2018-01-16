@@ -2,6 +2,7 @@ package com.dfa.vinatrip.domains.province_detail;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
@@ -56,6 +57,8 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
 
     @ViewById(R.id.activity_province_detail_tb_toolbar)
     protected NToolbar nToolbar;
+    @ViewById(R.id.activity_province_detail_srl_refresh)
+    protected SwipeRefreshLayout swipeRefreshLayout;
     @ViewById(R.id.activity_province_detail_iv_banner)
     protected ImageView ivBanner;
     @ViewById(R.id.activity_province_detail_tv_intro)
@@ -152,6 +155,14 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
         rcvImages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rcvImages.setAdapter(imageAdapter);
 
+        loadRefreshData();
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(false);
+            loadRefreshData();
+        });
+    }
+
+    private void loadRefreshData() {
         presenter.getEvents(province.getId(), festival_page, festival_per_page);
         presenter.getHotels(province.getId(), hotel_page, hotel_per_page);
         presenter.getFoods(province.getId(), food_page, food_per_page);
@@ -209,6 +220,7 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
     //-----------------------------------------------------------------------------------------------------------------
     @Override
     public void getEventsSuccess(List<FestivalResponse> festivalResponses) {
+        this.festivalResponses.clear();
         this.festivalResponses.addAll(festivalResponses);
         this.festivalResponses.add(new FestivalResponse());
         this.festivalAdapter.notifyDataSetChanged();
@@ -216,6 +228,7 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
 
     @Override
     public void getHotelsSuccess(List<HotelResponse> hotelResponses) {
+        this.hotelResponses.clear();
         this.hotelResponses.addAll(hotelResponses);
         this.hotelResponses.add(new HotelResponse());
         this.hotelAdapter.notifyDataSetChanged();
@@ -223,6 +236,7 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
 
     @Override
     public void getFoodsSuccess(List<FoodResponse> foodResponses) {
+        this.foodResponses.clear();
         this.foodResponses.addAll(foodResponses);
         this.foodResponses.add(new FoodResponse());
         this.foodAdapter.notifyDataSetChanged();
@@ -230,6 +244,7 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
 
     @Override
     public void getPlacesSuccess(List<PlaceResponse> placeResponses) {
+        this.placeResponses.clear();
         this.placeResponses.addAll(placeResponses);
         this.placeResponses.add(new PlaceResponse());
         this.placeAdapter.notifyDataSetChanged();
@@ -237,6 +252,7 @@ public class ProvinceDetailActivity extends BaseActivity<ProvinceDetailView, Pro
 
     @Override
     public void getImagesSuccess(List<ProvinceImageResponse> provinceImageResponses) {
+        this.imageResponses.clear();
         this.imageResponses.addAll(provinceImageResponses);
         this.imageAdapter.notifyDataSetChanged();
         this.imageAdapter.setListTempUrl();

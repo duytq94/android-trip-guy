@@ -378,6 +378,8 @@ public class HotelDetailActivity extends BaseActivity<HotelDetailView, HotelDeta
 
     @Override
     public void postHotelFeedbackSuccess(FeedbackResponse feedbackResponse) {
+        rcvFeedback.setVisibility(View.VISIBLE);
+        tvNoneFeedback.setVisibility(View.GONE);
         this.feedbackResponses.add(0, feedbackResponse);
         this.feedbackResponsesTerm.add(0, feedbackResponse);
         this.feedbackAdapter.notifyDataSetChanged();
