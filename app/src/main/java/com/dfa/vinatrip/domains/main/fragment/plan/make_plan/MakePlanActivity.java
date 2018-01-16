@@ -342,7 +342,9 @@ public class MakePlanActivity extends BaseActivity<MakePlanView, MakePlanPresent
             plan.setName(etTripName.getText().toString().trim());
             plan.setDestination(tvDestination.getText().toString().trim());
             plan.setDateGo(dateGo);
+            plan.setTimestampDateGo(AppUtil.stringDateToTimestamp(dateGo));
             plan.setDateBack(dateBack);
+            plan.setTimestampDateBack(AppUtil.stringDateToTimestamp(dateBack) + 86400000);
             plan.setIdBackground(idBackground);
             plan.setPlanScheduleList(planScheduleList);
             plan.setInvitedFriendList(invitedFriendList);

@@ -56,6 +56,21 @@ public class Plan implements Serializable {
         this.invitedFriendList = invitedFriendList;
     }
 
+    public long getTimestampDateGo() {
+        return timestampDateGo;
+    }
+
+    public void setTimestampDateGo(long timestampDateGo) {
+        this.timestampDateGo = timestampDateGo;
+    }
+
+    public long getTimestampDateBack() {
+        return timestampDateBack;
+    }
+
+    public void setTimestampDateBack(long timestampDateBack) {
+        this.timestampDateBack = timestampDateBack;
+    }
 
     public boolean isExpired() {
         return isExpired;
