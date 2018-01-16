@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.domains.province_detail.view_all.food.food_detail;
 
 import android.annotation.SuppressLint;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,6 +48,8 @@ import javax.inject.Inject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.dfa.vinatrip.utils.Constants.FEEDBACK_PAGE_SIZE;
+
 /**
  * Created by duonghd on 12/28/2017.
  * duonghd1307@gmail.com
@@ -81,6 +84,8 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
     protected ImageView ivMap;
     @ViewById(R.id.activity_food_detail_rcv_feedback)
     protected RecyclerView rcvFeedback;
+    @ViewById(R.id.activity_food_detail_iv_feedback_more)
+    protected TextView tvFeedbackMore;
     @ViewById(R.id.activity_food_detail_tv_none_feedback)
     protected TextView tvNoneFeedback;
     @ViewById(R.id.activity_food_detail_rcv_photo)
@@ -107,6 +112,7 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
     private LoginDialog loginDialog;
     private RecyclerFoodFeedbackAdapter feedbackAdapter;
     private List<FeedbackResponse> feedbackResponses;
+    private List<FeedbackResponse> feedbackResponsesTerm;
 
     @AfterInject
     void initInject() {
@@ -134,7 +140,8 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
         loginDialog.setOnDismissListener(dialog -> loginDialog.clearData());
 
         feedbackResponses = new ArrayList<>();
-        feedbackAdapter = new RecyclerFoodFeedbackAdapter(this, feedbackResponses);
+        feedbackResponsesTerm = new ArrayList<>();
+        feedbackAdapter = new RecyclerFoodFeedbackAdapter(this, feedbackResponsesTerm);
         rcvFeedback.setHasFixedSize(true);
         rcvFeedback.setLayoutManager(new LinearLayoutManager(this));
         rcvFeedback.setAdapter(feedbackAdapter);
@@ -284,6 +291,27 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
         loginDialog.show();
     }
 
+    @Click(R.id.activity_food_detail_iv_feedback_more)
+    void loadFeedbackClick() {
+        showHUD();
+        new Handler().postDelayed(() -> {
+            if (this.feedbackResponses.size() - this.feedbackResponsesTerm.size() > FEEDBACK_PAGE_SIZE) {
+                tvFeedbackMore.setVisibility(View.VISIBLE);
+                int size = this.feedbackResponsesTerm.size();
+                for (int i = size; i < size + FEEDBACK_PAGE_SIZE; i++) {
+                    this.feedbackResponsesTerm.add(this.feedbackResponses.get(i));
+                }
+            } else {
+                tvFeedbackMore.setVisibility(View.GONE);
+                for (int i = this.feedbackResponsesTerm.size(); i < this.feedbackResponses.size(); i++) {
+                    this.feedbackResponsesTerm.add(this.feedbackResponses.get(i));
+                }
+            }
+            feedbackAdapter.notifyDataSetChanged();
+            hideHUD();
+        }, 400);
+    }
+
     @Override
     public void loginInfo(String email, String password) {
         loginDialog.dismiss();
@@ -308,8 +336,18 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
 
     @Override
     public void getFoodFeedbackSuccess(List<FeedbackResponse> feedbackResponses) {
-        this.feedbackResponses.clear();
         this.feedbackResponses.addAll(feedbackResponses);
+        if (this.feedbackResponses.size() < FEEDBACK_PAGE_SIZE) {
+            tvFeedbackMore.setVisibility(View.GONE);
+            for (int i = 0; i < feedbackResponses.size(); i++) {
+                this.feedbackResponsesTerm.add(this.feedbackResponses.get(i));
+            }
+        } else {
+            tvFeedbackMore.setVisibility(View.VISIBLE);
+            for (int i = 0; i < FEEDBACK_PAGE_SIZE; i++) {
+                this.feedbackResponsesTerm.add(this.feedbackResponses.get(i));
+            }
+        }
         this.feedbackAdapter.notifyDataSetChanged();
         tvNumberOfFeedback.setText(String.format("%s đánh giá", feedbackResponses.size()));
         srbFoodRate.setRating(countStar());
@@ -339,10 +377,13 @@ public class FoodDetailActivity extends BaseActivity<FoodDetailView, FoodDetailP
 
     @Override
     public void postFoodFeedbackSuccess(FeedbackResponse feedbackResponse) {
+        this.feedbackResponses.add(0, feedbackResponse);
+        this.feedbackResponsesTerm.add(0, feedbackResponse);
+        this.feedbackAdapter.notifyDataSetChanged();
         edtFeedbackContent.setText("");
-        edtFeedbackContent.setEnabled(false);
         srbFeedbackRating.setRating(0f);
-        srbFeedbackRating.setIndicator(true);
+        tvNumberOfFeedback.setText(String.format("%s đánh giá", this.feedbackResponses.size()));
+        srbFoodRate.setRating(countStar());
         Toast.makeText(this, "Cảm ơn bạn đã gửi đánh giá.", Toast.LENGTH_SHORT).show();
     }
 }

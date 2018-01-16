@@ -254,6 +254,23 @@
                         android:visibility="gone"/>
 
                     <TextView
+                        android:id="@+id/activity_food_detail_iv_feedback_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/bg_ntoolbar_icon_click"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="Tải thêm"
+                        android:textColor="@color/colorMain"
+                        android:textSize="10dp"
+                        android:textStyle="italic"
+                        android:visibility="gone"/>
+
+                    <TextView
                         android:id="@+id/activity_food_detail_tv_none_feedback"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

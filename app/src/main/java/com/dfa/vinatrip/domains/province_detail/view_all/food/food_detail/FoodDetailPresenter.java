@@ -49,8 +49,8 @@ public class FoodDetailPresenter extends BasePresenter<FoodDetailView> {
                 })
                 .subscribe(feedbackResponse -> {
                     if (isViewAttached()) {
+                        feedbackResponse.setProfile(accountService.getCurrentUser());
                         getView().postFoodFeedbackSuccess(feedbackResponse);
-                        getFoodFeedback(foodId, 0, 0);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {

@@ -40,7 +40,8 @@ public class PlaceDetailPresenter extends BasePresenter<PlaceDetailView> {
         if (isViewAttached()) {
             getView().showLoading();
         }
-        subscription = feedbackService.postPlaceFeedback(accountService.getCurrentUser().getAccessToken(), placeId, feedbackRequest)
+        String token = accountService.getCurrentUser().getAccessToken();
+        subscription = feedbackService.postPlaceFeedback(token, placeId, feedbackRequest)
                 .compose(RxScheduler.applyIoSchedulers())
                 .doOnTerminate(() -> {
                     if (isViewAttached()) {
@@ -49,8 +50,8 @@ public class PlaceDetailPresenter extends BasePresenter<PlaceDetailView> {
                 })
                 .subscribe(feedbackResponse -> {
                     if (isViewAttached()) {
+                        feedbackResponse.setProfile(accountService.getCurrentUser());
                         getView().postPlaceFeedbackSuccess(feedbackResponse);
-                        getPlaceFeedback(placeId, 0, 0);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {

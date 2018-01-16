@@ -49,8 +49,8 @@ public class HotelDetailPresenter extends BasePresenter<HotelDetailView> {
                 })
                 .subscribe(feedbackResponse -> {
                     if (isViewAttached()) {
+                        feedbackResponse.setProfile(accountService.getCurrentUser());
                         getView().postHotelFeedbackSuccess(feedbackResponse);
-                        getHotelFeedback(hotelId, 0, 0);
                     }
                 }, throwable -> {
                     if (isViewAttached()) {

@@ -1,6 +1,7 @@
 package com.dfa.vinatrip.domains.province_detail.view_all.festival.festival_detail;
 
 import android.annotation.SuppressLint;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -45,6 +46,8 @@ import javax.inject.Inject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.dfa.vinatrip.utils.Constants.FEEDBACK_PAGE_SIZE;
+
 /**
  * Created by duonghd on 10/6/2017.
  * duonghd1307@gmail.com
@@ -81,9 +84,10 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
     protected ImageView ivMap;
     @ViewById(R.id.activity_festival_detail_rcv_feedback)
     protected RecyclerView rcvFeedback;
+    @ViewById(R.id.activity_festival_detail_iv_feedback_more)
+    protected TextView tvFeedbackMore;
     @ViewById(R.id.activity_festival_detail_tv_none_feedback)
     protected TextView tvNoneFeedback;
-
     @ViewById(R.id.activity_festival_detail_ll_is_login)
     protected LinearLayout llIsLogin;
     @ViewById(R.id.activity_festival_detail_ll_not_login)
@@ -105,6 +109,7 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
     private LoginDialog loginDialog;
     private RecyclerFestivalFeedbackAdapter feedbackAdapter;
     private List<FeedbackResponse> feedbackResponses;
+    private List<FeedbackResponse> feedbackResponsesTerm;
 
     @AfterInject
     void initInject() {
@@ -132,7 +137,8 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
         loginDialog.setOnDismissListener(dialog -> loginDialog.clearData());
 
         feedbackResponses = new ArrayList<>();
-        feedbackAdapter = new RecyclerFestivalFeedbackAdapter(this, feedbackResponses);
+        feedbackResponsesTerm = new ArrayList<>();
+        feedbackAdapter = new RecyclerFestivalFeedbackAdapter(this, feedbackResponsesTerm);
         rcvFeedback.setHasFixedSize(true);
         rcvFeedback.setLayoutManager(new LinearLayoutManager(this));
         rcvFeedback.setAdapter(feedbackAdapter);
@@ -280,6 +286,27 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
         loginDialog.show();
     }
 
+    @Click(R.id.activity_festival_detail_iv_feedback_more)
+    void loadFeedbackClick() {
+        showHUD();
+        new Handler().postDelayed(() -> {
+            if (this.feedbackResponses.size() - this.feedbackResponsesTerm.size() > FEEDBACK_PAGE_SIZE) {
+                tvFeedbackMore.setVisibility(View.VISIBLE);
+                int size = this.feedbackResponsesTerm.size();
+                for (int i = size; i < size + FEEDBACK_PAGE_SIZE; i++) {
+                    this.feedbackResponsesTerm.add(this.feedbackResponses.get(i));
+                }
+            } else {
+                tvFeedbackMore.setVisibility(View.GONE);
+                for (int i = this.feedbackResponsesTerm.size(); i < this.feedbackResponses.size(); i++) {
+                    this.feedbackResponsesTerm.add(this.feedbackResponses.get(i));
+                }
+            }
+            feedbackAdapter.notifyDataSetChanged();
+            hideHUD();
+        }, 400);
+    }
+
     @Override
     public void loginInfo(String email, String password) {
         loginDialog.dismiss();
@@ -304,8 +331,18 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
 
     @Override
     public void getFestivalFeedbackSuccess(List<FeedbackResponse> feedbackResponses) {
-        this.feedbackResponses.clear();
         this.feedbackResponses.addAll(feedbackResponses);
+        if (this.feedbackResponses.size() < FEEDBACK_PAGE_SIZE) {
+            tvFeedbackMore.setVisibility(View.GONE);
+            for (int i = 0; i < feedbackResponses.size(); i++) {
+                this.feedbackResponsesTerm.add(this.feedbackResponses.get(i));
+            }
+        } else {
+            tvFeedbackMore.setVisibility(View.VISIBLE);
+            for (int i = 0; i < FEEDBACK_PAGE_SIZE; i++) {
+                this.feedbackResponsesTerm.add(this.feedbackResponses.get(i));
+            }
+        }
         this.feedbackAdapter.notifyDataSetChanged();
         tvNumberOfFeedback.setText(String.format("%s đánh giá", feedbackResponses.size()));
         srbFestivalRate.setRating(countStar());
@@ -335,10 +372,13 @@ public class FestivalDetailActivity extends BaseActivity<FestivalDetailView, Fes
 
     @Override
     public void postFestivalFeedbackSuccess(FeedbackResponse feedbackResponse) {
+        this.feedbackResponses.add(0, feedbackResponse);
+        this.feedbackResponsesTerm.add(0, feedbackResponse);
+        this.feedbackAdapter.notifyDataSetChanged();
         edtFeedbackContent.setText("");
-        edtFeedbackContent.setEnabled(false);
         srbFeedbackRating.setRating(0f);
-        srbFeedbackRating.setIndicator(true);
+        tvNumberOfFeedback.setText(String.format("%s đánh giá", this.feedbackResponses.size()));
+        srbFestivalRate.setRating(countStar());
         Toast.makeText(this, "Cảm ơn bạn đã gửi đánh giá.", Toast.LENGTH_SHORT).show();
     }
 }
