@@ -7,16 +7,6 @@ Project name: TripGuy
 
 **Overview:**
 * Help all people about destination, hotel, food... when travel to Viet Nam.
-* Find destination.
-* Give information, photos... about VietNam's provinces.
-* Help you find cheap hotel, delicious food.
-* Share your travel experiences, destionation, delicious food with other people.
-* Make your own plan.
-
-**Technologies use in Project:**
-* All data is loaded from Google Firebase, so you must connect to the Internet when use this app.
-* Picasso to load image.
-* ViewPager, RecyclerView, ScrollView and some new modern View....
-* Pull down to reload data.
-
-**Note:** some features and data are not available, I'll try to complete it as soon as possible.
+* Update article, review travel with newest information
+* Make your own plan, where to go, what to do, when to start, invite your friend to the trip
+* Connect your friend in trip with chat, video call and trace location of them, so you never loss friends in trip.
