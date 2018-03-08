@@ -11,8 +11,8 @@ Project name: TripGuy
 * Make your own plan, where to go, what to do, when to start, invite your friend to the trip
 * Connect your friend in trip with chat, video call and trace location of them, so you never loss friends in trip.
 
-
-<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab1.jpg" height="30%" width="30%">
+**Overview:**
+![]<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab1.jpg" height="30%" width="30%">
 <img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab2.jpg" height="30%" width="30%">
 <img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab3.jpg" height="30%" width="30%">
 <img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab4.jpg" height="30%" width="30%">
