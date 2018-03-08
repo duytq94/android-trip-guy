@@ -1,10 +1,5 @@
 ## TripGuy - Viet Nam travel for everyone, guide, setup plan, share your trip and more
 
-Full name: Tran Quang Duy
-
-## Project name: TripGuy
-----------------------------
-
 ## Overview:
 * Help all people about destination, hotel, food... when travel to Viet Nam.
 * Update article, review travel with newest information
