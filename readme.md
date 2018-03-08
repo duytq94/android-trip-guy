@@ -1,4 +1,4 @@
-## TripGuy - Viet Nam travel for everyone, guide, setup plan, share your trip and more**
+## TripGuy - Viet Nam travel for everyone, guide, setup plan, share your trip and more
 
 Full name: Tran Quang Duy
 
@@ -13,7 +13,7 @@ Full name: Tran Quang Duy
 
 ## Demo:
 
-Infor    | <img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab1.jpg" height="30%" width="30%">
-Chat     | <img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/ChatGroup.jpg" height="30%" width="30%">
-Plan     | <img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/DetailPlan.jpg" height="30%" width="30%">
-Trace    | <img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Location.jpg" height="30%" width="30%">
+<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab1.jpg" height="30%" width="30%">
+<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/ChatGroup.jpg" height="30%" width="30%">
+<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/DetailPlan.jpg" height="30%" width="30%">
+<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Location.jpg" height="30%" width="30%">
