@@ -12,7 +12,7 @@ Project name: TripGuy
 * Connect your friend in trip with chat, video call and trace location of them, so you never loss friends in trip.
 
 **Demo:**
-<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab1.jpg" height="50%", width="50%">
+<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab1.jpg" height="50%" width="50%">
 <img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab2.jpg" height="50%">
 <img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab3.jpg" height="50%">
 <img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab4.jpg" height="50%">
