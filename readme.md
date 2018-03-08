@@ -10,3 +10,16 @@ Project name: TripGuy
 * Update article, review travel with newest information
 * Make your own plan, where to go, what to do, when to start, invite your friend to the trip
 * Connect your friend in trip with chat, video call and trace location of them, so you never loss friends in trip.
+
+**Demo:**
+<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab1.jpg" width="80%">
+<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab2.jpg" width="80%">
+<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab3.jpg" width="80%">
+<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab4.jpg" width="80%">
+<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab5.jpg" width="80%">
+<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/ChatGroup.jpg" width="80%">
+<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/VideoCall.jpg" width="80%">
+<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Comment.jpg" width="80%">
+<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/DetailPlan.jpg" width="80%">
+<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/LisrFriend.jpg" width="80%">
+<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Location.jpg" width="80%">
