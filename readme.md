@@ -13,7 +13,7 @@ Project name: TripGuy
 
 **Demo:**
 
-<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab1.jpg" height="30%" width="30%">
-<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/ChatGroup.jpg" height="30%" width="30%">
-<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/DetailPlan.jpg" height="30%" width="30%">
-<img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Location.jpg" height="30%" width="30%">
+Infor    | <img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Tab1.jpg" height="30%" width="30%">
+Chat    | <img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/ChatGroup.jpg" height="30%" width="30%">
+Plan    | <img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/DetailPlan.jpg" height="30%" width="30%">
+Trace    | <img src="https://raw.githubusercontent.com/duytq94/TripGuy/master/screenshot/Location.jpg" height="30%" width="30%">
